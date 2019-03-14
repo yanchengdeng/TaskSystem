@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ll_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
+
+
+    <RelativeLayout
+        android:id="@+id/rl_tittle_ui"
+        android:layout_width="match_parent"
+        android:background="@color/red"
+        android:layout_height="48dp">
+
+        <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:src="@mipmap/icon_back_white" />
+
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:text="@string/app_name"
+            android:drawablePadding="@dimen/image_padding"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_larger" />
+
+
+        <ImageView
+            android:id="@+id/iv_right_function"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:visibility="gone" />
+
+
+        <TextView
+            android:id="@+id/tv_right_function"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:textColor="@color/color_tittle"
+            android:textSize="@dimen/text_size_normal"
+            android:visibility="gone" />
+
+
+    </RelativeLayout>
+
+
+    <TextView
+        android:id="@+id/tv_tittle_ui_line"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:visibility="gone"
+        android:layout_below="@+id/tv_title"
+        android:background="@color/list_divider_color" />
+
+    <RelativeLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+
+        <!--加载失败-->
+        <!--加载失败-->
+        <include layout="@layout/layout_empty_view"
+            android:layout_width="match_parent"
+            android:visibility="gone"
+            android:layout_height="match_parent"/>
+
+    </RelativeLayout>
+
+
+</LinearLayout>

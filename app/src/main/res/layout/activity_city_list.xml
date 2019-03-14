@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/ll_key_ui"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/activity_horizontal_margin"
+        android:orientation="horizontal">
+
+
+        <EditText
+            android:id="@+id/et_input_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/normal_home_search_bg"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingTop="@dimen/image_padding"
+            android:paddingBottom="@dimen/image_padding"
+            android:textColor="@color/color_info"
+            android:textCursorDrawable="@drawable/edit_cursor_drawable"
+            android:textSize="@dimen/text_size_normal" />
+
+
+        <TextView
+            android:id="@+id/tv_cancle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/activity_horizontal_margin"
+            android:text="@string/cancle"
+            android:textColor="@color/color_info"
+            android:textSize="@dimen/text_size_normal" />
+
+    </LinearLayout>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/image_padding_big"
+        android:layout_marginRight="@dimen/image_padding_big">
+
+        <RelativeLayout
+            android:id="@+id/rl_selece_city_ui"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ListView
+                android:id="@+id/listview_all_city"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/activity_horizontal_margin"
+                android:cacheColorHint="@android:color/transparent"
+                android:divider="@android:color/transparent"
+                android:dividerHeight="0dp"
+                android:listSelector="@android:color/transparent" />
+
+            <TextView
+                android:id="@+id/tv_letter_overlay"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_centerInParent="true"
+                android:background="@drawable/cp_overlay_bg"
+                android:gravity="center"
+                android:visibility="invisible"
+                android:textColor="@android:color/white"
+                android:textSize="48sp"
+                android:textStyle="bold" />
+
+            <com.task.system.views.SideLetterBar
+                android:id="@+id/side_letter_bar"
+                android:layout_width="@dimen/side_letter_bar_width"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                tools:ignore="RtlHardcoded" />
+
+        </RelativeLayout>
+
+
+        <include
+            layout="@layout/layout_empty_view"
+            android:visibility="gone" />
+    </RelativeLayout>
+
+</LinearLayout>

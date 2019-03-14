@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#fffd6c6b</color>
+    <color name="white">#ffffff</color>
+
+    <color name="color_date">#ababab</color>
+    <color name="color_info">#333333</color>
+    <color name="color_info_light">#cf3A424D</color>
+    <color name="color_info_transe">#55000000</color>
+    <color name="color_tittle">#252525</color>
+    <color name="deep_black">#7f000000</color>
+    <color name="orange">#F2AE47</color>
+
+    <color name="list_divider_color">#eeeef2</color>
+    <color name="color_blue">#4FBAFC</color>
+
+    <color name="red">#fffd6c6b</color>
+    <color name="ball_red">#fffd6c6b</color>
+    <color name="trans_black">#3f000000</color>
+    <color name="trans_black_for_login">#1f000000</color>
+    <color name="process_color">#585858</color>
+    <color name="green">#60B660</color>
+    <color name="oranage_deep">#FC6621</color>
+
+    <color name="login_bg_color">#83A7B0</color>
+
+    <color name="blue_ball">#1A71B1</color>
+    <color name="gold">#ffefbf</color>
+    <color name="gold_text">#ff761f</color>
+
+
+    <color name="char_bg">#DCDDDC</color>
+    <color name="register">#647991</color>
+    <color name="red_mine_status">#fffd6c6b</color>
+    <color name="gray_bg">#fff6f7fa</color>
+
+
+    <color name="cp_colorAccent">#F3F3F3</color>
+    <color name="cp_colorPrimary">@color/cp_colorAccent</color>
+    <color name="cp_colorPrimaryDark">@color/cp_colorAccent</color>
+    <color name="cp_divider">#E5E5E5</color>
+    <color name="cp_shadow">#AAEBEBEB</color>
+    <color name="cp_common_bg">#FAFAFA</color>
+    <color name="cp_content_bg">@color/cp_colorAccent</color>
+    <color name="cp_gray">#8c8c8c</color>
+    <color name="cp_gray_deep">#5c5c5c</color>
+    <color name="cp_alpha_gray">#CC646464</color>
+    <color name="cp_theme_gray">#646464</color>
+
+</resources>

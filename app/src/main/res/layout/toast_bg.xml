@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/normal_toast_black"
+    android:gravity="center"
+    android:paddingLeft="@dimen/nav_bar_height"
+    android:paddingRight="@dimen/nav_bar_height"
+    android:padding="@dimen/image_padding"
+    android:paddingBottom="@dimen/image_padding"
+    android:orientation="vertical"
+    >
+
+
+
+</LinearLayout>
+
+

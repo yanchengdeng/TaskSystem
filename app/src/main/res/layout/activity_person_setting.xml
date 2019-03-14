@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gray_bg"
+    android:orientation="vertical"
+    tools:context=".activity.PersonSettingActivity">
+
+
+    <RelativeLayout
+        android:id="@+id/rl_header_ui"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:padding="@dimen/activity_horizontal_margin">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="头像"
+            android:textColor="@color/color_info"
+            android:textSize="@dimen/sp_14" />
+
+
+        <ImageView
+            android:id="@+id/iv_header"
+            android:layout_width="@dimen/icon_head_size_smallest"
+            android:layout_height="@dimen/icon_head_size_smallest"
+            android:layout_marginEnd="@dimen/image_padding_big"
+            android:layout_toLeftOf="@+id/iv_header_arrow"
+            android:src="@mipmap/defalut_header" />
+
+        <ImageView
+            android:id="@+id/iv_header_arrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/arrow_right_black" />
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/rl_name_ui"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        android:background="@color/white"
+        android:padding="@dimen/activity_horizontal_margin">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="用户名"
+            android:textColor="@color/color_info"
+            android:textSize="@dimen/sp_14" />
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/image_padding_big"
+            android:layout_toLeftOf="@+id/iv_user_name_arrow"
+            android:hint="xxxxxx"
+            android:textColor="@color/color_date"
+            android:textSize="@dimen/sp_14" />
+
+        <ImageView
+            android:id="@+id/iv_user_name_arrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/arrow_right_black" />
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/rl_phone_ui"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        android:background="@color/white"
+        android:padding="@dimen/activity_horizontal_margin">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="手机号"
+            android:textColor="@color/color_info"
+            android:textSize="@dimen/sp_14" />
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/image_padding_big"
+            android:layout_toLeftOf="@+id/iv_phone_arrow"
+            android:hint="130xxxx"
+            android:textColor="@color/color_date"
+            android:textSize="@dimen/sp_14" />
+
+        <ImageView
+            android:id="@+id/iv_phone_arrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/arrow_right_black" />
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/rl_sysyte_id_ui"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        android:background="@color/white"
+        android:padding="@dimen/activity_horizontal_margin">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="系统识别ID"
+            android:textColor="@color/color_info"
+            android:textSize="@dimen/sp_14" />
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/image_padding_big"
+            android:layout_toLeftOf="@+id/iv_system_id_arrow"
+            android:hint="xxxxxx"
+            android:textColor="@color/color_date"
+            android:textSize="@dimen/sp_14" />
+
+        <ImageView
+            android:id="@+id/iv_system_id_arrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/arrow_right_black" />
+    </RelativeLayout>
+
+
+    <TextView
+        android:id="@+id/tv_modify_password_ui"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginTop="@dimen/activity_horizontal_margin"
+        android:background="@color/white"
+        android:drawableRight="@mipmap/arrow_right_black"
+        android:drawablePadding="@dimen/image_padding_big"
+        android:padding="@dimen/activity_horizontal_margin"
+        android:text="修改密码"
+        android:textColor="@color/color_info"
+        android:textSize="@dimen/sp_14" />
+
+
+    <TextView
+        android:id="@+id/tv_login_out"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/nav_bar_height"
+        android:background="@color/white"
+        android:gravity="center"
+        android:padding="@dimen/activity_horizontal_margin"
+        android:text="退出登录"
+        android:textColor="@color/color_info"
+        android:textSize="@dimen/sp_14" />
+
+
+</LinearLayout>
