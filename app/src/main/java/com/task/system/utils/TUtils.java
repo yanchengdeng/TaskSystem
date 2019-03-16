@@ -12,6 +12,7 @@ import com.blankj.utilcode.util.SPUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.task.system.Constans;
 import com.task.system.bean.CityInfo;
 import com.task.system.bean.TaskInfoList;
@@ -164,7 +165,28 @@ public class TUtils {
     }
 
     //处理列表无数据
+    public static void dealNoReqestData(BaseQuickAdapter adapter, RecyclerView recycle, SmartRefreshLayout refreshLayout) {
+        if (adapter != null && recycle != null && refreshLayout != null) {
+            if (adapter.getData().size() > 0) {
+                adapter.loadMoreComplete();
+                adapter.loadMoreEnd();
+            } else {
+                adapter.setNewData(new ArrayList<TaskInfoList>());
+                adapter.loadMoreComplete();
+                adapter.loadMoreEnd();
+                if (ApiConfig.context instanceof Activity) {
+                    adapter.setEmptyView(RecycleViewUtils.getEmptyView((Activity) ApiConfig.context, recycle));
+                }
+            }
+            refreshLayout.finishRefresh();
+        }
+    }
+
+    //处理列表无数据
     public static void dealNoReqestData(BaseQuickAdapter adapter, RecyclerView recycle) {
+        if (adapter == null && recycle == null) {
+            return;
+        }
         if (adapter.getData().size() > 0) {
             adapter.loadMoreComplete();
             adapter.loadMoreEnd();
@@ -179,20 +201,25 @@ public class TUtils {
     }
 
     //处理请求列表数据
-    public static void dealReqestData(BaseQuickAdapter adapter, RecyclerView recycle,List list,int page) {
-        if (page==1){
-            adapter.getData().clear();
-        }
-        if (list != null && list.size() > 0) {
-            adapter.addData(list);
-            if (list.size() == Integer.parseInt(Constans.PAGE_SIZE)) {
-                adapter.loadMoreComplete();
-            } else {
-                adapter.loadMoreComplete();
-                adapter.loadMoreEnd();
+    public static void dealReqestData(BaseQuickAdapter adapter, RecyclerView recycle, List list, int page, SmartRefreshLayout refreshLayout) {
+        if (adapter != null && recycle != null && refreshLayout != null) {
+
+
+            if (page == 1) {
+                adapter.getData().clear();
             }
-        } else {
-            TUtils.dealNoReqestData(adapter, recycle);
+            if (list != null && list.size() > 0) {
+                adapter.addData(list);
+                if (list.size() == Integer.parseInt(Constans.PAGE_SIZE)) {
+                    adapter.loadMoreComplete();
+                } else {
+                    adapter.loadMoreComplete();
+                    adapter.loadMoreEnd();
+                }
+            } else {
+                TUtils.dealNoReqestData(adapter, recycle);
+            }
+            refreshLayout.finishRefresh();
         }
 
     }

@@ -3,7 +3,6 @@ package com.task.system.fragments;
 import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -19,7 +18,6 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -28,9 +26,7 @@ import com.baidu.location.BDAbstractLocationListener;
 import com.baidu.location.BDLocation;
 import com.blankj.utilcode.util.ActivityUtils;
 import com.blankj.utilcode.util.ConvertUtils;
-import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.ToastUtils;
-import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gyf.barlibrary.ImmersionBar;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -50,6 +46,7 @@ import com.task.system.bean.CityInfo;
 import com.task.system.bean.HomeMenu;
 import com.task.system.bean.TaskInfoList;
 import com.task.system.bean.UserInfo;
+import com.task.system.common.GlideImageLoader;
 import com.task.system.services.LocationService;
 import com.task.system.utils.RecycleViewUtils;
 import com.task.system.utils.TUtils;
@@ -59,7 +56,6 @@ import com.yc.lib.api.ApiCallBack;
 import com.yc.lib.api.ApiCallBackList;
 import com.yc.lib.api.ApiConfig;
 import com.youth.banner.Banner;
-import com.youth.banner.loader.ImageLoader;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -192,20 +188,17 @@ public class HomeFragment extends Fragment {
         appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
             @Override
             public void onOffsetChanged(AppBarLayout appBarLayout, int i) {
-                LogUtils.w("dyc--", i + "----" + ConvertUtils.dp2px(180));
                 if (Math.abs(i) + ImmersionBar.getStatusBarHeight(getActivity()) + 10 > ConvertUtils.dp2px(180)) {
                     if (hasAddNoMargin) {
                         ImmersionBar.with(getActivity()).statusBarDarkFont(false, 0.2f).statusBarColor(R.color.red).init();
                         hasAddNoMargin = false;
                         hasAddYesMargin = true;
-                        LogUtils.w("dyc", "----添加padding-");
                     }
                 } else {
                     if (hasAddYesMargin) {
                         ImmersionBar.with(getActivity()).statusBarDarkFont(false, 0.2f).statusBarColor(R.color.trans_black).init();
                         hasAddYesMargin = false;
                         hasAddNoMargin = true;
-                        LogUtils.w("dyc", "----减少----padding-");
                     }
                 }
             }
@@ -322,14 +315,14 @@ public class HomeFragment extends Fragment {
         API.getObject(call, TaskInfoList.class, new ApiCallBack<TaskInfoList>() {
             @Override
             public void onSuccess(int msgCode, String msg, TaskInfoList data) {
-                TUtils.dealReqestData(homeAdapter, recycle, data.list, page);
-                smartRefresh.finishRefresh();
+                TUtils.dealReqestData(homeAdapter, recycle, data.list, page,smartRefresh);
+
             }
 
             @Override
             public void onFaild(int msgCode, String msg) {
-                TUtils.dealNoReqestData(homeAdapter, recycle);
-                smartRefresh.finishRefresh();
+                TUtils.dealNoReqestData(homeAdapter, recycle,smartRefresh);
+
             }
         });
     }
@@ -401,25 +394,7 @@ public class HomeFragment extends Fragment {
         }
     }
 
-    public class GlideImageLoader extends ImageLoader {
-        @Override
-        public void displayImage(Context context, Object path, ImageView imageView) {
 
-            //Glide 加载图片简单用法
-            Glide.with(ApiConfig.context).load(path).into(imageView);
-
-        }
-
-        //提供createImageView 方法，如果不用可以不重写这个方法，主要是方便自定义ImageView的创建
-        @Override
-        public ImageView createImageView(Context context) {
-            //使用fresco，需要创建它提供的ImageView，当然你也可以用自己自定义的具有图片加载功能的ImageView
-            ImageView simpleDraweeView = new ImageView(context);
-            simpleDraweeView.setScaleType(ImageView.ScaleType.FIT_XY);
-            simpleDraweeView.setAdjustViewBounds(true);
-            return simpleDraweeView;
-        }
-    }
 
     @Override
     public void onDestroy() {

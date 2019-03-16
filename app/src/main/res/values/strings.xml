@@ -1,8 +1,8 @@
 <resources>
-    <string name="app_name">开机自动启动</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
+    <string name="app_name">任务系统</string>
+    <string name="title_home">任务大厅</string>
+    <string name="title_dashboard">我的任务</string>
+    <string name="title_notifications">个人中心</string>
     <string name="no_data">暂无数据</string>
     <string name="loading">加载中...</string>
     <string name="login_in">登录</string>
@@ -24,4 +24,5 @@
     <string name="cp_located_failed">定位失败</string>
     <string name="cancle">取消</string>
     <string name="appbar_scroll">com.task.system.common.AppBarLayoutBehavior</string>
+    <string name="choose">选择</string>
 </resources>

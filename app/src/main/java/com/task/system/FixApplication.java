@@ -1,6 +1,8 @@
 package com.task.system;
 
 import android.content.Context;
+import android.support.multidex.MultiDex;
+import android.support.multidex.MultiDexApplication;
 import android.view.Gravity;
 
 import com.blankj.utilcode.util.ToastUtils;
@@ -10,14 +12,13 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.DefaultRefreshHeaderCreator;
 import com.scwang.smartrefresh.layout.api.RefreshHeader;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.taobao.sophix.SophixApplication;
 import com.task.system.services.LocationService;
 import com.task.system.utils.TUtils;
 import com.yc.lib.api.ApiConfig;
 
 import cn.bingoogolapple.swipebacklayout.BGASwipeBackHelper;
 
-public class FixApplication extends SophixApplication {
+public class FixApplication extends MultiDexApplication {
 
     public LocationService locationService;
 
@@ -48,6 +49,7 @@ public class FixApplication extends SophixApplication {
 
         locationService = new LocationService(getApplicationContext());
         Utils.init(this);
+        MultiDex.install(this);
         ToastUtils.setBgResource(R.drawable.normal_toast_black);
         ToastUtils.setGravity(Gravity.CENTER,0,0);
         //侧滑初始化
@@ -56,5 +58,8 @@ public class FixApplication extends SophixApplication {
         ApiConfig.setSuccessCode(1);
         ApiConfig.addCommonParams(TUtils.getParams());
         ApiConfig.setLogFilter("dyc");
+        ApiConfig.setReadTimeout(5000);
+        ApiConfig.setConnectTimeout(5000);
+        ApiConfig.setWriteTimeout(5000);
     }
 }

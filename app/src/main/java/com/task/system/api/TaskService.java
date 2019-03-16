@@ -82,7 +82,7 @@ public interface TaskService {
      */
     @FormUrlEncoded
     @POST("user/setAvatar")
-    Call<TaskInfo> setUserAvatar(@FieldMap HashMap<String, String> maps);
+    Call<TaskInfoList> setUserAvatar(@FieldMap HashMap<String, String> maps);
 
 
     /**

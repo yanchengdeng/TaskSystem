@@ -16,6 +16,9 @@ import android.widget.TextView;
 import com.blankj.utilcode.util.ActivityUtils;
 import com.blankj.utilcode.util.SPUtils;
 import com.google.gson.Gson;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.task.system.Constans;
 import com.task.system.R;
 import com.task.system.activity.MyCollectedActivity;
@@ -63,6 +66,8 @@ public class PercenterFragment extends Fragment {
     @BindView(R.id.tv_invite_code)
     TextView tvInviteCode;
     Unbinder unbinder;
+    @BindView(R.id.smartRefresh)
+    SmartRefreshLayout smartRefresh;
 
     @Nullable
     @Override
@@ -72,11 +77,19 @@ public class PercenterFragment extends Fragment {
         unbinder = ButterKnife.bind(this, view);
         getUserDetail();
 
+
+        smartRefresh.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(RefreshLayout refreshLayout) {
+                getUserDetail();
+            }
+        });
+
         return view;
     }
 
 
-    private void getUserDetail(){
+    private void getUserDetail() {
         HashMap<String, String> hashMap = new HashMap();
         hashMap.put("uid", TUtils.getUserId());
         Call<TaskInfo> call = ApiConfig.getInstants().create(TaskService.class).getUserInfo(TUtils.getParams(hashMap));
@@ -86,17 +99,21 @@ public class PercenterFragment extends Fragment {
             public void onSuccess(int msgCode, String msg, UserInfo data) {
                 SPUtils.getInstance().put(Constans.USER_INFO, new Gson().toJson(data));
                 initData(data);
+                smartRefresh.finishRefresh();
             }
 
             @Override
             public void onFaild(int msgCode, String msg) {
+                if (smartRefresh!=null) {
+                    smartRefresh.finishRefresh();
+                }
             }
         });
     }
 
     private void initData(UserInfo data) {
         if (!TextUtils.isEmpty(data.avatar)) {
-            ImageLoaderUtil.loadCircle(data.avatar,ivHeader,R.mipmap.defalut_header);
+            ImageLoaderUtil.loadCircle(data.avatar, ivHeader, R.mipmap.defalut_header);
         }
 
         if (!TextUtils.isEmpty(data.nickname)) {
@@ -108,7 +125,7 @@ public class PercenterFragment extends Fragment {
         }
 
         if (!TextUtils.isEmpty(data.uid)) {
-            tvId.setText("ID:"+data.uid);
+            tvId.setText("ID:" + data.uid);
         }
 
 
