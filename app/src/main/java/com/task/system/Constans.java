@@ -20,4 +20,7 @@ public class Constans {
     public static String BASE_URL_ONLINE = "task.mayimayi.cn/api.php/V1";
 
     public  static boolean  IS_DEBUG = true;
+    public static String LOCATON_CITY_NAME = "location_name";
+    public static String LOCATON_CITY_id = "location_name_id";
+    public static String PASS_NAME = "pass_name";
 }

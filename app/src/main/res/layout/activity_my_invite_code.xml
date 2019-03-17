@@ -38,7 +38,6 @@
 
         <TextView
             android:id="@+id/tv_invite_code"
-            android:text="xxxxx"
             android:textSize="@dimen/sp_55"
             android:textColor="@color/red"
             android:textStyle="bold"

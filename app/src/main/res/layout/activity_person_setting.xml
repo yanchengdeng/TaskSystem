@@ -61,12 +61,12 @@
 
 
         <TextView
+            android:id="@+id/tv_user_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/image_padding_big"
             android:layout_toLeftOf="@+id/iv_user_name_arrow"
-            android:hint="xxxxxx"
             android:textColor="@color/color_date"
             android:textSize="@dimen/sp_14" />
 
@@ -98,12 +98,12 @@
 
 
         <TextView
+            android:id="@+id/tv_phone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/image_padding_big"
             android:layout_toLeftOf="@+id/iv_phone_arrow"
-            android:hint="130xxxx"
             android:textColor="@color/color_date"
             android:textSize="@dimen/sp_14" />
 
@@ -135,12 +135,12 @@
 
 
         <TextView
+            android:id="@+id/tv_uid"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/image_padding_big"
             android:layout_toLeftOf="@+id/iv_system_id_arrow"
-            android:hint="xxxxxx"
             android:textColor="@color/color_date"
             android:textSize="@dimen/sp_14" />
 
@@ -149,6 +149,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
+            android:visibility="invisible"
             android:layout_centerVertical="true"
             android:src="@mipmap/arrow_right_black" />
     </RelativeLayout>
@@ -179,6 +180,7 @@
         android:padding="@dimen/activity_horizontal_margin"
         android:text="退出登录"
         android:textColor="@color/color_info"
+        android:textStyle="bold"
         android:textSize="@dimen/sp_14" />
 
 

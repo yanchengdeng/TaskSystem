@@ -35,6 +35,8 @@
                 android:layout_height="wrap_content"
                 android:paddingRight="@dimen/image_padding_big"
                 android:text="@string/cp_locating"
+                android:drawablePadding="3dp"
+                android:drawableLeft="@mipmap/icon_location"
                 android:textColor="@color/color_tittle"
                 android:textSize="@dimen/text_size_normal"
                 android:textStyle="bold" />

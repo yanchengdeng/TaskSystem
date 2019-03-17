@@ -1,7 +1,9 @@
 package com.task.system.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.CardView;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -12,18 +14,23 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.ActivityUtils;
 import com.blankj.utilcode.util.RegexUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.gyf.barlibrary.ImmersionBar;
+import com.task.system.Constans;
 import com.task.system.R;
 import com.task.system.api.API;
+import com.task.system.api.TaskInfo;
 import com.task.system.api.TaskInfoList;
 import com.task.system.api.TaskService;
+import com.task.system.bean.RegisterParams;
+import com.task.system.bean.UserInfo;
 import com.task.system.enums.MobileCode;
 import com.task.system.utils.TUtils;
+import com.yc.lib.api.ApiCallBack;
 import com.yc.lib.api.ApiCallBackList;
 import com.yc.lib.api.ApiConfig;
-import com.yc.lib.api.UserInfo;
 
 import java.util.HashMap;
 import java.util.List;
@@ -56,8 +63,6 @@ public class RegisterActivity extends BaseSimpleActivity {
     Button btnRegister;
     @BindView(R.id.card_view)
     CardView cardView;
-    @BindView(R.id.et_password)
-    EditText etPassword;
     private CountDownTimer countDownTimer;
 
     @Override
@@ -72,7 +77,7 @@ public class RegisterActivity extends BaseSimpleActivity {
             @Override
             public void onTick(long millisUntilFinished) {
 
-                tvGetCode.setText("还剩" + millisUntilFinished / 1000 + "s");
+                tvGetCode.setText(millisUntilFinished / 1000 + "s" + "重新获取");
                 tvGetCode.setEnabled(false);
                 tvGetCode.setTextColor(getResources().getColor(R.color.color_info));
 
@@ -143,22 +148,6 @@ public class RegisterActivity extends BaseSimpleActivity {
         });
 
 
-        etPassword.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                checkCanRegister();
-            }
-        });
     }
 
 
@@ -168,11 +157,11 @@ public class RegisterActivity extends BaseSimpleActivity {
                 && RegexUtils.isMobileSimple(etPhone.getEditableText().toString())
                 && !TextUtils.isEmpty(etCode.getEditableText().toString())
                 && !TextUtils.isEmpty(etInvideCode.getEditableText().toString())
-                && !TextUtils.isEmpty(etPassword.getEditableText().toString())) {
+        ) {
             btnRegister.setBackground(getResources().getDrawable(R.drawable.normal_submit_btn_red_large));
             btnRegister.setTextColor(getResources().getColor(R.color.white));
         } else {
-            btnRegister.setBackground(getResources().getDrawable(R.drawable.normal_submit_btn_red_large));
+            btnRegister.setBackground(getResources().getDrawable(R.drawable.normal_submit_btn_gray_large));
             btnRegister.setTextColor(getResources().getColor(R.color.white));
         }
     }
@@ -199,50 +188,27 @@ public class RegisterActivity extends BaseSimpleActivity {
 
                 break;
             case R.id.btn_register:
-                checkParams(etPhone.getEditableText().toString(), etCode.getEditableText().toString(),etPassword.getEditableText().toString(), etInvideCode.getEditableText().toString());
+                if (TextUtils.isEmpty(etInvideCode.getEditableText().toString())){
+                    ToastUtils.showShort("请输入邀请码");
+                    return;
+                }
+                checkInviteCode();
                 break;
         }
     }
 
-    private void checkParams(String phone, String smsCode,String password, String inviteCode) {
-        if (TextUtils.isEmpty(phone)) {
-            etPhone.setError(getString(R.string.phone_tips));
-        } else if (RegexUtils.isMobileSimple(phone)) {
-            if (TextUtils.isEmpty(smsCode)) {
-                etCode.setError(getString(R.string.code_tips));
-            } else {
-                if (!TextUtils.isEmpty(password)){
-                    if (!TextUtils.isEmpty(etInvideCode.getEditableText().toString())){
-                        doRegiste(phone, smsCode, password,inviteCode);
-                    }else{
-                       etInvideCode.setError(getString(R.string.invide_code_tips));
-                    }
-                }else{
-                    etPassword.setError(getString(R.string.get_password_tips));
-                }
-            }
-        } else {
-            etPhone.setError("手机号码错误");
-        }
-    }
+    //校验邀请码
+    private void checkInviteCode() {
+        HashMap<String,String> hashMap = new HashMap<>();
+        hashMap.put("invite_code",etInvideCode.getEditableText().toString());
+        Call<TaskInfo> call = ApiConfig.getInstants().create(TaskService.class).checkInviteCode(TUtils.getParams(hashMap));
 
-
-    //注册接口
-    private void doRegiste(String phone, String smsCode, String password,String inviteCode) {
-
-
-        HashMap<String, String> hashMap = new HashMap();
-        hashMap.put("mobile_code", smsCode);
-        hashMap.put("mobile", phone);
-        hashMap.put("invite_code", inviteCode);
-        hashMap.put("password", password);
-        Call<TaskInfoList> call = ApiConfig.getInstants().create(TaskService.class).doRegister(TUtils.getParams(hashMap));
-
-        API.getList(call, UserInfo.class, new ApiCallBackList<UserInfo>() {
+        API.getObject(call, UserInfo.class, new ApiCallBack<UserInfo>() {
             @Override
-            public void onSuccess(int msgCode, String msg, List<UserInfo> data) {
-                ToastUtils.showShort(msg);
-                finish();
+            public void onSuccess(int msgCode, String msg, UserInfo data) {
+//                ToastUtils.showShort(msg);
+                checkParams(etPhone.getEditableText().toString(), etCode.getEditableText().toString(), etInvideCode.getEditableText().toString());
+
             }
 
             @Override
@@ -250,13 +216,53 @@ public class RegisterActivity extends BaseSimpleActivity {
                 ToastUtils.showShort(msg);
             }
         });
+
+
     }
+
+    private void checkParams(String phone, String smsCode, String inviteCode) {
+        if (TextUtils.isEmpty(phone)) {
+            etPhone.setError(getString(R.string.phone_tips));
+        } else if (RegexUtils.isMobileSimple(phone)) {
+            if (TextUtils.isEmpty(smsCode)) {
+                etCode.setError(getString(R.string.code_tips));
+            } else {
+                    if (!TextUtils.isEmpty(etInvideCode.getEditableText().toString())) {
+
+                        RegisterParams registerParams = new RegisterParams();
+                        registerParams.invite_code = inviteCode;
+                        registerParams.mobile = phone;
+                        registerParams.mobile_code = smsCode;
+                        Bundle bundle = new Bundle();
+                        bundle.putSerializable(Constans.PASS_OBJECT,registerParams);
+                        ActivityUtils.startActivityForResult(bundle,RegisterActivity.this,RegisterStepTwoActivity.class,300);
+                    } else {
+                        etInvideCode.setError(getString(R.string.invide_code_tips));
+                    }
+            }
+        } else {
+            etPhone.setError("手机号码错误");
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (requestCode==300){
+            if (resultCode == RESULT_OK){
+                setResult(RESULT_OK);
+                finish();
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+
 
     private void getCode() {
 
 
         HashMap<String, String> hashMap = new HashMap();
-        hashMap.put("code_type",  MobileCode.MOBILE_CODE_REGISTER.getType());
+        hashMap.put("code_type", MobileCode.MOBILE_CODE_REGISTER.getType());
         hashMap.put("mobile", etPhone.getEditableText().toString());
         Call<TaskInfoList> call = ApiConfig.getInstants().create(TaskService.class).getCode(TUtils.getParams(hashMap));
 

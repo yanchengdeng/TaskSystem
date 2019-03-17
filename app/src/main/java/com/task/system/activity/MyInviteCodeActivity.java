@@ -31,6 +31,9 @@ public class MyInviteCodeActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
 
+                if (TextUtils.isEmpty(userInfo.invite_code)){
+                    return;
+                }
                 ClipboardManager clipboardManager = (ClipboardManager)getSystemService(Context.CLIPBOARD_SERVICE);
                 clipboardManager.setPrimaryClip(ClipData.newPlainText(null, ((TextView)findViewById(R.id.tv_invite_code)).getText()));
                 ToastUtils.showShort("复制成功");

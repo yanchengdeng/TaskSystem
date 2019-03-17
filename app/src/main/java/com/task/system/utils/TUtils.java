@@ -203,8 +203,6 @@ public class TUtils {
     //处理请求列表数据
     public static void dealReqestData(BaseQuickAdapter adapter, RecyclerView recycle, List list, int page, SmartRefreshLayout refreshLayout) {
         if (adapter != null && recycle != null && refreshLayout != null) {
-
-
             if (page == 1) {
                 adapter.getData().clear();
             }
@@ -237,4 +235,6 @@ public class TUtils {
         SPUtils.getInstance().put(Constans.PASS_ALL_CITYS, new Gson().toJson(citys));
 
     }
+
+
 }

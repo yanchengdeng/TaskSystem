@@ -10,10 +10,14 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
+import com.task.system.event.ShowVersionUpdateEvent;
+import com.task.system.event.TokenTimeOut;
 import com.yc.lib.api.ApiCallBack;
 import com.yc.lib.api.ApiCallBackList;
 import com.yc.lib.api.ApiConfig;
 import com.yc.lib.api.ResultListInfo;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -71,13 +75,24 @@ public class API {
                                 apiCallBack.onFaild(resultInfo.getStatus_code(), resultInfo.getMessage() + ":data 无数据");
                             }
                         } else {
+                            if (resultInfo.getStatus_code() == -108
+                                    || resultInfo.getStatus_code() == -110
+                                    || resultInfo.getStatus_code() == -111
+                                    || resultInfo.getStatus_code() == -112
+                                    || resultInfo.getStatus_code() == -113
+                                    || resultInfo.getStatus_code() == -114
+                            ) {
+                                EventBus.getDefault().post(new TokenTimeOut());
+                            }else if (resultInfo.getStatus_code()==-123){
+                                EventBus.getDefault().post(new ShowVersionUpdateEvent());
+                            }
                             apiCallBack.onFaild(resultInfo.getStatus_code(), resultInfo.getMessage());
                         }
                     } else {
                         if (response != null) {
                             showResponseErrorInfo(apiCallBack, response);
                         }
-                        apiCallBack.onFaild(resultInfo.getStatus_code(), resultInfo.getMessage());
+                        apiCallBack.onFaild(response.code(), ""+response.message());
                     }
                 }
             }
@@ -131,13 +146,24 @@ public class API {
                                 apiCallBack.onFaild(resultInfo.getStatus_code(), resultInfo.getMessage() + ":data 无数据");
                             }
                         } else {
+                            if (resultInfo.getStatus_code() == -108
+                                    || resultInfo.getStatus_code() == -110
+                                    || resultInfo.getStatus_code() == -111
+                                    || resultInfo.getStatus_code() == -112
+                                    || resultInfo.getStatus_code() == -113
+                                    || resultInfo.getStatus_code() == -114
+                            ) {
+                                EventBus.getDefault().post(new TokenTimeOut());
+                            }else if (resultInfo.getStatus_code()==-123){
+                                EventBus.getDefault().post(new ShowVersionUpdateEvent());
+                            }
                             apiCallBack.onFaild(resultInfo.getStatus_code(), resultInfo.getMessage());
                         }
                     } else {
                         if (response != null) {
                             showResponseErrorInfo(apiCallBack, response);
                         }
-                        apiCallBack.onFaild(resultInfo.getStatus_code(), resultInfo.getMessage());
+                        apiCallBack.onFaild(response.code(), ""+response.message());
                     }
                 }
             }
@@ -273,7 +299,8 @@ public class API {
     }
 
 
-    private static String postParseParams(RequestBody body, Buffer requestBuffer) throws UnsupportedEncodingException {
+    private static String postParseParams(RequestBody body, Buffer requestBuffer) throws
+            UnsupportedEncodingException {
         if (body.contentType() != null && !body.contentType().toString().contains("multipart")) {
             return URLDecoder.decode(requestBuffer.readUtf8(), "UTF-8");
         }

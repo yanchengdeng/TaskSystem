@@ -1,24 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.task.system">
-
-    <!-- 这个权限用于进行网络定位-->
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <!-- 这个权限用于访问GPS定位-->
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <!-- 用于访问wifi网络信息，wifi信息会用于进行网络定位-->
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
-    <!-- 获取运营商信息，用于支持提供运营商信息相关的接口-->
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <!-- 这个权限用于获取wifi的获取权限，wifi信息会用来进行网络定位-->
-    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
-    <!-- 用于读取手机当前的状态-->
-    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
-    <!-- 写入扩展存储，向扩展卡写入数据，用于写入离线定位数据-->
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <!-- 访问网络，网络定位需要上网-->
+    <!-- 这个权限用于进行网络定位 -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> <!-- 这个权限用于访问GPS定位 -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> <!-- 用于访问wifi网络信息，wifi信息会用于进行网络定位 -->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" /> <!-- 获取运营商信息，用于支持提供运营商信息相关的接口 -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> <!-- 这个权限用于获取wifi的获取权限，wifi信息会用来进行网络定位 -->
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" /> <!-- 用于读取手机当前的状态 -->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" /> <!-- 写入扩展存储，向扩展卡写入数据，用于写入离线定位数据 -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> <!-- 访问网络，网络定位需要上网 -->
     <uses-permission android:name="android.permission.INTERNET" />
-    <!-- SD卡读取权限，用户写入离线定位数据-->
 
     <application
         android:name=".FixApplication"
@@ -28,7 +19,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.CityListActivity"></activity>
+        <activity android:name=".activity.DoTaskStepActivity"></activity>
+        <activity android:name=".activity.ModifyUserNameActivity" />
+        <activity
+            android:name=".activity.TaskListActivity"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity android:name=".activity.RegisterStepTwoActivity" />
+        <activity android:name=".activity.CityListActivity" />
         <activity android:name=".activity.TaskDetailActivity" />
         <activity android:name=".activity.MyInviteCodeActivity" />
         <activity android:name=".activity.MyCollectedActivity" />
@@ -115,6 +112,8 @@
         <meta-data
             android:name="com.taobao.android.hotfix.RSASECRET"
             android:value="MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCKKRY+X4m15xrlIdaf4dTipQtuLmponBz7JgTXOWSWnv7/TqUa9JnWafAFZkCqfX9havRp+mls9zx+Pjnwbd1A0gQt1Lt2u/nTiBpd9G7yq8SyWtc9N1EsWYhTmi0Pj3Cuy1zHvu+3cOMziwbn9F/Zb0A06pfzQXzHpTgbOayAHuuRq4eX0vfmcYkeKPvPr4T1Zfmf/tpE4+ZnpNmJ8NFlYyUMSflfmRtxctI8Iltu3/WZnyudPutxYXiWr6mhPbG4+vxzEYt0mAVmO1shf1+lNSgJq/GCbrqF2FyJPBGmuTx3n5/G58XnUW4A7qoSpHmgWHLIqVo4BfFKIu61P1O/AgMBAAECggEAZjvXANqTPW5AoZKzjWV/sSJt3d8s0DHM5C8S3+vROf93M5aPZ+3dtCJ6AJTUfxQUYRLSv2UUBBTCx6vmFbpGQYPmob9L5KVeTR/mWuXX/2wJRe0gXmUDhOzPiwWIGH6M5FsJUalBGx3GkcprltJm5q+C9GUvgUpROi5Q4RyBP9/+Wo1UU2Go24mOemELkMb5hybHAMOl7Old1ihvefN9vtUVbRVrcLzo6NOI+0cr70faedHrbddEZ5qyUN2luw1HkByY+ZhSahZ5euF/hb9kXM7AiK/ebLLdy5mM8RxG0kPHPm2vzO/etQ8n1R/Muq1b57/ntiUVMAOMeZqy+HRXeQKBgQD+TLtPq05bx9DLx+tlTjfMPpQsJzx8W+nP+Ma2Lw8dxVamWrlln3kxn9BtxyD9eVEwchpllNYKcI0ClDiOFsW4eRsi7SjqeEYOjR2ZtxtoBxTzvkyyzwQ+piVdXAlvkSmlNUu3un4pir5fvgKVWLt2cZnUs2kT//PU8BbyIuyUZQKBgQCLFZE1pRruLdQ0FgEU3hlOkMHRO5LLigjRK9RhHbRnsnfAB5Ry97xodgGXz6X/sQygI/a/tcJ3Ow+Vw7W/w3xmPaP96i4DvFnihxvU9kgay5DgDS8+S/FbZqA87kxxKBTVL0mC1pXcQKDx7vKNvLEUV/1WwnU9sBUgsLA7KaFrUwKBgQD+IwLiqKlDkdo5fQ7jjBq5NCTyRzfsdBKjc9Rqh3cM4oUo9OvpAkmk7TjoLKPsjMw1pSJ6OBb8EeTqGeS3I0zvgaA79FT6lb41lpNpZhOuj71BpgGShM6SKYqX1X3ckG7VGwETmP2yWGTO295LEIUv5nG8npu5kAZG3LWhwIM7/QKBgG+7G7QktsWwO1C8fJHu+hWLZKhZW0v3z615sFt0KYFEdb7mV/Mj4U9pvU3fmlMWQDZFrevEcDyoTZTabB9pQ34+9ob8oYqOvQal0035q2MbNX9IGDPLflEW2JMaPH6K3HGGU1+wUyNlJ+YzNtd2Ris5pGMWRGkSE2b3iht9DhfRAoGARciZw2OmpVmJwV/QWbxFwQA/7fGVaSTTIMNlSa1HwHQcqEaHh6Pp8DtooBMIC5oRTFfhCeNUfQ52odljbw1cq1mV2A9BaTwZzR3trlFYbsZ9/xzNDPlcoytaqnIp2G8zIYC6DEVHetCdS/2FeAbNENjib6ddRZ5kIliAFIxyMus=" />
+
+        <activity android:name=".activity.OpenWebViewActivity" />
     </application>
 
 </manifest>

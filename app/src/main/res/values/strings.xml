@@ -25,4 +25,12 @@
     <string name="cancle">取消</string>
     <string name="appbar_scroll">com.task.system.common.AppBarLayoutBehavior</string>
     <string name="choose">选择</string>
+    <string name="double_click_exit">连续点击两次退出</string>
+    <string name="create_account_tips">请创建一个用户名</string>
+    <string name="create_password_tips">请设置6~12位数密码</string>
+    <string name="end_time">结束时间：%s</string>
+    <string name="wait_time">审核时间：%s 天</string>
+    <string name="easy_or">难易程度：%s</string>
+    <string name="left_num">剩余名额：%</string>
+    <string name="task_id">任务ID：%S</string>
 </resources>

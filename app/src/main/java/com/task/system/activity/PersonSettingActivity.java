@@ -17,6 +17,8 @@ import com.blankj.utilcode.util.ActivityUtils;
 import com.blankj.utilcode.util.EncodeUtils;
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.ToastUtils;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.lzy.imagepicker.ImagePicker;
 import com.lzy.imagepicker.bean.ImageItem;
 import com.lzy.imagepicker.ui.ImageGridActivity;
@@ -25,14 +27,17 @@ import com.task.system.R;
 import com.task.system.api.API;
 import com.task.system.api.TaskInfoList;
 import com.task.system.api.TaskService;
+import com.task.system.bean.UserInfo;
 import com.task.system.common.GlideLoadFileLoader;
+import com.task.system.event.UpdateUserInfoEvent;
 import com.task.system.utils.TUtils;
 import com.yanzhenjie.permission.AndPermission;
 import com.yanzhenjie.permission.runtime.Permission;
 import com.yc.lib.api.ApiCallBackList;
 import com.yc.lib.api.ApiConfig;
-import com.yc.lib.api.User;
-import com.yc.lib.api.UserInfo;
+import com.yc.lib.api.utils.ImageLoaderUtil;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -47,6 +52,8 @@ import retrofit2.Call;
 import top.zibin.luban.CompressionPredicate;
 import top.zibin.luban.Luban;
 import top.zibin.luban.OnCompressListener;
+
+import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
 
 public class PersonSettingActivity extends BaseActivity {
 
@@ -75,6 +82,12 @@ public class PersonSettingActivity extends BaseActivity {
     public static final int REQUEST_CODE_SELECT = 100;
     public static final int REQUEST_CODE_PREVIEW = 101;
     private static final int REQUEST_PERMISSION_CAMERA_CODE = 10;
+    @BindView(R.id.tv_user_name)
+    TextView tvUserName;
+    @BindView(R.id.tv_phone)
+    TextView tvPhone;
+    @BindView(R.id.tv_uid)
+    TextView tvUid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +96,27 @@ public class PersonSettingActivity extends BaseActivity {
         ButterKnife.bind(this);
         setTitle("个人设置");
         initImagePicker();
+        UserInfo userInfo = TUtils.getUserInfo();
+        initData(userInfo);
+
+    }
+
+    private void initData(UserInfo userInfo) {
+        if (!TextUtils.isEmpty(userInfo.avatar)) {
+            ImageLoaderUtil.loadCircle(userInfo.avatar, ivHeader, R.mipmap.defalut_header);
+        }
+
+        if (!TextUtils.isEmpty(userInfo.nickname)) {
+            tvUserName.setText(userInfo.nickname);
+        }
+
+        if (!TextUtils.isEmpty(userInfo.mobile)) {
+            tvPhone.setText(userInfo.mobile);
+        }
+
+        if (!TextUtils.isEmpty(userInfo.uid)) {
+            tvUid.setText(userInfo.uid);
+        }
     }
 
 
@@ -120,11 +154,12 @@ public class PersonSettingActivity extends BaseActivity {
                         .start();
                 break;
             case R.id.rl_name_ui:
+                ActivityUtils.startActivity(ModifyUserNameActivity.class);
                 break;
             case R.id.rl_phone_ui:
                 break;
-            case R.id.rl_sysyte_id_ui:
-                break;
+//            case R.id.rl_sysyte_id_ui:
+//                break;
             case R.id.tv_modify_password_ui:
                 break;
             case R.id.tv_login_out:
@@ -159,31 +194,35 @@ public class PersonSettingActivity extends BaseActivity {
     }
 
     private void doLoginOutAction() {
+        if (TextUtils.isEmpty(TUtils.getUserId())) {
+            loginOutAciton();
+            return;
+        }
         HashMap<String, String> hashMap = new HashMap();
         hashMap.put("uid", TUtils.getUserId());
         Call<TaskInfoList> call = ApiConfig.getInstants().create(TaskService.class).doLoginOut(TUtils.getParams(hashMap));
 
-        API.getList(call, UserInfo.class, new ApiCallBackList<User>() {
+        API.getList(call, UserInfo.class, new ApiCallBackList<UserInfo>() {
             @Override
-            public void onSuccess(int msgCode, String msg, List<User> data) {
+            public void onSuccess(int msgCode, String msg, List<UserInfo> data) {
                 dismissLoadingBar();
-                ToastUtils.showShort(msg);
-                TUtils.clearUserInfo();
-                ActivityUtils.startActivity(LoginActivity.class);
-                finish();
+                loginOutAciton();
             }
 
             @Override
             public void onFaild(int msgCode, String msg) {
                 dismissLoadingBar();
-//                ToastUtils.showShort(msg);
-                dismissLoadingBar();
-                ToastUtils.showShort(msg);
-                TUtils.clearUserInfo();
-                ActivityUtils.startActivity(LoginActivity.class);
-                finish();
+                loginOutAciton();
+
             }
         });
+    }
+
+    private void loginOutAciton() {
+        TUtils.clearUserInfo();
+        ToastUtils.showShort("退出登录");
+        ActivityUtils.startActivity(LoginActivity.class);
+        finish();
     }
 
 
@@ -212,7 +251,8 @@ public class PersonSettingActivity extends BaseActivity {
 
     //上传头像
     private void updateImageByBase64(File file) {
-        LogUtils.w("dyc---原始文件大小",file.length());
+
+        LogUtils.w("dyc---原始文件大小", file.length());
         showLoadingBar("上传中...");
         Luban.with(this)
                 .load(file)
@@ -231,7 +271,18 @@ public class PersonSettingActivity extends BaseActivity {
 
                     @Override
                     public void onSuccess(File lubanFile) {
-                        LogUtils.w("dyc---原始文件大小",lubanFile.length());
+
+
+
+                        Glide.with(ApiConfig.context)
+                                .load(lubanFile)     //设置图片路径(fix #8,文件名包含%符号 无法识别和显示)
+                                .transition(withCrossFade())
+                                .apply(new RequestOptions().circleCrop().error(R.mipmap.defalut_header))
+                                .into(ivHeader);
+
+
+
+                        LogUtils.w("dyc---原始文件大小", lubanFile.length());
                         BitmapFactory.Options options = new BitmapFactory.Options();
                         options.inPreferredConfig = Bitmap.Config.RGB_565;
                         options.inDither = true;
@@ -241,6 +292,14 @@ public class PersonSettingActivity extends BaseActivity {
 
                     @Override
                     public void onError(Throwable e) {
+                        Glide.with(ApiConfig.context)
+                                .load(file)     //设置图片路径(fix #8,文件名包含%符号 无法识别和显示)
+                                .transition(withCrossFade())
+                                .apply(new RequestOptions().circleCrop().error(R.mipmap.defalut_header))
+                                .into(ivHeader);
+
+
+
                         BitmapFactory.Options options = new BitmapFactory.Options();
                         options.inPreferredConfig = Bitmap.Config.RGB_565;
                         options.inDither = true;
@@ -254,7 +313,7 @@ public class PersonSettingActivity extends BaseActivity {
 
         HashMap<String, String> hashMap = new HashMap();
         hashMap.put("uid", TUtils.getUserId());
-        hashMap.put("avatar", "data:image/png;base64,"+base64Encode);
+        hashMap.put("avatar", "data:image/png;base64," + base64Encode);
         Call<TaskInfoList> call = ApiConfig.getInstants().create(TaskService.class).setUserAvatar(TUtils.getParams(hashMap));
 
         API.getList(call, String.class, new ApiCallBackList<String>() {
@@ -263,6 +322,7 @@ public class PersonSettingActivity extends BaseActivity {
             public void onSuccess(int msgCode, String msg, List<String> data) {
                 ToastUtils.showShort("" + msg);
                 dismissLoadingBar();
+                EventBus.getDefault().post(new UpdateUserInfoEvent());
             }
 
             @Override
@@ -301,5 +361,14 @@ public class PersonSettingActivity extends BaseActivity {
             }
         }
         return inSampleSize;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        UserInfo userInfo = TUtils.getUserInfo();
+        if (!TextUtils.isEmpty(userInfo.username)){
+            tvUserName.setText(userInfo.username);
+        }
     }
 }

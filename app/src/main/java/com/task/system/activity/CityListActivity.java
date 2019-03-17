@@ -3,6 +3,7 @@ package com.task.system.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
@@ -13,6 +14,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.LogUtils;
+import com.blankj.utilcode.util.SPUtils;
 import com.task.system.Constans;
 import com.task.system.R;
 import com.task.system.adapters.CityListAdapter;
@@ -68,6 +70,7 @@ public class CityListActivity extends BaseActivity {
         tvTittle.setText("定位选择");
 
         mAllCities = TUtils.getAllCitys();
+
         initCityList();
     }
 
@@ -134,7 +137,6 @@ public class CityListActivity extends BaseActivity {
 
             @Override
             public void onCityClick(CityInfo cityInfo) {
-                setResult(RESULT_OK);
                 Intent intent = new Intent();
                 Bundle bundle = new Bundle();
                 bundle.putSerializable(Constans.PASS_OBJECT,cityInfo);
@@ -146,14 +148,27 @@ public class CityListActivity extends BaseActivity {
             @Override
             public void onCityNameClick(String name) {
 //                back(name, true);
+
+                Intent intent = new Intent();
+                Bundle bundle = new Bundle();
+                bundle.putString(Constans.PASS_STRING,name);
+                intent.putExtras(bundle);
+                setResult(RESULT_OK,intent);
+                finish();
             }
 
             @Override
             public void onLocateClick() {
                 adapter.updateLocateState(LocateState.LOCATING, null);
 //                    locationService.start();// 定位SDK
+
+
             }
         });
+
+        if (!TextUtils.isEmpty(SPUtils.getInstance().getString(Constans.LOCATON_CITY_NAME))) {
+            adapter.updateLocateState(LocateState.SUCCESS,SPUtils.getInstance().getString(Constans.LOCATON_CITY_NAME));
+        }
 
 
         //关键字

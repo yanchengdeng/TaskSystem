@@ -19,11 +19,11 @@ import com.task.system.R;
 import com.task.system.api.API;
 import com.task.system.api.TaskInfoList;
 import com.task.system.api.TaskService;
+import com.task.system.bean.UserInfo;
 import com.task.system.enums.MobileCode;
 import com.task.system.utils.TUtils;
 import com.yc.lib.api.ApiCallBackList;
 import com.yc.lib.api.ApiConfig;
-import com.yc.lib.api.UserInfo;
 
 import java.util.HashMap;
 import java.util.List;

@@ -10,6 +10,11 @@ import retrofit2.http.POST;
 public interface TaskService {
 
 
+    //检查版本更新
+    @FormUrlEncoded
+    @POST("client/checkVersion")
+    Call<TaskInfo> checkVersion(@FieldMap HashMap<String,String> maps);
+
     //登陆接口
     @FormUrlEncoded
     @POST("public/login")
@@ -34,7 +39,15 @@ public interface TaskService {
     @POST("public/getMobileCode")
     Call<TaskInfoList> getCode(@FieldMap HashMap<String, String> maps);
 
-    //注册
+    /**
+     * 注册
+     * username
+     * mobile
+     * mobile_code
+     * invite_code
+     * password
+     * re_password
+     */
     @FormUrlEncoded
     @POST("public/register")
     Call<TaskInfoList> doRegister(@FieldMap HashMap<String, String> maps);
@@ -85,6 +98,12 @@ public interface TaskService {
     Call<TaskInfoList> setUserAvatar(@FieldMap HashMap<String, String> maps);
 
 
+
+
+
+
+
+
     /**
      * 修改密码
      * uid
@@ -95,6 +114,12 @@ public interface TaskService {
     @FormUrlEncoded
     @POST("user/setPassword")
     Call<TaskInfo> setPassword(@FieldMap HashMap<String, String> maps);
+
+
+
+    @FormUrlEncoded
+    @POST("public/getAdList")
+    Call<TaskInfoList> getAdList(@FieldMap HashMap<String,String> map);
 
     //城市列表
     @FormUrlEncoded
@@ -134,6 +159,53 @@ public interface TaskService {
     @FormUrlEncoded
     @POST("task/taskDetail")
     Call<TaskInfo> getTaskDetail(@FieldMap HashMap<String, String> maps);
+
+
+    //检查邀请码
+    @FormUrlEncoded
+    @POST("public/checkInviteCode")
+    Call<TaskInfo> checkInviteCode(@FieldMap HashMap<String,String> maps );
+
+
+
+    //添加收藏
+    @FormUrlEncoded
+    @POST("taskOperate/collect")
+    Call<TaskInfoList> collectTask(@FieldMap HashMap<String,String> maps);
+
+
+    //取消收藏
+    @FormUrlEncoded
+    @POST("taskOperate/cancelCollect")
+    Call<TaskInfoList> cancleCollectTask(@FieldMap HashMap<String,String> maps);
+
+    //申请任务
+
+    /**
+     * task_id
+     * uid
+     *
+     * 任务不存在
+     * 用户不存在
+     * 任务已结束
+     * 任务还未开始，暂不能申请
+     * 任务已经结束，不能申请
+     * 任务已经被抢完
+     * 您已经申请了任务
+     * 申请失败
+     */
+    @FormUrlEncoded
+    @POST("taskOperate/apply")
+    Call<TaskInfo>  applyTaskOperate(@FieldMap HashMap<String,String> maps);
+
+    /**
+     * task_id
+     * uid
+     */
+    //放弃任务
+    @FormUrlEncoded
+    @POST("order/giveUp")
+    Call<TaskInfoList>  giveUpTaskOperate(@FieldMap HashMap<String,String> maps);
 
 
 }

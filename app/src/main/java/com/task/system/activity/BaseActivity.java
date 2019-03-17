@@ -1,12 +1,8 @@
 package com.task.system.activity;
 
-import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
@@ -17,24 +13,13 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.blankj.utilcode.util.SPUtils;
 import com.task.system.Constans;
 import com.task.system.R;
 import com.task.system.bean.VerisonInfo;
-import com.task.system.event.TokenTimeOut;
 import com.task.system.services.UpdateService;
 import com.task.system.utils.AppManager;
 import com.task.system.views.LoadDialog;
-
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
 import cn.bingoogolapple.swipebacklayout.BGASwipeBackHelper;
 
@@ -51,8 +36,6 @@ public abstract class BaseActivity extends AppCompatActivity implements BGASwipe
     private LoadDialog loadDialog;
     private MaterialDialog materialDialog;
     public Activity mContext;
-    private static final int REQUEST_CODE_ASK_PERMISSIONS = 100;
-    private boolean mPermission = false;
 
 
 //    @Override
@@ -78,7 +61,6 @@ public abstract class BaseActivity extends AppCompatActivity implements BGASwipe
 //        StatusBarUtil.hideFakeStatusBarView(this);
 
         AppManager.getAppManager().addActivity(this);
-        EventBus.getDefault().register(this);
         viewRoot = getLayoutInflater().inflate(R.layout.activity_base, null);
 //        viewRoot =   LayoutInflater.from(BaseActivity.this).inflate(R.layout.activity_base,null,false);
         contentView = LayoutInflater.from(BaseActivity.this).inflate(layoutResID, null, false);
@@ -101,27 +83,9 @@ public abstract class BaseActivity extends AppCompatActivity implements BGASwipe
         tittleUi = getView(R.id.rl_tittle_ui);
         tvTtittleLine = getView(R.id.tv_tittle_ui_line);
 
-
         setToolBar();
-        mPermission = checkUpdatePermission();
-        if (mPermission) {
-            checkVersion();
-        }
-
-
     }
 
-    //检查版本更新
-    private void checkVersion() {
-        if (Constans.HAS_VESRSION_TIPS) {
-
-            HashMap<String, String> data = new HashMap<>();
-            data.put("device_type", "android");
-
-
-
-        }
-    }
 
 
     //版本升级对话框
@@ -169,93 +133,8 @@ public abstract class BaseActivity extends AppCompatActivity implements BGASwipe
         startService(intent);
     }
 
-    private boolean checkUpdatePermission() {
-        if (afterM()) {
-            final List<String> permissionsList = new ArrayList<>();
-            if ((checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED))
-                permissionsList.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-            if ((checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED))
-                permissionsList.add(Manifest.permission.READ_EXTERNAL_STORAGE);
-            if (permissionsList.size() != 0) {
-                requestPermissions(permissionsList.toArray(new String[permissionsList.size()]),
-                        REQUEST_CODE_ASK_PERMISSIONS);
-                return false;
-            }
-//            int hasPermission = checkSelfPermission(Manifest.permission.CAMERA);
-//            if (hasPermission != PackageManager.PERMISSION_GRANTED) {
-//                requestPermissions(new String[]{Manifest.permission.CAMERA},
-//                        REQUEST_CODE_ASK_PERMISSIONS);
-//                return false;
-//            }
-        }
-        return true;
-    }
-
-    private boolean afterM() {
-        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.M;
-    }
 
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode) {
-            case REQUEST_CODE_ASK_PERMISSIONS:
-                for (int ret : grantResults) {
-                    if (ret != PackageManager.PERMISSION_GRANTED) {
-                        return;
-                    }
-                }
-                mPermission = true;
-                if (mPermission) {
-//                    checkVersion();
-                }
-                break;
-
-
-            default:
-                break;
-        }
-    }
-
-
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onMessageEvent(Object event) {
-        if (event instanceof TokenTimeOut) {
-            onShowExpire();
-
-        }
-    }
-
-    public void onShowExpire() {
-        if (materialDialog != null) {
-            return;
-        }
-        materialDialog = new MaterialDialog.Builder(this)
-                .title("温馨提示")
-                .content("您的账号已过期，请重新登陆")
-                .positiveColor(getResources().getColor(R.color.color_blue)).positiveText("确定").onPositive(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        dialog.dismiss();
-                        SPUtils.getInstance().put(Constans.USER_INFO, "");
-                        Intent intent = new Intent(mContext, LoginActivity.class);
-                        startActivity(intent);
-                        finish();
-                    }
-                })
-                .build();
-
-
-        materialDialog.setCancelable(false);
-        materialDialog.setCanceledOnTouchOutside(false);
-        if (materialDialog.isShowing()) {
-            materialDialog.dismiss();
-        } else {
-            materialDialog.show();
-        }
-    }
 
     //影藏标题
     public void hideTittle() {

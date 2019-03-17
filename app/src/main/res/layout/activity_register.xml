@@ -145,26 +145,6 @@
 
 
                 <EditText
-                    android:id="@+id/et_password"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/normal_submit_btn_gray_trans_larger"
-                    android:ellipsize="end"
-                    android:layout_marginTop="@dimen/status_bar_height"
-                    android:hint="@string/get_password_tips"
-                    android:singleLine="true"
-                    android:paddingLeft="@dimen/activity_horizontal_margin"
-                    android:paddingTop="@dimen/image_padding_big"
-                    android:paddingRight="@dimen/activity_horizontal_margin"
-                    android:paddingBottom="@dimen/image_padding_big"
-                    android:textColor="@color/color_tittle"
-                    android:textColorHint="@color/color_date"
-                    android:textCursorDrawable="@drawable/edit_cursor_drawable"
-                    android:textSize="@dimen/text_size_normal_up" />
-
-
-
-                <EditText
                     android:id="@+id/et_invide_code"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -191,12 +171,8 @@
                         android:paddingTop="@dimen/image_padding_big"
                         android:paddingBottom="@dimen/image_padding_big"
                         android:text="@string/get_invite_code"
-                        android:textColor="@color/color_date"
+                        android:textColor="#647991"
                         android:textSize="@dimen/text_size_normal" />
-
-
-
-
 
 
                 <Button
@@ -206,7 +182,7 @@
                     android:layout_margin="@dimen/activity_horizontal_margin"
                     android:background="@drawable/normal_submit_btn_gray_large"
                     android:gravity="center"
-                    android:text="@string/register"
+                    android:text="下一步"
                     android:textColor="@color/color_tittle"
                     android:textSize="@dimen/text_size_normal_up"
                     android:textStyle="bold" />

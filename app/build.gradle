@@ -88,7 +88,7 @@ dependencies {
     implementation 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
     //网络请求
-    implementation 'com.yc.lib.api:api:1.0.0'
+    implementation 'com.yc.lib.api:api:1.0.1'
     //下拉菜单
     implementation 'com.github.razerdp:BasePopup:2.1.6'
     /** recycleview 适配器   ***/
@@ -100,6 +100,7 @@ dependencies {
     implementation 'com.android.support:multidex:1.0.3'
     implementation 'com.yanzhenjie.permission:support:2.0.1'
     implementation project(':imagepicker')
+    implementation 'com.orhanobut:dialogplus:1.11@aar'
 
     implementation 'top.zibin:Luban:1.1.8'
 }

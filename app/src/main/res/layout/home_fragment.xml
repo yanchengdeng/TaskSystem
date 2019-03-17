@@ -42,6 +42,11 @@
                             android:id="@+id/banner"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
+                            app:indicator_drawable_selected="@mipmap/icon_point_selected"
+                            app:indicator_drawable_unselected="@mipmap/icon_point_unselected"
+                            app:indicator_height="8dp"
+                            app:indicator_width="3dp"
+                            app:banner_default_image="@mipmap/banner1"
                             app:delay_time="5000" />
 
 
@@ -61,18 +66,22 @@
                         <TextView
                             android:id="@+id/tv_location"
                             android:layout_width="wrap_content"
+                            android:maxWidth="80dp"
+                            android:maxLines="2"
+                            android:ellipsize="end"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
                             android:drawableRight="@mipmap/arror_location"
                             android:drawablePadding="3dp"
-                            android:paddingLeft="@dimen/image_padding_big"
-                            android:paddingRight="@dimen/image_padding"
+                            android:paddingBottom="@dimen/image_padding_big"
+                            android:paddingTop="@dimen/image_padding_big"
                             android:text="定位中"
                             android:textColor="@color/white"
                             android:textSize="@dimen/text_size_normal_up" />
 
 
                         <LinearLayout
+                            android:id="@+id/ll_search"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"

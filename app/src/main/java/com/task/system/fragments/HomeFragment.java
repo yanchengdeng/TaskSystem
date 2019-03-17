@@ -15,6 +15,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +27,7 @@ import com.baidu.location.BDAbstractLocationListener;
 import com.baidu.location.BDLocation;
 import com.blankj.utilcode.util.ActivityUtils;
 import com.blankj.utilcode.util.ConvertUtils;
+import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gyf.barlibrary.ImmersionBar;
@@ -36,12 +38,15 @@ import com.task.system.Constans;
 import com.task.system.FixApplication;
 import com.task.system.R;
 import com.task.system.activity.CityListActivity;
+import com.task.system.activity.OpenWebViewActivity;
 import com.task.system.activity.TaskDetailActivity;
+import com.task.system.activity.TaskListActivity;
 import com.task.system.adapters.HomeAdapter;
 import com.task.system.adapters.MenuAdapter;
 import com.task.system.api.API;
 import com.task.system.api.TaskInfo;
 import com.task.system.api.TaskService;
+import com.task.system.bean.AdInfo;
 import com.task.system.bean.CityInfo;
 import com.task.system.bean.HomeMenu;
 import com.task.system.bean.TaskInfoList;
@@ -56,9 +61,9 @@ import com.yc.lib.api.ApiCallBack;
 import com.yc.lib.api.ApiCallBackList;
 import com.yc.lib.api.ApiConfig;
 import com.youth.banner.Banner;
+import com.youth.banner.listener.OnBannerListener;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -152,18 +157,6 @@ public class HomeFragment extends Fragment {
 
         //设置图片加载器
         banner.setImageLoader(new GlideImageLoader());
-        //设置图片集合
-        String[] images = new String[]{
-                "http://img.zcool.cn/community/0166c756e1427432f875520f7cc838.jpg",
-                "http://img.zcool.cn/community/018fdb56e1428632f875520f7b67cb.jpg",
-                "http://img.zcool.cn/community/01c8dc56e1428e6ac72531cbaa5f2c.jpg",
-                "http://img.zcool.cn/community/01fda356640b706ac725b2c8b99b08.jpg",
-                "http://img.zcool.cn/community/01fd2756e142716ac72531cbf8bbbf.jpg",
-                "http://img.zcool.cn/community/0114a856640b6d32f87545731c076a.jpg"};
-
-        banner.setImages(Arrays.asList(images));
-        //banner设置方法全部调用完毕时最后调用
-        banner.start();
 
 
         //搜索框加一个statusbar 高度
@@ -182,7 +175,6 @@ public class HomeFragment extends Fragment {
         //菜单增加一个startbar高度
 
         viewTemp.setLayoutParams(menuLayout);
-
 
 
         appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
@@ -205,15 +197,22 @@ public class HomeFragment extends Fragment {
         });
 
 
+        region_id = SPUtils.getInstance().getString(Constans.LOCATON_CITY_id);
+        loctionCity = SPUtils.getInstance().getString(Constans.LOCATON_CITY_NAME);
+
+        getAds();
         getAllSort();
         getSmartSort();
         getTaskList();
         getCityList();
 
+
+
         smartRefresh.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshLayout) {
                 page = 1;
+                getAds();
                 getTaskList();
             }
         });
@@ -245,6 +244,44 @@ public class HomeFragment extends Fragment {
 
 
         return view;
+    }
+
+
+    private void getAds() {
+        HashMap<String, String> maps = new HashMap<>();
+        maps.put("uid", TUtils.getUserId());
+        Call<com.task.system.api.TaskInfoList> call = ApiConfig.getInstants().create(TaskService.class).getAdList(TUtils.getParams());
+        API.getList(call, AdInfo.class, new ApiCallBackList<AdInfo>() {
+            @Override
+            public void onSuccess(int msgCode, String msg, List<AdInfo> data) {
+
+                List<String> images = new ArrayList<>();
+                if (data != null && data.size() > 0) {
+                    for (AdInfo item : data) {
+                        images.add(item.cover);
+                    }
+                }
+                banner.setImages(images);
+                banner.setOnBannerListener(new OnBannerListener() {
+                    @Override
+                    public void OnBannerClick(int position) {
+                        Bundle bundle = new Bundle();
+                        bundle.putString(Constans.PASS_NAME, data.get(position).title);
+                        bundle.putString(Constans.PASS_STRING, data.get(position).link_url);
+                        ActivityUtils.startActivity(bundle, OpenWebViewActivity.class);
+
+                    }
+                });
+                //banner设置方法全部调用完毕时最后调用
+                banner.start();
+
+            }
+
+            @Override
+            public void onFaild(int msgCode, String msg) {
+                ToastUtils.showShort(msg);
+            }
+        });
     }
 
     //全部分类
@@ -315,13 +352,13 @@ public class HomeFragment extends Fragment {
         API.getObject(call, TaskInfoList.class, new ApiCallBack<TaskInfoList>() {
             @Override
             public void onSuccess(int msgCode, String msg, TaskInfoList data) {
-                TUtils.dealReqestData(homeAdapter, recycle, data.list, page,smartRefresh);
+                TUtils.dealReqestData(homeAdapter, recycle, data.list, page, smartRefresh);
 
             }
 
             @Override
             public void onFaild(int msgCode, String msg) {
-                TUtils.dealNoReqestData(homeAdapter, recycle,smartRefresh);
+                TUtils.dealNoReqestData(homeAdapter, recycle, smartRefresh);
 
             }
         });
@@ -342,6 +379,10 @@ public class HomeFragment extends Fragment {
                         }
                     });
                     TUtils.setAllCitys(data);
+                    mAllCities = data;
+                    getReginId();
+
+
                 }
             }
 
@@ -378,13 +419,16 @@ public class HomeFragment extends Fragment {
         unbinder.unbind();
     }
 
-    @OnClick({R.id.tv_location, R.id.tv_message_num, R.id.tv_all_sort, R.id.tv_smart_sort})
+    @OnClick({R.id.tv_location,R.id.ll_search, R.id.tv_message_num, R.id.tv_all_sort, R.id.tv_smart_sort})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_location:
                 HomeFragment.this.startActivityForResult(new Intent(getContext(), CityListActivity.class), 200);
                 break;
             case R.id.tv_message_num:
+                break;
+            case R.id.ll_search:
+                ActivityUtils.startActivity(TaskListActivity.class);
                 break;
             case R.id.tv_all_sort:
                 break;
@@ -393,7 +437,6 @@ public class HomeFragment extends Fragment {
                 break;
         }
     }
-
 
 
     @Override
@@ -466,7 +509,9 @@ public class HomeFragment extends Fragment {
                     public void run() {
                         if (!TextUtils.isEmpty(bdLocation.getCity())) {
                             loctionCity = bdLocation.getCity();
-                            tvLocation.setText("" + loctionCity);
+                            SPUtils.getInstance().put(Constans.LOCATON_CITY_NAME, loctionCity);
+                            setLocationContent();
+
                             if (locationService != null) {
                                 locationService.unregisterListener(mListener); //注销掉监听
                                 locationService.stop(); //停止定位服务
@@ -474,9 +519,24 @@ public class HomeFragment extends Fragment {
                         }
                     }
                 });
+            }else{
+                if (!TextUtils.isEmpty(loctionCity)){
+                    tvLocation.setText(""+loctionCity);
+                }
             }
         }
     };
+
+    private void setLocationContent() {
+        tvLocation.setText("" + loctionCity);
+        if (!TextUtils.isEmpty(loctionCity)) {
+            if (loctionCity.length() < 4) {
+                tvLocation.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+            } else {
+                tvLocation.setTextSize(TypedValue.COMPLEX_UNIT_SP, 10);
+            }
+        }
+    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
@@ -504,14 +564,35 @@ public class HomeFragment extends Fragment {
             if (resultCode == getActivity().RESULT_OK) {
                 if (data != null && data.getExtras() != null && data.getExtras().getSerializable(Constans.PASS_OBJECT) != null) {
                     CityInfo cityInfo = (CityInfo) data.getExtras().getSerializable(Constans.PASS_OBJECT);
-                    tvLocation.setText("" + cityInfo.region_name);
+                    loctionCity = cityInfo.region_name;
                     region_id = cityInfo.getRegion_id();
+                    setLocationContent();
                     page = 1;
                     getTaskList();
+                } else if (data != null && data.getExtras() != null && !TextUtils.isEmpty(data.getExtras().getString(Constans.PASS_STRING))) {
+                    String cityName = data.getExtras().getString(Constans.PASS_STRING);
+                    if (!TextUtils.isEmpty(cityName)) {
+                        loctionCity = cityName;
+                        getReginId();
+                        setLocationContent();
+                        if (!TextUtils.isEmpty(region_id)) {
+                            page = 1;
+                            getTaskList();
+                        }
+                    }
                 }
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    private void getReginId() {
+        for (CityInfo cityInfo : mAllCities) {
+            if (cityInfo.region_name.equals(loctionCity)) {
+                region_id = cityInfo.getRegion_id();
+                SPUtils.getInstance().put(Constans.LOCATON_CITY_id, region_id);
+            }
+        }
     }
 
     @Override

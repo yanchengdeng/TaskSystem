@@ -2,6 +2,7 @@ package com.task.system.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.CardView;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -22,6 +23,7 @@ import com.task.system.api.API;
 import com.task.system.api.TaskInfo;
 import com.task.system.api.TaskService;
 import com.task.system.bean.UserInfo;
+import com.task.system.utils.AppManager;
 import com.task.system.utils.TUtils;
 import com.yc.lib.api.ApiCallBack;
 import com.yc.lib.api.ApiConfig;
@@ -96,9 +98,20 @@ public class LoginActivity extends BaseSimpleActivity {
 
                 break;
             case R.id.tv_go_register:
-                ActivityUtils.startActivity( RegisterActivity.class);
+                ActivityUtils.startActivityForResult( LoginActivity.this,RegisterActivity.class,200);
                 break;
         }
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (requestCode==200){
+            if (resultCode==RESULT_OK){
+                finish();
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     private void doLogin(String account, String password) {
@@ -194,4 +207,29 @@ public class LoginActivity extends BaseSimpleActivity {
         super.onDestroy();
         ImmersionBar.with(this).destroy();
     }
+
+
+
+    @Override
+    public void onBackPressed() {
+        doubleClickExist();
+    }
+
+    private long mExitTime;
+
+    /****
+     * 连续两次点击退出
+     */
+    private boolean doubleClickExist() {
+        if ((System.currentTimeMillis() - mExitTime) > 2000) {
+            ToastUtils.showShort(R.string.double_click_exit);
+            mExitTime = System.currentTimeMillis();
+            return true;
+        } else {
+            AppManager.getAppManager().AppExit(this);
+            finish();
+        }
+        return false;
+    }
+
 }

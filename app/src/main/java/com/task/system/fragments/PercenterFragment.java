@@ -28,10 +28,15 @@ import com.task.system.api.API;
 import com.task.system.api.TaskInfo;
 import com.task.system.api.TaskService;
 import com.task.system.bean.UserInfo;
+import com.task.system.event.UpdateUserInfoEvent;
 import com.task.system.utils.TUtils;
 import com.yc.lib.api.ApiCallBack;
 import com.yc.lib.api.ApiConfig;
 import com.yc.lib.api.utils.ImageLoaderUtil;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.HashMap;
 
@@ -75,9 +80,8 @@ public class PercenterFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.percenter_fragment, container, false);
         unbinder = ButterKnife.bind(this, view);
-        getUserDetail();
-
-
+        EventBus.getDefault().register(this);
+        smartRefresh.autoRefresh();
         smartRefresh.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshLayout) {
@@ -88,6 +92,13 @@ public class PercenterFragment extends Fragment {
         return view;
     }
 
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(Object event) {
+        if (event instanceof UpdateUserInfoEvent){
+            smartRefresh.autoRefresh();
+        }
+    }
 
     private void getUserDetail() {
         HashMap<String, String> hashMap = new HashMap();

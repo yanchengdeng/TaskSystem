@@ -48,5 +48,6 @@
     <color name="cp_gray_deep">#5c5c5c</color>
     <color name="cp_alpha_gray">#CC646464</color>
     <color name="cp_theme_gray">#646464</color>
+    <color name="give_up">#ffefefef</color>
 
 </resources>
