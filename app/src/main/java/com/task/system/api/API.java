@@ -83,7 +83,7 @@ public class API {
                                     || resultInfo.getStatus_code() == -114
                             ) {
                                 EventBus.getDefault().post(new TokenTimeOut());
-                            }else if (resultInfo.getStatus_code()==-123){
+                            }else if (resultInfo.getStatus_code()==-123 || resultInfo.getStatus_code()==-101){
                                 EventBus.getDefault().post(new ShowVersionUpdateEvent());
                             }
                             apiCallBack.onFaild(resultInfo.getStatus_code(), resultInfo.getMessage());
@@ -154,7 +154,7 @@ public class API {
                                     || resultInfo.getStatus_code() == -114
                             ) {
                                 EventBus.getDefault().post(new TokenTimeOut());
-                            }else if (resultInfo.getStatus_code()==-123){
+                            }else if (resultInfo.getStatus_code()==-123 || resultInfo.getStatus_code()==-101){
                                 EventBus.getDefault().post(new ShowVersionUpdateEvent());
                             }
                             apiCallBack.onFaild(resultInfo.getStatus_code(), resultInfo.getMessage());

@@ -42,12 +42,12 @@
                             android:id="@+id/banner"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
+                            app:banner_default_image="@mipmap/banner1"
+                            app:delay_time="5000"
                             app:indicator_drawable_selected="@mipmap/icon_point_selected"
                             app:indicator_drawable_unselected="@mipmap/icon_point_unselected"
                             app:indicator_height="8dp"
-                            app:indicator_width="3dp"
-                            app:banner_default_image="@mipmap/banner1"
-                            app:delay_time="5000" />
+                            app:indicator_width="3dp" />
 
 
                         <ImageView
@@ -66,15 +66,16 @@
                         <TextView
                             android:id="@+id/tv_location"
                             android:layout_width="wrap_content"
-                            android:maxWidth="80dp"
-                            android:maxLines="2"
-                            android:ellipsize="end"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
+                            android:layout_marginLeft="@dimen/image_padding"
                             android:drawableRight="@mipmap/arror_location"
                             android:drawablePadding="3dp"
-                            android:paddingBottom="@dimen/image_padding_big"
+                            android:ellipsize="end"
+                            android:maxWidth="80dp"
+                            android:maxLines="2"
                             android:paddingTop="@dimen/image_padding_big"
+                            android:paddingBottom="@dimen/image_padding_big"
                             android:text="定位中"
                             android:textColor="@color/white"
                             android:textSize="@dimen/text_size_normal_up" />
@@ -163,30 +164,58 @@
                             android:background="@color/white"
                             android:orientation="horizontal">
 
-                            <TextView
-                                android:id="@+id/tv_all_sort"
+                            <LinearLayout
+                                android:id="@+id/ll_all_sort"
                                 android:layout_width="0dp"
-                                android:layout_height="wrap_content"
+                                android:layout_height="match_parent"
                                 android:layout_weight="1"
-                                android:drawableRight="@mipmap/arrow_down_black"
                                 android:gravity="center"
-                                android:padding="@dimen/image_padding_big"
-                                android:text="全部分类"
-                                android:textColor="@color/color_tittle"
-                                android:textSize="@dimen/text_size_normal_up" />
+                                android:orientation="horizontal">
 
-                            <TextView
-                                android:id="@+id/tv_smart_sort"
+                                <TextView
+                                    android:id="@+id/tv_all_sort"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="全部分类"
+                                    android:textColor="@color/color_tittle"
+                                    android:textSize="@dimen/text_size_normal_up" />
+
+                                <ImageView
+                                    android:id="@+id/iv_all_sort"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_vertical"
+                                    android:layout_marginLeft="@dimen/image_padding"
+                                    android:src="@mipmap/arrow_down_black" />
+
+                            </LinearLayout>
+
+
+                            <LinearLayout
+                                android:id="@+id/ll_smart_sort"
                                 android:layout_width="0dp"
-                                android:layout_height="wrap_content"
+                                android:layout_height="match_parent"
                                 android:layout_weight="1"
-                                android:drawableRight="@mipmap/arrow_down_black"
                                 android:gravity="center"
-                                android:padding="@dimen/image_padding_big"
-                                android:text="智能排序"
-                                android:textColor="@color/color_tittle"
-                                android:textSize="@dimen/text_size_normal_up" />
+                                android:orientation="horizontal">
 
+                                <TextView
+                                    android:id="@+id/tv_smart_sort"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="智能排序"
+                                    android:textColor="@color/color_tittle"
+                                    android:textSize="@dimen/text_size_normal_up" />
+
+                                <ImageView
+                                    android:id="@+id/iv_smart_sort"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_vertical"
+                                    android:layout_marginLeft="@dimen/image_padding"
+                                    android:src="@mipmap/arrow_down_black" />
+
+                            </LinearLayout>
 
                         </LinearLayout>
 
@@ -206,6 +235,8 @@
             android:layout_height="match_parent"
             android:background="@color/list_divider_color"
             app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+
     </android.support.design.widget.CoordinatorLayout>
 
 

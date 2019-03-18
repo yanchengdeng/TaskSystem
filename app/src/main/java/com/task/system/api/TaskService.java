@@ -33,6 +33,9 @@ public interface TaskService {
      * 1-注册时的手机验证码，不需要uid、token
      * 2-找回密码的时候的手机验证码，不需要uid、token
      * 3-修改密码的时候的手机验证码,需要uid、token
+     *
+     * 4-新增银行账户信息，
+     * 5-申请提现
      */
 
     @FormUrlEncoded

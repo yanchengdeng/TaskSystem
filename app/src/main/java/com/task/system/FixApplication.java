@@ -26,6 +26,7 @@ import com.task.system.api.API;
 import com.task.system.api.TaskInfo;
 import com.task.system.api.TaskService;
 import com.task.system.bean.VerisonInfo;
+import com.task.system.event.ShowVersionUpdateEvent;
 import com.task.system.event.TokenTimeOut;
 import com.task.system.services.LocationService;
 import com.task.system.services.UpdateService;
@@ -71,6 +72,8 @@ public class FixApplication extends MultiDexApplication {
             if (ApiConfig.context != null && ApiConfig.context instanceof Activity) {
                 onShowExpire();
             }
+        }else if (event instanceof ShowVersionUpdateEvent){
+            checkVersion();
         }
     }
 

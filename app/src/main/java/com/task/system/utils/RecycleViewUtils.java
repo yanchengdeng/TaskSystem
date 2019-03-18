@@ -22,7 +22,7 @@ public class RecycleViewUtils {
 
     //1个dp 横线
     public static DividerItemDecoration getItemDecorationHorizontal() {
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(ApiConfig.context, DividerItemDecoration.HORIZONTAL);
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(ApiConfig.context, DividerItemDecoration.VERTICAL);
         dividerItemDecoration.setDrawable(ApiConfig.context.getResources().getDrawable(R.drawable.list_line_diver));
         return dividerItemDecoration;
     }

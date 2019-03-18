@@ -67,8 +67,8 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     //阿里热更新
-//    implementation 'com.aliyun.ams:alicloud-android-hotfix:3.2.3'
-//    implementation 'com.aliyun.ams:emas-services:1.0.1'
+    //    implementation 'com.aliyun.ams:alicloud-android-hotfix:3.2.3'
+    //    implementation 'com.aliyun.ams:emas-services:1.0.1'
     //----阿里热更新
     /** 工具类    **/
     implementation 'com.blankj:utilcode:1.20.3'
@@ -101,6 +101,5 @@ dependencies {
     implementation 'com.yanzhenjie.permission:support:2.0.1'
     implementation project(':imagepicker')
     implementation 'com.orhanobut:dialogplus:1.11@aar'
-
     implementation 'top.zibin:Luban:1.1.8'
 }

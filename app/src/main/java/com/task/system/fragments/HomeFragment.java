@@ -19,6 +19,7 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -28,6 +29,7 @@ import com.baidu.location.BDLocation;
 import com.blankj.utilcode.util.ActivityUtils;
 import com.blankj.utilcode.util.ConvertUtils;
 import com.blankj.utilcode.util.SPUtils;
+import com.blankj.utilcode.util.ScreenUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gyf.barlibrary.ImmersionBar;
@@ -41,16 +43,19 @@ import com.task.system.activity.CityListActivity;
 import com.task.system.activity.OpenWebViewActivity;
 import com.task.system.activity.TaskDetailActivity;
 import com.task.system.activity.TaskListActivity;
+import com.task.system.adapters.CategoryAdapter;
 import com.task.system.adapters.HomeAdapter;
 import com.task.system.adapters.MenuAdapter;
+import com.task.system.adapters.TagAdapter;
 import com.task.system.api.API;
 import com.task.system.api.TaskInfo;
 import com.task.system.api.TaskService;
 import com.task.system.bean.AdInfo;
+import com.task.system.bean.CatergoryInfo;
 import com.task.system.bean.CityInfo;
 import com.task.system.bean.HomeMenu;
+import com.task.system.bean.SortTags;
 import com.task.system.bean.TaskInfoList;
-import com.task.system.bean.UserInfo;
 import com.task.system.common.GlideImageLoader;
 import com.task.system.services.LocationService;
 import com.task.system.utils.RecycleViewUtils;
@@ -102,6 +107,14 @@ public class HomeFragment extends Fragment {
     AppBarLayout appBarLayout;
     @BindView(R.id.view_temp)
     View viewTemp;
+    @BindView(R.id.iv_all_sort)
+    ImageView ivAllSort;
+    @BindView(R.id.iv_smart_sort)
+    ImageView ivSmartSort;
+    @BindView(R.id.ll_all_sort)
+    LinearLayout llAllSort;
+    @BindView(R.id.ll_smart_sort)
+    LinearLayout llSmartSort;
 
     private List<CityInfo> mAllCities = new ArrayList<>();
     private String loctionCity;
@@ -111,6 +124,7 @@ public class HomeFragment extends Fragment {
     private BubblePopupSingle quickPopupSmart;
     private BubblePopupDouble quickPopupAll;
     private MenuAdapter menuAdapter;
+    private CategoryAdapter meneLeft, menuRight;
     private HomeAdapter homeAdapter;
     private int sortUiHight;
     //避免多次添加margin  导致页面闪动
@@ -126,6 +140,7 @@ public class HomeFragment extends Fragment {
     private static final int REQUEST_PERMISSON_CODE = 100;
     private boolean mPermission = false;
 
+    private TagAdapter tagAdapter;
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Nullable
@@ -137,22 +152,34 @@ public class HomeFragment extends Fragment {
 
         menuAdapter = new MenuAdapter(R.layout.adapter_drop_menu_item);
         homeAdapter = new HomeAdapter(R.layout.adapter_home_item);
-
-        List<HomeMenu> homeMenus = new ArrayList<>();
-
-        for (int i = 0; i < 10; i++) {
-            HomeMenu menu = new HomeMenu();
-            menu.title = "菜单" + i;
-            homeMenus.add(menu);
-            homeMenus.add(menu);
-        }
-
-        menuAdapter.setNewData(homeMenus);
-
-
+        meneLeft = new CategoryAdapter(R.layout.adapter_drop_menu_item);
+        menuRight = new CategoryAdapter(R.layout.adapter_drop_menu_item);
         recycle.addItemDecoration(RecycleViewUtils.getItemDecorationHorizontal());
         recycle.setLayoutManager(new LinearLayoutManager(ApiConfig.context));
+
+        tagAdapter = new TagAdapter(R.layout.adapter_tag);
+        RecyclerView tagRecycle = new RecyclerView(ApiConfig.context);
+        LinearLayoutManager tagLayoutManage =  new LinearLayoutManager(ApiConfig.context);
+        tagLayoutManage.setOrientation(LinearLayoutManager.HORIZONTAL);
+        tagRecycle.setLayoutManager(tagLayoutManage);
+        tagRecycle.setNestedScrollingEnabled(false);
+        tagRecycle.setAdapter(tagAdapter);
+        homeAdapter.addHeaderView(tagRecycle);
         recycle.setAdapter(homeAdapter);
+
+        tagAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                for (HomeMenu item:tagAdapter.getData()){
+                    item.isSelected = false;
+                }
+                tagAdapter.getData().get(position).isSelected = true;
+                tagAdapter.notifyDataSetChanged();
+                tags_id = tagAdapter.getItem(position).id;
+                page=1;
+                getTaskList();
+            }
+        });
 
 
         //设置图片加载器
@@ -205,7 +232,6 @@ public class HomeFragment extends Fragment {
         getSmartSort();
         getTaskList();
         getCityList();
-
 
 
         smartRefresh.setOnRefreshListener(new OnRefreshListener() {
@@ -287,9 +313,10 @@ public class HomeFragment extends Fragment {
     //全部分类
     private void getAllSort() {
         Call<com.task.system.api.TaskInfoList> call = ApiConfig.getInstants().create(TaskService.class).getCatergoryList(TUtils.getParams());
-        API.getList(call, UserInfo.class, new ApiCallBackList<UserInfo>() {
+        API.getList(call, CatergoryInfo.class, new ApiCallBackList<CatergoryInfo>() {
             @Override
-            public void onSuccess(int msgCode, String msg, List<UserInfo> data) {
+            public void onSuccess(int msgCode, String msg, List<CatergoryInfo> data) {
+                meneLeft.setNewData(data);
 
             }
 
@@ -302,12 +329,19 @@ public class HomeFragment extends Fragment {
 
     //智能分类
     private void getSmartSort() {
-        Call<TaskInfo> call = ApiConfig.getInstants().create(TaskService.class).getTaskList(TUtils.getParams());
+        Call<TaskInfo> call = ApiConfig.getInstants().create(TaskService.class).getSortTagsList(TUtils.getParams());
 
-        API.getObject(call, UserInfo.class, new ApiCallBack<UserInfo>() {
+        API.getObject(call, SortTags.class, new ApiCallBack<SortTags>() {
             @Override
-            public void onSuccess(int msgCode, String msg, UserInfo data) {
-
+            public void onSuccess(int msgCode, String msg, SortTags data) {
+                if (data != null) {
+                    if (data.sort != null) {
+                        menuAdapter.setNewData(data.sort);
+                    }
+                    if (data.tags!=null){
+                        tagAdapter.setNewData(data.tags);
+                    }
+                }
             }
 
             @Override
@@ -399,10 +433,30 @@ public class HomeFragment extends Fragment {
         if (quickPopupSmart == null) {
             quickPopupSmart = new BubblePopupSingle(ApiConfig.context);
             RecyclerView recyclerView = quickPopupSmart.getContentView();
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, (int) (ScreenUtils.getScreenHeight() * 0.5));
+            recyclerView.setLayoutParams(layoutParams);
             recyclerView.setLayoutManager(new LinearLayoutManager(ApiConfig.context));
             recyclerView.addItemDecoration(RecycleViewUtils.getItemDecorationHorizontal());
             recyclerView.setAdapter(menuAdapter);
-            quickPopupSmart.getPopupWindow().setOutsideTouchable(false);
+
+
+            menuAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                    for (HomeMenu item : menuAdapter.getData()) {
+                        item.isSelected = false;
+                    }
+                    menuAdapter.getData().get(position).isSelected = true;
+                    menuAdapter.notifyDataSetChanged();
+                    sort_id = menuAdapter.getItem(position).id;
+                    page = 1;
+                    getTaskList();
+                    quickPopupSmart.dismiss();
+                    tvSmartSort.setText("" + meneLeft.getData().get(position).title);
+                    tvSmartSort.setTextColor(getResources().getColor(R.color.red));
+                    ivSmartSort.setImageResource(R.mipmap.arrwo_up_red);
+                }
+            });
         }
 
 //
@@ -413,13 +467,82 @@ public class HomeFragment extends Fragment {
         }
     }
 
+
+    private void showShowDouble() {
+
+        if (quickPopupAll == null) {
+            quickPopupAll = new BubblePopupDouble(ApiConfig.context);
+            View view = quickPopupAll.getContentView();
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, (int) (ScreenUtils.getScreenHeight() * 0.5));
+            view.setLayoutParams(layoutParams);
+            RecyclerView recyclerViewLeft = view.findViewById(R.id.rcv_content);
+            RecyclerView recyclerViewRight = view.findViewById(R.id.rcv_content_right);
+            recyclerViewLeft.setLayoutManager(new LinearLayoutManager(ApiConfig.context));
+            recyclerViewLeft.setAdapter(meneLeft);
+
+            recyclerViewRight.setLayoutManager(new LinearLayoutManager(ApiConfig.context));
+            recyclerViewRight.setAdapter(menuRight);
+
+
+            meneLeft.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                    for (CatergoryInfo item : meneLeft.getData()) {
+                        item.isSelected = false;
+                    }
+                    meneLeft.getData().get(position).isSelected = true;
+                    meneLeft.notifyDataSetChanged();
+                    if (meneLeft.getData().get(position)._child == null) {
+                        category_id = meneLeft.getItem(position).id;
+                        page = 1;
+                        getTaskList();
+                        menuRight.setNewData(new ArrayList<>());
+                        quickPopupAll.dismiss();
+                        tvAllSort.setText("" + meneLeft.getData().get(position).title);
+                        tvAllSort.setTextColor(getResources().getColor(R.color.red));
+                        ivAllSort.setImageResource(R.mipmap.arrwo_up_red);
+                    } else {
+                        menuRight.setNewData(meneLeft.getData().get(position)._child);
+                    }
+
+                }
+            });
+
+            menuRight.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                    for (CatergoryInfo item : menuRight.getData()) {
+                        item.isSelected = false;
+                    }
+                    menuRight.getData().get(position).isSelected = true;
+                    menuRight.notifyDataSetChanged();
+                    category_id = menuRight.getItem(position).id;
+                    page = 1;
+                    getTaskList();
+                    quickPopupAll.dismiss();
+                    tvAllSort.setText("" + menuRight.getData().get(position).title);
+                    tvAllSort.setTextColor(getResources().getColor(R.color.red));
+                    ivAllSort.setImageResource(R.mipmap.arrwo_up_red);
+                }
+            });
+        }
+
+//
+        if (quickPopupAll.isShowing()) {
+            quickPopupAll.dismiss();
+        } else {
+            quickPopupAll.showPopupWindow(llSortUi);
+        }
+    }
+
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
     }
 
-    @OnClick({R.id.tv_location,R.id.ll_search, R.id.tv_message_num, R.id.tv_all_sort, R.id.tv_smart_sort})
+    @OnClick({R.id.tv_location, R.id.ll_search, R.id.tv_message_num, R.id.ll_all_sort, R.id.ll_smart_sort})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_location:
@@ -430,9 +553,10 @@ public class HomeFragment extends Fragment {
             case R.id.ll_search:
                 ActivityUtils.startActivity(TaskListActivity.class);
                 break;
-            case R.id.tv_all_sort:
+            case R.id.ll_all_sort:
+                showShowDouble();
                 break;
-            case R.id.tv_smart_sort:
+            case R.id.ll_smart_sort:
                 showSmartSort();
                 break;
         }
@@ -519,9 +643,9 @@ public class HomeFragment extends Fragment {
                         }
                     }
                 });
-            }else{
-                if (!TextUtils.isEmpty(loctionCity)){
-                    tvLocation.setText(""+loctionCity);
+            } else {
+                if (!TextUtils.isEmpty(loctionCity)) {
+                    tvLocation.setText("" + loctionCity);
                 }
             }
         }

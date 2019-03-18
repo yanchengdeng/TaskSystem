@@ -1,7 +1,6 @@
 package com.task.system.views;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -14,22 +13,23 @@ import razerdp.basepopup.BasePopupWindow;
 //联动列表
 
 public class BubblePopupDouble extends BasePopupWindow {
-    public RecyclerView recyclerView;
+    public View doubleView;
     private Context context;
 
     public BubblePopupDouble(Context context) {
         super(context);
         this.context  = context;
-        recyclerView = findViewById(R.id.recycle);
+        doubleView= findViewById(R.id.ll_double);
+        setAlignBackground(true);
     }
 
     @Override
     public View onCreateContentView() {
-        return createPopupById(R.layout.recycle);
+        return createPopupById(R.layout.layout_double_recycle);
     }
 
-    public RecyclerView getContentView() {
-        return recyclerView;
+    public View getContentView() {
+        return doubleView;
     }
 
     @Override

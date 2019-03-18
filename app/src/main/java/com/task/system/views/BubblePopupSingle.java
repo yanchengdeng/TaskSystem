@@ -19,13 +19,16 @@ public class BubblePopupSingle extends BasePopupWindow {
 
     public BubblePopupSingle(Context context) {
         super(context);
-        this.context  = context;
-        recyclerView = findViewById(R.id.recycle);
+        this.context = context;
+        recyclerView = findViewById(R.id.rcv_content);
+        setAlignBackground(true);
+//        setBlurBackgroundEnable(true);
+
     }
 
     @Override
     public View onCreateContentView() {
-        return createPopupById(R.layout.recycle);
+        return createPopupById(R.layout.layout_recycle);
     }
 
     public RecyclerView getContentView() {
@@ -44,7 +47,6 @@ public class BubblePopupSingle extends BasePopupWindow {
         return AnimationUtils.loadAnimation(ApiConfig.context, R.anim.slid_out_top);
 //        return getDismissAnimation();
     }
-
 
 
 }
