@@ -13,7 +13,7 @@
     <color name="deep_black">#7f000000</color>
     <color name="orange">#F2AE47</color>
 
-    <color name="list_divider_color">#eeeef2</color>
+    <color name="list_divider_color">#F6F7FA</color>
     <color name="color_blue">#4FBAFC</color>
 
     <color name="red">#fffd6c6b</color>
@@ -34,7 +34,7 @@
     <color name="char_bg">#DCDDDC</color>
     <color name="register">#647991</color>
     <color name="red_mine_status">#fffd6c6b</color>
-    <color name="gray_bg">#fff6f7fa</color>
+    <color name="gray_bg">#F6F7FA</color>
 
 
     <color name="cp_colorAccent">#F3F3F3</color>
@@ -49,5 +49,9 @@
     <color name="cp_alpha_gray">#CC646464</color>
     <color name="cp_theme_gray">#646464</color>
     <color name="give_up">#ffefefef</color>
+
+
+    <color name="kprogresshud_default_color">#b1000000</color>
+    <color name="kprogresshud_grey_color">#449E9E9E</color>
 
 </resources>

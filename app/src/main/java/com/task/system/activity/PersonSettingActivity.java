@@ -311,6 +311,9 @@ public class PersonSettingActivity extends BaseActivity {
 
     private void doUploadImage(String base64Encode) {
 
+
+
+
         HashMap<String, String> hashMap = new HashMap();
         hashMap.put("uid", TUtils.getUserId());
         hashMap.put("avatar", "data:image/png;base64," + base64Encode);

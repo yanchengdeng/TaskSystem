@@ -159,6 +159,7 @@ public class HomeFragment extends Fragment {
 
         tagAdapter = new TagAdapter(R.layout.adapter_tag);
         RecyclerView tagRecycle = new RecyclerView(ApiConfig.context);
+        tagRecycle.setBackgroundColor(getResources().getColor(R.color.list_divider_color));
         LinearLayoutManager tagLayoutManage =  new LinearLayoutManager(ApiConfig.context);
         tagLayoutManage.setOrientation(LinearLayoutManager.HORIZONTAL);
         tagRecycle.setLayoutManager(tagLayoutManage);

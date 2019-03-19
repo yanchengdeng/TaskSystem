@@ -109,7 +109,7 @@
 
         <TextView
             android:id="@+id/tv_do_work"
-            android:text="立即申请"
+            android:text="待申请"
             android:textSize="@dimen/text_size_normal_up"
             android:textColor="@color/white"
             android:layout_width="0dp"

@@ -71,12 +71,9 @@ public class TaskDetailActivity extends BaseSimpleActivity {
         ButterKnife.bind(this);
 
         taskInfoItem = (TaskInfoItem) getIntent().getSerializableExtra(Constans.PASS_OBJECT);
-        showLoadingBar();
-
-
+        initData(taskInfoItem);
         tablayout.addTab(tablayout.newTab().setText("任务描述"), 0);
         tablayout.addTab(tablayout.newTab().setText("详细流程"), 1);
-
         FragmentPagerItemAdapter fragmentPagerItemAdapter = new FragmentPagerItemAdapter(getSupportFragmentManager(), getFragmentsItem());
         viewpage.setAdapter(fragmentPagerItemAdapter);
         tablayout.setupWithViewPager(viewpage);
@@ -96,14 +93,49 @@ public class TaskDetailActivity extends BaseSimpleActivity {
         API.getObject(call, TaskInfoItem.class, new ApiCallBack<TaskInfoItem>() {
             @Override
             public void onSuccess(int msgCode, String msg, TaskInfoItem data) {
-                dismissLoadingBar();
+                taskInfoItem = data;
+                if (data.is_collect==0) {
+                    ivCollected.setImageResource(R.mipmap.iv_collect);
+                    isCollected = false;
+                }else{
+                    ivCollected.setImageResource(R.mipmap.iv_collected);
+                    isCollected = true;
+                }
+                initData(data);
             }
 
             @Override
             public void onFaild(int msgCode, String msg) {
-                dismissLoadingBar();
+
             }
         });
+    }
+
+    /**
+     * 0——待申请
+     * 1——待工作
+     * 2——待提交 // 待审核--客服审核
+     * 3——待审核 // 待审核--客户审核
+     * 4——已通过
+     * 5——未通过
+     * 6——已作废
+     * 7——已超时
+     */
+    private void initData(TaskInfoItem data) {
+        if (!TextUtils.isEmpty(data.order_status_title)){
+            tvDoWork.setText(data.order_status_title);
+        }
+        if ( data.order_status==1 ||data.order_status==2 || data.order_status==3){
+            tvDoWork.setBackgroundColor(getResources().getColor(R.color.red));
+            tvGiveUpWork.setVisibility(View.VISIBLE);
+        }else if (data.order_status==4 || data.order_status==0){
+            tvGiveUpWork.setVisibility(View.GONE);
+            tvDoWork.setBackgroundColor(getResources().getColor(R.color.red));
+        }else{
+            tvDoWork.setBackgroundColor(getResources().getColor(R.color.give_up));
+            tvGiveUpWork.setVisibility(View.GONE);
+        }
+
     }
 
     @OnClick({R.id.iv_back, R.id.iv_collected, R.id.iv_share, R.id.tv_custome, R.id.tv_give_up_work, R.id.tv_do_work})
@@ -129,11 +161,13 @@ public class TaskDetailActivity extends BaseSimpleActivity {
                 giveUpTask();
                 break;
             case R.id.tv_do_work:
-                if (tvDoWork.getText().equals("立即申请")) {
+                if (taskInfoItem.order_status==0) {
                     applyTask();
-                } else {
+                } else if (taskInfoItem.order_status==1 ||taskInfoItem.order_status==2 || taskInfoItem.order_status==3){
                     //做下一步工作
                     ActivityUtils.startActivity(getIntent().getExtras(), DoTaskStepActivity.class);
+                }else{
+                    ToastUtils.showShort(""+taskInfoItem.order_status_title);
                 }
                 break;
         }
@@ -156,6 +190,7 @@ public class TaskDetailActivity extends BaseSimpleActivity {
                         order_id = data.order_id;
                     }
                 }
+                taskInfoItem.order_status=1;
                 tvDoWork.setText("继续工作");
             }
 
@@ -167,7 +202,7 @@ public class TaskDetailActivity extends BaseSimpleActivity {
     }
 
 
-    //申请任务
+    //放弃任务
     private void giveUpTask() {
         HashMap<String, String> maps = new HashMap<>();
         maps.put("task_id", taskInfoItem.id);
@@ -180,7 +215,9 @@ public class TaskDetailActivity extends BaseSimpleActivity {
             public void onSuccess(int msgCode, String msg, List<String> data) {
                 ToastUtils.showShort("" + msg);
                 tvGiveUpWork.setVisibility(View.GONE);
-                tvDoWork.setText("立即申请");
+                tvDoWork.setText("待申请");
+                taskInfoItem.order_status=0;
+//                getTaskDetail();
             }
 
             @Override

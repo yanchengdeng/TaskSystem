@@ -1,5 +1,6 @@
 package com.task.system.adapters;
 
+import android.support.v7.widget.CardView;
 import android.text.TextUtils;
 import android.widget.TextView;
 
@@ -24,9 +25,9 @@ public class TagAdapter extends BaseQuickAdapter<HomeMenu, BaseViewHolder> {
 
         if (item.isSelected) {
             ((TextView) helper.getView(R.id.tv_tag)).setTextColor(mContext.getResources().getColor(R.color.white));
-            helper.getView(R.id.cv_tag).setBackgroundColor(mContext.getResources().getColor(R.color.red));
+            ((CardView)helper.getView(R.id.cv_tag)).setCardBackgroundColor(mContext.getResources().getColor(R.color.red));
         } else {
-            helper.getView(R.id.cv_tag).setBackgroundColor(mContext.getResources().getColor(R.color.white));
+            ((CardView)helper.getView(R.id.cv_tag)).setCardBackgroundColor(mContext.getResources().getColor(R.color.white));
             ((TextView) helper.getView(R.id.tv_tag)).setTextColor(mContext.getResources().getColor(R.color.color_tittle));
         }
 

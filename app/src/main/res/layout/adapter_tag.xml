@@ -6,13 +6,12 @@
     android:id="@+id/cv_tag"
     android:layout_width="85dp"
     android:layout_height="28dp"
-    android:layout_marginLeft="@dimen/image_padding_big"
+    android:layout_marginLeft="@dimen/image_padding"
     android:layout_marginTop="@dimen/image_padding_big"
     android:layout_marginBottom="@dimen/image_padding_big"
-    android:layout_marginRight="@dimen/image_padding_big"
-    android:background="@color/white"
+    android:layout_marginRight="@dimen/image_padding"
     app:cardBackgroundColor="@color/white"
-    app:cardCornerRadius="3dp"
+    app:cardCornerRadius="4dp"
     app:cardElevation="1dp">
 
     <TextView

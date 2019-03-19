@@ -46,8 +46,8 @@
                             app:delay_time="5000"
                             app:indicator_drawable_selected="@mipmap/icon_point_selected"
                             app:indicator_drawable_unselected="@mipmap/icon_point_unselected"
-                            app:indicator_height="8dp"
-                            app:indicator_width="3dp" />
+                            app:indicator_height="2dp"
+                            app:indicator_width="10dp" />
 
 
                         <ImageView

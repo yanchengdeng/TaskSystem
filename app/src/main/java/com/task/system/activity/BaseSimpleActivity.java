@@ -7,16 +7,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.kaopiz.kprogresshud.KProgressHUD;
 import com.task.system.R;
 import com.task.system.utils.AppManager;
-import com.task.system.views.LoadDialog;
+import com.yc.lib.api.ApiConfig;
 
 import cn.bingoogolapple.swipebacklayout.BGASwipeBackHelper;
 
 public abstract class BaseSimpleActivity extends AppCompatActivity implements BGASwipeBackHelper.Delegate {
     protected BGASwipeBackHelper mSwipeBackHelper;
-    private LoadDialog loadDialog;
     public Activity mContext;
+    private KProgressHUD hud;
 
 
 
@@ -27,6 +28,10 @@ public abstract class BaseSimpleActivity extends AppCompatActivity implements BG
         initSwipeBackFinish();
         this.mContext = this;
         AppManager.getAppManager().addActivity(this);
+
+        hud = KProgressHUD.create(ApiConfig.context)
+                .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
+                .setLabel("加载中...");
 
     }
 
@@ -141,45 +146,35 @@ public abstract class BaseSimpleActivity extends AppCompatActivity implements BG
 
 
     public void showLoadingBar() {
-        if (loadDialog != null) {
-            loadDialog.hide();
-            loadDialog = null;
+        if (hud!=null){
+            if (!hud.isShowing()){
+                hud.show();
+            }
         }
-        loadDialog = new LoadDialog(this, getString(R.string.loading));
-        loadDialog.setCancelable(true);
-        loadDialog.setCanceledOnTouchOutside(true);
-        loadDialog.show();
     }
 
     public void showLoadingBar(String msg) {
-        if (loadDialog != null) {
-            loadDialog.hide();
-            loadDialog = null;
+        if (hud!=null){
+            if (!hud.isShowing()){
+                hud.show();
+                hud.setLabel(msg);
+            }
         }
-        loadDialog = new LoadDialog(this, msg);
-        loadDialog.setCancelable(true);
-        loadDialog.setCanceledOnTouchOutside(true);
-        loadDialog.show();
     }
 
     public void showLoadingBar(String msg, boolean cancelable) {
-        if (loadDialog != null) {
-            loadDialog.dismiss();
-            loadDialog = null;
+        if (hud!=null){
+            if (!hud.isShowing()){
+                hud.show();
+                hud.setLabel(msg);
+                hud.setCancellable(cancelable);
+            }
         }
-        loadDialog = new LoadDialog(this, msg);
-        loadDialog.setCancelable(cancelable);
-        loadDialog.setCanceledOnTouchOutside(true);
-        loadDialog.show();
     }
 
     public void dismissLoadingBar() {
-        if (loadDialog != null) {
-            loadDialog.dismiss();
-            loadDialog.stopAnimal();
-            loadDialog = null;
+        if (hud!=null){
+            hud.dismiss();
         }
     }
-
-
 }

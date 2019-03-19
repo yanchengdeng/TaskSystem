@@ -14,12 +14,13 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.kaopiz.kprogresshud.KProgressHUD;
 import com.task.system.Constans;
 import com.task.system.R;
 import com.task.system.bean.VerisonInfo;
 import com.task.system.services.UpdateService;
 import com.task.system.utils.AppManager;
-import com.task.system.views.LoadDialog;
+import com.yc.lib.api.ApiConfig;
 
 import cn.bingoogolapple.swipebacklayout.BGASwipeBackHelper;
 
@@ -33,7 +34,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BGASwipe
     public ImageView ivBack, ivRightFunction;
     public TextView tvTittle, tvRightFunction;
     public TextView tvErrorTips;
-    private LoadDialog loadDialog;
+    private KProgressHUD hud;
     private MaterialDialog materialDialog;
     public Activity mContext;
 
@@ -51,6 +52,9 @@ public abstract class BaseActivity extends AppCompatActivity implements BGASwipe
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        hud = KProgressHUD.create(ApiConfig.context)
+                .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
+                .setLabel("加载中...");
     }
 
     @Override
@@ -178,55 +182,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BGASwipe
 //        }
 //    }
 
-    /**
-     * 显示正常数据
-     */
-    protected void showContentView() {
-        if (loadDialog != null && loadDialog.isShowing()) {
-            loadDialog.dismiss();
-        }
 
-        if (refresh.getVisibility() != View.GONE) {
-            refresh.setVisibility(View.GONE);
-        }
-        if (contentView.getVisibility() != View.VISIBLE) {
-            contentView.setVisibility(View.VISIBLE);
-        }
-    }
-
-    /**
-     * 出现异常 显示错误提示
-     */
-    protected void showError() {
-        if (loadDialog != null && loadDialog.isShowing()) {
-            loadDialog.dismiss();
-        }
-
-        if (refresh.getVisibility() != View.VISIBLE) {
-            refresh.setVisibility(View.VISIBLE);
-        }
-        if (contentView.getVisibility() != View.GONE) {
-            contentView.setVisibility(View.GONE);
-        }
-    }
-
-    /**
-     * 加载失败点击重新加载的状态
-     */
-    protected void showError(String errorTips) {
-        if (loadDialog != null && loadDialog.isShowing()) {
-            loadDialog.dismiss();
-        }
-
-        if (refresh.getVisibility() != View.VISIBLE) {
-            refresh.setVisibility(View.VISIBLE);
-        }
-        if (contentView.getVisibility() != View.GONE) {
-            contentView.setVisibility(View.GONE);
-        }
-        tvErrorTips.setText(errorTips);
-
-    }
 
     /**
      * 失败后点击刷新
@@ -348,43 +304,35 @@ public abstract class BaseActivity extends AppCompatActivity implements BGASwipe
 
 
     public void showLoadingBar() {
-        if (loadDialog != null) {
-            loadDialog.hide();
-            loadDialog = null;
+        if (hud!=null){
+            if (!hud.isShowing()){
+                hud.show();
+            }
         }
-        loadDialog = new LoadDialog(this, getString(R.string.loading));
-        loadDialog.setCancelable(true);
-        loadDialog.setCanceledOnTouchOutside(true);
-        loadDialog.show();
     }
 
     public void showLoadingBar(String msg) {
-        if (loadDialog != null) {
-            loadDialog.hide();
-            loadDialog = null;
+        if (hud!=null){
+            if (!hud.isShowing()){
+                hud.show();
+                hud.setLabel(msg);
+            }
         }
-        loadDialog = new LoadDialog(this, msg);
-        loadDialog.setCancelable(true);
-        loadDialog.setCanceledOnTouchOutside(true);
-        loadDialog.show();
     }
 
     public void showLoadingBar(String msg, boolean cancelable) {
-        if (loadDialog != null) {
-            loadDialog.dismiss();
-            loadDialog = null;
+        if (hud!=null){
+            if (!hud.isShowing()){
+                hud.show();
+                hud.setLabel(msg);
+                hud.setCancellable(cancelable);
+            }
         }
-        loadDialog = new LoadDialog(this, msg);
-        loadDialog.setCancelable(cancelable);
-        loadDialog.setCanceledOnTouchOutside(true);
-        loadDialog.show();
     }
 
     public void dismissLoadingBar() {
-        if (loadDialog != null) {
-            loadDialog.dismiss();
-            loadDialog.stopAnimal();
-            loadDialog = null;
+        if (hud!=null){
+            hud.dismiss();
         }
     }
 
