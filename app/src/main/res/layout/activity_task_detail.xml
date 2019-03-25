@@ -114,7 +114,7 @@
             android:textColor="@color/white"
             android:layout_width="0dp"
             android:gravity="center"
-            android:background="@color/red"
+            android:background="@color/give_up"
             android:layout_weight="1"
             android:layout_height="match_parent" />
 

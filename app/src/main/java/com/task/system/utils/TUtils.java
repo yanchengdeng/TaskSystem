@@ -1,21 +1,27 @@
 package com.task.system.utils;
 
 import android.app.Activity;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 
+import com.blankj.utilcode.util.ActivityUtils;
 import com.blankj.utilcode.util.AppUtils;
 import com.blankj.utilcode.util.DeviceUtils;
 import com.blankj.utilcode.util.EncodeUtils;
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.SPUtils;
+import com.blankj.utilcode.util.TimeUtils;
+import com.blankj.utilcode.util.ToastUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.task.system.Constans;
+import com.task.system.activity.OpenWebViewActivity;
 import com.task.system.bean.CityInfo;
 import com.task.system.bean.TaskInfoList;
+import com.task.system.bean.TaskType;
 import com.task.system.bean.UserInfo;
 import com.task.system.enums.UserType;
 import com.yc.lib.api.ApiConfig;
@@ -33,6 +39,9 @@ public class TUtils {
         data.put("app_imei", getImei());
         data.put("app_id", Constans.APP_ID);
         data.put("app_sign", getAppSign());
+        if (!TextUtils.isEmpty(getUserId())) {
+            data.put("uid",getUserId());
+        }
         if (!TextUtils.isEmpty(getToken())) {
             data.put("app_token", getToken());
         }
@@ -54,6 +63,9 @@ public class TUtils {
         data.put("app_imei", getImei());
         data.put("app_id", Constans.APP_ID);
         data.put("app_sign", getAppSign());
+        if (!TextUtils.isEmpty(getUserId())) {
+            data.put("uid",getUserId());
+        }
         if (!TextUtils.isEmpty(getToken())) {
             data.put("app_token", getToken());
         }
@@ -111,6 +123,19 @@ public class TUtils {
             UserInfo userInfo = new Gson().fromJson(useinfo, UserInfo.class);
             return userInfo;
         }
+    }
+
+
+    /***
+     * 用户信息
+     * @return 130 6738 0836
+     */
+    public static String getHidePhone() {
+       String phone = getUserInfo().mobile;
+       if (!TextUtils.isEmpty(phone) && phone.length()==11){
+           return phone.substring(0,3)+"****"+phone.substring(7,11);
+       }
+       return "异常账号";
     }
 
 
@@ -236,5 +261,98 @@ public class TUtils {
 
     }
 
+    //客服页面
+    public static void openKf(){
+        if (TextUtils.isEmpty(SPUtils.getInstance().getString(Constans.KEFU))){
+            ToastUtils.showShort("客服信息不存在");
+            return;
+        }
+        Bundle bundle = new Bundle();
+        bundle.putString(Constans.PASS_NAME, "客服");
+        bundle.putString(Constans.PASS_STRING, SPUtils.getInstance().getString(Constans.KEFU));
+        ActivityUtils.startActivity(bundle, OpenWebViewActivity.class);
+    }
 
+
+    public static String getHideAccount(String account) {
+        if (TextUtils.isEmpty(account)){
+            return "无账号";
+        }else{
+
+        }
+        return account;
+    }
+
+    public static void setRecycleEmpty(BaseQuickAdapter collectedAdapter, RecyclerView recyclerView) {
+        collectedAdapter.setNewData(new ArrayList<>());
+        collectedAdapter.setEmptyView(RecycleViewUtils.getEmptyView((Activity) ApiConfig.context,recyclerView));
+    }
+
+    //格式：2019-04-26 17:29:12
+    public static String getEndTimeTips(String end_time) {
+        long endTime = TimeUtils.string2Millis(end_time);
+        long differ = endTime-TimeUtils.getNowMills();
+        return millis2FitTimeSpan(differ,3);
+    }
+
+
+    public static String millis2FitTimeSpan(long millis, int precision) {
+        return millis2FitTimeSpan(millis, precision, true);
+    }
+
+
+    public static String millis2FitTimeSpan(long millis, int precision, boolean isShowAllUnit) {
+        if (precision <= 0) return null;
+        precision = Math.min(precision, 4);
+        String[] units = {"天", "小时", "分钟", " "};
+        if (millis == 0) return 0 + units[precision - 1];
+        StringBuilder sb = new StringBuilder();
+        if (millis < 0) {
+            sb.append("-");
+            millis = -millis;
+        }
+        int[] unitLen = {60 * 60 * 1000 * 24, 60 * 60 * 1000, 60 * 1000, 1000};
+        for (int i = 0; i < precision; i++) {
+//            if (millis >= unitLen[i]) {
+            long mode = millis / unitLen[i];
+            millis -= mode * unitLen[i];
+            String clockIndex = String.valueOf(mode);
+            if (mode < 10) {
+                if (i != 0) {
+                    clockIndex = "0" + clockIndex;
+                }
+            }
+            if (isShowAllUnit) {
+                sb.append(clockIndex).append(units[i]);
+            } else {
+                if (i > 0) {
+                    sb.append(clockIndex).append(units[i]);
+                }
+            }
+//            }
+        }
+        return sb.toString();
+    }
+
+
+    /**
+     * 1: "待工作",
+     * 2: "待提交",
+     * 3: "待审核",
+     * 4: "已通过",
+     * 5: "未通过"
+     */
+    public static List<TaskType> getTaskType(){
+        List<TaskType> taskTypeList = new ArrayList<>();
+//        taskTypeList.add(new TaskType(-1,"全部"));
+        taskTypeList.add(new TaskType(1,"待工作"));//待工作 和待提交合并
+//        taskTypeList.add(new TaskType(2,"待提交"));
+        taskTypeList.add(new TaskType(3,"待审核"));
+        taskTypeList.add(new TaskType(4,"已通过"));
+        taskTypeList.add(new TaskType(5,"未通过"));//6 、7 未通过、已作废、已超时合并
+
+
+        return taskTypeList;
+
+    }
 }

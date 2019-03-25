@@ -22,6 +22,7 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.task.system.Constans;
 import com.task.system.R;
 import com.task.system.activity.MyCollectedActivity;
+import com.task.system.activity.MyIncomeActivity;
 import com.task.system.activity.MyInviteCodeActivity;
 import com.task.system.activity.PersonSettingActivity;
 import com.task.system.api.API;
@@ -127,8 +128,8 @@ public class PercenterFragment extends Fragment {
             ImageLoaderUtil.loadCircle(data.avatar, ivHeader, R.mipmap.defalut_header);
         }
 
-        if (!TextUtils.isEmpty(data.nickname)) {
-            tvName.setText(data.nickname);
+        if (!TextUtils.isEmpty(data.username)) {
+            tvName.setText(data.username);
         }
 
         if (!TextUtils.isEmpty(data.user_type)) {
@@ -159,6 +160,7 @@ public class PercenterFragment extends Fragment {
                 ActivityUtils.startActivity(PersonSettingActivity.class);
                 break;
             case R.id.rl_my_money:
+                ActivityUtils.startActivity(MyIncomeActivity.class);
                 break;
             case R.id.tv_allwork_title:
                 break;

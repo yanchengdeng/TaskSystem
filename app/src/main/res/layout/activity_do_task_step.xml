@@ -1,9 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.DoTaskStepActivity">
+    android:orientation="vertical"
+    android:background="@color/white"
+    tools:context=".activity.TaskDetailActivity">
 
-</android.support.constraint.ConstraintLayout>
+
+    <include layout="@layout/layout_step_index" />
+
+
+    <android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+
+            <com.task.system.common.RichTextView
+                android:id="@+id/rich_step_one"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:lineSpacingMultiplier="1.3"
+                android:padding="@dimen/activity_horizontal_margin"
+                android:textColor="@color/color_info"
+                android:textSize="@dimen/text_size_normal" />
+
+
+            <com.task.system.common.RichTextView
+                android:id="@+id/rich_step_two"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:lineSpacingMultiplier="1.3"
+                android:padding="@dimen/activity_horizontal_margin"
+                android:textColor="@color/color_info"
+                android:textSize="@dimen/text_size_normal" />
+
+
+            <com.task.system.common.RichTextView
+                android:id="@+id/rich_step_three"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:lineSpacingMultiplier="1.3"
+                android:padding="@dimen/activity_horizontal_margin"
+                android:textColor="@color/color_info"
+                android:textSize="@dimen/text_size_normal" />
+
+
+        </LinearLayout>
+
+
+    </android.support.v4.widget.NestedScrollView>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/nav_bar_height"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_custome"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:drawableTop="@mipmap/iv_custome"
+            android:drawablePadding="2dp"
+            android:gravity="center"
+            android:text="客服"
+            android:textColor="@color/color_info"
+            android:textSize="@dimen/text_size_normal" />
+
+        <TextView
+            android:id="@+id/tv_next_step"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/red"
+            android:gravity="center"
+            android:text="下一步"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_normal_up" />
+
+    </LinearLayout>
+
+</LinearLayout>

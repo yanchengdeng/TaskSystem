@@ -163,6 +163,11 @@ public abstract class BaseActivity extends AppCompatActivity implements BGASwipe
     }
 
     @Override
+    public void setTitle(int titleId) {
+        tvTittle.setText(getString(titleId));
+    }
+
+    @Override
     public void setTitle(CharSequence text) {
         tvTittle.setText(text);
     }

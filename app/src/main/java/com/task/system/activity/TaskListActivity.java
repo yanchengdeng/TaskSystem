@@ -102,7 +102,7 @@ public class TaskListActivity extends BaseActivity {
 
         homeAdapter.setOnItemClickListener((adapter, view, position) -> {
             Bundle bundle = new Bundle();
-            bundle.putSerializable(Constans.PASS_OBJECT, homeAdapter.getData().get(position));
+            bundle.putString(Constans.PASS_STRING, homeAdapter.getData().get(position).id);
             ActivityUtils.startActivity(bundle, TaskDetailActivity.class);
         });
 

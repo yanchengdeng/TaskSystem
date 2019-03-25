@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/image_padding_big"
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:padding="@dimen/activity_horizontal_margin">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+
+        <LinearLayout
+            android:id="@+id/ll_top_info"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:ellipsize="end"
+                android:maxLength="10"
+                android:singleLine="true"
+                android:text="餐厅信息收集"
+                android:textColor="@color/color_tittle"
+                android:textSize="@dimen/text_size_normal_up"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tv_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginTop="@dimen/image_padding"
+                android:layout_marginBottom="@dimen/image_padding"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:text="福建餐厅信息收集福建餐厅信息收集福建餐厅信息收集"
+                android:textColor="@color/color_info"
+                android:textSize="@dimen/text_size_normal" />
+
+            <TextView
+                android:id="@+id/tv_order_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="ID:1234"
+                android:textColor="@color/color_info"
+                android:textSize="@dimen/text_size_normal" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/activity_horizontal_margin"
+            android:text="￥14"
+            android:textColor="@color/red"
+            android:textSize="@dimen/text_size_normal_up"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/activity_horizontal_margin"
+        android:layout_marginBottom="@dimen/activity_horizontal_margin"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/dash_line_one"
+            layout="@layout/dash_line"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dash_line" />
+
+
+        <TextView
+            android:id="@+id/tv_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/activity_horizontal_margin"
+            android:layout_marginBottom="@dimen/activity_horizontal_margin"
+            android:drawableLeft="@mipmap/iv_end_time"
+            android:drawablePadding="@dimen/image_padding"
+            android:gravity="center_vertical"
+            android:text="剩余时间：19天20小时"
+            android:textColor="@color/color_date"
+            android:visibility="gone" />
+
+
+        <include
+            android:id="@+id/dash_line_two"
+            layout="@layout/dash_line"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dash_line"
+            android:visibility="gone" />
+
+    </LinearLayout>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin">
+
+
+        <TextView
+            android:id="@+id/tv_destory_reason"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:background="#fceee9"
+            android:paddingLeft="@dimen/image_padding_big"
+            android:paddingTop="2dp"
+            android:paddingRight="@dimen/image_padding_big"
+            android:paddingBottom="2dp"
+            android:text="作废"
+            android:textColor="#E8541E"
+            android:textSize="@dimen/text_size_normal_down"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/tv_look_for_reason"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:background="@drawable/normal_submit_btn_red_trans"
+            android:paddingLeft="@dimen/image_padding"
+            android:paddingTop="2dp"
+            android:paddingRight="@dimen/image_padding"
+            android:paddingBottom="2dp"
+            android:text="查看原因"
+            android:textColor="@color/red"
+            android:textSize="@dimen/text_size_normal_down"
+            android:visibility="gone" />
+
+
+        <TextView
+            android:id="@+id/tv_cancle_task"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:layout_toLeftOf="@+id/tv_going_work_task"
+            android:background="@drawable/normal_submit_btn_gray_deep_trans"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingTop="@dimen/image_padding"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:paddingBottom="@dimen/image_padding"
+            android:text="取消任务"
+            android:textColor="@color/color_tittle"
+            android:textSize="@dimen/text_size_normal"
+            android:visibility="gone" />
+
+
+        <TextView
+            android:id="@+id/tv_going_work_task"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:background="@drawable/normal_submit_btn_red"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingTop="@dimen/image_padding"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:paddingBottom="@dimen/image_padding"
+            android:text="继续工作"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_normal"
+            android:visibility="gone" />
+
+
+        <TextView
+            android:id="@+id/tv_else_function"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:background="@drawable/normal_submit_btn_gray_light"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingTop="@dimen/image_padding"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:paddingBottom="@dimen/image_padding"
+            android:text="待审核"
+            android:textColor="@color/color_tittle"
+            android:textSize="@dimen/text_size_normal"
+            android:visibility="gone" />
+
+    </RelativeLayout>
+
+
+</LinearLayout>

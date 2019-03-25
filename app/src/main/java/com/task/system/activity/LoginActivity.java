@@ -88,11 +88,11 @@ public class LoginActivity extends BaseSimpleActivity {
                     doLogin(etAccont.getEditableText().toString(), etPassword.getEditableText().toString());
                 } else {
                     if (TextUtils.isEmpty(etAccont.getEditableText())) {
-                        etAccont.setError("请输入手机号/用户名");
+                        ToastUtils.showShort("请输入手机号/用户名");
                     }
 
                     if (TextUtils.isEmpty(etPassword.getEditableText().toString())) {
-                        etPassword.setError("请输入密码");
+                        ToastUtils.showShort("请输入密码");
                     }
                 }
 

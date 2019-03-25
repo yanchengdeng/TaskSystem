@@ -33,4 +33,23 @@
     <string name="easy_or">难易程度：%s</string>
     <string name="left_num">剩余名额：%</string>
     <string name="task_id">任务ID：%S</string>
+    <string name="modify_password">修改密码</string>
+    <string name="old_password_tips">请输入旧密码</string>
+    <string name="get_new_password_tips">请输入新密码</string>
+    <string name="get_new_password_tips_repeat">请再次输入新密码</string>
+    <string name="new_phone_tips">输入新手机号</string>
+    <string name="title_activity_my_income">MyIncomeActivity</string>
+    <string name="withdraw_tips">提现小贴士：\n1.提现金额必须为整数。比如：10元、15元\n 2.提现金额≥10元/次。</string>
+    <string name="input_your_name">请输入您的姓名</string>
+    <string name="please_choose_account_type">请选择账号类型</string>
+    <string name="please_input_account">请输入银行卡/支付宝账号</string>
+    <string name="end_time_tips">剩余时间：%s</string>
+    <string name="pass_time_tips">通过时间：%s</string>
+    <string name="not_pass_time_tips">未通过时间：%s</string>
+    <string name="destory_time_tips">已作废时间：%s</string>
+    <string name="title_activity_task_work_step_one">TaskWorkStepOneActivity</string>
+    <string name="do_task_title">支付宝天天领红包</string>
+    <string name="put_content">请输入内容</string>
+    <string name="old_phone_tips">请输入当前手机号</string>
+    <string name="tab_mytask">我的任务</string>
 </resources>

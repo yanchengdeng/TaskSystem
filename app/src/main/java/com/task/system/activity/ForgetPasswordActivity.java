@@ -33,6 +33,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import retrofit2.Call;
 
+
 public class ForgetPasswordActivity extends BaseSimpleActivity {
 
     @BindView(R.id.iv_back)
@@ -169,7 +170,7 @@ public class ForgetPasswordActivity extends BaseSimpleActivity {
             btnConfirm.setBackground(getResources().getDrawable(R.drawable.normal_submit_btn_red_large));
             btnConfirm.setTextColor(getResources().getColor(R.color.white));
         } else {
-            btnConfirm.setBackground(getResources().getDrawable(R.drawable.normal_submit_btn_red_large));
+            btnConfirm.setBackground(getResources().getDrawable(R.drawable.normal_submit_btn_gray_large));
             btnConfirm.setTextColor(getResources().getColor(R.color.white));
         }
     }
@@ -182,11 +183,11 @@ public class ForgetPasswordActivity extends BaseSimpleActivity {
                 break;
             case R.id.tv_get_code:
                 if (TextUtils.isEmpty(etPhone.getEditableText().toString())) {
-                    etPhone.setError(getString(R.string.phone_tips));
+                    ToastUtils.showShort(getString(R.string.phone_tips));
                 } else if (RegexUtils.isMobileSimple(etPhone.getEditableText().toString())) {
                     getCode();
                 } else {
-                    etPhone.setError("手机号码错误");
+                    ToastUtils.showShort("手机号码错误");
                 }
                 break;
             case R.id.btn_confirm:
@@ -219,29 +220,28 @@ public class ForgetPasswordActivity extends BaseSimpleActivity {
     private void doSubmit(){
 
         if (TextUtils.isEmpty(etPhone.getEditableText().toString())) {
-            etPhone.setError(getString(R.string.phone_tips));
+            ToastUtils.showShort(getString(R.string.phone_tips));
         } else if (RegexUtils.isMobileSimple(etPhone.getEditableText().toString())) {
             if (TextUtils.isEmpty(etCode.getEditableText().toString())) {
-                etCode.setError(getString(R.string.code_tips));
+                ToastUtils.showShort(getString(R.string.code_tips));
             } else {
                 if (!TextUtils.isEmpty(etPassword.getEditableText().toString())){
                     if (!TextUtils.isEmpty(etPasswordRepeat.getEditableText().toString())){
                         if (etPasswordRepeat.getEditableText().toString().equals(etPassword.getEditableText().toString())){
                             doFogetPassword(etPhone.getEditableText().toString(), etCode.getEditableText().toString(), etPassword.getEditableText().toString());
                         }else{
-                            etPasswordRepeat.setError("两次密码不一致");
-                            etPassword.setError("两次密码不一致");
+                            ToastUtils.showShort("两次密码不一致");
                         }
 
                     }else{
-                        etPasswordRepeat.setError(getString(R.string.get_password_tips));
+                        ToastUtils.showShort(getString(R.string.get_password_tips_repeat));
                     }
                 }else{
-                    etPassword.setError(getString(R.string.get_password_tips));
+                    ToastUtils.showShort(getString(R.string.get_password_tips));
                 }
             }
         } else {
-            etPhone.setError("手机号码错误");
+            ToastUtils.showShort("手机号码错误");
         }
 
     }

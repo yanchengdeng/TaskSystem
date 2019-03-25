@@ -78,7 +78,7 @@ public class ModifyUserNameActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 if (TextUtils.isEmpty(etUsername.getEditableText().toString())) {
-                    etUsername.setError("输入用户名");
+                    ToastUtils.showShort("输入用户名");
                 }else{
                     doModifyUserName();
                 }

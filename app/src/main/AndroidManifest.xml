@@ -14,12 +14,31 @@
     <application
         android:name=".FixApplication"
         android:allowBackup="true"
+        android:hardwareAccelerated="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.DoTaskStepActivity"></activity>
+        <activity android:name=".activity.MyScoreListActivity"></activity>
+        <activity android:name=".activity.MessageDetailActivity" />
+        <activity android:name=".activity.MessageListActivity" />
+        <activity android:name=".activity.ModifyPhoneStepTwoActivity" />
+        <activity android:name=".activity.DoTaskWordStepThreeActivity" />
+        <activity
+            android:name=".activity.DoTaskWorkStepTwoActivity"
+            android:label="@string/title_activity_task_work_step_one"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".activity.AddCountActivity" />
+        <activity android:name=".activity.BankListActivity" />
+        <activity android:name=".activity.ApplyWithdrawActivity" />
+        <activity
+            android:name=".activity.MyIncomeActivity"
+            android:label="@string/title_activity_my_income"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".activity.ModifyPhoneActivity" />
+        <activity android:name=".activity.ModifyPasswordActivity" />
+        <activity android:name=".activity.DoTaskStepActivity" />
         <activity android:name=".activity.ModifyUserNameActivity" />
         <activity
             android:name=".activity.TaskListActivity"

@@ -21,6 +21,7 @@ public class TaskInfoItem implements Serializable {
     public String step_2;// "<img src="http;////task.mayimayi.cn/Uploads/2019/03/1.jpg" alt="" />",
     public String step_3;// "<img src="http;////task.mayimayi.cn/Uploads/2019/03/2.jpg" alt="" />"
     public int is_collect;//为收藏
+    public String order_id;
     /**
      * 0——待申请
      * 1——待工作
@@ -31,7 +32,7 @@ public class TaskInfoItem implements Serializable {
      * 6——已作废
      * 7——已超时
      *
-     * 5  6  7  按钮灰色
+     *4 5  6  7  按钮灰色
      */
     public int order_status;
     public String order_status_title;

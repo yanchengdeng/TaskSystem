@@ -1,6 +1,8 @@
 package com.task.system.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
@@ -63,36 +65,38 @@ public class TaskDetailActivity extends BaseSimpleActivity {
 
     private DialogPlus shareDialog;
     private String order_id;
+    private String task_id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task_detail);
         ButterKnife.bind(this);
+        setTitle("任务详情");
 
-        taskInfoItem = (TaskInfoItem) getIntent().getSerializableExtra(Constans.PASS_OBJECT);
-        initData(taskInfoItem);
+        task_id = getIntent().getStringExtra(Constans.PASS_STRING);
+//        initData(taskInfoItem);
         tablayout.addTab(tablayout.newTab().setText("任务描述"), 0);
         tablayout.addTab(tablayout.newTab().setText("详细流程"), 1);
-        FragmentPagerItemAdapter fragmentPagerItemAdapter = new FragmentPagerItemAdapter(getSupportFragmentManager(), getFragmentsItem());
-        viewpage.setAdapter(fragmentPagerItemAdapter);
-        tablayout.setupWithViewPager(viewpage);
         getTaskDetail();
     }
 
-    private FragmentPagerItems getFragmentsItem() {
-        return FragmentPagerItems.with(mContext).add("任务描述", FragmentTaskDetail.class, getIntent().getExtras())
-                .add("详细流程", FragmentStepInfo.class, getIntent().getExtras()).create();
+    private FragmentPagerItems getFragmentsItem(Bundle bundle) {
+        return FragmentPagerItems.with(mContext).add("任务描述", FragmentTaskDetail.class, bundle)
+                .add("详细流程", FragmentStepInfo.class, bundle).create();
     }
 
     private void getTaskDetail() {
+        showLoadingBar();
         HashMap<String, String> maps = new HashMap<>();
-        maps.put("task_id", taskInfoItem.id);
+        maps.put("uid",TUtils.getUserId());
+        maps.put("task_id", task_id);
         Call<TaskInfo> call = ApiConfig.getInstants().create(TaskService.class).getTaskDetail(TUtils.getParams(maps));
 
         API.getObject(call, TaskInfoItem.class, new ApiCallBack<TaskInfoItem>() {
             @Override
             public void onSuccess(int msgCode, String msg, TaskInfoItem data) {
+                dismissLoadingBar();
                 taskInfoItem = data;
                 if (data.is_collect==0) {
                     ivCollected.setImageResource(R.mipmap.iv_collect);
@@ -106,6 +110,7 @@ public class TaskDetailActivity extends BaseSimpleActivity {
 
             @Override
             public void onFaild(int msgCode, String msg) {
+                dismissLoadingBar();
 
             }
         });
@@ -125,16 +130,24 @@ public class TaskDetailActivity extends BaseSimpleActivity {
         if (!TextUtils.isEmpty(data.order_status_title)){
             tvDoWork.setText(data.order_status_title);
         }
-        if ( data.order_status==1 ||data.order_status==2 || data.order_status==3){
+        if ( data.order_status==1 ||data.order_status==2){
             tvDoWork.setBackgroundColor(getResources().getColor(R.color.red));
             tvGiveUpWork.setVisibility(View.VISIBLE);
-        }else if (data.order_status==4 || data.order_status==0){
+        }else if ( data.order_status==0){
             tvGiveUpWork.setVisibility(View.GONE);
             tvDoWork.setBackgroundColor(getResources().getColor(R.color.red));
         }else{
             tvDoWork.setBackgroundColor(getResources().getColor(R.color.give_up));
             tvGiveUpWork.setVisibility(View.GONE);
         }
+
+        order_id = data.order_id;
+
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(Constans.PASS_OBJECT,data);
+        FragmentPagerItemAdapter fragmentPagerItemAdapter = new FragmentPagerItemAdapter(getSupportFragmentManager(), getFragmentsItem(bundle));
+        viewpage.setAdapter(fragmentPagerItemAdapter);
+        tablayout.setupWithViewPager(viewpage);
 
     }
 
@@ -155,17 +168,23 @@ public class TaskDetailActivity extends BaseSimpleActivity {
                 shareDialog();
                 break;
             case R.id.tv_custome:
-                ToastUtils.showShort("客服");
+                TUtils.openKf();
                 break;
             case R.id.tv_give_up_work:
                 giveUpTask();
                 break;
             case R.id.tv_do_work:
+                if (taskInfoItem==null){
+                    getTaskDetail();
+                    return;
+                }
                 if (taskInfoItem.order_status==0) {
                     applyTask();
-                } else if (taskInfoItem.order_status==1 ||taskInfoItem.order_status==2 || taskInfoItem.order_status==3){
+                } else if (taskInfoItem.order_status==1 ||taskInfoItem.order_status==2 ){
                     //做下一步工作
-                    ActivityUtils.startActivity(getIntent().getExtras(), DoTaskStepActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable(Constans.PASS_OBJECT,taskInfoItem);
+                    ActivityUtils.startActivityForResult(bundle,TaskDetailActivity.this, DoTaskStepActivity.class,100);
                 }else{
                     ToastUtils.showShort(""+taskInfoItem.order_status_title);
                 }
@@ -188,10 +207,11 @@ public class TaskDetailActivity extends BaseSimpleActivity {
                 if (data != null) {
                     if (!TextUtils.isEmpty(data.order_id)) {
                         order_id = data.order_id;
+                        taskInfoItem.order_id = order_id;
                     }
                 }
                 taskInfoItem.order_status=1;
-                tvDoWork.setText("继续工作");
+                tvDoWork.setText("待工作");
             }
 
             @Override
@@ -328,4 +348,14 @@ public class TaskDetailActivity extends BaseSimpleActivity {
     }
 
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (requestCode==100){
+            if (resultCode==RESULT_OK){
+//                ToastUtils.showShort("等待审核");
+                tvDoWork.setText("待审核");
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
 }

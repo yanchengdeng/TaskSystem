@@ -106,8 +106,10 @@
 
 
                         <ImageView
+                            android:id="@+id/iv_message"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:padding="@dimen/image_padding_big"
                             android:layout_alignParentRight="true"
                             android:layout_centerVertical="true"
                             android:layout_marginRight="20dp"
@@ -121,10 +123,12 @@
                             android:layout_width="@dimen/activity_horizontal_margin"
                             android:layout_height="@dimen/activity_horizontal_margin"
                             android:layout_alignParentRight="true"
-                            android:layout_marginRight="16dp"
+                            android:layout_marginRight="20dp"
                             android:background="@drawable/unread_num"
                             android:gravity="center"
-                            android:text="99"
+                            android:layout_marginTop="@dimen/image_padding_big"
+                            android:text=""
+                            android:visibility="invisible"
                             android:textColor="@color/red"
                             android:textSize="@dimen/text_size_smallest" />
 
@@ -178,7 +182,7 @@
                                     android:layout_height="wrap_content"
                                     android:text="全部分类"
                                     android:textColor="@color/color_tittle"
-                                    android:textSize="@dimen/text_size_normal_up" />
+                                    android:textSize="@dimen/text_size_normal" />
 
                                 <ImageView
                                     android:id="@+id/iv_all_sort"
@@ -205,7 +209,7 @@
                                     android:layout_height="wrap_content"
                                     android:text="智能排序"
                                     android:textColor="@color/color_tittle"
-                                    android:textSize="@dimen/text_size_normal_up" />
+                                    android:textSize="@dimen/text_size_normal" />
 
                                 <ImageView
                                     android:id="@+id/iv_smart_sort"

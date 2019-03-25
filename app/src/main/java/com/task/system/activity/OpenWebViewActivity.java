@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 
+import com.blankj.utilcode.util.LogUtils;
 import com.task.system.Constans;
 import com.task.system.R;
 
@@ -22,6 +23,7 @@ public class OpenWebViewActivity extends BaseActivity {
         webView = getView(R.id.webview);
         name = getIntent().getStringExtra(Constans.PASS_NAME);
         url = getIntent().getStringExtra(Constans.PASS_STRING);
+        LogUtils.w("dyc",url);
         setTitle("" + name);
         initwebview();
         webView.loadUrl(url);

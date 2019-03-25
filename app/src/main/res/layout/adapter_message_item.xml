@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:padding="@dimen/activity_horizontal_margin"
+   >
+
+
+    <LinearLayout
+        android:id="@+id/ll_title_ui"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_unread_tips"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:text="【未读】"
+            android:textColor="@color/red"
+            android:textSize="@dimen/text_size_normal_up"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:text="标题"
+            android:textColor="@color/color_info"
+            android:textSize="@dimen/text_size_normal_up" />
+
+    </LinearLayout>
+
+
+    <TextView
+        android:id="@+id/tv_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ll_title_ui"
+        android:layout_marginTop="@dimen/image_padding_big"
+        android:singleLine="true"
+        android:text="2018-09-01"
+        android:paddingLeft="@dimen/image_padding"
+        android:textColor="@color/color_date"
+        android:textSize="@dimen/text_size_normal" />
+
+
+    <ImageView
+        android:id="@+id/iv_read_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="@dimen/image_padding_big"
+        android:visibility="invisible"
+        android:layout_toLeftOf="@+id/iv_arrow"
+        android:src="@mipmap/point_unread" />
+
+    <ImageView
+        android:id="@+id/iv_arrow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:src="@mipmap/arrow_right_black" />
+
+</RelativeLayout>

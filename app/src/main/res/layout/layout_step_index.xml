@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/activity_horizontal_margin"
+    android:background="@color/list_divider_color"
+  >
+
+    <TextView
+        android:id="@+id/tv_one"
+        android:layout_width="@dimen/activity_horizontal_margin"
+        android:layout_height="@dimen/activity_horizontal_margin"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:text="1"
+        android:background="@drawable/view_unread_red_bg"
+        android:textColor="@color/white"
+        android:textSize="12sp" />
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="1px"
+        android:layout_weight="1"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:background="@color/color_info"
+        android:layout_gravity="center_vertical"
+        />
+
+
+    <TextView
+        android:id="@+id/tv_two"
+        android:layout_width="@dimen/activity_horizontal_margin"
+        android:layout_height="@dimen/activity_horizontal_margin"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:text="2"
+        android:background="@drawable/view_unread_gray_bg"
+        android:textColor="@color/white"
+        android:textSize="12sp" />
+    <View
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_height="1px"
+        android:background="@color/color_info"
+        android:layout_gravity="center_vertical"
+        />
+
+    <TextView
+        android:id="@+id/tv_three"
+        android:layout_width="@dimen/activity_horizontal_margin"
+        android:layout_height="@dimen/activity_horizontal_margin"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:text="3"
+        android:background="@drawable/view_unread_gray_bg"
+        android:textColor="@color/white"
+        android:textSize="12sp" />
+</LinearLayout>
+
+

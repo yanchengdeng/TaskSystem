@@ -67,6 +67,25 @@ public interface TaskService {
     @POST("public/forgetpassword")
     Call<TaskInfoList> forgetPassword(@FieldMap HashMap<String, String> maps);
 
+
+    //修改密码
+    @FormUrlEncoded
+    @POST("user/setPassword")
+    Call<TaskInfoList> modifyPassword(@FieldMap HashMap<String, String> maps);
+
+
+    //验证验证码
+    @FormUrlEncoded
+    @POST("public/checkMobileCode")
+    Call<TaskInfoList>  checkMobileCode(@FieldMap HashMap<String,String> maps);
+
+
+    //修改手机号
+    @FormUrlEncoded
+    @POST("user/setMobile")
+    Call<TaskInfoList>  setMobile(@FieldMap HashMap<String,String> maps);
+
+
     //获取用户基本信息
 
     /**
@@ -99,10 +118,6 @@ public interface TaskService {
     @FormUrlEncoded
     @POST("user/setAvatar")
     Call<TaskInfoList> setUserAvatar(@FieldMap HashMap<String, String> maps);
-
-
-
-
 
 
 
@@ -170,6 +185,12 @@ public interface TaskService {
     Call<TaskInfo> checkInviteCode(@FieldMap HashMap<String,String> maps );
 
 
+    //获取邀请码
+    @FormUrlEncoded
+    @POST("public/getInviteCode")
+    Call<TaskInfo> getInviteCode(@FieldMap HashMap<String,String> maps);
+
+
 
     //添加收藏
     @FormUrlEncoded
@@ -181,6 +202,13 @@ public interface TaskService {
     @FormUrlEncoded
     @POST("taskOperate/cancelCollect")
     Call<TaskInfoList> cancleCollectTask(@FieldMap HashMap<String,String> maps);
+
+
+    //收藏列表
+    //page
+    @FormUrlEncoded
+    @POST("taskOperate/collectList")
+    Call<TaskInfoList> getCollectList(@FieldMap HashMap<String,String> maps);
 
     //申请任务
 
@@ -209,6 +237,123 @@ public interface TaskService {
     @FormUrlEncoded
     @POST("order/giveUp")
     Call<TaskInfoList>  giveUpTaskOperate(@FieldMap HashMap<String,String> maps);
+
+    //客服地址
+    @FormUrlEncoded
+    @POST("public/getCustomerService")
+    Call<TaskInfo> getCustomeSerice(@FieldMap HashMap<String,String> maps);
+
+
+    /**添加银行卡
+     *
+     * account
+     * account_name
+     * account_type
+     * mobile_code
+     *
+     * 账户，支付宝账号或者银行账户
+     * 账户全名
+     * 账户类型，1-支付宝账户，2-银行卡账户
+     * 手机验证码
+     */
+
+    @FormUrlEncoded
+    @POST("user/addCard")
+    Call<TaskInfoList>  addCard(@FieldMap HashMap<String,String> maps);
+
+
+    /**
+     * id
+     *   解绑账号
+     */
+    @FormUrlEncoded
+    @POST("user/delCard")
+    Call<TaskInfoList>  delCard(@FieldMap HashMap<String,String> maps);
+
+
+    //获取银行卡账号
+    @FormUrlEncoded
+    @POST("user/getCard")
+    Call<TaskInfo> getCards(@FieldMap HashMap<String,String> maps);
+
+
+    /**
+     * 提现
+     * deposit_cash
+     * card_id
+     */
+
+    @FormUrlEncoded
+    @POST("user/deposit")
+    Call<TaskInfoList> deposite(@FieldMap HashMap<String,String> maps);
+
+
+    /**
+     * task_id
+     * uid
+     * images
+     上传多张图片
+     */
+    @FormUrlEncoded
+    @POST("order/uploadImages")
+    Call<TaskInfoList> uploadIamges(@FieldMap HashMap<String,String> maps);
+
+    /**
+     * order_id
+     * uid
+     * content
+     //上传信息 变更状态
+     */
+    @FormUrlEncoded
+    @POST("order/uploadContent")
+    Call<TaskInfoList> uploadContent(@FieldMap HashMap<String,String> maps);
+
+
+    /** 订单列表
+     * status
+     * page
+     * keywords
+     * sort
+     */
+    @FormUrlEncoded
+    @POST("order/getList")
+    Call<TaskInfo> getOrderList(@FieldMap HashMap<String,String> maps);
+
+
+    //短消息数量
+    @FormUrlEncoded
+    @POST("message/newMesssageSum")
+    Call<TaskInfo> getMessageCount(@FieldMap HashMap<String,String> maps);
+
+
+
+    //消息列表
+    @FormUrlEncoded
+    @POST("message/getlist")
+    Call<TaskInfo> getMessageList(@FieldMap HashMap<String,String> maps);
+
+
+
+    //消息详情
+    @FormUrlEncoded
+    @POST("message/detail")
+    Call<TaskInfoList> getMessagDetail(@FieldMap HashMap<String,String> maps);
+
+
+    //积分记录、
+    // start_date
+    //end_date
+    @FormUrlEncoded
+    @POST("statistics/getList")
+    Call<TaskInfo> getStaticsList(@FieldMap HashMap<String,String> maps);
+
+
+    //积分详情 log_id
+    @FormUrlEncoded
+    @POST("statistics/detailScoreLog")
+    Call<TaskInfo> getStaticDetail(@FieldMap HashMap<String,String> maps);
+
+    //  Call<com.task.system.api.TaskInfoList> call = ApiConfig.getInstants().create(TaskService.class).getCityList(TUtils.getParams());
 
 
 }

@@ -106,12 +106,12 @@ public class PersonSettingActivity extends BaseActivity {
             ImageLoaderUtil.loadCircle(userInfo.avatar, ivHeader, R.mipmap.defalut_header);
         }
 
-        if (!TextUtils.isEmpty(userInfo.nickname)) {
-            tvUserName.setText(userInfo.nickname);
+        if (!TextUtils.isEmpty(userInfo.username)) {
+            tvUserName.setText(userInfo.username);
         }
 
         if (!TextUtils.isEmpty(userInfo.mobile)) {
-            tvPhone.setText(userInfo.mobile);
+            tvPhone.setText(TUtils.getHidePhone());
         }
 
         if (!TextUtils.isEmpty(userInfo.uid)) {
@@ -157,10 +157,12 @@ public class PersonSettingActivity extends BaseActivity {
                 ActivityUtils.startActivity(ModifyUserNameActivity.class);
                 break;
             case R.id.rl_phone_ui:
+                ActivityUtils.startActivity(ModifyPhoneActivity.class);
                 break;
 //            case R.id.rl_sysyte_id_ui:
 //                break;
             case R.id.tv_modify_password_ui:
+                ActivityUtils.startActivity(ModifyPasswordActivity.class);
                 break;
             case R.id.tv_login_out:
                 showExitDialog();
@@ -373,5 +375,6 @@ public class PersonSettingActivity extends BaseActivity {
         if (!TextUtils.isEmpty(userInfo.username)){
             tvUserName.setText(userInfo.username);
         }
+        tvPhone.setText(TUtils.getHidePhone());
     }
 }

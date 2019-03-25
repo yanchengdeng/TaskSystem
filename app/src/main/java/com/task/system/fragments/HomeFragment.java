@@ -40,6 +40,8 @@ import com.task.system.Constans;
 import com.task.system.FixApplication;
 import com.task.system.R;
 import com.task.system.activity.CityListActivity;
+import com.task.system.activity.MainActivity;
+import com.task.system.activity.MessageListActivity;
 import com.task.system.activity.OpenWebViewActivity;
 import com.task.system.activity.TaskDetailActivity;
 import com.task.system.activity.TaskListActivity;
@@ -54,6 +56,7 @@ import com.task.system.bean.AdInfo;
 import com.task.system.bean.CatergoryInfo;
 import com.task.system.bean.CityInfo;
 import com.task.system.bean.HomeMenu;
+import com.task.system.bean.SimpleBeanInfo;
 import com.task.system.bean.SortTags;
 import com.task.system.bean.TaskInfoList;
 import com.task.system.common.GlideImageLoader;
@@ -78,6 +81,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import razerdp.basepopup.BasePopupWindow;
 import retrofit2.Call;
 
 public class HomeFragment extends Fragment {
@@ -233,14 +237,13 @@ public class HomeFragment extends Fragment {
         getSmartSort();
         getTaskList();
         getCityList();
-
-
         smartRefresh.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshLayout) {
                 page = 1;
                 getAds();
                 getTaskList();
+                getUnreadNum();
             }
         });
 
@@ -257,7 +260,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 Bundle bundle = new Bundle();
-                bundle.putSerializable(Constans.PASS_OBJECT, homeAdapter.getData().get(position));
+                bundle.putString(Constans.PASS_STRING, homeAdapter.getData().get(position).id);
                 ActivityUtils.startActivity(bundle, TaskDetailActivity.class);
             }
         });
@@ -268,11 +271,44 @@ public class HomeFragment extends Fragment {
         } else {
             ToastUtils.showShort("请打开定位权限");
         }
-
-
         return view;
     }
 
+
+
+
+
+    private void getUnreadNum() {
+        Call<TaskInfo> call = ApiConfig.getInstants().create(TaskService.class).getMessageCount(TUtils.getParams());
+        API.getObject(call, SimpleBeanInfo.class, new ApiCallBack<SimpleBeanInfo>() {
+            @Override
+            public void onSuccess(int msgCode, String msg, SimpleBeanInfo data) {
+                if (data.sum>0){
+                    tvMessageNum.setText(String.valueOf(data.sum>99?99:data.sum));
+                    tvMessageNum.setVisibility(View.VISIBLE);
+                }else{
+                    tvMessageNum.setVisibility(View.INVISIBLE);
+                }
+            }
+
+            @Override
+            public void onFaild(int msgCode, String msg) {
+
+            }
+        });
+
+    }
+
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser){
+            //更新statusbar
+            getUnreadNum();
+
+        }
+    }
 
     private void getAds() {
         HashMap<String, String> maps = new HashMap<>();
@@ -363,6 +399,11 @@ public class HomeFragment extends Fragment {
      * * keywords
      */
     private void getTaskList() {
+        if (page==1){
+            if (getActivity()!=null){
+                ((MainActivity) getActivity()).showLoadingBar();
+            }
+        }
         HashMap<String, String> maps = new HashMap<>();
         maps.put("page", String.valueOf(page));
         maps.put("page_size", Constans.PAGE_SIZE);
@@ -388,12 +429,17 @@ public class HomeFragment extends Fragment {
             @Override
             public void onSuccess(int msgCode, String msg, TaskInfoList data) {
                 TUtils.dealReqestData(homeAdapter, recycle, data.list, page, smartRefresh);
-
+                if (getActivity()!=null){
+                    ((MainActivity) getActivity()).dismissLoadingBar();
+                }
             }
 
             @Override
             public void onFaild(int msgCode, String msg) {
                 TUtils.dealNoReqestData(homeAdapter, recycle, smartRefresh);
+                if (getActivity()!=null){
+                    ((MainActivity) getActivity()).dismissLoadingBar();
+                }
 
             }
         });
@@ -440,6 +486,12 @@ public class HomeFragment extends Fragment {
             recyclerView.addItemDecoration(RecycleViewUtils.getItemDecorationHorizontal());
             recyclerView.setAdapter(menuAdapter);
 
+            quickPopupSmart.setOnDismissListener(new BasePopupWindow.OnDismissListener() {
+                @Override
+                public void onDismiss() {
+                    ivSmartSort.setImageResource(R.mipmap.icon_arrow_down);
+                }
+            });
 
             menuAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
                 @Override
@@ -453,9 +505,9 @@ public class HomeFragment extends Fragment {
                     page = 1;
                     getTaskList();
                     quickPopupSmart.dismiss();
-                    tvSmartSort.setText("" + meneLeft.getData().get(position).title);
+                    tvSmartSort.setText("" + menuAdapter.getData().get(position).title);
                     tvSmartSort.setTextColor(getResources().getColor(R.color.red));
-                    ivSmartSort.setImageResource(R.mipmap.arrwo_up_red);
+                    ivSmartSort.setImageResource(R.mipmap.icon_arrow_down);
                 }
             });
         }
@@ -463,8 +515,10 @@ public class HomeFragment extends Fragment {
 //
         if (quickPopupSmart.isShowing()) {
             quickPopupSmart.dismiss();
+            ivSmartSort.setImageResource(R.mipmap.icon_arrow_down);
         } else {
             quickPopupSmart.showPopupWindow(llSortUi);
+            ivSmartSort.setImageResource(R.mipmap.arrwo_up_red);
         }
     }
 
@@ -484,6 +538,13 @@ public class HomeFragment extends Fragment {
             recyclerViewRight.setLayoutManager(new LinearLayoutManager(ApiConfig.context));
             recyclerViewRight.setAdapter(menuRight);
 
+            quickPopupAll.setOnDismissListener(new BasePopupWindow.OnDismissListener() {
+                @Override
+                public void onDismiss() {
+                    ivAllSort.setImageResource(R.mipmap.icon_arrow_down);
+                }
+            });
+
 
             meneLeft.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
                 @Override
@@ -501,7 +562,7 @@ public class HomeFragment extends Fragment {
                         quickPopupAll.dismiss();
                         tvAllSort.setText("" + meneLeft.getData().get(position).title);
                         tvAllSort.setTextColor(getResources().getColor(R.color.red));
-                        ivAllSort.setImageResource(R.mipmap.arrwo_up_red);
+                        ivAllSort.setImageResource(R.mipmap.icon_arrow_down);
                     } else {
                         menuRight.setNewData(meneLeft.getData().get(position)._child);
                     }
@@ -523,7 +584,7 @@ public class HomeFragment extends Fragment {
                     quickPopupAll.dismiss();
                     tvAllSort.setText("" + menuRight.getData().get(position).title);
                     tvAllSort.setTextColor(getResources().getColor(R.color.red));
-                    ivAllSort.setImageResource(R.mipmap.arrwo_up_red);
+                    ivAllSort.setImageResource(R.mipmap.icon_arrow_down);
                 }
             });
         }
@@ -531,8 +592,10 @@ public class HomeFragment extends Fragment {
 //
         if (quickPopupAll.isShowing()) {
             quickPopupAll.dismiss();
+            ivAllSort.setImageResource(R.mipmap.icon_arrow_down);
         } else {
             quickPopupAll.showPopupWindow(llSortUi);
+            ivAllSort.setImageResource(R.mipmap.arrwo_up_red);
         }
     }
 
@@ -543,13 +606,16 @@ public class HomeFragment extends Fragment {
         unbinder.unbind();
     }
 
-    @OnClick({R.id.tv_location, R.id.ll_search, R.id.tv_message_num, R.id.ll_all_sort, R.id.ll_smart_sort})
+    @OnClick({R.id.tv_location, R.id.ll_search, R.id.tv_message_num,R.id.iv_message, R.id.ll_all_sort, R.id.ll_smart_sort})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_location:
                 HomeFragment.this.startActivityForResult(new Intent(getContext(), CityListActivity.class), 200);
                 break;
             case R.id.tv_message_num:
+            case R.id.iv_message:
+                ActivityUtils.startActivity(MessageListActivity
+                        .class);
                 break;
             case R.id.ll_search:
                 ActivityUtils.startActivity(TaskListActivity.class);

@@ -6,19 +6,30 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v4.view.ViewPager;
 import android.view.MenuItem;
 
+import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.gyf.barlibrary.ImmersionBar;
+import com.task.system.Constans;
 import com.task.system.R;
 import com.task.system.adapters.FragmentPagerItemAdapter;
+import com.task.system.api.API;
+import com.task.system.api.TaskInfo;
+import com.task.system.api.TaskService;
+import com.task.system.bean.SimpleBeanInfo;
 import com.task.system.fragments.HomeFragment;
 import com.task.system.fragments.PercenterFragment;
 import com.task.system.fragments.TaskFragment;
 import com.task.system.utils.AppManager;
+import com.task.system.utils.TUtils;
 import com.task.system.views.FragmentPagerItem;
 import com.task.system.views.FragmentPagerItems;
 import com.task.system.views.NoScrollViewPager;
 import com.yanzhenjie.permission.AndPermission;
 import com.yanzhenjie.permission.runtime.Permission;
+import com.yc.lib.api.ApiCallBack;
+import com.yc.lib.api.ApiConfig;
+
+import retrofit2.Call;
 
 public class MainActivity extends BaseSimpleActivity {
 
@@ -109,8 +120,25 @@ public class MainActivity extends BaseSimpleActivity {
                 })
                 .start();
 
+        getCustom();
+
     }
 
+    private void getCustom() {
+        Call<TaskInfo> call = ApiConfig.getInstants().create(TaskService.class).getCustomeSerice(TUtils.getParams());
+
+       API.getObject(call, SimpleBeanInfo.class, new ApiCallBack<SimpleBeanInfo>() {
+           @Override
+           public void onSuccess(int msgCode, String msg, SimpleBeanInfo data) {
+               SPUtils.getInstance().put(Constans.KEFU,data.link);
+           }
+
+           @Override
+           public void onFaild(int msgCode, String msg) {
+
+           }
+       });
+    }
 
 
     private FragmentPagerItems getPagerItems(FragmentPagerItems pages) {

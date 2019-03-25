@@ -63,16 +63,15 @@ public class RegisterStepTwoActivity extends BaseSimpleActivity {
             @Override
             public void onClick(View v) {
                 if (TextUtils.isEmpty(etAccont.getEditableText().toString())) {
-                    etAccont.setError("请输入用户名");
+                    ToastUtils.showShort("请输入用户名");
                 } else if (TextUtils.isEmpty(etPassword.getEditableText().toString())) {
-                    etPassword.setError("请输入密码");
+                    ToastUtils.showShort("请输入密码");
                 } else if (TextUtils.isEmpty(etPasswordConfirm.getEditableText().toString())) {
-                    etPasswordConfirm.setError("请输入确认密码");
+                    ToastUtils.showShort("请输入确认密码");
                 } else if (etPassword.getEditableText().toString().equals(etPasswordConfirm.getEditableText().toString())) {
                     doRegister();
                 } else {
-                    etPassword.setError("密码不一致");
-                    etPasswordConfirm.setError("密码不一致");
+                    ToastUtils.showShort("密码不一致");
                 }
             }
         });

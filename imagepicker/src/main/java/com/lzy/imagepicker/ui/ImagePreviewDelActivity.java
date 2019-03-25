@@ -93,8 +93,8 @@ public class ImagePreviewDelActivity extends ImagePreviewBaseActivity implements
     public void onBackPressed() {
         Intent intent = new Intent();
         //带回最新数据
-        intent.putExtra(ImagePicker.EXTRA_IMAGE_ITEMS, mImageItems);
-        setResult(ImagePicker.RESULT_CODE_BACK, intent);
+        intent.putExtra(ImagePicker.EXTRA_RESULT_ITEMS, mImageItems);
+        setResult(ImagePicker.RESULT_CODE_ITEMS, intent);
         finish();
         super.onBackPressed();
     }

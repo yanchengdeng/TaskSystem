@@ -23,6 +23,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@null"
+            android:layout_gravity="center_vertical"
             android:drawableLeft="@mipmap/search_white"
             android:drawablePadding="@dimen/image_padding"
             android:hint="搜索所有差事"

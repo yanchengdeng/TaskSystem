@@ -24,6 +24,7 @@ import com.task.system.api.API;
 import com.task.system.api.TaskInfo;
 import com.task.system.api.TaskInfoList;
 import com.task.system.api.TaskService;
+import com.task.system.bean.InviteCode;
 import com.task.system.bean.RegisterParams;
 import com.task.system.bean.UserInfo;
 import com.task.system.enums.MobileCode;
@@ -174,21 +175,19 @@ public class RegisterActivity extends BaseSimpleActivity {
                 break;
             case R.id.tv_get_code:
                 if (TextUtils.isEmpty(etPhone.getEditableText().toString())) {
-                    etPhone.setError(getString(R.string.phone_tips));
+                    ToastUtils.showShort(getString(R.string.phone_tips));
                 } else if (RegexUtils.isMobileSimple(etPhone.getEditableText().toString())) {
                     getCode();
                 } else {
-                    etPhone.setError("手机号码错误");
+                    ToastUtils.showShort("手机号码错误");
                 }
 
                 break;
             case R.id.tv_get_inviter_code:
-
-
-
+                getInviteCode();
                 break;
             case R.id.btn_register:
-                if (TextUtils.isEmpty(etInvideCode.getEditableText().toString())){
+                if (TextUtils.isEmpty(etInvideCode.getEditableText().toString())) {
                     ToastUtils.showShort("请输入邀请码");
                     return;
                 }
@@ -197,10 +196,30 @@ public class RegisterActivity extends BaseSimpleActivity {
         }
     }
 
+    //获取邀请码
+    private void getInviteCode() {
+        Call<TaskInfo> call = ApiConfig.getInstants().create(TaskService.class).getInviteCode(TUtils.getParams());
+
+        API.getObject(call, InviteCode.class, new ApiCallBack<InviteCode>() {
+            @Override
+            public void onSuccess(int msgCode, String msg, InviteCode data) {
+                ToastUtils.showShort(msg);
+                etInvideCode.setText("" + data.invite_code);
+            }
+
+            @Override
+            public void onFaild(int msgCode, String msg) {
+                ToastUtils.showShort(msg);
+            }
+        });
+
+
+    }
+
     //校验邀请码
     private void checkInviteCode() {
-        HashMap<String,String> hashMap = new HashMap<>();
-        hashMap.put("invite_code",etInvideCode.getEditableText().toString());
+        HashMap<String, String> hashMap = new HashMap<>();
+        hashMap.put("invite_code", etInvideCode.getEditableText().toString());
         Call<TaskInfo> call = ApiConfig.getInstants().create(TaskService.class).checkInviteCode(TUtils.getParams(hashMap));
 
         API.getObject(call, UserInfo.class, new ApiCallBack<UserInfo>() {
@@ -222,40 +241,39 @@ public class RegisterActivity extends BaseSimpleActivity {
 
     private void checkParams(String phone, String smsCode, String inviteCode) {
         if (TextUtils.isEmpty(phone)) {
-            etPhone.setError(getString(R.string.phone_tips));
+            ToastUtils.showShort(getString(R.string.phone_tips));
         } else if (RegexUtils.isMobileSimple(phone)) {
             if (TextUtils.isEmpty(smsCode)) {
-                etCode.setError(getString(R.string.code_tips));
+                ToastUtils.showShort(getString(R.string.code_tips));
             } else {
-                    if (!TextUtils.isEmpty(etInvideCode.getEditableText().toString())) {
+                if (!TextUtils.isEmpty(etInvideCode.getEditableText().toString())) {
 
-                        RegisterParams registerParams = new RegisterParams();
-                        registerParams.invite_code = inviteCode;
-                        registerParams.mobile = phone;
-                        registerParams.mobile_code = smsCode;
-                        Bundle bundle = new Bundle();
-                        bundle.putSerializable(Constans.PASS_OBJECT,registerParams);
-                        ActivityUtils.startActivityForResult(bundle,RegisterActivity.this,RegisterStepTwoActivity.class,300);
-                    } else {
-                        etInvideCode.setError(getString(R.string.invide_code_tips));
-                    }
+                    RegisterParams registerParams = new RegisterParams();
+                    registerParams.invite_code = inviteCode;
+                    registerParams.mobile = phone;
+                    registerParams.mobile_code = smsCode;
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable(Constans.PASS_OBJECT, registerParams);
+                    ActivityUtils.startActivityForResult(bundle, RegisterActivity.this, RegisterStepTwoActivity.class, 300);
+                } else {
+                    ToastUtils.showShort(getString(R.string.invide_code_tips));
+                }
             }
         } else {
-            etPhone.setError("手机号码错误");
+            ToastUtils.showShort("手机号码错误");
         }
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if (requestCode==300){
-            if (resultCode == RESULT_OK){
+        if (requestCode == 300) {
+            if (resultCode == RESULT_OK) {
                 setResult(RESULT_OK);
                 finish();
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
-
 
 
     private void getCode() {

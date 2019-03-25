@@ -53,4 +53,5 @@
     <dimen name="sp_55">55sp</dimen>
 
 
+    <dimen name="dash_line">1.2dp</dimen>
 </resources>
