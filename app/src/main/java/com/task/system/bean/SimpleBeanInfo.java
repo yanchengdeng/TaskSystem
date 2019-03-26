@@ -6,4 +6,5 @@ import java.io.Serializable;
 public class SimpleBeanInfo implements Serializable {
     public String link;//客服地址
     public int sum;
+    public String uid;
 }

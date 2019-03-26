@@ -21,6 +21,8 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.task.system.Constans;
 import com.task.system.R;
+import com.task.system.activity.AddNewLeaderActivity;
+import com.task.system.activity.MyAccountActivity;
 import com.task.system.activity.MyCollectedActivity;
 import com.task.system.activity.MyIncomeActivity;
 import com.task.system.activity.MyInviteCodeActivity;
@@ -74,6 +76,8 @@ public class PercenterFragment extends Fragment {
     Unbinder unbinder;
     @BindView(R.id.smartRefresh)
     SmartRefreshLayout smartRefresh;
+    @BindView(R.id.tv_add_lead)
+    TextView tvAddLead;
 
     @Nullable
     @Override
@@ -96,7 +100,7 @@ public class PercenterFragment extends Fragment {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(Object event) {
-        if (event instanceof UpdateUserInfoEvent){
+        if (event instanceof UpdateUserInfoEvent) {
             smartRefresh.autoRefresh();
         }
     }
@@ -116,7 +120,7 @@ public class PercenterFragment extends Fragment {
 
             @Override
             public void onFaild(int msgCode, String msg) {
-                if (smartRefresh!=null) {
+                if (smartRefresh != null) {
                     smartRefresh.finishRefresh();
                 }
             }
@@ -153,7 +157,7 @@ public class PercenterFragment extends Fragment {
         unbinder.unbind();
     }
 
-    @OnClick({R.id.ll_user_info_ui, R.id.rl_my_money, R.id.tv_allwork_title, R.id.tv_collect, R.id.tv_my_accoutn, R.id.tv_invite_code})
+    @OnClick({R.id.ll_user_info_ui, R.id.rl_my_money, R.id.tv_allwork_title, R.id.tv_add_lead,R.id.tv_collect, R.id.tv_my_accoutn, R.id.tv_invite_code})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ll_user_info_ui:
@@ -168,6 +172,10 @@ public class PercenterFragment extends Fragment {
                 ActivityUtils.startActivity(MyCollectedActivity.class);
                 break;
             case R.id.tv_my_accoutn:
+                ActivityUtils.startActivity(MyAccountActivity.class);
+                break;
+            case R.id.tv_add_lead:
+                ActivityUtils.startActivity(AddNewLeaderActivity.class);
                 break;
             case R.id.tv_invite_code:
                 ActivityUtils.startActivity(MyInviteCodeActivity.class);

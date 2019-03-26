@@ -102,4 +102,6 @@ dependencies {
     implementation project(':imagepicker')
     implementation 'com.orhanobut:dialogplus:1.11@aar'
     implementation 'top.zibin:Luban:1.1.8'
+    /** 下拉弹出框 ***/
+    implementation 'com.contrarywind:Android-PickerView:4.1.6'
 }

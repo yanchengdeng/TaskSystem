@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:gravity="center_vertical"
+        android:layout_height="@dimen/nav_bar_height"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="@dimen/image_padding_big"
+            android:src="@mipmap/icon_clock" />
+
+        <LinearLayout
+            android:id="@+id/ll_start_time"
+            android:layout_width="0dp"
+            android:layout_gravity="center_vertical"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+
+            <TextView
+                android:id="@+id/tv_start_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/normal_submit_btn_gray_trans"
+                android:gravity="center"
+                android:hint="请选择起始时间"
+                android:paddingTop="@dimen/image_padding"
+                android:paddingBottom="@dimen/image_padding"
+                android:textColor="@color/color_info"
+                android:textSize="@dimen/text_size_normal_down" />
+
+
+        </LinearLayout>
+
+
+        <TextView
+            android:layout_width="@dimen/indicator_width"
+            android:layout_height="1dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/image_padding_big"
+            android:layout_marginRight="@dimen/image_padding_big"
+            android:background="@color/list_divider_color" />
+
+        <LinearLayout
+            android:id="@+id/ll_end_time"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+
+            <TextView
+                android:id="@+id/tv_end_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/normal_submit_btn_gray_trans"
+                android:gravity="center"
+                android:hint="请选择结束时间"
+                android:paddingTop="@dimen/image_padding"
+                android:paddingBottom="@dimen/image_padding"
+                android:textColor="@color/color_info"
+                android:textSize="@dimen/text_size_normal_down" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="1dp"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_height="match_parent"
+            android:background="@color/list_divider_color"/>
+
+        <ImageView
+            android:id="@+id/iv_search"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:src="@mipmap/search" />
+
+    </LinearLayout>
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:background="@color/list_divider_color"
+        android:layout_height="@dimen/image_padding_big" />
+
+
+</LinearLayout>

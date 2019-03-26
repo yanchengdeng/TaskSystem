@@ -276,6 +276,7 @@ public class DoTaskWorkStepTwoActivity extends BaseActivity implements ImagePick
 
         HashMap<String, String> hashMap = new HashMap();
         hashMap.put("task_id", taskInfoItem.id);
+        hashMap.put("order_id",taskInfoItem.order_id);
         hashMap.put("images", base64Encode);
         Call<TaskInfoList> call = ApiConfig.getInstants().create(TaskService.class).uploadIamges(TUtils.getParams(hashMap));
 

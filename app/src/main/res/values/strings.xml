@@ -52,4 +52,8 @@
     <string name="put_content">请输入内容</string>
     <string name="old_phone_tips">请输入当前手机号</string>
     <string name="tab_mytask">我的任务</string>
+    <string name="agent_finish_tast">完成任务数    %s  件</string>
+    <string name="agent_create_value">创造价值    %s  分</string>
+    <string name="new_num">新增会员数：%s 人</string>
+    <string name="fanyong_rate_tips">如果修改，下级所有奖金比例都设置为：%s</string>
 </resources>

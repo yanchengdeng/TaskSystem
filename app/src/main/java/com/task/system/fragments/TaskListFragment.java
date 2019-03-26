@@ -262,7 +262,9 @@ public class TaskListFragment extends BaseFragment {
 
         HashMap<String, String> maps = new HashMap<>();
         maps.put("page", String.valueOf(page));
-        maps.put("status", String.valueOf(status));
+        if (status>0) {
+            maps.put("status", String.valueOf(status));
+        }
 
         if (!TextUtils.isEmpty(sort)) {
             maps.put("sort", sort);

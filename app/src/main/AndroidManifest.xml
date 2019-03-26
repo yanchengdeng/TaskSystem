@@ -20,7 +20,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.MyScoreListActivity"></activity>
+        <activity android:name=".activity.AddNewLeaderActivity"></activity>
+        <activity android:name=".activity.AddLeaderActivity" />
+        <activity android:name=".activity.SettingFinalRateActivity" />
+        <activity android:name=".activity.MyAccountActivity" />
+        <activity android:name=".activity.ScoreDetailActivity" />
+        <activity android:name=".activity.MyScoreListActivity" />
         <activity android:name=".activity.MessageDetailActivity" />
         <activity android:name=".activity.MessageListActivity" />
         <activity android:name=".activity.ModifyPhoneStepTwoActivity" />

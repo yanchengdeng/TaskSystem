@@ -56,7 +56,7 @@ public class FragmentMessage extends BaseFragment {
 
         recyclerView.setLayoutManager(new LinearLayoutManager(ApiConfig.context));
         recyclerView.addItemDecoration(RecycleViewUtils.getItemDecorationHorizontal());
-        messageAdapter = new MessageAdapter(R.layout.adapter_message_item, new ArrayList<MessageItem>());
+        messageAdapter = new MessageAdapter(R.layout.adapter_message_item, new ArrayList<MessageItem>(),message_type);
         recyclerView.setAdapter(messageAdapter);
         messageAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override

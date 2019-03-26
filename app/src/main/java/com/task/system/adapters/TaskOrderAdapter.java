@@ -77,24 +77,24 @@ public class TaskOrderAdapter extends BaseQuickAdapter<OrderInfo, BaseViewHolder
                 * 6——已作废
                 * 7——已超时*/
 
-       //TODO测试完成后 需要隐藏代码
-       if (status==1){
-           if (helper.getAdapterPosition()%2==0){
-               item.status = 1;
-           }else{
-               item.status=2;
-           }
-       }else if (status==5) {
-           if (helper.getAdapterPosition()%3==0) {
-               item.status = 5;
-           }else if (helper.getAdapterPosition()%3==1){
-               item.status = 6;
-           }else{
-               item.status = 7;
-           }
-       }else {
-           item.status = status;
-       }
+//       //TODO测试完成后 需要隐藏代码
+//       if (status==1){
+//           if (helper.getAdapterPosition()%2==0){
+//               item.status = 1;
+//           }else{
+//               item.status=2;
+//           }
+//       }else if (status==5) {
+//           if (helper.getAdapterPosition()%3==0) {
+//               item.status = 5;
+//           }else if (helper.getAdapterPosition()%3==1){
+//               item.status = 6;
+//           }else{
+//               item.status = 7;
+//           }
+//       }else {
+//           item.status = status;
+//       }
 
 
         switch (item.status){

@@ -153,6 +153,19 @@
         android:textColor="@color/color_info"
         android:textSize="@dimen/sp_14"
         />
+
+    <TextView
+        android:id="@+id/tv_add_lead"
+        android:background="@color/white"
+        android:padding="@dimen/activity_horizontal_margin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableRight="@mipmap/arrow_right_black"
+        android:text="新增代理"
+        android:layout_marginTop="1dp"
+        android:textColor="@color/color_info"
+        android:textSize="@dimen/sp_14"
+        />
     <TextView
         android:id="@+id/tv_invite_code"
         android:background="@color/white"

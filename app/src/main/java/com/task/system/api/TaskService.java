@@ -351,9 +351,43 @@ public interface TaskService {
     //积分详情 log_id
     @FormUrlEncoded
     @POST("statistics/detailScoreLog")
-    Call<TaskInfo> getStaticDetail(@FieldMap HashMap<String,String> maps);
+    Call<TaskInfoList> getStaticDetail(@FieldMap HashMap<String,String> maps);
+
+
+    /**
+     *
+     child_uid
+     search_key
+     start_date
+     end_date
+     page
+
+     */
+
+    //我的账户
+    @FormUrlEncoded
+    @POST("statistics/getStatistics")
+    Call<TaskInfo> getStatistics(@FieldMap HashMap<String,String> maps);
+
+
+    //设置返佣比例饿
+//    remark
+//            fanli_ratio
+    //user_type=3的用户才能修改
+    @FormUrlEncoded
+    @POST("leader/setUser")
+    Call<TaskInfoList>  setUseScale(@FieldMap HashMap<String,String> maps);
+
+
+
+    //新增用户
+    @FormUrlEncoded
+    @POST("leader/addLeader")
+    Call<TaskInfo> addLeader(@FieldMap HashMap<String,String> maps);
 
     //  Call<com.task.system.api.TaskInfoList> call = ApiConfig.getInstants().create(TaskService.class).getCityList(TUtils.getParams());
+
+
 
 
 }

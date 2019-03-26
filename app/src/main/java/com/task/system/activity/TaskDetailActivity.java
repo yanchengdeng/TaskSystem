@@ -130,7 +130,7 @@ public class TaskDetailActivity extends BaseSimpleActivity {
         if (!TextUtils.isEmpty(data.order_status_title)){
             tvDoWork.setText(data.order_status_title);
         }
-        if ( data.order_status==1 ||data.order_status==2){
+        if ( data.order_status==1 ){
             tvDoWork.setBackgroundColor(getResources().getColor(R.color.red));
             tvGiveUpWork.setVisibility(View.VISIBLE);
         }else if ( data.order_status==0){
@@ -180,7 +180,7 @@ public class TaskDetailActivity extends BaseSimpleActivity {
                 }
                 if (taskInfoItem.order_status==0) {
                     applyTask();
-                } else if (taskInfoItem.order_status==1 ||taskInfoItem.order_status==2 ){
+                } else if (taskInfoItem.order_status==1){
                     //做下一步工作
                     Bundle bundle = new Bundle();
                     bundle.putSerializable(Constans.PASS_OBJECT,taskInfoItem);
@@ -353,6 +353,7 @@ public class TaskDetailActivity extends BaseSimpleActivity {
         if (requestCode==100){
             if (resultCode==RESULT_OK){
 //                ToastUtils.showShort("等待审核");
+                taskInfoItem.order_status=2;
                 tvDoWork.setText("待审核");
             }
         }

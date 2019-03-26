@@ -14,7 +14,10 @@ public class Constans {
     public static final String PASS_OBJECT = "pass_object";
     public static final String PASS_STRING  = "pass_string";
     public static final String PASS_ALL_CITYS = "all_city";
+    public static final String PASS_START_TIME = "start_time";
+    public static final String PASS_END_TIME = "end_time";
     public static final String KEFU = "kefu";
+    public static final String PASS_CHILD_UID = "pass_child_uid";
     public static boolean HAS_VESRSION_TIPS ;//是否提示过版本更新
 
     public static String BASE_URL_TEST = "task.mayimayi.cn/api.php/V1";

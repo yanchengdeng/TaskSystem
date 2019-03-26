@@ -52,7 +52,7 @@ public class MessageListActivity extends BaseActivity {
 
         Bundle bundlePerson = new Bundle();
         bundlePerson.putString(Constans.PASS_STRING, "1");
-        pages.add(FragmentPagerItem.of("个人消息", FragmentMessage.class, bundleSys));
+        pages.add(FragmentPagerItem.of("个人消息", FragmentMessage.class, bundlePerson));
 
         return pages;
     }

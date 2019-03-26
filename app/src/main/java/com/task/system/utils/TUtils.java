@@ -180,13 +180,13 @@ public class TUtils {
 
     public static String getUserTypeName(String user_type) {
         if (user_type.equals(UserType.USER_TYPE_MEMBER.getType())) {
-            return "正式会员";
+            return "会员";
         } else if (user_type.equals(UserType.USER_TYPE_AGENT.getType())) {
             return "代理";
         } else if (user_type.equals(UserType.USER_TYPE_AGENT.getType())) {
             return "区域";
         }
-        return "正式会员";
+        return "会员";
     }
 
     //处理列表无数据
@@ -344,7 +344,7 @@ public class TUtils {
      */
     public static List<TaskType> getTaskType(){
         List<TaskType> taskTypeList = new ArrayList<>();
-//        taskTypeList.add(new TaskType(-1,"全部"));
+        taskTypeList.add(new TaskType(-1,"全部"));
         taskTypeList.add(new TaskType(1,"待工作"));//待工作 和待提交合并
 //        taskTypeList.add(new TaskType(2,"待提交"));
         taskTypeList.add(new TaskType(3,"待审核"));
