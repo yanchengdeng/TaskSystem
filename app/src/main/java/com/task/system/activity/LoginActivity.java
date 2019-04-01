@@ -23,7 +23,7 @@ import com.task.system.api.API;
 import com.task.system.api.TaskInfo;
 import com.task.system.api.TaskService;
 import com.task.system.bean.UserInfo;
-import com.task.system.utils.AppManager;
+import com.task.system.enums.UserType;
 import com.task.system.utils.TUtils;
 import com.yc.lib.api.ApiCallBack;
 import com.yc.lib.api.ApiConfig;
@@ -62,15 +62,6 @@ public class LoginActivity extends BaseSimpleActivity {
         ImmersionBar.with(this).init();
         checkAccoutPsw();
         mSwipeBackHelper.setSwipeBackEnable(false);
-
-        etAccont.setText("u10010001");
-        etPassword.setText("11111111");
-
-
-        if (TUtils.isLogin()) {
-            startActivity(new Intent(LoginActivity.this, MainActivity.class));
-            finish();
-        }
     }
 
 
@@ -127,11 +118,15 @@ public class LoginActivity extends BaseSimpleActivity {
             public void onSuccess(int msgCode, String msg, UserInfo data) {
                 dismissLoadingBar();
                 ToastUtils.showShort(msg);
-                ActivityUtils.startActivity(MainActivity.class);
                 SPUtils.getInstance().put(Constans.USER_INFO, new Gson().toJson(data));
                 SPUtils.getInstance().put(Constans.TOKEN,new Gson().toJson(data.tokens));
                 SPUtils.getInstance().put(Constans.USER_ACOUNT, etAccont.getEditableText().toString());
                 SPUtils.getInstance().put(Constans.PASSWORD, etPassword.getEditableText().toString());
+                if (data.user_type.equals(UserType.USER_TYPE_MEMBER.getType())){
+                    ActivityUtils.startActivity(MainActivity.class);
+                }else{
+                    ActivityUtils.startActivity(PercentCenterActivity.class);
+                }
                 finish();
             }
 
@@ -226,8 +221,11 @@ public class LoginActivity extends BaseSimpleActivity {
             mExitTime = System.currentTimeMillis();
             return true;
         } else {
-            AppManager.getAppManager().AppExit(this);
-            finish();
+            Intent home = new Intent(Intent.ACTION_MAIN);
+            home.addCategory(Intent.CATEGORY_HOME);
+            startActivity(home);
+//            AppManager.getAppManager().AppExit(this);
+//            finish();
         }
         return false;
     }

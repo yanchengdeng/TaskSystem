@@ -10,8 +10,16 @@ import android.widget.TextView;
 
 import com.blankj.utilcode.util.ToastUtils;
 import com.task.system.R;
+import com.task.system.api.API;
+import com.task.system.api.TaskInfo;
+import com.task.system.api.TaskService;
+import com.task.system.bean.InviteCode;
 import com.task.system.bean.UserInfo;
 import com.task.system.utils.TUtils;
+import com.yc.lib.api.ApiCallBack;
+import com.yc.lib.api.ApiConfig;
+
+import retrofit2.Call;
 
 //我的邀请码
 public class MyInviteCodeActivity extends BaseActivity {
@@ -23,10 +31,6 @@ public class MyInviteCodeActivity extends BaseActivity {
         setTitle("我的邀请码");
 
         UserInfo userInfo = TUtils.getUserInfo();
-        if (!TextUtils.isEmpty(userInfo.invite_code)){
-            ((TextView)findViewById(R.id.tv_invite_code)).setText(userInfo.invite_code);
-        }
-
         findViewById(R.id.btn_copy).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -37,6 +41,27 @@ public class MyInviteCodeActivity extends BaseActivity {
                 ClipboardManager clipboardManager = (ClipboardManager)getSystemService(Context.CLIPBOARD_SERVICE);
                 clipboardManager.setPrimaryClip(ClipData.newPlainText(null, ((TextView)findViewById(R.id.tv_invite_code)).getText()));
                 ToastUtils.showShort("复制成功");
+            }
+        });
+        getLeaderInviteCode();
+    }
+
+    //获取邀请码  只有type=2  代理才有
+    private void getLeaderInviteCode() {
+        showLoadingBar();
+        Call<TaskInfo> call = ApiConfig.getInstants().create(TaskService.class).getInviteByAgent(TUtils.getParams());
+
+        API.getObject(call, InviteCode.class, new ApiCallBack<InviteCode>() {
+            @Override
+            public void onSuccess(int msgCode, String msg, InviteCode data) {
+                dismissLoadingBar();
+                ((TextView)findViewById(R.id.tv_invite_code)).setText(""+data.invite_code);
+            }
+
+            @Override
+            public void onFaild(int msgCode, String msg) {
+                dismissLoadingBar();
+                ToastUtils.showShort(msg);
             }
         });
     }

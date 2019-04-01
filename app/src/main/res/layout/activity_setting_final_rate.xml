@@ -88,9 +88,9 @@
                     android:textSize="@dimen/text_size_normal" />
 
                 <TextView
+                    android:id="@+id/tv_max_rate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="4%"
                     android:textColor="@color/red"
                     android:textSize="@dimen/text_size_normal"
                     android:textStyle="bold" />
@@ -107,6 +107,38 @@
                 android:textSize="@dimen/text_size_small" />
 
         </LinearLayout>
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="@dimen/activity_horizontal_margin">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="备注:"
+            android:textColor="@color/color_tittle"
+            android:textSize="@dimen/text_size_normal"
+            android:textStyle="bold" />
+
+
+        <EditText
+            android:id="@+id/et_mark"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:minHeight="60dp"
+            android:hint="备注（50字以内）"
+            android:padding="@dimen/image_padding"
+            android:background="@drawable/normal_submit_btn_gray_deep_trans"
+            android:textColor="@color/color_tittle"
+            android:gravity="top|left"
+            android:textSize="@dimen/text_size_normal"
+            />
     </LinearLayout>
 
     <Button

@@ -111,7 +111,7 @@
                 android:layout_height="wrap_content"
                 android:background="@color/white"
                 android:gravity="center"
-                android:text="昵称："
+                android:text="用户名："
                 android:textColor="@color/color_tittle"
                 android:textSize="@dimen/text_size_normal_down" />
 
@@ -160,12 +160,12 @@
             android:background="@color/list_divider_color" />
 
         <TextView
-            android:id="@+id/tv_address"
+            android:id="@+id/tv_history_money"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:drawableLeft="@mipmap/icon_credit_count"
-            android:text="所在地："
+            android:text="历史积分："
             android:textColor="@color/color_tittle"
             android:textSize="@dimen/text_size_normal" />
 

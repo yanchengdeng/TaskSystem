@@ -34,8 +34,8 @@ public class TaskOrderAdapter extends BaseQuickAdapter<OrderInfo, BaseViewHolder
             ((TextView)helper.getView(R.id.tv_title)).setText(item.title);
         }
 
-        if (!TextUtils.isEmpty(item.description)) {
-            ((TextView)helper.getView(R.id.tv_info)).setText(Html.fromHtml(item.description));
+        if (!TextUtils.isEmpty(item.sub_title)) {
+            ((TextView)helper.getView(R.id.tv_info)).setText(Html.fromHtml(item.sub_title));
         }
 
         if (!TextUtils.isEmpty(item.score)) {

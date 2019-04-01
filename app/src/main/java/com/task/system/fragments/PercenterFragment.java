@@ -1,5 +1,6 @@
 package com.task.system.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -15,6 +16,8 @@ import android.widget.TextView;
 
 import com.blankj.utilcode.util.ActivityUtils;
 import com.blankj.utilcode.util.SPUtils;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.gson.Gson;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -22,6 +25,7 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.task.system.Constans;
 import com.task.system.R;
 import com.task.system.activity.AddNewLeaderActivity;
+import com.task.system.activity.MainActivity;
 import com.task.system.activity.MyAccountActivity;
 import com.task.system.activity.MyCollectedActivity;
 import com.task.system.activity.MyIncomeActivity;
@@ -31,11 +35,11 @@ import com.task.system.api.API;
 import com.task.system.api.TaskInfo;
 import com.task.system.api.TaskService;
 import com.task.system.bean.UserInfo;
+import com.task.system.enums.UserType;
 import com.task.system.event.UpdateUserInfoEvent;
 import com.task.system.utils.TUtils;
 import com.yc.lib.api.ApiCallBack;
 import com.yc.lib.api.ApiConfig;
-import com.yc.lib.api.utils.ImageLoaderUtil;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -65,8 +69,8 @@ public class PercenterFragment extends Fragment {
     TextView tvMoney;
     @BindView(R.id.rl_my_money)
     RelativeLayout rlMyMoney;
-    @BindView(R.id.tv_allwork_title)
-    TextView tvAllworkTitle;
+    @BindView(R.id.ll_allwork_title)
+    LinearLayout llAllWork;
     @BindView(R.id.tv_collect)
     TextView tvCollect;
     @BindView(R.id.tv_my_accoutn)
@@ -83,7 +87,7 @@ public class PercenterFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.percenter_fragment, container, false);
+        View view = inflater.inflate(R.layout.fragment_percenter, container, false);
         unbinder = ButterKnife.bind(this, view);
         EventBus.getDefault().register(this);
         smartRefresh.autoRefresh();
@@ -94,6 +98,18 @@ public class PercenterFragment extends Fragment {
             }
         });
 
+        UserInfo userInfo = TUtils.getUserInfo();
+        if (userInfo != null && !TextUtils.isEmpty(userInfo.user_type)) {
+            //会员
+            if (userInfo.user_type.equals(UserType.USER_TYPE_MEMBER.getType())) {
+                tvCollect.setVisibility(View.VISIBLE);
+            } else if (userInfo.user_type.equals(UserType.USER_TYPE_AREA.getType())){
+                tvAddLead.setVisibility(View.VISIBLE);
+            }else if (userInfo.user_type.equals(UserType.USER_TYPE_AGENT.getType())){
+                tvInviteCode.setVisibility(View.VISIBLE);
+            }
+        }
+
         return view;
     }
 
@@ -101,7 +117,7 @@ public class PercenterFragment extends Fragment {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(Object event) {
         if (event instanceof UpdateUserInfoEvent) {
-            smartRefresh.autoRefresh();
+          smartRefresh.autoRefresh();
         }
     }
 
@@ -129,7 +145,7 @@ public class PercenterFragment extends Fragment {
 
     private void initData(UserInfo data) {
         if (!TextUtils.isEmpty(data.avatar)) {
-            ImageLoaderUtil.loadCircle(data.avatar, ivHeader, R.mipmap.defalut_header);
+            Glide.with(ApiConfig.context).load(data.avatar).apply(RequestOptions.circleCropTransform().placeholder(R.mipmap.defalut_header).error(R.mipmap.defalut_header)).into(ivHeader);
         }
 
         if (!TextUtils.isEmpty(data.username)) {
@@ -157,16 +173,20 @@ public class PercenterFragment extends Fragment {
         unbinder.unbind();
     }
 
-    @OnClick({R.id.ll_user_info_ui, R.id.rl_my_money, R.id.tv_allwork_title, R.id.tv_add_lead,R.id.tv_collect, R.id.tv_my_accoutn, R.id.tv_invite_code})
+    @OnClick({R.id.ll_user_info_ui, R.id.rl_my_money, R.id.ll_allwork_title, R.id.tv_add_lead, R.id.tv_collect, R.id.tv_my_accoutn, R.id.tv_invite_code})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ll_user_info_ui:
-                ActivityUtils.startActivity(PersonSettingActivity.class);
+                PercenterFragment.this.startActivityForResult(new Intent(ApiConfig.context,PersonSettingActivity.class),20);
+//                ActivityUtils.startActivity(PersonSettingActivity.class);
                 break;
             case R.id.rl_my_money:
                 ActivityUtils.startActivity(MyIncomeActivity.class);
                 break;
-            case R.id.tv_allwork_title:
+            case R.id.ll_allwork_title:
+                if (getActivity() != null) {
+                    ((MainActivity) ((com.task.system.activity.MainActivity) getActivity())).viewPager.setCurrentItem(1);
+                }
                 break;
             case R.id.tv_collect:
                 ActivityUtils.startActivity(MyCollectedActivity.class);
@@ -181,5 +201,15 @@ public class PercenterFragment extends Fragment {
                 ActivityUtils.startActivity(MyInviteCodeActivity.class);
                 break;
         }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode==20){
+            if (resultCode==-1){
+                getUserDetail();
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }

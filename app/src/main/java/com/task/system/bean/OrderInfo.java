@@ -32,5 +32,6 @@ public class OrderInfo implements Serializable {
     public String task_id;//:
     public String  end_time ="2019-04-26 17:29:12";//TODO 假设时间
     public String flag = "xx超时";//TODO 假设失败标志
-    public String reason ="xx客户取消";//TODO 假设失败理由
+    public String remark ="xx客户取消";//TODO 假设失败理由
+    public String sub_title;//简介
 }

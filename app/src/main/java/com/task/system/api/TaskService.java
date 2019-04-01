@@ -350,7 +350,7 @@ public interface TaskService {
 
     //积分详情 log_id
     @FormUrlEncoded
-    @POST("statistics/detailScoreLog")
+    @POST("statistics/detail")
     Call<TaskInfoList> getStaticDetail(@FieldMap HashMap<String,String> maps);
 
 
@@ -371,6 +371,7 @@ public interface TaskService {
 
 
     //设置返佣比例饿
+    //id
 //    remark
 //            fanli_ratio
     //user_type=3的用户才能修改
@@ -379,11 +380,37 @@ public interface TaskService {
     Call<TaskInfoList>  setUseScale(@FieldMap HashMap<String,String> maps);
 
 
+    /**
+     * user_type=3的用户才能新增、修改会员
+     * @param maps
+     *
+     *operate
+     * add-新增会员，edit-修改会员@return
+     */
+    @FormUrlEncoded
+    @POST("leader/getUserOption")
+    Call<TaskInfoList> getUserOptionEdit(@FieldMap HashMap<String,String> maps);
+
+    @FormUrlEncoded
+    @POST("leader/getUserOption")
+    Call<TaskInfo> getUserOptionAdd(@FieldMap HashMap<String,String> maps);
 
     //新增用户
     @FormUrlEncoded
     @POST("leader/addLeader")
     Call<TaskInfo> addLeader(@FieldMap HashMap<String,String> maps);
+
+
+    //代理获取邀请码
+    @FormUrlEncoded
+    @POST("leader/getInviteCode")
+    Call<TaskInfo> getInviteByAgent(@FieldMap HashMap<String,String> maps);
+
+
+    //获取未读消息
+    @FormUrlEncoded
+    @POST("order/getOrderSum")
+    Call<TaskInfo> getUnreadInfo(@FieldMap HashMap<String,String> maps);
 
     //  Call<com.task.system.api.TaskInfoList> call = ApiConfig.getInstants().create(TaskService.class).getCityList(TUtils.getParams());
 

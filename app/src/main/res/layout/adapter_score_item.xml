@@ -15,7 +15,7 @@
         android:singleLine="true"
         android:text="标题"
         android:textColor="@color/color_info"
-        android:textSize="@dimen/text_size_normal_up" />
+        android:textSize="@dimen/text_size_normal" />
 
 
     <TextView
@@ -35,11 +35,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
+        android:paddingTop="@dimen/image_padding_big"
         android:layout_centerVertical="true"
         android:drawableRight="@mipmap/arrow_right_black"
         android:singleLine="true"
         android:text="积分"
-        android:textColor="@color/color_date"
+        android:textColor="@color/green"
         android:textSize="@dimen/text_size_normal" />
 
 

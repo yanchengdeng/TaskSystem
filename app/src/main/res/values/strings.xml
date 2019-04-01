@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">任务系统</string>
+    <string name="app_name">闲推</string>
     <string name="title_home">任务大厅</string>
     <string name="title_dashboard">我的任务</string>
     <string name="title_notifications">个人中心</string>
@@ -56,4 +56,9 @@
     <string name="agent_create_value">创造价值    %s  分</string>
     <string name="new_num">新增会员数：%s 人</string>
     <string name="fanyong_rate_tips">如果修改，下级所有奖金比例都设置为：%s</string>
+    <string name="errcode_success">发送成功</string>
+    <string name="errcode_cancel">发送取消</string>
+    <string name="errcode_deny">发送被拒绝</string>
+    <string name="errcode_unsupported">不支持错误</string>
+    <string name="errcode_unknown">发送返回</string>
 </resources>

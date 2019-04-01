@@ -104,26 +104,25 @@ public class FixApplication extends MultiDexApplication {
     }
 
     public void onShowExpire() {
-        if (materialDialog != null) {
-            return;
+        if (materialDialog == null) {
+            materialDialog = new MaterialDialog.Builder(ApiConfig.context)
+                    .title("温馨提示")
+                    .content("您的账号已过期，请重新登陆")
+                    .positiveColor(getResources().getColor(R.color.color_blue)).positiveText("确定").onPositive(new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                            dialog.dismiss();
+                            SPUtils.getInstance().put(Constans.USER_INFO, "");
+                            Intent intent = new Intent(ApiConfig.context, LoginActivity.class);
+                            startActivity(intent);
+                        }
+                    })
+                    .build();
+
+
+            materialDialog.setCancelable(false);
+            materialDialog.setCanceledOnTouchOutside(false);
         }
-        materialDialog = new MaterialDialog.Builder(this)
-                .title("温馨提示")
-                .content("您的账号已过期，请重新登陆")
-                .positiveColor(getResources().getColor(R.color.color_blue)).positiveText("确定").onPositive(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        dialog.dismiss();
-                        SPUtils.getInstance().put(Constans.USER_INFO, "");
-                        Intent intent = new Intent(ApiConfig.context, LoginActivity.class);
-                        startActivity(intent);
-                    }
-                })
-                .build();
-
-
-        materialDialog.setCancelable(false);
-        materialDialog.setCanceledOnTouchOutside(false);
         if (materialDialog.isShowing()) {
             materialDialog.dismiss();
         } else {
@@ -200,4 +199,10 @@ public class FixApplication extends MultiDexApplication {
         startService(intent);
     }
 
+
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        EventBus.getDefault().unregister(this);
+    }
 }

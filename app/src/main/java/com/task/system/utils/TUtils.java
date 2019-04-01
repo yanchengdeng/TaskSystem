@@ -29,6 +29,8 @@ import com.yc.lib.api.ApiConfig;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class TUtils {
 
@@ -40,7 +42,7 @@ public class TUtils {
         data.put("app_id", Constans.APP_ID);
         data.put("app_sign", getAppSign());
         if (!TextUtils.isEmpty(getUserId())) {
-            data.put("uid",getUserId());
+            data.put("uid", getUserId());
         }
         if (!TextUtils.isEmpty(getToken())) {
             data.put("app_token", getToken());
@@ -64,7 +66,7 @@ public class TUtils {
         data.put("app_id", Constans.APP_ID);
         data.put("app_sign", getAppSign());
         if (!TextUtils.isEmpty(getUserId())) {
-            data.put("uid",getUserId());
+            data.put("uid", getUserId());
         }
         if (!TextUtils.isEmpty(getToken())) {
             data.put("app_token", getToken());
@@ -131,11 +133,11 @@ public class TUtils {
      * @return 130 6738 0836
      */
     public static String getHidePhone() {
-       String phone = getUserInfo().mobile;
-       if (!TextUtils.isEmpty(phone) && phone.length()==11){
-           return phone.substring(0,3)+"****"+phone.substring(7,11);
-       }
-       return "异常账号";
+        String phone = getUserInfo().mobile;
+        if (!TextUtils.isEmpty(phone) && phone.length() == 11) {
+            return phone.substring(0, 3) + "****" + phone.substring(7, 11);
+        }
+        return "异常账号";
     }
 
 
@@ -183,10 +185,10 @@ public class TUtils {
             return "会员";
         } else if (user_type.equals(UserType.USER_TYPE_AGENT.getType())) {
             return "代理";
-        } else if (user_type.equals(UserType.USER_TYPE_AGENT.getType())) {
+        } else if (user_type.equals(UserType.USER_TYPE_AREA.getType())) {
             return "区域";
         }
-        return "会员";
+        return "未知身份";
     }
 
     //处理列表无数据
@@ -262,8 +264,8 @@ public class TUtils {
     }
 
     //客服页面
-    public static void openKf(){
-        if (TextUtils.isEmpty(SPUtils.getInstance().getString(Constans.KEFU))){
+    public static void openKf() {
+        if (TextUtils.isEmpty(SPUtils.getInstance().getString(Constans.KEFU))) {
             ToastUtils.showShort("客服信息不存在");
             return;
         }
@@ -275,9 +277,9 @@ public class TUtils {
 
 
     public static String getHideAccount(String account) {
-        if (TextUtils.isEmpty(account)){
+        if (TextUtils.isEmpty(account)) {
             return "无账号";
-        }else{
+        } else {
 
         }
         return account;
@@ -285,14 +287,14 @@ public class TUtils {
 
     public static void setRecycleEmpty(BaseQuickAdapter collectedAdapter, RecyclerView recyclerView) {
         collectedAdapter.setNewData(new ArrayList<>());
-        collectedAdapter.setEmptyView(RecycleViewUtils.getEmptyView((Activity) ApiConfig.context,recyclerView));
+        collectedAdapter.setEmptyView(RecycleViewUtils.getEmptyView((Activity) ApiConfig.context, recyclerView));
     }
 
     //格式：2019-04-26 17:29:12
     public static String getEndTimeTips(String end_time) {
         long endTime = TimeUtils.string2Millis(end_time);
-        long differ = endTime-TimeUtils.getNowMills();
-        return millis2FitTimeSpan(differ,3);
+        long differ = endTime - TimeUtils.getNowMills();
+        return millis2FitTimeSpan(differ, 3);
     }
 
 
@@ -342,17 +344,35 @@ public class TUtils {
      * 4: "已通过",
      * 5: "未通过"
      */
-    public static List<TaskType> getTaskType(){
+    public static List<TaskType> getTaskType() {
         List<TaskType> taskTypeList = new ArrayList<>();
-        taskTypeList.add(new TaskType(-1,"全部"));
-        taskTypeList.add(new TaskType(1,"待工作"));//待工作 和待提交合并
+        taskTypeList.add(new TaskType(-1, "全部"));
+        taskTypeList.add(new TaskType(1, "待工作"));//待工作 和待提交合并
 //        taskTypeList.add(new TaskType(2,"待提交"));
-        taskTypeList.add(new TaskType(3,"待审核"));
-        taskTypeList.add(new TaskType(4,"已通过"));
-        taskTypeList.add(new TaskType(5,"未通过"));//6 、7 未通过、已作废、已超时合并
+        taskTypeList.add(new TaskType(3, "待审核"));
+        taskTypeList.add(new TaskType(4, "已通过"));
+        taskTypeList.add(new TaskType(5, "未通过"));//6 、7 未通过、已作废、已超时合并
 
 
         return taskTypeList;
 
+    }
+
+    //获取字符串中的 数字
+    public static String getIntegerInString(String tips) {
+        if (TextUtils.isEmpty(tips)) {
+            return "0";
+        }
+        String regEx = "[^0-9]";
+        try {
+            Pattern p = Pattern.compile(regEx);
+            Matcher m = p.matcher(tips);
+
+            return m.replaceAll("").trim();
+
+        } catch (Exception e) {
+            System.out.print("erro---");
+        }
+        return "0";
     }
 }

@@ -28,10 +28,13 @@ import com.task.system.api.TaskService;
 import com.task.system.bean.OrderInfo;
 import com.task.system.bean.OrderList;
 import com.task.system.bean.TaskInfoItem;
+import com.task.system.event.RefreshUnreadCountEvent;
 import com.task.system.utils.TUtils;
 import com.yc.lib.api.ApiCallBack;
 import com.yc.lib.api.ApiCallBackList;
 import com.yc.lib.api.ApiConfig;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.HashMap;
 import java.util.List;
@@ -120,7 +123,10 @@ public class TaskListFragment extends BaseFragment {
                 //未通过
                 if (status == 5) {
                     if (view.getId() == R.id.tv_look_for_reason) {
-                        showDialogTips(taskOrderAdapter.getData().get(position).reason);
+                        if (TextUtils.isEmpty(taskOrderAdapter.getData().get(position).remark)){
+                            taskOrderAdapter.getData().get(position).remark="请联系客服";
+                        }
+                        showDialogTips(taskOrderAdapter.getData().get(position).remark);
                     }
                 }
 
@@ -136,6 +142,12 @@ public class TaskListFragment extends BaseFragment {
 
     }
 
+    //刷新数据
+    public void setSortRefresh(){
+        page = 1;
+        getOrderList();
+    }
+
     //申请任务
     private void applyTask(int position, String taskId) {
         HashMap<String, String> maps = new HashMap<>();
@@ -147,6 +159,7 @@ public class TaskListFragment extends BaseFragment {
             @Override
             public void onSuccess(int msgCode, String msg, OrderInfo data) {
                 ToastUtils.showShort("" + msg);
+                EventBus.getDefault().post(new RefreshUnreadCountEvent());
                 taskOrderAdapter.remove(position);
                 if (taskOrderAdapter.getData().size() == 0) {
                     TUtils.dealNoReqestData(taskOrderAdapter, recycle, smartRefresh);
@@ -169,7 +182,7 @@ public class TaskListFragment extends BaseFragment {
     private void showDialogTips(String reason) {
 
         MaterialDialog.Builder builder = new MaterialDialog.Builder(ApiConfig.context)
-                .title("温馨提示")
+//                .title("温馨提示")
                 .content("" + reason)
                 .positiveText("确定").positiveColor(getResources().getColor(R.color.color_blue)).onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
@@ -198,6 +211,7 @@ public class TaskListFragment extends BaseFragment {
             public void onSuccess(int msgCode, String msg, List<String> data) {
                 ToastUtils.showShort("" + msg);
                 taskOrderAdapter.remove(position);
+                EventBus.getDefault().post(new RefreshUnreadCountEvent());
                 if (taskOrderAdapter.getData().size() == 0) {
                     TUtils.dealNoReqestData(taskOrderAdapter, recycle, smartRefresh);
                 }

@@ -14,6 +14,7 @@ import com.task.system.R;
 import com.task.system.api.API;
 import com.task.system.api.TaskInfo;
 import com.task.system.api.TaskService;
+import com.task.system.bean.AddLeaderInfo;
 import com.task.system.bean.SimpleBeanInfo;
 import com.task.system.utils.PerfectClickListener;
 import com.task.system.utils.TUtils;
@@ -49,6 +50,8 @@ public class AddNewLeaderActivity extends BaseActivity {
     TextView tvRateTips;
     @BindView(R.id.btn_confirm)
     Button btnConfirm;
+    @BindView(R.id.tv_max_rate)
+    TextView tvMaxRate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +70,74 @@ public class AddNewLeaderActivity extends BaseActivity {
                 addLeader();
             }
         });
+
+        tvRateTips.setText(String.format(getString(R.string.fanyong_rate_tips), "0"));
+
+        tvRate.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (TextUtils.isEmpty(s.toString())) {
+                    btnConfirm.setBackground(getResources().getDrawable(R.drawable.normal_submit_btn_gray));
+                    tvRateTips.setText(String.format(getString(R.string.fanyong_rate_tips), "0"));
+                } else {
+                    btnConfirm.setBackground(getResources().getDrawable(R.drawable.normal_submit_btn_red));
+
+                    tvRateTips.setText(String.format(getString(R.string.fanyong_rate_tips), s.toString()));
+
+                }
+            }
+        });
+
+        getLeaderInfo();
+    }
+
+    private void getLeaderInfo() {
+        showLoadingBar();
+
+        HashMap<String,String> maps = new HashMap<>();
+        maps.put("operate","add");
+        Call<TaskInfo> call = ApiConfig.getInstants().create(TaskService.class).getUserOptionAdd(TUtils.getParams(maps));
+        API.getObject(call, AddLeaderInfo.class, new ApiCallBack<AddLeaderInfo>() {
+            @Override
+            public void onSuccess(int msgCode, String msg, AddLeaderInfo data) {
+                dismissLoadingBar();
+                if (data.id != null) {
+                    if (!TextUtils.isEmpty(data.id.value)) {
+                        etId.setText(data.id.value);
+                    }
+                }
+
+                if (data.username != null) {
+                    if (!TextUtils.isEmpty(data.username.value)) {
+                        etNickname.setText(data.username.value);
+                    }
+                }
+
+                if (data.fanli_ratio != null) {
+                    if (!TextUtils.isEmpty(data.fanli_ratio.tips)) {
+                        tvMaxRate.setText(data.fanli_ratio.tips + " %");
+                    }
+                }
+
+            }
+
+            @Override
+            public void onFaild(int msgCode, String msg) {
+                dismissLoadingBar();
+
+            }
+        });
+
     }
 
     private void addLisen() {
@@ -189,12 +260,14 @@ public class AddNewLeaderActivity extends BaseActivity {
             map.put("remark", etMark.getEditableText().toString());
         }
         map.put("fanli_ratio", tvRate.getEditableText().toString());
+        showLoadingBar();
 
         Call<TaskInfo> call = ApiConfig.getInstants().create(TaskService.class).addLeader(TUtils.getParams(map));
         API.getObject(call, SimpleBeanInfo.class, new ApiCallBack<SimpleBeanInfo>() {
             @Override
             public void onSuccess(int msgCode, String msg, SimpleBeanInfo data) {
                 ToastUtils.showShort("" + msg);
+                dismissLoadingBar();
                 finish();
 
             }
@@ -202,6 +275,7 @@ public class AddNewLeaderActivity extends BaseActivity {
             @Override
             public void onFaild(int msgCode, String msg) {
                 ToastUtils.showShort("" + msg);
+                dismissLoadingBar();
 
             }
         });

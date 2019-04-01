@@ -18,10 +18,12 @@ public class Constans {
     public static final String PASS_END_TIME = "end_time";
     public static final String KEFU = "kefu";
     public static final String PASS_CHILD_UID = "pass_child_uid";
+    public static final String WX_SHARE_APP_ID = "wxa33175f98ed47d91";
+    public static final String QQ_SHARE_ID = "101564744";
     public static boolean HAS_VESRSION_TIPS ;//是否提示过版本更新
 
-    public static String BASE_URL_TEST = "task.mayimayi.cn/api.php/V1";
-    public static String BASE_URL_ONLINE = "task.mayimayi.cn/api.php/V1";
+    public static String BASE_URL_TEST = "task.fzgfxz.com/api.php/V1";
+    public static String BASE_URL_ONLINE = "task.fzgfxz.com/api.php/V1";
 
     public  static boolean  IS_DEBUG = true;
     public static String LOCATON_CITY_NAME = "location_name";

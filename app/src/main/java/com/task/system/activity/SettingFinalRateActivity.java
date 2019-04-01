@@ -15,6 +15,7 @@ import com.task.system.R;
 import com.task.system.api.API;
 import com.task.system.api.TaskInfoList;
 import com.task.system.api.TaskService;
+import com.task.system.bean.ScaleRate;
 import com.task.system.utils.TUtils;
 import com.yc.lib.api.ApiCallBackList;
 import com.yc.lib.api.ApiConfig;
@@ -39,6 +40,10 @@ public class SettingFinalRateActivity extends BaseActivity {
     TextView tvRateTips;
     @BindView(R.id.btn_confirm)
     Button btnConfirm;
+    @BindView(R.id.et_mark)
+    EditText etMark;
+    @BindView(R.id.tv_max_rate)
+    TextView tvMaxRate;
 
     private String chidUID;
 
@@ -49,12 +54,8 @@ public class SettingFinalRateActivity extends BaseActivity {
         ButterKnife.bind(this);
         setTitle("返佣设置");
         chidUID = getIntent().getStringExtra(Constans.PASS_CHILD_UID);
-        if (TextUtils.isEmpty(chidUID)) {
-            tvId.setText(TUtils.getUserInfo().uid);
-            chidUID = TUtils.getUserInfo().uid;
-        } else {
-            tvId.setText(chidUID);
-        }
+
+        tvId.setText(chidUID);
         tvRateTips.setText(String.format(getString(R.string.fanyong_rate_tips), "0"));
 
         tvRate.addTextChangedListener(new TextWatcher() {
@@ -87,20 +88,57 @@ public class SettingFinalRateActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 if (TextUtils.isEmpty(tvRate.getEditableText().toString())) {
-                    ToastUtils.showShort("请输入返佣比例饿");
+                    ToastUtils.showShort("请输入返佣比例");
                     return;
                 }
 
                 doSetRate();
             }
         });
+
+
+        getRate();
     }
+
+    //获取比例
+    private void getRate() {
+        showLoadingBar();
+        HashMap<String, String> maps = new HashMap<>();
+//        maps.put("id", chidUID);
+        maps.put("operate", "edit");
+        Call<TaskInfoList> call = ApiConfig.getInstants().create(TaskService.class).getUserOptionEdit(TUtils.getParams(maps));
+
+        API.getList(call, ScaleRate.class, new ApiCallBackList<ScaleRate>() {
+            @Override
+            public void onSuccess(int msgCode, String msg, List<ScaleRate> data) {
+                dismissLoadingBar();
+                if (data != null && data.size() == 2) {
+                    if (!TextUtils.isEmpty(data.get(0).title)) {
+                        etMark.setText(data.get(0).title);
+                    }
+
+                    if (!TextUtils.isEmpty(data.get(1).tips)) {
+                        tvMaxRate.setText(TUtils.getIntegerInString(data.get(1).tips) + " %");
+                    }
+                }
+            }
+
+            @Override
+            public void onFaild(int msgCode, String msg) {
+                dismissLoadingBar();
+            }
+        });
+    }
+
 
     private void doSetRate() {
         showLoadingBar();
-        HashMap<String,String> maps = new HashMap<>();
-        maps.put("uid",chidUID);
-        maps.put("fanli_ratio",tvRate.getEditableText().toString());
+        HashMap<String, String> maps = new HashMap<>();
+        maps.put("id", chidUID);
+        if (!TextUtils.isEmpty(etMark.getEditableText().toString())) {
+            maps.put("remark", etMark.getEditableText().toString());
+        }
+        maps.put("fanli_ratio", tvRate.getEditableText().toString());
         Call<TaskInfoList> call = ApiConfig.getInstants().create(TaskService.class).setUseScale(TUtils.getParams(maps));
 
         API.getList(call, String.class, new ApiCallBackList<String>() {

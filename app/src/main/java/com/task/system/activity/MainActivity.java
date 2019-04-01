@@ -1,5 +1,6 @@
 package com.task.system.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -19,7 +20,6 @@ import com.task.system.bean.SimpleBeanInfo;
 import com.task.system.fragments.HomeFragment;
 import com.task.system.fragments.PercenterFragment;
 import com.task.system.fragments.TaskFragment;
-import com.task.system.utils.AppManager;
 import com.task.system.utils.TUtils;
 import com.task.system.views.FragmentPagerItem;
 import com.task.system.views.FragmentPagerItems;
@@ -33,7 +33,7 @@ import retrofit2.Call;
 
 public class MainActivity extends BaseSimpleActivity {
 
-    private NoScrollViewPager viewPager;
+    public NoScrollViewPager viewPager;
 
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -142,10 +142,9 @@ public class MainActivity extends BaseSimpleActivity {
 
 
     private FragmentPagerItems getPagerItems(FragmentPagerItems pages) {
-//        pages.add(FragmentPagerItem.of("消息", IMFragmentWithError.class));
-        pages.add(FragmentPagerItem.of("任务大厅", HomeFragment.class));
-        pages.add(FragmentPagerItem.of("我的任务", TaskFragment.class));
-        pages.add(FragmentPagerItem.of("个人中心", PercenterFragment.class));
+            pages.add(FragmentPagerItem.of("任务大厅", HomeFragment.class));
+            pages.add(FragmentPagerItem.of("我的任务", TaskFragment.class));
+            pages.add(FragmentPagerItem.of("个人中心", PercenterFragment.class));
         return pages;
     }
 
@@ -176,8 +175,11 @@ public class MainActivity extends BaseSimpleActivity {
             mExitTime = System.currentTimeMillis();
             return true;
         } else {
-            AppManager.getAppManager().AppExit(this);
-            finish();
+            Intent home = new Intent(Intent.ACTION_MAIN);
+            home.addCategory(Intent.CATEGORY_HOME);
+            startActivity(home);
+//            AppManager.getAppManager().AppExit(this);
+//            finish();
         }
         return false;
     }

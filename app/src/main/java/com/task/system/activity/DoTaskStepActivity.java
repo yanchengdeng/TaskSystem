@@ -79,7 +79,7 @@ public class DoTaskStepActivity extends BaseActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if (resultCode==200){
+        if (requestCode==200){
             if (resultCode==RESULT_OK){
                 setResult(RESULT_OK);
                 finish();

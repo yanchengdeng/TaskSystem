@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.ScreenUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -28,8 +29,10 @@ import com.task.system.api.API;
 import com.task.system.api.TaskInfo;
 import com.task.system.api.TaskService;
 import com.task.system.bean.HomeMenu;
+import com.task.system.bean.SimpleBeanInfo;
 import com.task.system.bean.SortTags;
 import com.task.system.bean.TaskType;
+import com.task.system.event.RefreshUnreadCountEvent;
 import com.task.system.utils.PerfectClickListener;
 import com.task.system.utils.RecycleViewUtils;
 import com.task.system.utils.TUtils;
@@ -38,6 +41,10 @@ import com.task.system.views.FragmentPagerItem;
 import com.task.system.views.FragmentPagerItems;
 import com.yc.lib.api.ApiCallBack;
 import com.yc.lib.api.ApiConfig;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -62,6 +69,7 @@ public class TaskFragment extends Fragment {
     LinearLayout llSmartSort;
     @BindView(R.id.status_view)
     View statusView;
+    private TextView tvCount;
 
 
     private BubblePopupSingle quickPopupSmart;
@@ -83,13 +91,13 @@ public class TaskFragment extends Fragment {
         View view = inflater.inflate(R.layout.task_fragment, container, false);
         unbinder = ButterKnife.bind(this, view);
 
+        EventBus.getDefault().register(this);
+
         if (getActivity() != null) {
             ConstraintLayout.LayoutParams params = new ConstraintLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ImmersionBar.getStatusBarHeight(getActivity()));
             statusView.setLayoutParams(params);
         }
-        for (TaskType item : TUtils.getTaskType()) {
-            tabLayout.addTab(tabLayout.newTab().setText(item.name));
-        }
+
 
         FragmentPagerItems pages = getPagerItems(new FragmentPagerItems(ApiConfig.context));
         FragmentPagerItemAdapter adapter = new FragmentPagerItemAdapter(
@@ -99,14 +107,36 @@ public class TaskFragment extends Fragment {
 
         tabLayout.setupWithViewPager(viewpage);
 
+        //要放到 setsetupWithViewPager houmian
+        for (int i = 0; i < TUtils.getTaskType().size(); i++) {
+            TabLayout.Tab tab = tabLayout.getTabAt(i);
+            View inflate = View.inflate(ApiConfig.context, R.layout.tab_layout, null);
+            TextView textView = inflate.findViewById(R.id.tv_tab_name);
+            TextView tvMessage = inflate.findViewById(R.id.tv_message_num);
+            if (TUtils.getTaskType().get(i).type == 1) {
+                tvMessage.setVisibility(View.VISIBLE);
+                tvCount = tvMessage;
+            } else {
+                tvMessage.setVisibility(View.GONE);
+            }
+            //
+            textView.setText(TUtils.getTaskType().get(i).name);
+            tab.setCustomView(inflate);
+        }
+
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
+                LogUtils.w("dyc", tab);
+//               TextView tvCount = tab.getCustomView().findViewById(R.id.tv_message_num);
+//               tvCount.setText("22");
+
+
             }
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
-
+                LogUtils.w("dyc", tab);
             }
 
             @Override
@@ -127,7 +157,24 @@ public class TaskFragment extends Fragment {
         });
 
 
+        getUnread();
+
         return view;
+    }
+
+
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(Object event) {
+        if (event instanceof RefreshUnreadCountEvent) {
+            getUnread();
+            if (viewpage!=null && viewpage.getAdapter()!=null &&  viewpage.getAdapter() instanceof FragmentPagerItemAdapter) {
+                TaskListFragment fragment = (TaskListFragment) ((FragmentPagerItemAdapter)viewpage.getAdapter()).getItem(0);
+                TaskListFragment fragment1 = (TaskListFragment) ((FragmentPagerItemAdapter)viewpage.getAdapter()).getItem(1);
+                fragment.setSortRefresh();
+                fragment1.setSortRefresh();
+            }
+        }
     }
 
 
@@ -139,6 +186,26 @@ public class TaskFragment extends Fragment {
         }
 
         return pages;
+    }
+
+    private void getUnread() {
+        Call<TaskInfo> call = ApiConfig.getInstants().create(TaskService.class).getUnreadInfo(TUtils.getParams());
+        API.getObject(call, SimpleBeanInfo.class, new ApiCallBack<SimpleBeanInfo>() {
+            @Override
+            public void onSuccess(int msgCode, String msg, SimpleBeanInfo data) {
+                tvCount.setText(String.valueOf(data.sum));
+                if (data.sum>0){
+                    tvCount.setVisibility(View.VISIBLE);
+                }else{
+                    tvCount.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onFaild(int msgCode, String msg) {
+
+            }
+        });
     }
 
 
@@ -192,6 +259,10 @@ public class TaskFragment extends Fragment {
                     tvSmartSort.setText("" + menuAdapter.getData().get(position).title);
                     tvSmartSort.setTextColor(getResources().getColor(R.color.red));
                     ivSmartSort.setImageResource(R.mipmap.icon_arrow_down);
+                    if (viewpage.getAdapter()!=null &&  viewpage.getAdapter() instanceof FragmentPagerItemAdapter) {
+                        TaskListFragment fragment = (TaskListFragment) ((FragmentPagerItemAdapter)viewpage.getAdapter()).getItem(viewpage.getCurrentItem());
+                        fragment.setSortRefresh();
+                    }
                 }
             });
         }
@@ -211,5 +282,6 @@ public class TaskFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+        EventBus.getDefault().unregister(this);
     }
 }

@@ -29,15 +29,12 @@ import com.task.system.api.TaskInfoList;
 import com.task.system.api.TaskService;
 import com.task.system.bean.UserInfo;
 import com.task.system.common.GlideLoadFileLoader;
-import com.task.system.event.UpdateUserInfoEvent;
 import com.task.system.utils.TUtils;
 import com.yanzhenjie.permission.AndPermission;
 import com.yanzhenjie.permission.runtime.Permission;
 import com.yc.lib.api.ApiCallBackList;
 import com.yc.lib.api.ApiConfig;
 import com.yc.lib.api.utils.ImageLoaderUtil;
-
-import org.greenrobot.eventbus.EventBus;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -88,6 +85,7 @@ public class PersonSettingActivity extends BaseActivity {
     TextView tvPhone;
     @BindView(R.id.tv_uid)
     TextView tvUid;
+    private boolean  isUplaodImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -327,11 +325,13 @@ public class PersonSettingActivity extends BaseActivity {
             public void onSuccess(int msgCode, String msg, List<String> data) {
                 ToastUtils.showShort("" + msg);
                 dismissLoadingBar();
-                EventBus.getDefault().post(new UpdateUserInfoEvent());
+                isUplaodImage = true;
+//                EventBus.getDefault().post(new UpdateUserInfoEvent());
             }
 
             @Override
             public void onFaild(int msgCode, String msg) {
+                isUplaodImage = false;
                 dismissLoadingBar();
             }
         });
@@ -376,5 +376,15 @@ public class PersonSettingActivity extends BaseActivity {
             tvUserName.setText(userInfo.username);
         }
         tvPhone.setText(TUtils.getHidePhone());
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (isUplaodImage){
+            setResult(RESULT_OK);
+            finish();
+        }else {
+            super.onBackPressed();
+        }
     }
 }

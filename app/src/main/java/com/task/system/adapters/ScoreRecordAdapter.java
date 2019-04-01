@@ -38,10 +38,10 @@ public class ScoreRecordAdapter extends BaseQuickAdapter<OrderItem, BaseViewHold
             if (item.color.equals("red")) {
                 ((TextView) helper.getView(R.id.tv_score)).setTextColor(mContext.getResources().getColor(R.color.red));
             } else {
-                ((TextView) helper.getView(R.id.tv_score)).setTextColor(mContext.getResources().getColor(R.color.color_info));
+                ((TextView) helper.getView(R.id.tv_score)).setTextColor(mContext.getResources().getColor(R.color.green));
             }
         } else {
-            ((TextView) helper.getView(R.id.tv_score)).setTextColor(mContext.getResources().getColor(R.color.color_info));
+            ((TextView) helper.getView(R.id.tv_score)).setTextColor(mContext.getResources().getColor(R.color.green ));
         }
     }
 }

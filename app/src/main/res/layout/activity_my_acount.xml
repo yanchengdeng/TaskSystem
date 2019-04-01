@@ -86,6 +86,7 @@
             android:drawableLeft="@mipmap/small_setting"
             android:gravity="center"
             android:padding="@dimen/image_padding"
+            android:visibility="gone"
             android:text="设置"
             android:textColor="@color/color_tittle"
             android:textSize="@dimen/text_size_normal" />

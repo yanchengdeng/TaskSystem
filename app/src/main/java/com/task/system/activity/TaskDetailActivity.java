@@ -1,6 +1,8 @@
 package com.task.system.activity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -23,14 +25,28 @@ import com.task.system.api.TaskInfoList;
 import com.task.system.api.TaskService;
 import com.task.system.bean.OrderInfo;
 import com.task.system.bean.TaskInfoItem;
+import com.task.system.event.RefreshUnreadCountEvent;
 import com.task.system.fragments.FragmentStepInfo;
 import com.task.system.fragments.FragmentTaskDetail;
 import com.task.system.utils.PerfectClickListener;
 import com.task.system.utils.TUtils;
+import com.task.system.utils.ThreadManager;
+import com.task.system.utils.Util;
 import com.task.system.views.FragmentPagerItems;
+import com.tencent.connect.share.QQShare;
+import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
+import com.tencent.mm.opensdk.modelmsg.WXMediaMessage;
+import com.tencent.mm.opensdk.modelmsg.WXWebpageObject;
+import com.tencent.mm.opensdk.openapi.IWXAPI;
+import com.tencent.mm.opensdk.openapi.WXAPIFactory;
+import com.tencent.tauth.IUiListener;
+import com.tencent.tauth.Tencent;
+import com.tencent.tauth.UiError;
 import com.yc.lib.api.ApiCallBack;
 import com.yc.lib.api.ApiCallBackList;
 import com.yc.lib.api.ApiConfig;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.HashMap;
 import java.util.List;
@@ -67,18 +83,41 @@ public class TaskDetailActivity extends BaseSimpleActivity {
     private String order_id;
     private String task_id;
 
+    private static final String APP_ID = "wx88888888";
+
+    // IWXAPI 是第三方app和微信通信的openApi接口
+    private IWXAPI api;
+
+    //正式数据 切换过来
+    private String url, title, subInfo;
+    private Tencent mTencent;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task_detail);
         ButterKnife.bind(this);
-        setTitle("任务详情");
-
+        tvTitle.setText("任务详情");
         task_id = getIntent().getStringExtra(Constans.PASS_STRING);
 //        initData(taskInfoItem);
         tablayout.addTab(tablayout.newTab().setText("任务描述"), 0);
         tablayout.addTab(tablayout.newTab().setText("详细流程"), 1);
         getTaskDetail();
+        url = "http://politics.people.com.cn/n1/2019/0329/c1001-31003881.html";
+        regToWx();
+    }
+
+    private void regToWx() {
+        // 通过WXAPIFactory工厂，获取IWXAPI的实例
+        api = WXAPIFactory.createWXAPI(this, Constans.WX_SHARE_APP_ID, true);
+
+        // 将应用的appId注册到微信
+        api.registerApp(Constans.WX_SHARE_APP_ID);
+    }
+
+    private String buildTransaction(final String type) {
+        return (type == null) ? String.valueOf(System.currentTimeMillis()) : type + System.currentTimeMillis();
     }
 
     private FragmentPagerItems getFragmentsItem(Bundle bundle) {
@@ -89,7 +128,7 @@ public class TaskDetailActivity extends BaseSimpleActivity {
     private void getTaskDetail() {
         showLoadingBar();
         HashMap<String, String> maps = new HashMap<>();
-        maps.put("uid",TUtils.getUserId());
+        maps.put("uid", TUtils.getUserId());
         maps.put("task_id", task_id);
         Call<TaskInfo> call = ApiConfig.getInstants().create(TaskService.class).getTaskDetail(TUtils.getParams(maps));
 
@@ -98,10 +137,13 @@ public class TaskDetailActivity extends BaseSimpleActivity {
             public void onSuccess(int msgCode, String msg, TaskInfoItem data) {
                 dismissLoadingBar();
                 taskInfoItem = data;
-                if (data.is_collect==0) {
+                title = data.title;
+                subInfo = data.sub_title+"";
+
+                if (data.is_collect == 0) {
                     ivCollected.setImageResource(R.mipmap.iv_collect);
                     isCollected = false;
-                }else{
+                } else {
                     ivCollected.setImageResource(R.mipmap.iv_collected);
                     isCollected = true;
                 }
@@ -127,16 +169,16 @@ public class TaskDetailActivity extends BaseSimpleActivity {
      * 7——已超时
      */
     private void initData(TaskInfoItem data) {
-        if (!TextUtils.isEmpty(data.order_status_title)){
+        if (!TextUtils.isEmpty(data.order_status_title)) {
             tvDoWork.setText(data.order_status_title);
         }
-        if ( data.order_status==1 ){
+        if (data.order_status == 1) {
             tvDoWork.setBackgroundColor(getResources().getColor(R.color.red));
             tvGiveUpWork.setVisibility(View.VISIBLE);
-        }else if ( data.order_status==0){
+        } else if (data.order_status == 0) {
             tvGiveUpWork.setVisibility(View.GONE);
             tvDoWork.setBackgroundColor(getResources().getColor(R.color.red));
-        }else{
+        } else {
             tvDoWork.setBackgroundColor(getResources().getColor(R.color.give_up));
             tvGiveUpWork.setVisibility(View.GONE);
         }
@@ -144,7 +186,7 @@ public class TaskDetailActivity extends BaseSimpleActivity {
         order_id = data.order_id;
 
         Bundle bundle = new Bundle();
-        bundle.putSerializable(Constans.PASS_OBJECT,data);
+        bundle.putSerializable(Constans.PASS_OBJECT, data);
         FragmentPagerItemAdapter fragmentPagerItemAdapter = new FragmentPagerItemAdapter(getSupportFragmentManager(), getFragmentsItem(bundle));
         viewpage.setAdapter(fragmentPagerItemAdapter);
         tablayout.setupWithViewPager(viewpage);
@@ -174,19 +216,19 @@ public class TaskDetailActivity extends BaseSimpleActivity {
                 giveUpTask();
                 break;
             case R.id.tv_do_work:
-                if (taskInfoItem==null){
+                if (taskInfoItem == null) {
                     getTaskDetail();
                     return;
                 }
-                if (taskInfoItem.order_status==0) {
+                if (taskInfoItem.order_status == 0) {
                     applyTask();
-                } else if (taskInfoItem.order_status==1){
+                } else if (taskInfoItem.order_status == 1) {
                     //做下一步工作
                     Bundle bundle = new Bundle();
-                    bundle.putSerializable(Constans.PASS_OBJECT,taskInfoItem);
-                    ActivityUtils.startActivityForResult(bundle,TaskDetailActivity.this, DoTaskStepActivity.class,100);
-                }else{
-                    ToastUtils.showShort(""+taskInfoItem.order_status_title);
+                    bundle.putSerializable(Constans.PASS_OBJECT, taskInfoItem);
+                    ActivityUtils.startActivityForResult(bundle, TaskDetailActivity.this, DoTaskStepActivity.class, 100);
+                } else {
+                    ToastUtils.showShort("" + taskInfoItem.order_status_title);
                 }
                 break;
         }
@@ -203,6 +245,7 @@ public class TaskDetailActivity extends BaseSimpleActivity {
             @Override
             public void onSuccess(int msgCode, String msg, OrderInfo data) {
                 ToastUtils.showShort("" + msg);
+                EventBus.getDefault().post(new RefreshUnreadCountEvent());
                 tvGiveUpWork.setVisibility(View.VISIBLE);
                 if (data != null) {
                     if (!TextUtils.isEmpty(data.order_id)) {
@@ -210,7 +253,7 @@ public class TaskDetailActivity extends BaseSimpleActivity {
                         taskInfoItem.order_id = order_id;
                     }
                 }
-                taskInfoItem.order_status=1;
+                taskInfoItem.order_status = 1;
                 tvDoWork.setText("待工作");
             }
 
@@ -236,7 +279,7 @@ public class TaskDetailActivity extends BaseSimpleActivity {
                 ToastUtils.showShort("" + msg);
                 tvGiveUpWork.setVisibility(View.GONE);
                 tvDoWork.setText("待申请");
-                taskInfoItem.order_status=0;
+                taskInfoItem.order_status = 0;
 //                getTaskDetail();
             }
 
@@ -305,8 +348,7 @@ public class TaskDetailActivity extends BaseSimpleActivity {
                 @Override
                 protected void onNoDoubleClick(View v) {
                     shareDialog.dismiss();
-//                    ShareUtil.share(WechatMoments.Name, mTitle, mContent, LTool.getShare(LmsyType.ARTICLE, mId, mCover), mCover);
-
+                    shareWx(1);
                 }
             });
 
@@ -314,7 +356,7 @@ public class TaskDetailActivity extends BaseSimpleActivity {
                 @Override
                 protected void onNoDoubleClick(View v) {
                     shareDialog.dismiss();
-//                    ShareUtil.share(Wechat.Name, mTitle, mContent, LTool.getShare(LmsyType.ARTICLE, mId, mCover), mCover);
+                    shareWx(0);
 
                 }
             });
@@ -329,6 +371,8 @@ public class TaskDetailActivity extends BaseSimpleActivity {
                             taskInfoItem.sub_title = taskInfoItem.sub_title.substring(0, 40);
                         }
                     }
+
+                    qqShare();
 //                    ShareUtil.share(QQ.Name, taskInfoItem.title, taskInfoItem.sub_title, "https://www.baidu.com/", taskInfoItem.thumbnail);
 
                 }
@@ -347,14 +391,78 @@ public class TaskDetailActivity extends BaseSimpleActivity {
         }
     }
 
+    private void shareWx(int flag) {
+        //初始化一个WXWebpageObject，填写url
+        WXWebpageObject webpage = new WXWebpageObject();
+        webpage.webpageUrl = url;
+
+//用 WXWebpageObject 对象初始化一个 WXMediaMessage 对象
+        WXMediaMessage msg = new WXMediaMessage(webpage);
+        msg.title = title;
+        msg.description = subInfo;
+        Bitmap thumbBmp = BitmapFactory.decodeResource(getResources(), R.mipmap.app_version_logo);
+        msg.thumbData = Util.bmpToByteArray(thumbBmp, true);
+
+//构造一个Req
+        SendMessageToWX.Req req = new SendMessageToWX.Req();
+        req.transaction = buildTransaction("webpage");
+        req.message = msg;
+        //0   好友  1  朋友圈
+        req.scene = flag == 0 ? SendMessageToWX.Req.WXSceneSession : SendMessageToWX.Req.WXSceneTimeline;
+
+//调用api接口，发送数据到微信
+        api.sendReq(req);
+    }
+
+    IUiListener qqShareListener = new IUiListener() {
+        @Override
+        public void onCancel() {
+            ToastUtils.showShort("取消分享");
+        }
+
+        @Override
+        public void onComplete(Object response) {
+            ToastUtils.showShort("已分享");
+        }
+
+        @Override
+        public void onError(UiError e) {
+        }
+    };
+
+
+    private void qqShare() {
+        mTencent = Tencent.createInstance(Constans.QQ_SHARE_ID, this);
+        final Bundle params = new Bundle();
+        params.putInt(QQShare.SHARE_TO_QQ_KEY_TYPE, QQShare.SHARE_TO_QQ_TYPE_DEFAULT);
+        params.putString(QQShare.SHARE_TO_QQ_TITLE, title);
+        params.putString(QQShare.SHARE_TO_QQ_SUMMARY, subInfo);
+        params.putString(QQShare.SHARE_TO_QQ_TARGET_URL, url);
+//        params.putString(QQShare.SHARE_TO_QQ_IMAGE_URL, "http://imgcache.qq.com/qzone/space_item/pre/0/66768.gif");
+        params.putString(QQShare.SHARE_TO_QQ_APP_NAME, getString(R.string.app_name));
+
+
+        ThreadManager.getMainHandler().post(new Runnable() {
+
+            @Override
+            public void run() {
+                if (null != mTencent) {
+                    mTencent.shareToQQ(TaskDetailActivity.this, params, qqShareListener);
+                }
+            }
+        });
+    }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if (requestCode==100){
-            if (resultCode==RESULT_OK){
+        if (requestCode == 100) {
+            if (resultCode == RESULT_OK) {
 //                ToastUtils.showShort("等待审核");
-                taskInfoItem.order_status=2;
+                taskInfoItem.order_status = 3;
                 tvDoWork.setText("待审核");
+                tvDoWork.setBackgroundColor(getResources().getColor(R.color.give_up));
+                tvGiveUpWork.setVisibility(View.GONE);
             }
         }
         super.onActivityResult(requestCode, resultCode, data);

@@ -24,7 +24,9 @@ import com.task.system.adapters.StaticContributeAdapter;
 import com.task.system.api.API;
 import com.task.system.api.TaskInfo;
 import com.task.system.api.TaskService;
+import com.task.system.bean.ScoreAccountUserInfo;
 import com.task.system.bean.ScoreAcount;
+import com.task.system.enums.UserType;
 import com.task.system.utils.PerfectClickListener;
 import com.task.system.utils.RecycleViewUtils;
 import com.task.system.utils.TUtils;
@@ -63,8 +65,8 @@ public class MyAccountActivity extends BaseActivity {
     TextView tvPhone;
     @BindView(R.id.tv_accout_intergray)
     TextView tvAccoutIntergray;
-    @BindView(R.id.tv_address)
-    TextView tvAddress;
+    @BindView(R.id.tv_history_money)
+    TextView tvHistoryMoney;
     @BindView(R.id.tv_create_value)
     TextView tvCreateValue;
     @BindView(R.id.tv_finish_task)
@@ -97,6 +99,7 @@ public class MyAccountActivity extends BaseActivity {
     private StaticContributeAdapter adapterStatic;
     private View viewHeader;
     private TextView tvUidHeader;
+    private ScoreAccountUserInfo scoreAccountUserInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,7 +124,7 @@ public class MyAccountActivity extends BaseActivity {
         tvKeySearch.setOnClickListener(new PerfectClickListener() {
             @Override
             protected void onNoDoubleClick(View v) {
-                if (TextUtils.isEmpty(etInput.getEditableText().toString())){
+                if (TextUtils.isEmpty(etInput.getEditableText().toString())) {
                     ToastUtils.showShort("请输入用户ID/手机号码");
                     return;
                 }
@@ -133,9 +136,11 @@ public class MyAccountActivity extends BaseActivity {
         tvAcitonSetting.setOnClickListener(new PerfectClickListener() {
             @Override
             protected void onNoDoubleClick(View v) {
-                Bundle bundle = new Bundle();
-                bundle.putString(Constans.PASS_CHILD_UID,child_uid);
-                ActivityUtils.startActivity(bundle,SettingFinalRateActivity.class);
+                if (scoreAccountUserInfo != null && scoreAccountUserInfo.user_type.equals(UserType.USER_TYPE_AGENT.getType())) {
+                    Bundle bundle = new Bundle();
+                    bundle.putString(Constans.PASS_CHILD_UID, child_uid);
+                    ActivityUtils.startActivity(bundle, SettingFinalRateActivity.class);
+                }
             }
         });
 
@@ -151,11 +156,12 @@ public class MyAccountActivity extends BaseActivity {
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 Bundle bundle = new Bundle();
                 bundle.putString(Constans.PASS_CHILD_UID, adapterStatic.getData().get(position).uid);
-                if (!TextUtils.isEmpty(start_date)){
-                    bundle.putString(Constans.PASS_START_TIME,start_date);
+                child_uid = adapterStatic.getData().get(position).uid;
+                if (!TextUtils.isEmpty(start_date)) {
+                    bundle.putString(Constans.PASS_START_TIME, start_date);
                 }
                 if (!TextUtils.isEmpty(end_date)) {
-                    bundle.putString(Constans.PASS_END_TIME,end_date);
+                    bundle.putString(Constans.PASS_END_TIME, end_date);
                 }
                 ActivityUtils.startActivity(bundle, MyAccountActivity.class);
             }
@@ -180,7 +186,7 @@ public class MyAccountActivity extends BaseActivity {
         if (!TextUtils.isEmpty(etInput.getEditableText().toString())) {
             maps.put("search_key", etInput.getEditableText().toString());
         }
-        maps.put("page_size",String.valueOf(Integer.MAX_VALUE));
+        maps.put("page_size", String.valueOf(Integer.MAX_VALUE));
         Call<TaskInfo> call = ApiConfig.getInstants().create(TaskService.class).getStatistics(TUtils.getParams(maps));
         API.getObject(call, ScoreAcount.class, new ApiCallBack<ScoreAcount>() {
             @Override
@@ -202,32 +208,49 @@ public class MyAccountActivity extends BaseActivity {
     private void initData(ScoreAcount data) {
 
         if (data.user_info != null) {
+            scoreAccountUserInfo = data.user_info;
             llStaticInfo.setVisibility(View.VISIBLE);
             if (!TextUtils.isEmpty(data.user_info.uid)) {
                 tvUid.setText(data.user_info.uid);
+                child_uid = data.user_info.uid;
             }
             if (!TextUtils.isEmpty(data.user_info.user_type)) {
                 tvHostType.setText(TUtils.getUserTypeName(data.user_info.user_type));
-                if (data.user_info.user_type.equals("1")) {
-                    //会员不显示设置功能
+                //只有代理 才会显示设置积分返利
+
+
+                if (data.user_info.user_type.equals(UserType.USER_TYPE_MEMBER.getType())) {
+                    //会员
                     tvAcitonSetting.setVisibility(View.GONE);
                     llBelowMemberInfo.setVisibility(View.GONE);
-                } else {
-                    tvAcitonSetting.setVisibility(View.VISIBLE);
+                }
+                if (data.user_info.user_type.equals(UserType.USER_TYPE_AGENT.getType())) {
+
+                    if (TUtils.getUserInfo().user_type.equals(UserType.USER_TYPE_AREA.getType())) {
+                        //代理
+                        tvAcitonSetting.setVisibility(View.VISIBLE);
+                    } else {
+                        tvAcitonSetting.setVisibility(View.GONE);
+                    }
+                    llBelowMemberInfo.setVisibility(View.VISIBLE);
+                }
+                if (data.user_info.user_type.equals(UserType.USER_TYPE_AREA.getType())) {
+                    //区域
+                    tvAcitonSetting.setVisibility(View.GONE);
                     llBelowMemberInfo.setVisibility(View.VISIBLE);
                 }
             }
-            tvUidHeader.setText(TUtils.getUserTypeName(data.user_info.user_type));
+
             tvNickname.setText("昵称：" + data.user_info.username);
             tvPhone.setText("手机：" + data.user_info.mobile);
             tvAccoutIntergray.setText("账户积分：" + data.user_info.score);
-            tvAddress.setText("所在地：" + data.user_info.address);
-            tvCreateValue.setText("创造价值：" + data.user_info.history_score);
+            tvHistoryMoney.setText("历史积分：" + data.user_info.history_score);
+            tvCreateValue.setText("创造价值：" + data.user_info.task_score);
             tvFinishTask.setText("完成任务：" + data.user_info.task_num);
             tvRemark.setText("" + data.user_info.remark);
             tvBelowNums.setText("" + data.user_info.member_num);
             tvNewNum.setText(String.format(getString(R.string.new_num), data.user_info.member_new_num));
-            tvAgentCreateValue.setText(String.format(getString(R.string.agent_create_value), data.user_info.history_score));
+            tvAgentCreateValue.setText(String.format(getString(R.string.agent_create_value), data.user_info.task_score));
             tvAgentFinishTask.setText(String.format(getString(R.string.agent_finish_tast), data.user_info.task_num));
         } else {
             llStaticInfo.setVisibility(View.GONE);
@@ -236,6 +259,7 @@ public class MyAccountActivity extends BaseActivity {
         if (data.list != null && data.list.size() > 0) {
             adapterStatic.setNewData(data.list);
             recycle.setVisibility(View.VISIBLE);
+            tvUidHeader.setText(TUtils.getUserTypeName(data.list.get(0).user_type));
         } else {
             recycle.setVisibility(View.GONE);
         }
