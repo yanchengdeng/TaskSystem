@@ -3,7 +3,6 @@ package com.task.system.fragments;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -20,7 +19,6 @@ import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.ScreenUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.gyf.barlibrary.ImmersionBar;
 import com.task.system.Constans;
 import com.task.system.R;
 import com.task.system.adapters.FragmentPagerItemAdapter;
@@ -67,8 +65,6 @@ public class TaskFragment extends Fragment {
     ImageView ivSmartSort;
     @BindView(R.id.ll_smart_sort)
     LinearLayout llSmartSort;
-    @BindView(R.id.status_view)
-    View statusView;
     private TextView tvCount;
 
 
@@ -92,13 +88,6 @@ public class TaskFragment extends Fragment {
         unbinder = ButterKnife.bind(this, view);
 
         EventBus.getDefault().register(this);
-
-        if (getActivity() != null) {
-            ConstraintLayout.LayoutParams params = new ConstraintLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ImmersionBar.getStatusBarHeight(getActivity()));
-            statusView.setLayoutParams(params);
-        }
-
-
         FragmentPagerItems pages = getPagerItems(new FragmentPagerItems(ApiConfig.context));
         FragmentPagerItemAdapter adapter = new FragmentPagerItemAdapter(
                 getChildFragmentManager(), pages);

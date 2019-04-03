@@ -120,23 +120,18 @@ public class TaskListFragment extends BaseFragment {
                     }
                 }
 
-                //未通过
-                if (status == 5) {
+                //未通过  4  5   6  7   可添加一个 立即申请的功能按钮
+                if (status > 3) {
                     if (view.getId() == R.id.tv_look_for_reason) {
                         if (TextUtils.isEmpty(taskOrderAdapter.getData().get(position).remark)){
                             taskOrderAdapter.getData().get(position).remark="请联系客服";
                         }
                         showDialogTips(taskOrderAdapter.getData().get(position).remark);
-                    }
-                }
-
-                if (status == 7) {
-                    if (view.getId() == R.id.tv_else_function) {
+                    }else  if (view.getId() == R.id.tv_else_function) {
                         //立即申请
                         applyTask(position, taskOrderAdapter.getItem(position).task_id);
                     }
                 }
-
             }
         });
 

@@ -103,14 +103,10 @@ public class HomeFragment extends Fragment {
     LinearLayout llSortUi;
     @BindView(R.id.banner)
     Banner banner;
-    @BindView(R.id.rl_search_ui)
-    RelativeLayout rlSearchUi;
     @BindView(R.id.smartRefresh)
     SmartRefreshLayout smartRefresh;
     @BindView(R.id.app_bar_layout)
     AppBarLayout appBarLayout;
-    @BindView(R.id.view_temp)
-    View viewTemp;
     @BindView(R.id.iv_all_sort)
     ImageView ivAllSort;
     @BindView(R.id.iv_smart_sort)
@@ -200,28 +196,21 @@ public class HomeFragment extends Fragment {
             marginTop = ImmersionBar.getStatusBarHeight(getActivity());
         }
         searchParam.topMargin = marginTop;
-        rlSearchUi.setLayoutParams(searchParam);
-
-
         LinearLayout.LayoutParams menuLayout = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, marginTop);
 
         //菜单增加一个startbar高度
-
-        viewTemp.setLayoutParams(menuLayout);
-
-
         appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
             @Override
             public void onOffsetChanged(AppBarLayout appBarLayout, int i) {
                 if (Math.abs(i) + ImmersionBar.getStatusBarHeight(getActivity()) + 10 > ConvertUtils.dp2px(180)) {
                     if (hasAddNoMargin) {
-                        ImmersionBar.with(getActivity()).statusBarDarkFont(false, 0.2f).statusBarColor(R.color.red).init();
+//                        ImmersionBar.with(getActivity()).statusBarDarkFont(false, 0.2f).statusBarColor(R.color.red).init();
                         hasAddNoMargin = false;
                         hasAddYesMargin = true;
                     }
                 } else {
                     if (hasAddYesMargin) {
-                        ImmersionBar.with(getActivity()).statusBarDarkFont(false, 0.2f).statusBarColor(R.color.trans_black).init();
+//                        ImmersionBar.with(getActivity()).statusBarDarkFont(false, 0.2f).statusBarColor(R.color.trans_black).init();
                         hasAddYesMargin = false;
                         hasAddNoMargin = true;
                     }
@@ -770,18 +759,19 @@ public class HomeFragment extends Fragment {
                     setLocationContent();
                     page = 1;
                     getTaskList();
-                } else if (data != null && data.getExtras() != null && !TextUtils.isEmpty(data.getExtras().getString(Constans.PASS_STRING))) {
-                    String cityName = data.getExtras().getString(Constans.PASS_STRING);
-                    if (!TextUtils.isEmpty(cityName)) {
-                        loctionCity = cityName;
-                        getReginId();
-                        setLocationContent();
-                        if (!TextUtils.isEmpty(region_id)) {
-                            page = 1;
-                            getTaskList();
-                        }
-                    }
                 }
+//                else if (data != null && data.getExtras() != null && !TextUtils.isEmpty(data.getExtras().getString(Constans.PASS_STRING))) {
+//                    String cityName = data.getExtras().getString(Constans.PASS_STRING);
+//                    if (!TextUtils.isEmpty(cityName)) {
+//                        loctionCity = cityName;
+//                        getReginId();
+//                        setLocationContent();
+//                        if (!TextUtils.isEmpty(region_id)) {
+//                            page = 1;
+//                            getTaskList();
+//                        }
+//                    }
+//                }
             }
         }
         super.onActivityResult(requestCode, resultCode, data);

@@ -152,12 +152,30 @@ public class DoTaskWorkStepTwoActivity extends BaseActivity implements ImagePick
 //                    ActivityUtils.startActivity(getIntent().getExtras(),DoTaskWordStepThreeActivity.class);
                 }else{
 //                    ToastUtils.showShort("请上传图片");
-
-                    ActivityUtils.startActivityForResult(getIntent().getExtras(),DoTaskWorkStepTwoActivity.this,DoTaskWordStepThreeActivity.class,300);
-
+                    showJumpTips();
                 }
                 break;
         }
+    }
+
+    private void showJumpTips() {
+        MaterialDialog.Builder builder = new MaterialDialog.Builder(this)
+                .content("是否确定不提交截图？")
+                .positiveText("确定").positiveColor(getResources().getColor(R.color.color_blue)).onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        dialog.dismiss();
+                        ActivityUtils.startActivityForResult(getIntent().getExtras(),DoTaskWorkStepTwoActivity.this,DoTaskWordStepThreeActivity.class,300);
+                    }
+                }).negativeText("我点错了").negativeColor(getResources().getColor(R.color.color_info)).onNegative(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        dialog.dismiss();
+                    }
+                });
+
+        MaterialDialog dialog = builder.build();
+        dialog.show();
     }
 
     //校验上传图片个数有效
@@ -322,7 +340,6 @@ public class DoTaskWorkStepTwoActivity extends BaseActivity implements ImagePick
     private void showConfirmDialog() {
 
         MaterialDialog.Builder builder = new MaterialDialog.Builder(this)
-                .title("温馨提示")
                 .content("退出本次编辑？")
                 .positiveText("确定").positiveColor(getResources().getColor(R.color.color_blue)).onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override

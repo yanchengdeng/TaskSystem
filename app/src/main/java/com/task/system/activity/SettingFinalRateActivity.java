@@ -13,10 +13,12 @@ import com.blankj.utilcode.util.ToastUtils;
 import com.task.system.Constans;
 import com.task.system.R;
 import com.task.system.api.API;
+import com.task.system.api.TaskInfo;
 import com.task.system.api.TaskInfoList;
 import com.task.system.api.TaskService;
-import com.task.system.bean.ScaleRate;
+import com.task.system.bean.ScaleMark;
 import com.task.system.utils.TUtils;
+import com.yc.lib.api.ApiCallBack;
 import com.yc.lib.api.ApiCallBackList;
 import com.yc.lib.api.ApiConfig;
 
@@ -52,13 +54,13 @@ public class SettingFinalRateActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting_final_rate);
         ButterKnife.bind(this);
-        setTitle("返佣设置");
+        setTitle("备注设置");
         chidUID = getIntent().getStringExtra(Constans.PASS_CHILD_UID);
 
-        tvId.setText(chidUID);
+        tvId.setText("" + chidUID);
         tvRateTips.setText(String.format(getString(R.string.fanyong_rate_tips), "0"));
 
-        tvRate.addTextChangedListener(new TextWatcher() {
+        etMark.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -73,12 +75,8 @@ public class SettingFinalRateActivity extends BaseActivity {
             public void afterTextChanged(Editable s) {
                 if (TextUtils.isEmpty(s.toString())) {
                     btnConfirm.setBackground(getResources().getDrawable(R.drawable.normal_submit_btn_gray));
-                    tvRateTips.setText(String.format(getString(R.string.fanyong_rate_tips), "0"));
                 } else {
                     btnConfirm.setBackground(getResources().getDrawable(R.drawable.normal_submit_btn_red));
-
-                    tvRateTips.setText(String.format(getString(R.string.fanyong_rate_tips), s.toString()));
-
                 }
             }
         });
@@ -87,8 +85,8 @@ public class SettingFinalRateActivity extends BaseActivity {
         btnConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (TextUtils.isEmpty(tvRate.getEditableText().toString())) {
-                    ToastUtils.showShort("请输入返佣比例");
+                if (TextUtils.isEmpty(etMark.getEditableText().toString())) {
+                    ToastUtils.showShort("请输入备注信息");
                     return;
                 }
 
@@ -104,23 +102,18 @@ public class SettingFinalRateActivity extends BaseActivity {
     private void getRate() {
         showLoadingBar();
         HashMap<String, String> maps = new HashMap<>();
-//        maps.put("id", chidUID);
+        maps.put("child_uid", chidUID);
         maps.put("operate", "edit");
-        Call<TaskInfoList> call = ApiConfig.getInstants().create(TaskService.class).getUserOptionEdit(TUtils.getParams(maps));
+        Call<TaskInfo> call = ApiConfig.getInstants().create(TaskService.class).getUserOptionEdit(TUtils.getParams(maps));
 
-        API.getList(call, ScaleRate.class, new ApiCallBackList<ScaleRate>() {
+        API.getObject(call, ScaleMark.class, new ApiCallBack<ScaleMark>() {
             @Override
-            public void onSuccess(int msgCode, String msg, List<ScaleRate> data) {
+            public void onSuccess(int msgCode, String msg, ScaleMark data) {
                 dismissLoadingBar();
-                if (data != null && data.size() == 2) {
-                    if (!TextUtils.isEmpty(data.get(0).title)) {
-                        etMark.setText(data.get(0).title);
-                    }
-
-                    if (!TextUtils.isEmpty(data.get(1).tips)) {
-                        tvMaxRate.setText(TUtils.getIntegerInString(data.get(1).tips) + " %");
-                    }
+                if (data!=null && data.remark!=null && !TextUtils.isEmpty(data.remark.value)){
+                    etMark.setText(data.remark.value);
                 }
+
             }
 
             @Override

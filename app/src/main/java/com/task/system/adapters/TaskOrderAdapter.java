@@ -96,12 +96,18 @@ public class TaskOrderAdapter extends BaseQuickAdapter<OrderInfo, BaseViewHolder
 //           item.status = status;
 //       }
 
+        /**
+         * cash_time
+         * 4、5、6、7才有这个时间
+         * PHP-张晓燕  14:43:32
+         * end_time是拿来做倒计时的
+         */
 
         switch (item.status){
             case 1:
             case 2:
-                if (!TextUtils.isEmpty(item.stop_time)) {
-                    tvTime.setText(String.format(mContext.getString(R.string.end_time_tips), TUtils.getEndTimeTips(item.stop_time)));
+                if (!TextUtils.isEmpty(item.end_time)) {
+                    tvTime.setText(String.format(mContext.getString(R.string.end_time_tips), TUtils.getEndTimeTips(item.end_time)));
                 }
                 tvTime.setVisibility(View.VISIBLE);
                 dashLineTwo.setVisibility(View.VISIBLE);
@@ -126,8 +132,8 @@ public class TaskOrderAdapter extends BaseQuickAdapter<OrderInfo, BaseViewHolder
                 break;
             //4——已通过
             case 4:
-                if (!TextUtils.isEmpty(item.stop_time)) {
-                    tvTime.setText(String.format(mContext.getString(R.string.pass_time_tips), TUtils.getEndTimeTips(item.stop_time)));
+                if (!TextUtils.isEmpty(item.cash_time)) {
+                    tvTime.setText(String.format(mContext.getString(R.string.pass_time_tips), TUtils.getEndTimeTips(item.cash_time)));
                 }
                 tvTime.setVisibility(View.VISIBLE);
                 dashLineTwo.setVisibility(View.VISIBLE);
@@ -135,15 +141,19 @@ public class TaskOrderAdapter extends BaseQuickAdapter<OrderInfo, BaseViewHolder
                 tvLookReason.setVisibility(View.GONE);
                 tvCancleTask.setVisibility(View.GONE);
                 tvGoingWord.setVisibility(View.GONE);
-                tvElseFunction.setVisibility(View.VISIBLE);
-                tvElseFunction.setBackground(mContext.getResources().getDrawable(R.drawable.normal_submit_btn_red_trans));
-                tvElseFunction.setText("已通过");
-                tvElseFunction.setTextColor(mContext.getResources().getColor(R.color.red));
+                tvElseFunction.setBackground(mContext.getResources().getDrawable(R.drawable.normal_submit_btn_red));
+                tvElseFunction.setText("重新申请");
+                tvElseFunction.setTextColor(mContext.getResources().getColor(R.color.white));
+                if (item.is_apply==1){
+                    tvElseFunction.setVisibility(View.VISIBLE);
+                }else{
+                    tvElseFunction.setVisibility(View.GONE);
+                }
                 break;
             //5——未通过
             case 5:
-                if (!TextUtils.isEmpty(item.stop_time)) {
-                    tvTime.setText(String.format(mContext.getString(R.string.not_pass_time_tips), TUtils.getEndTimeTips(item.stop_time)));
+                if (!TextUtils.isEmpty(item.cash_time)) {
+                    tvTime.setText(String.format(mContext.getString(R.string.not_pass_time_tips), TUtils.getEndTimeTips(item.cash_time)));
                 }
                 tvTime.setVisibility(View.VISIBLE);
                 dashLineTwo.setVisibility(View.VISIBLE);
@@ -151,10 +161,14 @@ public class TaskOrderAdapter extends BaseQuickAdapter<OrderInfo, BaseViewHolder
                 tvLookReason.setVisibility(View.VISIBLE);
                 tvCancleTask.setVisibility(View.GONE);
                 tvGoingWord.setVisibility(View.GONE);
-                tvElseFunction.setVisibility(View.VISIBLE);
-                tvElseFunction.setBackground(mContext.getResources().getDrawable(R.drawable.normal_submit_btn_gray_light));
-                tvElseFunction.setText("未通过");
-                tvElseFunction.setTextColor(mContext.getResources().getColor(R.color.color_tittle));
+                tvElseFunction.setBackground(mContext.getResources().getDrawable(R.drawable.normal_submit_btn_red));
+                tvElseFunction.setText("重新申请");
+                tvElseFunction.setTextColor(mContext.getResources().getColor(R.color.white));
+                if (item.is_apply==1){
+                    tvElseFunction.setVisibility(View.VISIBLE);
+                }else{
+                    tvElseFunction.setVisibility(View.GONE);
+                }
                 break;
             // 6——已作废
             case 6:
@@ -170,10 +184,14 @@ public class TaskOrderAdapter extends BaseQuickAdapter<OrderInfo, BaseViewHolder
                 tvLookReason.setVisibility(View.GONE);
                 tvCancleTask.setVisibility(View.GONE);
                 tvGoingWord.setVisibility(View.GONE);
-                tvElseFunction.setVisibility(View.VISIBLE);
-                tvElseFunction.setBackground(mContext.getResources().getDrawable(R.drawable.normal_submit_btn_gray_light));
-                tvElseFunction.setText("已下线");
-                tvElseFunction.setTextColor(mContext.getResources().getColor(R.color.color_tittle));
+                tvElseFunction.setBackground(mContext.getResources().getDrawable(R.drawable.normal_submit_btn_red));
+                tvElseFunction.setText("重新申请");
+                tvElseFunction.setTextColor(mContext.getResources().getColor(R.color.white));
+                if (item.is_apply==1){
+                    tvElseFunction.setVisibility(View.VISIBLE);
+                }else{
+                    tvElseFunction.setVisibility(View.GONE);
+                }
                 break;
 //                7——已超时
             case 7:
@@ -187,10 +205,14 @@ public class TaskOrderAdapter extends BaseQuickAdapter<OrderInfo, BaseViewHolder
                 tvLookReason.setVisibility(View.GONE);
                 tvCancleTask.setVisibility(View.GONE);
                 tvGoingWord.setVisibility(View.GONE);
-                tvElseFunction.setVisibility(View.VISIBLE);
                 tvElseFunction.setBackground(mContext.getResources().getDrawable(R.drawable.normal_submit_btn_red));
-                tvElseFunction.setText("立即申请");
+                tvElseFunction.setText("重新申请");
                 tvElseFunction.setTextColor(mContext.getResources().getColor(R.color.white));
+                if (item.is_apply==1){
+                    tvElseFunction.setVisibility(View.VISIBLE);
+                }else{
+                    tvElseFunction.setVisibility(View.GONE);
+                }
                 break;
 
         }

@@ -1,6 +1,8 @@
 package com.task.system.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -9,12 +11,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.ActivityUtils;
 import com.blankj.utilcode.util.ToastUtils;
+import com.task.system.Constans;
 import com.task.system.R;
 import com.task.system.api.API;
 import com.task.system.api.TaskInfo;
 import com.task.system.api.TaskService;
 import com.task.system.bean.AddLeaderInfo;
+import com.task.system.bean.CityInfo;
 import com.task.system.bean.SimpleBeanInfo;
 import com.task.system.utils.PerfectClickListener;
 import com.task.system.utils.TUtils;
@@ -44,14 +49,11 @@ public class AddNewLeaderActivity extends BaseActivity {
     EditText etPhone;
     @BindView(R.id.et_password)
     EditText etPassword;
-    @BindView(R.id.tv_rate)
-    EditText tvRate;
-    @BindView(R.id.tv_rate_tips)
-    TextView tvRateTips;
+    @BindView(R.id.tv_select_region)
+    TextView tvSelectRegion;
     @BindView(R.id.btn_confirm)
     Button btnConfirm;
-    @BindView(R.id.tv_max_rate)
-    TextView tvMaxRate;
+    private CityInfo cityInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,32 +73,6 @@ public class AddNewLeaderActivity extends BaseActivity {
             }
         });
 
-        tvRateTips.setText(String.format(getString(R.string.fanyong_rate_tips), "0"));
-
-        tvRate.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (TextUtils.isEmpty(s.toString())) {
-                    btnConfirm.setBackground(getResources().getDrawable(R.drawable.normal_submit_btn_gray));
-                    tvRateTips.setText(String.format(getString(R.string.fanyong_rate_tips), "0"));
-                } else {
-                    btnConfirm.setBackground(getResources().getDrawable(R.drawable.normal_submit_btn_red));
-
-                    tvRateTips.setText(String.format(getString(R.string.fanyong_rate_tips), s.toString()));
-
-                }
-            }
-        });
 
         getLeaderInfo();
     }
@@ -104,8 +80,8 @@ public class AddNewLeaderActivity extends BaseActivity {
     private void getLeaderInfo() {
         showLoadingBar();
 
-        HashMap<String,String> maps = new HashMap<>();
-        maps.put("operate","add");
+        HashMap<String, String> maps = new HashMap<>();
+        maps.put("operate", "add");
         Call<TaskInfo> call = ApiConfig.getInstants().create(TaskService.class).getUserOptionAdd(TUtils.getParams(maps));
         API.getObject(call, AddLeaderInfo.class, new ApiCallBack<AddLeaderInfo>() {
             @Override
@@ -122,13 +98,6 @@ public class AddNewLeaderActivity extends BaseActivity {
                         etNickname.setText(data.username.value);
                     }
                 }
-
-                if (data.fanli_ratio != null) {
-                    if (!TextUtils.isEmpty(data.fanli_ratio.tips)) {
-                        tvMaxRate.setText(data.fanli_ratio.tips + " %");
-                    }
-                }
-
             }
 
             @Override
@@ -208,22 +177,14 @@ public class AddNewLeaderActivity extends BaseActivity {
             }
         });
 
-        tvRate.addTextChangedListener(new TextWatcher() {
+        tvSelectRegion.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                doCheckId();
+            public void onClick(View v) {
+                ActivityUtils.startActivityForResult(AddNewLeaderActivity.this, CityListActivity.class, 100);
             }
         });
+
+
     }
 
 
@@ -234,7 +195,7 @@ public class AddNewLeaderActivity extends BaseActivity {
                 && !TextUtils.isEmpty(etPhone.getEditableText().toString())
                 && !TextUtils.isEmpty(etPassword.getEditableText().toString()
         )
-                && !TextUtils.isEmpty(tvRate.getEditableText().toString())) {
+                && !TextUtils.isEmpty(tvSelectRegion.getText().toString())) {
             btnConfirm.setBackground(getResources().getDrawable(R.drawable.normal_submit_btn_red));
         } else {
             btnConfirm.setBackground(getResources().getDrawable(R.drawable.normal_submit_btn_gray));
@@ -259,7 +220,10 @@ public class AddNewLeaderActivity extends BaseActivity {
         if (!TextUtils.isEmpty(etMark.getEditableText().toString())) {
             map.put("remark", etMark.getEditableText().toString());
         }
-        map.put("fanli_ratio", tvRate.getEditableText().toString());
+
+        if (cityInfo != null) {
+            map.put("region_id", cityInfo.region_id);
+        }
         showLoadingBar();
 
         Call<TaskInfo> call = ApiConfig.getInstants().create(TaskService.class).addLeader(TUtils.getParams(map));
@@ -281,5 +245,21 @@ public class AddNewLeaderActivity extends BaseActivity {
         });
 
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (requestCode == 100) {
+            if (resultCode == RESULT_OK) {
+                if (data != null && data.getExtras() != null && data.getExtras().getSerializable(Constans.PASS_OBJECT) != null) {
+                    cityInfo = (CityInfo) data.getExtras().getSerializable(Constans.PASS_OBJECT);
+                    if (!TextUtils.isEmpty(cityInfo.region_name)) {
+                        tvSelectRegion.setText(cityInfo.region_name);
+                        doCheckId();
+                    }
+                }
+                super.onActivityResult(requestCode, resultCode, data);
+            }
+        }
     }
 }

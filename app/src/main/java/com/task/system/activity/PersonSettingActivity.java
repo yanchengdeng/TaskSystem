@@ -34,7 +34,6 @@ import com.yanzhenjie.permission.AndPermission;
 import com.yanzhenjie.permission.runtime.Permission;
 import com.yc.lib.api.ApiCallBackList;
 import com.yc.lib.api.ApiConfig;
-import com.yc.lib.api.utils.ImageLoaderUtil;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -101,7 +100,7 @@ public class PersonSettingActivity extends BaseActivity {
 
     private void initData(UserInfo userInfo) {
         if (!TextUtils.isEmpty(userInfo.avatar)) {
-            ImageLoaderUtil.loadCircle(userInfo.avatar, ivHeader, R.mipmap.defalut_header);
+            Glide.with(ApiConfig.context).load(userInfo.avatar).apply(RequestOptions.circleCropTransform().placeholder(R.mipmap.defalut_header).error(R.mipmap.defalut_header)).into(ivHeader);
         }
 
         if (!TextUtils.isEmpty(userInfo.username)) {

@@ -70,6 +70,7 @@ public class API {
                                     apiCallBack.onSuccess(resultInfo.getStatus_code(), resultInfo.getMessage(), (T) new Gson().fromJson(json, clz));
                                 } catch (Exception e) {
                                     LogUtils.w("dyc", "json 数据格式异常");
+                                    apiCallBack.onFaild(resultInfo.getStatus_code(), resultInfo.getMessage() + ":json 数据格式异常");
                                 }
                             } else {
                                 apiCallBack.onFaild(resultInfo.getStatus_code(), resultInfo.getMessage() + ":data 无数据");

@@ -170,6 +170,11 @@ public interface TaskService {
     Call<TaskInfo> getTaskList(@FieldMap HashMap<String, String> maps);
 
 
+    //分享
+    @FormUrlEncoded
+    @POST("taskOperate/share")
+    Call<TaskInfo> getTaskShare(@FieldMap HashMap<String,String> maps);
+
     /**
      * 任务详情
      * task_id
@@ -389,7 +394,7 @@ public interface TaskService {
      */
     @FormUrlEncoded
     @POST("leader/getUserOption")
-    Call<TaskInfoList> getUserOptionEdit(@FieldMap HashMap<String,String> maps);
+    Call<TaskInfo> getUserOptionEdit(@FieldMap HashMap<String,String> maps);
 
     @FormUrlEncoded
     @POST("leader/getUserOption")

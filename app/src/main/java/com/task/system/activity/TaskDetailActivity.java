@@ -24,6 +24,7 @@ import com.task.system.api.TaskInfo;
 import com.task.system.api.TaskInfoList;
 import com.task.system.api.TaskService;
 import com.task.system.bean.OrderInfo;
+import com.task.system.bean.SimpleBeanInfo;
 import com.task.system.bean.TaskInfoItem;
 import com.task.system.event.RefreshUnreadCountEvent;
 import com.task.system.fragments.FragmentStepInfo;
@@ -89,7 +90,7 @@ public class TaskDetailActivity extends BaseSimpleActivity {
     private IWXAPI api;
 
     //正式数据 切换过来
-    private String url, title, subInfo;
+    private String url, title, subInfo, shareIcon;
     private Tencent mTencent;
 
 
@@ -104,8 +105,8 @@ public class TaskDetailActivity extends BaseSimpleActivity {
         tablayout.addTab(tablayout.newTab().setText("任务描述"), 0);
         tablayout.addTab(tablayout.newTab().setText("详细流程"), 1);
         getTaskDetail();
-        url = "http://politics.people.com.cn/n1/2019/0329/c1001-31003881.html";
         regToWx();
+        getShareInfo();
     }
 
     private void regToWx() {
@@ -138,7 +139,7 @@ public class TaskDetailActivity extends BaseSimpleActivity {
                 dismissLoadingBar();
                 taskInfoItem = data;
                 title = data.title;
-                subInfo = data.sub_title+"";
+                subInfo = data.sub_title + "";
 
                 if (data.is_collect == 0) {
                     ivCollected.setImageResource(R.mipmap.iv_collect);
@@ -153,6 +154,33 @@ public class TaskDetailActivity extends BaseSimpleActivity {
             @Override
             public void onFaild(int msgCode, String msg) {
                 dismissLoadingBar();
+
+            }
+        });
+    }
+
+
+    private void getShareInfo() {
+        showLoadingBar();
+        HashMap<String, String> maps = new HashMap<>();
+        maps.put("uid", TUtils.getUserId());
+        maps.put("task_id", task_id);
+        Call<TaskInfo> call = ApiConfig.getInstants().create(TaskService.class).getTaskShare(TUtils.getParams(maps));
+
+        API.getObject(call, SimpleBeanInfo.class, new ApiCallBack<SimpleBeanInfo>() {
+            @Override
+            public void onSuccess(int msgCode, String msg, SimpleBeanInfo data) {
+
+                if (!TextUtils.isEmpty(data.url)) {
+                    url = data.url;
+                    title = data.title;
+                    subInfo = data.sub_title;
+                    shareIcon = data.thumbnail;
+                }
+            }
+
+            @Override
+            public void onFaild(int msgCode, String msg) {
 
             }
         });
@@ -179,8 +207,13 @@ public class TaskDetailActivity extends BaseSimpleActivity {
             tvGiveUpWork.setVisibility(View.GONE);
             tvDoWork.setBackgroundColor(getResources().getColor(R.color.red));
         } else {
-            tvDoWork.setBackgroundColor(getResources().getColor(R.color.give_up));
-            tvGiveUpWork.setVisibility(View.GONE);
+            if (taskInfoItem.is_apply == 1) {
+                tvDoWork.setBackgroundColor(getResources().getColor(R.color.red));
+                tvGiveUpWork.setVisibility(View.VISIBLE);
+            } else {
+                tvDoWork.setBackgroundColor(getResources().getColor(R.color.give_up));
+                tvGiveUpWork.setVisibility(View.GONE);
+            }
         }
 
         order_id = data.order_id;
@@ -207,7 +240,11 @@ public class TaskDetailActivity extends BaseSimpleActivity {
                 }
                 break;
             case R.id.iv_share:
-                shareDialog();
+                if (!TextUtils.isEmpty(url)) {
+                    shareDialog();
+                } else {
+                    getShareInfo();
+                }
                 break;
             case R.id.tv_custome:
                 TUtils.openKf();
@@ -227,6 +264,8 @@ public class TaskDetailActivity extends BaseSimpleActivity {
                     Bundle bundle = new Bundle();
                     bundle.putSerializable(Constans.PASS_OBJECT, taskInfoItem);
                     ActivityUtils.startActivityForResult(bundle, TaskDetailActivity.this, DoTaskStepActivity.class, 100);
+                } else if (taskInfoItem.is_apply == 1) {
+                    applyTask();
                 } else {
                     ToastUtils.showShort("" + taskInfoItem.order_status_title);
                 }
@@ -400,7 +439,7 @@ public class TaskDetailActivity extends BaseSimpleActivity {
         WXMediaMessage msg = new WXMediaMessage(webpage);
         msg.title = title;
         msg.description = subInfo;
-        Bitmap thumbBmp = BitmapFactory.decodeResource(getResources(), R.mipmap.app_version_logo);
+        Bitmap thumbBmp = BitmapFactory.decodeResource(getResources(), R.mipmap.logo);
         msg.thumbData = Util.bmpToByteArray(thumbBmp, true);
 
 //构造一个Req
@@ -438,7 +477,7 @@ public class TaskDetailActivity extends BaseSimpleActivity {
         params.putString(QQShare.SHARE_TO_QQ_TITLE, title);
         params.putString(QQShare.SHARE_TO_QQ_SUMMARY, subInfo);
         params.putString(QQShare.SHARE_TO_QQ_TARGET_URL, url);
-//        params.putString(QQShare.SHARE_TO_QQ_IMAGE_URL, "http://imgcache.qq.com/qzone/space_item/pre/0/66768.gif");
+        params.putString(QQShare.SHARE_TO_QQ_IMAGE_URL, shareIcon);
         params.putString(QQShare.SHARE_TO_QQ_APP_NAME, getString(R.string.app_name));
 
 

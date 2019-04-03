@@ -139,9 +139,9 @@ public class CityListActivity extends BaseActivity {
             public void onCityClick(CityInfo cityInfo) {
                 Intent intent = new Intent();
                 Bundle bundle = new Bundle();
-                bundle.putSerializable(Constans.PASS_OBJECT,cityInfo);
+                bundle.putSerializable(Constans.PASS_OBJECT, cityInfo);
                 intent.putExtras(bundle);
-                setResult(RESULT_OK,intent);
+                setResult(RESULT_OK, intent);
                 finish();
             }
 
@@ -151,9 +151,13 @@ public class CityListActivity extends BaseActivity {
 
                 Intent intent = new Intent();
                 Bundle bundle = new Bundle();
-                bundle.putString(Constans.PASS_STRING,name);
+                CityInfo cityInfo = new CityInfo(name, "");
+                cityInfo.setName(name);
+                cityInfo.region_name = name;
+                cityInfo.region_id = getReginId(name);
+                bundle.putSerializable(Constans.PASS_OBJECT, cityInfo);
                 intent.putExtras(bundle);
-                setResult(RESULT_OK,intent);
+                setResult(RESULT_OK, intent);
                 finish();
             }
 
@@ -167,7 +171,7 @@ public class CityListActivity extends BaseActivity {
         });
 
         if (!TextUtils.isEmpty(SPUtils.getInstance().getString(Constans.LOCATON_CITY_NAME))) {
-            adapter.updateLocateState(LocateState.SUCCESS,SPUtils.getInstance().getString(Constans.LOCATON_CITY_NAME));
+            adapter.updateLocateState(LocateState.SUCCESS, SPUtils.getInstance().getString(Constans.LOCATON_CITY_NAME));
         }
 
 
@@ -213,6 +217,15 @@ public class CityListActivity extends BaseActivity {
                 tvLetterOverlay.setVisibility(View.VISIBLE);
             }
         });
+    }
+
+    private String getReginId(String name) {
+        for (CityInfo cityInfo : mAllCities) {
+            if (cityInfo.region_name.equals(name)) {
+                return cityInfo.region_id;
+            }
+        }
+        return SPUtils.getInstance().getString(Constans.LOCATON_CITY_id);
     }
 
 

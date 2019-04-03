@@ -65,7 +65,7 @@ public class FragmentTaskDetail extends Fragment {
 
         tvTaskId.setText(String.format(getString(R.string.task_id),taskInfoItem.id));
 
-        tvEasyOr.setText(String.format(getString(R.string.easy_or),taskInfoItem.difficulty==0?"简单":"困难"));
+        tvEasyOr.setText(String.format(getString(R.string.easy_or),taskInfoItem.difficulty));
 
         tvLeftNum.setVisibility(View.GONE);
 

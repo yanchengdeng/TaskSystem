@@ -9,7 +9,6 @@ import android.view.MenuItem;
 
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
-import com.gyf.barlibrary.ImmersionBar;
 import com.task.system.Constans;
 import com.task.system.R;
 import com.task.system.adapters.FragmentPagerItemAdapter;
@@ -64,7 +63,7 @@ public class MainActivity extends BaseSimpleActivity {
 
 
 //        ImmersionBar.with(this).statusBarDarkFont(false,0.2f).init();
-        ImmersionBar.with(mContext).statusBarDarkFont(false,0.2f).statusBarColor(R.color.trans_black).init();
+//        ImmersionBar.with(mContext).statusBarDarkFont(false,0.2f).statusBarColor(R.color.trans_black).init();
 
 //        StatusBarUtil.setTranslucentForImageViewInFragment(this, null);
 //        StatusBarUtil.setTranslucent(this,30);
@@ -90,13 +89,13 @@ public class MainActivity extends BaseSimpleActivity {
             public void onPageSelected(int i) {
                 switch (i){
                     case 0:
-                        ImmersionBar.with(mContext).statusBarDarkFont(false,0.2f).statusBarColor(R.color.red).init();
+//                        ImmersionBar.with(mContext).statusBarDarkFont(false,0.2f).statusBarColor(R.color.red).init();
                         break;
                     case 1:
-                        ImmersionBar.with(mContext).statusBarDarkFont(false,0.2f).statusBarColor(R.color.red).init();
+//                        ImmersionBar.with(mContext).statusBarDarkFont(false,0.2f).statusBarColor(R.color.red).init();
                         break;
                     case 2:
-                        ImmersionBar.with(mContext).statusBarDarkFont(false,0.2f).statusBarColor(R.color.red_mine_status).init();
+//                        ImmersionBar.with(mContext).statusBarDarkFont(false,0.2f).statusBarColor(R.color.red_mine_status).init();
                         break;
                 }
 
