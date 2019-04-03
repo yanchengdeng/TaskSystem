@@ -184,7 +184,9 @@ public class RegisterActivity extends BaseSimpleActivity {
 
                 break;
             case R.id.tv_get_inviter_code:
-                getInviteCode();
+                Bundle bundle  = new Bundle();
+                bundle.putBoolean(Constans.PASS_STRING,true);//ture表示来自注册  要调用获取邀请码接口 否则 去代理邀请码接口
+                ActivityUtils.startActivity(bundle,MyInviteCodeActivity.class);
                 break;
             case R.id.btn_register:
                 if (TextUtils.isEmpty(etInvideCode.getEditableText().toString())) {
@@ -196,25 +198,7 @@ public class RegisterActivity extends BaseSimpleActivity {
         }
     }
 
-    //获取邀请码
-    private void getInviteCode() {
-        Call<TaskInfo> call = ApiConfig.getInstants().create(TaskService.class).getInviteCode(TUtils.getParams());
 
-        API.getObject(call, InviteCode.class, new ApiCallBack<InviteCode>() {
-            @Override
-            public void onSuccess(int msgCode, String msg, InviteCode data) {
-                ToastUtils.showShort(msg);
-                etInvideCode.setText("" + data.invite_code);
-            }
-
-            @Override
-            public void onFaild(int msgCode, String msg) {
-                ToastUtils.showShort(msg);
-            }
-        });
-
-
-    }
 
     //校验邀请码
     private void checkInviteCode() {

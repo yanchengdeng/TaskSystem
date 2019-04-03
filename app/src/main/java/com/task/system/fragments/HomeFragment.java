@@ -170,6 +170,7 @@ public class HomeFragment extends Fragment {
         tagRecycle.setNestedScrollingEnabled(false);
         tagRecycle.setAdapter(tagAdapter);
         homeAdapter.addHeaderView(tagRecycle);
+        homeAdapter.setHeaderAndEmpty(true);
         recycle.setAdapter(homeAdapter);
 
         tagAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
@@ -353,6 +354,15 @@ public class HomeFragment extends Fragment {
         API.getList(call, CatergoryInfo.class, new ApiCallBackList<CatergoryInfo>() {
             @Override
             public void onSuccess(int msgCode, String msg, List<CatergoryInfo> data) {
+
+                if (data!=null){
+                    meneLeft.getData().clear();
+                    CatergoryInfo  all =    new CatergoryInfo();
+                    all.id= "";
+                    all.isSelected = true;
+                    all.title ="全部分类";
+                    data.add(0,all);
+                }
                 meneLeft.setNewData(data);
 
             }

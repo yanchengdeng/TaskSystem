@@ -19,25 +19,23 @@ public class HomeAdapter extends BaseQuickAdapter<TaskInfoItem, BaseViewHolder> 
     @Override
     protected void convert(BaseViewHolder helper, TaskInfoItem item) {
 
-        if (!TextUtils.isEmpty(item.thumbnail)) {
-            ImageLoaderUtil.loadNormal(item.thumbnail, (ImageView) helper.getView(R.id.iv_image),R.mipmap.load_err);
-        }
+        ImageLoaderUtil.loadNormal(item.thumbnail, (ImageView) helper.getView(R.id.iv_image), R.mipmap.load_err);
 
         if (!TextUtils.isEmpty(item.title)) {
-            ((TextView)helper.getView(R.id.tv_title)).setText(item.title);
+            ((TextView) helper.getView(R.id.tv_title)).setText(item.title);
         }
 
         if (!TextUtils.isEmpty(item.sub_title)) {
-            ((TextView)helper.getView(R.id.tv_info)).setText(item.sub_title);
+            ((TextView) helper.getView(R.id.tv_info)).setText(item.sub_title);
         }
 
 
         if (!TextUtils.isEmpty(item.views)) {
-            ((TextView)helper.getView(R.id.tv_num)).setText(item.views+"关注");
+            ((TextView) helper.getView(R.id.tv_num)).setText(item.views + "关注");
         }
 
         if (!TextUtils.isEmpty(item.market_score)) {
-            ((TextView)helper.getView(R.id.tv_price)).setText(mContext.getString(R.string.money_unit)+item.market_score);
+            ((TextView) helper.getView(R.id.tv_price)).setText(mContext.getString(R.string.money_unit) + item.market_score);
         }
 
 

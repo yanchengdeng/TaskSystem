@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.ToastUtils;
+import com.task.system.Constans;
 import com.task.system.R;
 import com.task.system.api.API;
 import com.task.system.api.TaskInfo;
@@ -24,18 +25,22 @@ import retrofit2.Call;
 //我的邀请码
 public class MyInviteCodeActivity extends BaseActivity {
 
+    private boolean isFromRegister;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_invite_code);
         setTitle("我的邀请码");
+        isFromRegister = getIntent().getBooleanExtra(Constans.PASS_STRING,false);
 
         UserInfo userInfo = TUtils.getUserInfo();
         findViewById(R.id.btn_copy).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                if (TextUtils.isEmpty(userInfo.invite_code)){
+                if (TextUtils.isEmpty( ((TextView)findViewById(R.id.tv_invite_code)).getText().toString())){
+                    ToastUtils.showShort("没有邀请码");
                     return;
                 }
                 ClipboardManager clipboardManager = (ClipboardManager)getSystemService(Context.CLIPBOARD_SERVICE);
@@ -43,7 +48,31 @@ public class MyInviteCodeActivity extends BaseActivity {
                 ToastUtils.showShort("复制成功");
             }
         });
-        getLeaderInviteCode();
+        if (isFromRegister){
+            getInviteCode();
+        }else {
+            getLeaderInviteCode();
+        }
+    }
+
+    //获取邀请码
+    private void getInviteCode() {
+        Call<TaskInfo> call = ApiConfig.getInstants().create(TaskService.class).getInviteCode(TUtils.getParams());
+
+        API.getObject(call, InviteCode.class, new ApiCallBack<InviteCode>() {
+            @Override
+            public void onSuccess(int msgCode, String msg, InviteCode data) {
+                dismissLoadingBar();
+                ((TextView)findViewById(R.id.tv_invite_code)).setText(""+data.invite_code);
+            }
+
+            @Override
+            public void onFaild(int msgCode, String msg) {
+                ToastUtils.showShort(msg);
+            }
+        });
+
+
     }
 
     //获取邀请码  只有type=2  代理才有

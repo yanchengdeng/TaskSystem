@@ -58,7 +58,9 @@ public class DoTaskWordStepThreeActivity extends BaseActivity {
         setContentView(R.layout.activity_do_task_word_step_three);
         ButterKnife.bind(this);
         taskInfoItem = (TaskInfoItem) getIntent().getSerializableExtra(Constans.PASS_OBJECT);
-        setTitle(getString(R.string.do_task_title));
+        if (!TextUtils.isEmpty(taskInfoItem.title)){
+            setTitle(taskInfoItem.title);
+        }
         tvOne.setBackground(getResources().getDrawable(R.drawable.view_unread_gray_bg));
         tvTwo.setBackground(getResources().getDrawable(R.drawable.view_unread_gray_bg));
         tvThree.setBackground(getResources().getDrawable(R.drawable.view_unread_red_bg));

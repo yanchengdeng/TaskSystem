@@ -193,7 +193,16 @@ public class TUtils {
 
     //处理列表无数据
     public static void dealNoReqestData(BaseQuickAdapter adapter, RecyclerView recycle, SmartRefreshLayout refreshLayout) {
+       dealNoReqestData(adapter, recycle, refreshLayout,1);
+    }
+
+
+    //处理列表无数据
+    public static void dealNoReqestData(BaseQuickAdapter adapter, RecyclerView recycle, SmartRefreshLayout refreshLayout,int page) {
         if (adapter != null && recycle != null && refreshLayout != null) {
+            if (page==1){
+                adapter.getData().clear();
+            }
             if (adapter.getData().size() > 0) {
                 adapter.loadMoreComplete();
                 adapter.loadMoreEnd();
@@ -210,9 +219,13 @@ public class TUtils {
     }
 
     //处理列表无数据
-    public static void dealNoReqestData(BaseQuickAdapter adapter, RecyclerView recycle) {
+    public static void dealNoReqestData(BaseQuickAdapter adapter, RecyclerView recycle,int page) {
         if (adapter == null && recycle == null) {
             return;
+        }
+
+        if (page==1){
+            adapter.getData().clear();
         }
         if (adapter.getData().size() > 0) {
             adapter.loadMoreComplete();
@@ -225,6 +238,13 @@ public class TUtils {
                 adapter.setEmptyView(RecycleViewUtils.getEmptyView((Activity) ApiConfig.context, recycle));
             }
         }
+    }
+
+
+
+    //处理列表无数据
+    public static void dealNoReqestData(BaseQuickAdapter adapter, RecyclerView recycle) {
+       dealNoReqestData(adapter,recycle,1);
     }
 
     //处理请求列表数据

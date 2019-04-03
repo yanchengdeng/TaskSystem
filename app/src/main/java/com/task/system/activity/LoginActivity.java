@@ -22,6 +22,7 @@ import com.task.system.R;
 import com.task.system.api.API;
 import com.task.system.api.TaskInfo;
 import com.task.system.api.TaskService;
+import com.task.system.bean.SimpleBeanInfo;
 import com.task.system.bean.UserInfo;
 import com.task.system.enums.UserType;
 import com.task.system.utils.TUtils;
@@ -62,14 +63,32 @@ public class LoginActivity extends BaseSimpleActivity {
         ImmersionBar.with(this).init();
         checkAccoutPsw();
         mSwipeBackHelper.setSwipeBackEnable(false);
+        getCustom();
     }
 
+
+    private void getCustom() {
+        Call<TaskInfo> call = ApiConfig.getInstants().create(TaskService.class).getCustomeSerice(TUtils.getParams());
+
+        API.getObject(call, SimpleBeanInfo.class, new ApiCallBack<SimpleBeanInfo>() {
+            @Override
+            public void onSuccess(int msgCode, String msg, SimpleBeanInfo data) {
+                SPUtils.getInstance().put(Constans.KEFU,data.link);
+            }
+
+            @Override
+            public void onFaild(int msgCode, String msg) {
+
+            }
+        });
+    }
 
     @OnClick({R.id.tv_contact, R.id.tv_forget_password, R.id.btn_login, R.id.tv_go_register})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_contact:
-                ToastUtils.showShort("联系人");
+                TUtils.openKf();
+
                 break;
             case R.id.tv_forget_password:
                 ActivityUtils.startActivity(ForgetPasswordActivity.class);

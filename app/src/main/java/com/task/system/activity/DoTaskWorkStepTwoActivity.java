@@ -94,7 +94,9 @@ public class DoTaskWorkStepTwoActivity extends BaseActivity implements ImagePick
         tvTwo.setBackground(getResources().getDrawable(R.drawable.view_unread_red_bg));
 
         taskInfoItem = (TaskInfoItem) getIntent().getSerializableExtra(Constans.PASS_OBJECT);
-        setTitle(getString(R.string.do_task_title));
+        if (!TextUtils.isEmpty(taskInfoItem.title)){
+            setTitle(taskInfoItem.title);
+        }
         imageAdapter = new ImagePickerAdapter(this, selImageList, maxImgCount);
         imageAdapter.setOnItemClickListener(this);
         recycle.setLayoutManager(new GridLayoutManager(this, 3));
@@ -149,7 +151,10 @@ public class DoTaskWorkStepTwoActivity extends BaseActivity implements ImagePick
                     parseImageToBase64();
 //                    ActivityUtils.startActivity(getIntent().getExtras(),DoTaskWordStepThreeActivity.class);
                 }else{
-                    ToastUtils.showShort("请上传图片");
+//                    ToastUtils.showShort("请上传图片");
+
+                    ActivityUtils.startActivityForResult(getIntent().getExtras(),DoTaskWorkStepTwoActivity.this,DoTaskWordStepThreeActivity.class,300);
+
                 }
                 break;
         }

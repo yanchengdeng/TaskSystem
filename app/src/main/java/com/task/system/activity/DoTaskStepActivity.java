@@ -44,9 +44,12 @@ public class DoTaskStepActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_do_task_step);
         ButterKnife.bind(this);
-        setTitle(getString(R.string.do_task_title));
 
         taskInfoItem = (TaskInfoItem) getIntent().getSerializableExtra(Constans.PASS_OBJECT);
+
+        if (!TextUtils.isEmpty(taskInfoItem.title)){
+            setTitle(taskInfoItem.title);
+        }
 
 
         if (!TextUtils.isEmpty(taskInfoItem.step_1)){
