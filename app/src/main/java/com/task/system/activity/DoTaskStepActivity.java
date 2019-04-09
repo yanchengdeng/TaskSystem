@@ -56,13 +56,25 @@ public class DoTaskStepActivity extends BaseActivity {
             richStepOne.setHtml(taskInfoItem.step_1);
         }
 
-        if (!TextUtils.isEmpty(taskInfoItem.step_2)){
-            richStepTwo.setHtml(taskInfoItem.step_2);
-        }
+        richStepTwo.setVisibility(View.GONE);
+        richStepThree.setVisibility(View.GONE);
 
-        if (!TextUtils.isEmpty(taskInfoItem.step_3)){
-            richStepThree.setHtml(taskInfoItem.step_3);
-        }
+        richStepOne.setOnImageClickListener(new RichTextView.ImageClickListener() {
+            @Override
+            public void onImageClick(String imageUrl, String[] imageUrls, int position) {
+
+                TUtils.openImageViews(imageUrls,position);
+
+            }
+        });
+
+//        if (!TextUtils.isEmpty(taskInfoItem.step_2)){
+//            richStepTwo.setHtml(taskInfoItem.step_2);
+//        }
+//
+//        if (!TextUtils.isEmpty(taskInfoItem.step_3)){
+//            richStepThree.setHtml(taskInfoItem.step_3);
+//        }
 
 
     }

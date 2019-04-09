@@ -1,6 +1,7 @@
 package com.task.system.utils;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -24,8 +25,11 @@ import com.task.system.bean.TaskInfoList;
 import com.task.system.bean.TaskType;
 import com.task.system.bean.UserInfo;
 import com.task.system.enums.UserType;
+import com.task.system.views.photoview.ImageInfo;
+import com.task.system.views.photoview.preview.ImagePreviewActivity;
 import com.yc.lib.api.ApiConfig;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -396,5 +400,31 @@ public class TUtils {
             System.out.print("erro---");
         }
         return "0";
+    }
+
+    public static void openImageViews(String[] imageUrls, int position) {
+
+
+         List<ImageInfo> imageInfo = new ArrayList<>();
+         if (imageUrls==null || imageUrls.length==0){
+             return;
+         }
+
+         for (String item:imageUrls){
+             ImageInfo info = new ImageInfo();
+             info.bigImageUrl = item;
+             info.thumbnailUrl  = item;
+             imageInfo.add(info);
+         }
+
+
+
+        Intent intent = new Intent(ApiConfig.context, ImagePreviewActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(ImagePreviewActivity.IMAGE_INFO, (Serializable) imageInfo);
+        bundle.putInt(ImagePreviewActivity.CURRENT_ITEM, position);
+        intent.putExtras(bundle);
+        ApiConfig.context.startActivity(intent);
+        ((Activity) ApiConfig.context).overridePendingTransition(0, 0);
     }
 }

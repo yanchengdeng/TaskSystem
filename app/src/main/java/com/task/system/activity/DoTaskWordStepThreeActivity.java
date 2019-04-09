@@ -16,6 +16,7 @@ import com.task.system.api.API;
 import com.task.system.api.TaskInfoList;
 import com.task.system.api.TaskService;
 import com.task.system.bean.TaskInfoItem;
+import com.task.system.common.RichTextView;
 import com.task.system.utils.TUtils;
 import com.yc.lib.api.ApiCallBackList;
 import com.yc.lib.api.ApiConfig;
@@ -49,6 +50,8 @@ public class DoTaskWordStepThreeActivity extends BaseActivity {
     TextView tvPreStyep;
     @BindView(R.id.tv_next_step)
     TextView tvNextStep;
+    @BindView(R.id.rich_step_three)
+    RichTextView richStepThree;
 
     private TaskInfoItem taskInfoItem;
 
@@ -58,12 +61,25 @@ public class DoTaskWordStepThreeActivity extends BaseActivity {
         setContentView(R.layout.activity_do_task_word_step_three);
         ButterKnife.bind(this);
         taskInfoItem = (TaskInfoItem) getIntent().getSerializableExtra(Constans.PASS_OBJECT);
-        if (!TextUtils.isEmpty(taskInfoItem.title)){
+        if (!TextUtils.isEmpty(taskInfoItem.title)) {
             setTitle(taskInfoItem.title);
         }
         tvOne.setBackground(getResources().getDrawable(R.drawable.view_unread_gray_bg));
         tvTwo.setBackground(getResources().getDrawable(R.drawable.view_unread_gray_bg));
         tvThree.setBackground(getResources().getDrawable(R.drawable.view_unread_red_bg));
+
+        if (!TextUtils.isEmpty(taskInfoItem.step_3)){
+            richStepThree.setHtml(taskInfoItem.step_3);
+        }
+
+        richStepThree.setOnImageClickListener(new RichTextView.ImageClickListener() {
+            @Override
+            public void onImageClick(String imageUrl, String[] imageUrls, int position) {
+
+                TUtils.openImageViews(imageUrls,position);
+
+            }
+        });
     }
 
     @OnClick({R.id.tv_custome, R.id.tv_pre_styep, R.id.tv_next_step})
@@ -75,7 +91,7 @@ public class DoTaskWordStepThreeActivity extends BaseActivity {
             case R.id.tv_pre_styep:
                 if (TextUtils.isEmpty(etContent.getEditableText().toString())) {
                     finish();
-                }else{
+                } else {
                     showDialogTips();
                 }
                 break;
@@ -111,7 +127,7 @@ public class DoTaskWordStepThreeActivity extends BaseActivity {
             @Override
             public void onFaild(int msgCode, String msg) {
                 dismissLoadingBar();
-                ToastUtils.showShort(""+msg);
+                ToastUtils.showShort("" + msg);
             }
         });
 

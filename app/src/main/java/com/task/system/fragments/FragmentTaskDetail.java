@@ -14,6 +14,7 @@ import com.task.system.Constans;
 import com.task.system.R;
 import com.task.system.bean.TaskInfoItem;
 import com.task.system.common.RichTextView;
+import com.task.system.utils.TUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -72,6 +73,15 @@ public class FragmentTaskDetail extends Fragment {
         if (!TextUtils.isEmpty(taskInfoItem.description)) {
             richText.setHtml(taskInfoItem.description);
         }
+
+        richText.setOnImageClickListener(new RichTextView.ImageClickListener() {
+            @Override
+            public void onImageClick(String imageUrl, String[] imageUrls, int position) {
+
+                TUtils.openImageViews(imageUrls,position);
+
+            }
+        });
 
     }
 

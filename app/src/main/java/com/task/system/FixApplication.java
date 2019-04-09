@@ -3,12 +3,14 @@ package com.task.system;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
@@ -16,6 +18,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.blankj.utilcode.util.Utils;
+import com.bumptech.glide.request.RequestOptions;
 import com.scwang.smartrefresh.header.MaterialHeader;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.DefaultRefreshHeaderCreator;
@@ -31,8 +34,10 @@ import com.task.system.event.TokenTimeOut;
 import com.task.system.services.LocationService;
 import com.task.system.services.UpdateService;
 import com.task.system.utils.TUtils;
+import com.task.system.views.photoview.NineGridView;
 import com.yc.lib.api.ApiCallBack;
 import com.yc.lib.api.ApiConfig;
+import com.yc.lib.api.utils.GlideApp;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -40,6 +45,8 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import cn.bingoogolapple.swipebacklayout.BGASwipeBackHelper;
 import retrofit2.Call;
+
+import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
 
 public class FixApplication extends MultiDexApplication {
 
@@ -101,6 +108,25 @@ public class FixApplication extends MultiDexApplication {
         ApiConfig.setConnectTimeout(5000);
         ApiConfig.setWriteTimeout(5000);
         EventBus.getDefault().register(this);
+
+        NineGridView.setImageLoader(new NineGridView.ImageLoader() {
+            @Override
+            public void onDisplayImage(Context context, ImageView imageView, String url) {
+
+                GlideApp.with(ApiConfig.context)
+                        .load(url)
+                        .transition(withCrossFade())
+                        .apply(new RequestOptions().placeholder(R.drawable.ic_default_color).error(R.mipmap.load_err))
+                        .into(imageView);
+
+            }
+
+            @Override
+            public Bitmap getCacheImage(String url) {
+                return null;
+            }
+        });
+
     }
 
     public void onShowExpire() {

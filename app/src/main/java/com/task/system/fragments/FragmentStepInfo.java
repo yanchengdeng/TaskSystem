@@ -40,17 +40,31 @@ public class FragmentStepInfo extends Fragment {
             tvEndTime.setText(String.format(getString(R.string.end_time_tips),TUtils.getEndTimeTips(taskInfoItem.end_time)));
         }
 
-        if (!TextUtils.isEmpty(taskInfoItem.step_1)){
-            tvOne.setHtml(taskInfoItem.step_1);
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(taskInfoItem.step_1).append(taskInfoItem.step_2).append(taskInfoItem.step_3);
+
+        if (!TextUtils.isEmpty(stringBuilder.toString())){
+            tvOne.setHtml(stringBuilder.toString());
         }
 
-        if (!TextUtils.isEmpty(taskInfoItem.step_2)){
-            tvTwo.setHtml(taskInfoItem.step_2);
-        }
+        tvTwo.setVisibility(View.GONE);
+        tvThree.setVisibility(View.GONE);
 
-        if (!TextUtils.isEmpty(taskInfoItem.step_3)){
-            tvThree.setHtml(taskInfoItem.step_3);
-        }
+//        if (!TextUtils.isEmpty(taskInfoItem.step_2)){
+//            tvTwo.setHtml(taskInfoItem.step_2);
+//        }
+//
+//        if (!TextUtils.isEmpty(taskInfoItem.step_3)){
+//            tvThree.setHtml(taskInfoItem.step_3);
+//        }
+
+        tvOne.setOnImageClickListener(new RichTextView.ImageClickListener() {
+            @Override
+            public void onImageClick(String imageUrl, String[] imageUrls, int position) {
+                TUtils.openImageViews(imageUrls,position);
+            }
+        });
+
         return view;
     }
 }

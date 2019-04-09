@@ -34,8 +34,8 @@ public class CollectedAdapter extends BaseItemDraggableAdapter<TaskInfoItem, Bas
         }
 
 
-        if (!TextUtils.isEmpty(item.views)) {
-            ((TextView)helper.getView(R.id.tv_num)).setText(item.views+"关注");
+        if (!TextUtils.isEmpty(item.collects)) {
+            ((TextView)helper.getView(R.id.tv_num)).setText(item.collects+"人关注");
         }
 
         if (!TextUtils.isEmpty(item.market_score)) {

@@ -31,6 +31,7 @@ import com.task.system.api.TaskInfoList;
 import com.task.system.api.TaskService;
 import com.task.system.bean.TaskInfoItem;
 import com.task.system.common.GlideLoadFileLoader;
+import com.task.system.common.RichTextView;
 import com.task.system.utils.TUtils;
 import com.yanzhenjie.permission.AndPermission;
 import com.yanzhenjie.permission.runtime.Permission;
@@ -74,6 +75,8 @@ public class DoTaskWorkStepTwoActivity extends BaseActivity implements ImagePick
     TextView tvPreStyep;
     @BindView(R.id.tv_next_step)
     TextView tvNextStep;
+    @BindView(R.id.rich_step_two)
+    RichTextView richStepTwo;
     private TaskInfoItem taskInfoItem;
     private ImagePickerAdapter imageAdapter;
 
@@ -82,7 +85,7 @@ public class DoTaskWorkStepTwoActivity extends BaseActivity implements ImagePick
     public static final int REQUEST_CODE_SELECT = 100;
     public static final int REQUEST_CODE_PREVIEW = 101;
     private ArrayList<ImageItem> selImageList = new ArrayList<>(); //当前选择的所有图片
-    private int maxImgCount = 5;
+    private int maxImgCount = 9;
     private int totalPhoto = 0;
 
     @Override
@@ -94,7 +97,7 @@ public class DoTaskWorkStepTwoActivity extends BaseActivity implements ImagePick
         tvTwo.setBackground(getResources().getDrawable(R.drawable.view_unread_red_bg));
 
         taskInfoItem = (TaskInfoItem) getIntent().getSerializableExtra(Constans.PASS_OBJECT);
-        if (!TextUtils.isEmpty(taskInfoItem.title)){
+        if (!TextUtils.isEmpty(taskInfoItem.title)) {
             setTitle(taskInfoItem.title);
         }
         imageAdapter = new ImagePickerAdapter(this, selImageList, maxImgCount);
@@ -102,6 +105,20 @@ public class DoTaskWorkStepTwoActivity extends BaseActivity implements ImagePick
         recycle.setLayoutManager(new GridLayoutManager(this, 3));
         recycle.setHasFixedSize(true);
         recycle.setAdapter(imageAdapter);
+        recycle.setNestedScrollingEnabled(false);
+
+        if (!TextUtils.isEmpty(taskInfoItem.step_2)){
+            richStepTwo.setHtml(taskInfoItem.step_2);
+        }
+
+        richStepTwo.setOnImageClickListener(new RichTextView.ImageClickListener() {
+            @Override
+            public void onImageClick(String imageUrl, String[] imageUrls, int position) {
+
+                TUtils.openImageViews(imageUrls,position);
+
+            }
+        });
         initImagePicker();
 
     }
@@ -146,11 +163,11 @@ public class DoTaskWorkStepTwoActivity extends BaseActivity implements ImagePick
                 onBackPressed();
                 break;
             case R.id.tv_next_step:
-                if (selImageList!=null && selImageList.size()>0) {
+                if (selImageList != null && selImageList.size() > 0) {
                     showLoadingBar("上传中...");
                     parseImageToBase64();
 //                    ActivityUtils.startActivity(getIntent().getExtras(),DoTaskWordStepThreeActivity.class);
-                }else{
+                } else {
 //                    ToastUtils.showShort("请上传图片");
                     showJumpTips();
                 }
@@ -165,7 +182,7 @@ public class DoTaskWorkStepTwoActivity extends BaseActivity implements ImagePick
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                         dialog.dismiss();
-                        ActivityUtils.startActivityForResult(getIntent().getExtras(),DoTaskWorkStepTwoActivity.this,DoTaskWordStepThreeActivity.class,300);
+                        ActivityUtils.startActivityForResult(getIntent().getExtras(), DoTaskWorkStepTwoActivity.this, DoTaskWordStepThreeActivity.class, 300);
                     }
                 }).negativeText("我点错了").negativeColor(getResources().getColor(R.color.color_info)).onNegative(new MaterialDialog.SingleButtonCallback() {
                     @Override
@@ -179,12 +196,13 @@ public class DoTaskWorkStepTwoActivity extends BaseActivity implements ImagePick
     }
 
     //校验上传图片个数有效
-    private List<String>  base64Images ;
+    private List<String> base64Images;
+
     //将图片合并
     private void parseImageToBase64() {
         base64Images = new ArrayList<>();
 
-        for (ImageItem item:selImageList){
+        for (ImageItem item : selImageList) {
             updateImageByBase64(new File(item.path));
         }
     }
@@ -213,8 +231,8 @@ public class DoTaskWorkStepTwoActivity extends BaseActivity implements ImagePick
                     imageAdapter.setImages(selImageList);
                 }
             }
-        }else if (requestCode==300){
-            if (resultCode==RESULT_OK){
+        } else if (requestCode == 300) {
+            if (resultCode == RESULT_OK) {
                 setResult(RESULT_OK);
                 finish();
             }
@@ -281,12 +299,12 @@ public class DoTaskWorkStepTwoActivity extends BaseActivity implements ImagePick
     }
 
     private void finishBase64() {
-        if (base64Images.size()==selImageList.size()){
+        if (base64Images.size() == selImageList.size()) {
             StringBuilder stringBuilder = new StringBuilder();
-            for (int i = 0 ;i<base64Images.size();i++){
-                if (i<base64Images.size()-1){
+            for (int i = 0; i < base64Images.size(); i++) {
+                if (i < base64Images.size() - 1) {
                     stringBuilder.append("data:image/png;base64,").append(base64Images.get(i)).append("|");
-                }else{
+                } else {
                     stringBuilder.append("data:image/png;base64,").append(base64Images.get(i));
                 }
             }
@@ -299,7 +317,7 @@ public class DoTaskWorkStepTwoActivity extends BaseActivity implements ImagePick
 
         HashMap<String, String> hashMap = new HashMap();
         hashMap.put("task_id", taskInfoItem.id);
-        hashMap.put("order_id",taskInfoItem.order_id);
+        hashMap.put("order_id", taskInfoItem.order_id);
         hashMap.put("images", base64Encode);
         Call<TaskInfoList> call = ApiConfig.getInstants().create(TaskService.class).uploadIamges(TUtils.getParams(hashMap));
 
@@ -309,13 +327,13 @@ public class DoTaskWorkStepTwoActivity extends BaseActivity implements ImagePick
             public void onSuccess(int msgCode, String msg, List<String> data) {
                 ToastUtils.showShort("" + msg);
                 dismissLoadingBar();
-                ActivityUtils.startActivityForResult(getIntent().getExtras(),DoTaskWorkStepTwoActivity.this,DoTaskWordStepThreeActivity.class,300);
+                ActivityUtils.startActivityForResult(getIntent().getExtras(), DoTaskWorkStepTwoActivity.this, DoTaskWordStepThreeActivity.class, 300);
             }
 
             @Override
             public void onFaild(int msgCode, String msg) {
                 dismissLoadingBar();
-                ToastUtils.showShort(""+msg);
+                ToastUtils.showShort("" + msg);
             }
         });
 

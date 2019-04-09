@@ -106,4 +106,5 @@ dependencies {
     implementation 'com.contrarywind:Android-PickerView:4.1.6'
     implementation 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:+'
     implementation files('libs/open_sdk_r6019_lite.jar')
+    implementation 'com.github.chrisbanes.photoview:library:1.2.4'
 }

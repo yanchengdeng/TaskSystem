@@ -66,6 +66,10 @@
     <color name="random_8">#B146C2</color>
     <color name="random_9">#00CC6A</color>
 
+    <color name="ic_default_bg_color">#33000000</color>
+    <string name="select">%1$s/%2$s</string>
+
+
 
 
 </resources>

@@ -31,7 +31,7 @@ public class HomeAdapter extends BaseQuickAdapter<TaskInfoItem, BaseViewHolder> 
 
 
         if (!TextUtils.isEmpty(item.views)) {
-            ((TextView) helper.getView(R.id.tv_num)).setText(item.views + "关注");
+            ((TextView) helper.getView(R.id.tv_num)).setText(item.views + "人浏览");
         }
 
         if (!TextUtils.isEmpty(item.market_score)) {

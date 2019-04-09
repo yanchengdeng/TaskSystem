@@ -173,6 +173,9 @@
             android:theme="@android:style/Theme.Translucent.NoTitleBar"
             android:configChanges="orientation|keyboardHidden">
         </activity>
+
+        <activity android:name=".views.photoview.preview.ImagePreviewActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
     </application>
 
 </manifest>
