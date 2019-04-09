@@ -35,6 +35,7 @@ import com.task.system.services.LocationService;
 import com.task.system.services.UpdateService;
 import com.task.system.utils.TUtils;
 import com.task.system.views.photoview.NineGridView;
+import com.tencent.bugly.crashreport.CrashReport;
 import com.yc.lib.api.ApiCallBack;
 import com.yc.lib.api.ApiConfig;
 import com.yc.lib.api.utils.GlideApp;
@@ -98,6 +99,8 @@ public class FixApplication extends MultiDexApplication {
         MultiDex.install(this);
         ToastUtils.setBgResource(R.drawable.normal_toast_black);
         ToastUtils.setGravity(Gravity.CENTER, 0, 0);
+        CrashReport.initCrashReport(getApplicationContext(), "1da049eb86", false);
+
         //侧滑初始化
         BGASwipeBackHelper.init(this, null);
         ApiConfig.init(this, Constans.IS_DEBUG ? Constans.BASE_URL_TEST : Constans.BASE_URL_ONLINE);
