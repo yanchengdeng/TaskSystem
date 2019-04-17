@@ -187,7 +187,7 @@ public interface TaskService {
     //检查邀请码
     @FormUrlEncoded
     @POST("public/checkInviteCode")
-    Call<TaskInfo> checkInviteCode(@FieldMap HashMap<String,String> maps );
+    Call<TaskInfoList> checkInviteCode(@FieldMap HashMap<String,String> maps );
 
 
     //获取邀请码

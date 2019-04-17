@@ -13,7 +13,7 @@ android {
     defaultConfig {
         applicationId "com.task.system"
         minSdkVersion 19
-        targetSdkVersion 28
+        targetSdkVersion 26
         versionCode 1
         versionName "V1.0.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -22,7 +22,7 @@ android {
 
         ndk {
             // 设置支持的SO库架构
-            abiFilters 'armeabi' //, 'x86', 'armeabi-v7a', 'x86_64', 'arm64-v8a'
+            abiFilters 'armeabi', 'armeabi-v7a'//, 'x86_64', 'arm64-v8a'
         }
     }
     buildTypes {
@@ -76,18 +76,18 @@ dependencies {
     //    implementation 'com.aliyun.ams:alicloud-android-hotfix:3.2.3'
     //    implementation 'com.aliyun.ams:emas-services:1.0.1'
     //----阿里热更新
-    /** 工具类     **/
+    /** 工具类      **/
     implementation 'com.blankj:utilcode:1.20.3'
-    /** 沉侵式statusbar     **/
+    /** 沉侵式statusbar      **/
     //    implementation 'com.jaeger.statusbarutil:library:1.5.1'
     implementation 'com.gyf.immersionbar:immersionbar:2.3.3'
-    /** 侧滑返回     **/
+    /** 侧滑返回      **/
     implementation 'cn.bingoogolapple:bga-swipebacklayout:1.1.9'
-    /** 下拉加载框架     **/
+    /** 下拉加载框架      **/
     implementation 'com.scwang.smartrefresh:SmartRefreshLayout:1.0.5.1'
     implementation 'com.scwang.smartrefresh:SmartRefreshHeader:1.0.5.1'
     implementation 'com.kaopiz:kprogresshud:1.2.0'
-    /** *Meterial Dialog      **/
+    /** *Meterial Dialog       **/
     implementation 'com.afollestad.material-dialogs:core:0.9.6.0'
     implementation 'org.greenrobot:eventbus:3.1.1'
     implementation 'com.zhy:okhttputils:2.6.2'
@@ -97,7 +97,7 @@ dependencies {
     implementation 'com.yc.lib.api:api:1.0.1'
     //下拉菜单
     implementation 'com.github.razerdp:BasePopup:2.1.6'
-    /** recycleview 适配器    ***/
+    /** recycleview 适配器     ***/
     implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.42'
     implementation 'com.youth.banner:banner:1.4.10'
     implementation files('libs/BaiduLBS_Android.jar')
@@ -108,10 +108,12 @@ dependencies {
     implementation project(':imagepicker')
     implementation 'com.orhanobut:dialogplus:1.11@aar'
     implementation 'top.zibin:Luban:1.1.8'
-    /** 下拉弹出框  ***/
+    /** 下拉弹出框   ***/
     implementation 'com.contrarywind:Android-PickerView:4.1.6'
     implementation 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:+'
     implementation files('libs/open_sdk_r6019_lite.jar')
     implementation 'com.github.chrisbanes.photoview:library:1.2.4'
-    implementation 'com.tencent.bugly:crashreport:latest.release'
+//    implementation 'com.tencent.bugly:crashreport:latest.release'
+    implementation 'com.tencent.bugly:crashreport_upgrade:latest.release'//其中latest.release指代最新版本号，也可以指定明确的版本号，例如1.2.0
+    implementation 'com.tencent.bugly:nativecrashreport:latest.release'
 }

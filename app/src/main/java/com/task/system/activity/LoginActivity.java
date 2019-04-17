@@ -24,7 +24,6 @@ import com.task.system.api.TaskInfo;
 import com.task.system.api.TaskService;
 import com.task.system.bean.SimpleBeanInfo;
 import com.task.system.bean.UserInfo;
-import com.task.system.enums.UserType;
 import com.task.system.utils.TUtils;
 import com.yc.lib.api.ApiCallBack;
 import com.yc.lib.api.ApiConfig;
@@ -141,11 +140,11 @@ public class LoginActivity extends BaseSimpleActivity {
                 SPUtils.getInstance().put(Constans.TOKEN,new Gson().toJson(data.tokens));
                 SPUtils.getInstance().put(Constans.USER_ACOUNT, etAccont.getEditableText().toString());
                 SPUtils.getInstance().put(Constans.PASSWORD, etPassword.getEditableText().toString());
-                if (data.user_type.equals(UserType.USER_TYPE_MEMBER.getType())){
+//                if (data.user_type.equals(UserType.USER_TYPE_MEMBER.getType())){
                     ActivityUtils.startActivity(MainActivity.class);
-                }else{
-                    ActivityUtils.startActivity(PercentCenterActivity.class);
-                }
+//                }else{
+//                    ActivityUtils.startActivity(PercentCenterActivity.class);
+//                }
                 finish();
             }
 

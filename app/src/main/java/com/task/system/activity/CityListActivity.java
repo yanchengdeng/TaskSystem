@@ -1,5 +1,6 @@
 package com.task.system.activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -13,9 +14,13 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.baidu.location.BDAbstractLocationListener;
+import com.baidu.location.BDLocation;
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.SPUtils;
+import com.blankj.utilcode.util.ToastUtils;
 import com.task.system.Constans;
+import com.task.system.FixApplication;
 import com.task.system.R;
 import com.task.system.adapters.CityListAdapter;
 import com.task.system.api.API;
@@ -23,12 +28,17 @@ import com.task.system.api.TaskInfoList;
 import com.task.system.api.TaskService;
 import com.task.system.bean.CityInfo;
 import com.task.system.bean.LocateState;
+import com.task.system.services.LocationService;
 import com.task.system.utils.TUtils;
 import com.task.system.views.SideLetterBar;
+import com.yanzhenjie.permission.AndPermission;
+import com.yanzhenjie.permission.runtime.Permission;
 import com.yc.lib.api.ApiCallBackList;
 import com.yc.lib.api.ApiConfig;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import butterknife.BindView;
@@ -60,6 +70,7 @@ public class CityListActivity extends BaseActivity {
 
     private CityListAdapter adapter;
     private List<CityInfo> mAllCities = new ArrayList<>();
+    private LocationService locationService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,26 +80,104 @@ public class CityListActivity extends BaseActivity {
 
         tvTittle.setText("定位选择");
 
-        mAllCities = TUtils.getAllCitys();
+        adapter = new CityListAdapter(mContext, mAllCities);
 
-        initCityList();
+        getCityList();
+
+
+        AndPermission.with(ApiConfig.context).runtime().permission(Permission.Group.LOCATION).onGranted(
+                permissions -> {
+                    startLocation();
+                }
+        ).onDenied(
+                permissions -> {
+                    ToastUtils.showShort("请打开定位权限");
+                }
+        ).start();
+
+
     }
 
-    private void getCityList1() {
+    private void startLocation() {
+
+        locationService = ((FixApplication) getApplication()).locationService;
+        //获取locationservice实例，建议应用中只初始化1个location实例，然后使用，可以参考其他示例的activity，都是通过此种方式获取locationservice实例的
+        locationService.registerListener(mListener);
+        //注册监听
+        locationService.setLocationOption(locationService.getDefaultLocationClientOption());
+        locationService.start();// 定位SDK
+    }
+
+
+    /*****
+     *
+     * 定位结果回调，重写onReceiveLocation方法，可以直接拷贝如下代码到自己工程中修改
+     *
+     */
+    private BDAbstractLocationListener mListener = new BDAbstractLocationListener() {
+
+
+        @Override
+        public void onReceiveLocation(final BDLocation bdLocation) {
+            //获取定位类型、定位错误返回码，具体信息可参照类参考中BDLocation类中的说明
+            int errorCode = bdLocation.getLocType();
+
+            LogUtils.w("dyc", "===" + errorCode);
+
+            if (null != bdLocation && bdLocation.getLocType() != BDLocation.TypeServerError) {
+
+
+                ((Activity) ApiConfig.context).runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (!TextUtils.isEmpty(bdLocation.getCity())) {
+                            SPUtils.getInstance().put(Constans.LOCATON_CITY_NAME, bdLocation.getCity());
+                            adapter.updateLocateState(LocateState.SUCCESS, bdLocation.getCity());
+                        } else {
+                            adapter.updateLocateState(LocateState.FAILED, "定位失败");
+                        }
+                    }
+                });
+            } else {
+                adapter.updateLocateState(LocateState.FAILED, "定位失败");
+            }
+
+            if (locationService != null) {
+                locationService.unregisterListener(mListener); //注销掉监听
+                locationService.stop(); //停止定位服务
+            }
+        }
+    };
+
+
+    private void getCityList() {
+        showLoadingBar();
         Call<TaskInfoList> call = ApiConfig.getInstants().create(TaskService.class).getCityList(TUtils.getParams());
 
         API.getList(call, CityInfo.class, new ApiCallBackList<CityInfo>() {
             @Override
             public void onSuccess(int msgCode, String msg, List<CityInfo> data) {
+                dismissLoadingBar();
                 if (data != null && data.size() > 0) {
-                    TUtils.setAllCitys(data);
+                    mAllCities = data;
+                    Collections.sort(mAllCities, new Comparator<CityInfo>() {
+                        @Override
+                        public int compare(CityInfo o1, CityInfo o2) {
+                            return o1.pinyin.compareTo(o2.pinyin);
+                        }
+                    });
+
+
                     initCityList();
+                } else {
+                    ToastUtils.showShort("" + msg);
                 }
             }
 
             @Override
             public void onFaild(int msgCode, String msg) {
-                LogUtils.w("dyc", msg);
+                dismissLoadingBar();
+                ToastUtils.showShort("" + msg);
             }
         });
 
@@ -131,7 +220,7 @@ public class CityListActivity extends BaseActivity {
 //        }
 
 
-        adapter = new CityListAdapter(mContext, mAllCities);
+        adapter.setNewData(mAllCities);
         listviewAllCity.setAdapter(adapter);
         adapter.setOnCityClickListener(new CityListAdapter.OnCityClickListener() {
 
@@ -164,15 +253,15 @@ public class CityListActivity extends BaseActivity {
             @Override
             public void onLocateClick() {
                 adapter.updateLocateState(LocateState.LOCATING, null);
-//                    locationService.start();// 定位SDK
+                startLocation();
 
 
             }
         });
 
-        if (!TextUtils.isEmpty(SPUtils.getInstance().getString(Constans.LOCATON_CITY_NAME))) {
-            adapter.updateLocateState(LocateState.SUCCESS, SPUtils.getInstance().getString(Constans.LOCATON_CITY_NAME));
-        }
+//        if (!TextUtils.isEmpty(SPUtils.getInstance().getString(Constans.LOCATON_CITY_NAME))) {
+//            adapter.updateLocateState(LocateState.SUCCESS, SPUtils.getInstance().getString(Constans.LOCATON_CITY_NAME));
+//        }
 
 
         //关键字
@@ -228,5 +317,13 @@ public class CityListActivity extends BaseActivity {
         return SPUtils.getInstance().getString(Constans.LOCATON_CITY_id);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
 
+        if (locationService != null) {
+            locationService.unregisterListener(mListener); //注销掉监听
+            locationService.stop(); //停止定位服务
+        }
+    }
 }

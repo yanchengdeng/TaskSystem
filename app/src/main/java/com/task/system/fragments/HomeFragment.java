@@ -1,16 +1,11 @@
 package com.task.system.fragments;
 
-import android.Manifest;
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -28,6 +23,7 @@ import com.baidu.location.BDAbstractLocationListener;
 import com.baidu.location.BDLocation;
 import com.blankj.utilcode.util.ActivityUtils;
 import com.blankj.utilcode.util.ConvertUtils;
+import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ScreenUtils;
 import com.blankj.utilcode.util.ToastUtils;
@@ -65,6 +61,8 @@ import com.task.system.utils.RecycleViewUtils;
 import com.task.system.utils.TUtils;
 import com.task.system.views.BubblePopupDouble;
 import com.task.system.views.BubblePopupSingle;
+import com.yanzhenjie.permission.AndPermission;
+import com.yanzhenjie.permission.runtime.Permission;
 import com.yc.lib.api.ApiCallBack;
 import com.yc.lib.api.ApiCallBackList;
 import com.yc.lib.api.ApiConfig;
@@ -137,13 +135,13 @@ public class HomeFragment extends Fragment {
     private String keywords;
 
     private LocationService locationService;
-    private static final int REQUEST_PERMISSON_CODE = 100;
-    private boolean mPermission = false;
-
     private TagAdapter tagAdapter;
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    @Nullable
+    //声明AMapLocationClient类对象
+//   public AMapLocationClient mLocationClient = null;
+    //声明定位回调监听器
+//   public AMapLocationListener mLocationListener ;
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.home_fragment, container, false);
@@ -160,7 +158,7 @@ public class HomeFragment extends Fragment {
         tagAdapter = new TagAdapter(R.layout.adapter_tag);
         RecyclerView tagRecycle = new RecyclerView(ApiConfig.context);
         tagRecycle.setBackgroundColor(getResources().getColor(R.color.list_divider_color));
-        LinearLayoutManager tagLayoutManage =  new LinearLayoutManager(ApiConfig.context);
+        LinearLayoutManager tagLayoutManage = new LinearLayoutManager(ApiConfig.context);
         tagLayoutManage.setOrientation(LinearLayoutManager.HORIZONTAL);
         tagRecycle.setLayoutManager(tagLayoutManage);
         tagRecycle.setNestedScrollingEnabled(false);
@@ -172,13 +170,13 @@ public class HomeFragment extends Fragment {
         tagAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                for (HomeMenu item:tagAdapter.getData()){
+                for (HomeMenu item : tagAdapter.getData()) {
                     item.isSelected = false;
                 }
                 tagAdapter.getData().get(position).isSelected = true;
                 tagAdapter.notifyDataSetChanged();
                 tags_id = tagAdapter.getItem(position).id;
-                page=1;
+                page = 1;
                 getTaskList();
             }
         });
@@ -220,7 +218,6 @@ public class HomeFragment extends Fragment {
 
 
         region_id = SPUtils.getInstance().getString(Constans.LOCATON_CITY_id);
-        loctionCity = SPUtils.getInstance().getString(Constans.LOCATON_CITY_NAME);
 
         getAds();
         getAllSort();
@@ -255,17 +252,35 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        mPermission = checkLocationPermission();
-        if (mPermission) {
-            startLocation();
-        } else {
-            ToastUtils.showShort("请打开定位权限");
-        }
+
+        AndPermission.with(ApiConfig.context).runtime().permission(Permission.Group.LOCATION).onGranted(
+                permissions -> {
+                    startLocation();
+                }
+        ).onDenied(
+                permissions -> {
+                    ToastUtils.showShort("请打开定位权限");
+                }
+        ).start();
+
+
+//        //初始化定位
+//        mLocationListener = new AMapLocationListener() {
+//            @Override
+//            public void onLocationChanged(AMapLocation aMapLocation) {
+//                LogUtils.w("dyc",aMapLocation);
+//
+//            }
+//        };
+//        mLocationClient = new AMapLocationClient(ApiConfig.context);
+//        //设置定位回调监听
+//        mLocationClient.setLocationListener(mLocationListener);
+//
+//        mLocationClient.startLocation();
+
+
         return view;
     }
-
-
-
 
 
     private void getUnreadNum() {
@@ -273,10 +288,10 @@ public class HomeFragment extends Fragment {
         API.getObject(call, SimpleBeanInfo.class, new ApiCallBack<SimpleBeanInfo>() {
             @Override
             public void onSuccess(int msgCode, String msg, SimpleBeanInfo data) {
-                if (data.sum>0){
-                    tvMessageNum.setText(String.valueOf(data.sum>99?99:data.sum));
+                if (data.sum > 0) {
+                    tvMessageNum.setText(String.valueOf(data.sum > 99 ? 99 : data.sum));
                     tvMessageNum.setVisibility(View.VISIBLE);
-                }else{
+                } else {
                     tvMessageNum.setVisibility(View.INVISIBLE);
                 }
             }
@@ -293,7 +308,7 @@ public class HomeFragment extends Fragment {
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-        if (isVisibleToUser){
+        if (isVisibleToUser) {
             //更新statusbar
             getUnreadNum();
 
@@ -344,13 +359,13 @@ public class HomeFragment extends Fragment {
             @Override
             public void onSuccess(int msgCode, String msg, List<CatergoryInfo> data) {
 
-                if (data!=null){
+                if (data != null) {
                     meneLeft.getData().clear();
-                    CatergoryInfo  all =    new CatergoryInfo();
-                    all.id= "";
+                    CatergoryInfo all = new CatergoryInfo();
+                    all.id = "";
                     all.isSelected = true;
-                    all.title ="全部分类";
-                    data.add(0,all);
+                    all.title = "全部分类";
+                    data.add(0, all);
                 }
                 meneLeft.setNewData(data);
 
@@ -374,7 +389,7 @@ public class HomeFragment extends Fragment {
                     if (data.sort != null) {
                         menuAdapter.setNewData(data.sort);
                     }
-                    if (data.tags!=null){
+                    if (data.tags != null) {
                         tagAdapter.setNewData(data.tags);
                     }
                 }
@@ -398,8 +413,8 @@ public class HomeFragment extends Fragment {
      * * keywords
      */
     private void getTaskList() {
-        if (page==1){
-            if (getActivity()!=null){
+        if (page == 1) {
+            if (getActivity() != null) {
                 ((MainActivity) getActivity()).showLoadingBar();
             }
         }
@@ -428,7 +443,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onSuccess(int msgCode, String msg, TaskInfoList data) {
                 TUtils.dealReqestData(homeAdapter, recycle, data.list, page, smartRefresh);
-                if (getActivity()!=null){
+                if (getActivity() != null) {
                     ((MainActivity) getActivity()).dismissLoadingBar();
                 }
             }
@@ -436,7 +451,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onFaild(int msgCode, String msg) {
                 TUtils.dealNoReqestData(homeAdapter, recycle, smartRefresh);
-                if (getActivity()!=null){
+                if (getActivity() != null) {
                     ((MainActivity) getActivity()).dismissLoadingBar();
                 }
 
@@ -605,7 +620,7 @@ public class HomeFragment extends Fragment {
         unbinder.unbind();
     }
 
-    @OnClick({R.id.tv_location, R.id.ll_search, R.id.tv_message_num,R.id.iv_message, R.id.ll_all_sort, R.id.ll_smart_sort})
+    @OnClick({R.id.tv_location, R.id.ll_search, R.id.tv_message_num, R.id.iv_message, R.id.ll_all_sort, R.id.ll_smart_sort})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_location:
@@ -634,41 +649,6 @@ public class HomeFragment extends Fragment {
         super.onDestroy();
     }
 
-    private boolean checkLocationPermission() {
-        if (Build.VERSION.SDK_INT >= 23) {
-            List<String> permissions = new ArrayList<>();
-            if (PackageManager.PERMISSION_GRANTED != ActivityCompat.checkSelfPermission(ApiConfig.context, Manifest.permission.ACCESS_FINE_LOCATION)) {
-                permissions.add(Manifest.permission.ACCESS_FINE_LOCATION);
-            }
-            if (PackageManager.PERMISSION_GRANTED != ActivityCompat.checkSelfPermission(ApiConfig.context, Manifest.permission.ACCESS_COARSE_LOCATION)) {
-                permissions.add(Manifest.permission.ACCESS_COARSE_LOCATION);
-            }
-           /* if (PackageManager.PERMISSION_GRANTED != ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
-                permissions.add(Manifest.permission.READ_EXTERNAL_STORAGE);
-            }
-            if (PackageManager.PERMISSION_GRANTED != ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                permissions.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-            }
-            if (PackageManager.PERMISSION_GRANTED != ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA)) {
-                permissions.add(Manifest.permission.CAMERA);
-            }
-            if (PackageManager.PERMISSION_GRANTED != ActivityCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO)) {
-                permissions.add(Manifest.permission.RECORD_AUDIO);
-            }
-            if (PackageManager.PERMISSION_GRANTED != ActivityCompat.checkSelfPermission(this, Manifest.permission.SYSTEM_ALERT_WINDOW)) {
-                permissions.add(Manifest.permission.SYSTEM_ALERT_WINDOW);
-            }*/
-            if (permissions.size() != 0) {
-                ActivityCompat.requestPermissions((Activity) ApiConfig.context,
-                        permissions.toArray(new String[0]),
-                        REQUEST_PERMISSON_CODE);
-                return false;
-            }
-        }
-
-        return true;
-    }
-
 
     private void startLocation() {
         if (getActivity() == null) {
@@ -683,6 +663,7 @@ public class HomeFragment extends Fragment {
         locationService.start();// 定位SDK
     }
 
+
     /*****
      *
      * 定位结果回调，重写onReceiveLocation方法，可以直接拷贝如下代码到自己工程中修改
@@ -693,26 +674,32 @@ public class HomeFragment extends Fragment {
 
         @Override
         public void onReceiveLocation(final BDLocation bdLocation) {
+            //获取定位类型、定位错误返回码，具体信息可参照类参考中BDLocation类中的说明
+            int errorCode = bdLocation.getLocType();
+
+            LogUtils.w("dyc", "===" + errorCode);
+
             if (null != bdLocation && bdLocation.getLocType() != BDLocation.TypeServerError) {
+
+
                 ((Activity) ApiConfig.context).runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         if (!TextUtils.isEmpty(bdLocation.getCity())) {
                             loctionCity = bdLocation.getCity();
-                            SPUtils.getInstance().put(Constans.LOCATON_CITY_NAME, loctionCity);
                             setLocationContent();
-
-                            if (locationService != null) {
-                                locationService.unregisterListener(mListener); //注销掉监听
-                                locationService.stop(); //停止定位服务
-                            }
+                        } else {
+                            tvLocation.setText("定位失败");
                         }
                     }
                 });
             } else {
-                if (!TextUtils.isEmpty(loctionCity)) {
-                    tvLocation.setText("" + loctionCity);
-                }
+                tvLocation.setText("定位失败");
+            }
+
+            if (locationService != null) {
+                locationService.unregisterListener(mListener); //注销掉监听
+                locationService.stop(); //停止定位服务
             }
         }
     };
@@ -725,26 +712,6 @@ public class HomeFragment extends Fragment {
             } else {
                 tvLocation.setTextSize(TypedValue.COMPLEX_UNIT_SP, 10);
             }
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode) {
-            case REQUEST_PERMISSON_CODE:
-                for (int ret : grantResults) {
-                    if (ret != PackageManager.PERMISSION_GRANTED) {
-                        return;
-                    }
-                }
-                mPermission = true;
-                if (mPermission) {
-                    startLocation();
-                }
-                break;
-            default:
-                break;
         }
     }
 

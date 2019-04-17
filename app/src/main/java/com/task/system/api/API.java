@@ -37,6 +37,8 @@ import retrofit2.Response;
 public class API {
 
 
+    private static String  DEFAUL_TIPS = "提示连接不上服务器，请联系客服";
+
     /**
      * 实体对象请求
      *
@@ -58,7 +60,7 @@ public class API {
             @Override
             public void onResponse(Call<TaskInfo> call, Response<TaskInfo> response) {
                 showRequestParams(response);
-                if (apiCallBack != null) {
+                if (apiCallBack != null && response.isSuccessful()) {
                     TaskInfo resultInfo = response.body();
                     if (resultInfo != null) {
                         if (resultInfo.getStatus_code() == ApiConfig.successCode) {
@@ -93,7 +95,13 @@ public class API {
                         if (response != null) {
                             showResponseErrorInfo(apiCallBack, response);
                         }
-                        apiCallBack.onFaild(response.code(), ""+response.message());
+                        apiCallBack.onFaild(response.code(), DEFAUL_TIPS);
+                    }
+                }else{
+                    if (NetworkUtils.isConnected()) {
+                        apiCallBack.onFaild(-1, DEFAUL_TIPS);
+                    } else {
+                        apiCallBack.onFaild(-1, "请检查网络");
                     }
                 }
             }
@@ -102,7 +110,7 @@ public class API {
             public void onFailure(Call<TaskInfo> call, Throwable t) {
                 showErroResponse(call, t);
                 if (NetworkUtils.isConnected()) {
-                    apiCallBack.onFaild(-1, t.getMessage());
+                    apiCallBack.onFaild(-1, DEFAUL_TIPS);
                 } else {
                     apiCallBack.onFaild(-1, "请检查网络");
                 }
@@ -128,7 +136,7 @@ public class API {
             @Override
             public void onResponse(Call<TaskInfoList> call, Response<TaskInfoList> response) {
                 showRequestParams(response);
-                if (apiCallBack != null) {
+                if (apiCallBack != null && response.isSuccessful()) {
                     TaskInfoList resultInfo = response.body();
                     if (resultInfo != null) {
                         if (resultInfo.getStatus_code() == ApiConfig.successCode) {
@@ -164,7 +172,13 @@ public class API {
                         if (response != null) {
                             showResponseErrorInfo(apiCallBack, response);
                         }
-                        apiCallBack.onFaild(response.code(), ""+response.message());
+                        apiCallBack.onFaild(response.code(), DEFAUL_TIPS);
+                    }
+                }else{
+                    if (NetworkUtils.isConnected()) {
+                        apiCallBack.onFaild(-1, DEFAUL_TIPS);
+                    } else {
+                        apiCallBack.onFaild(-1, "请检查网络");
                     }
                 }
             }
@@ -173,14 +187,12 @@ public class API {
             public void onFailure(Call<TaskInfoList> call, Throwable t) {
                 showErroResponse(call, t);
                 if (NetworkUtils.isConnected()) {
-                    apiCallBack.onFaild(-1, t.getMessage());
+                    apiCallBack.onFaild(-1, DEFAUL_TIPS);
                 } else {
                     apiCallBack.onFaild(-1, "请检查网络");
                 }
             }
         });
-
-
     }
 
     /**
@@ -250,7 +262,7 @@ public class API {
             }
         }
         if (NetworkUtils.isConnected()) {
-            apiCallBack.onFaild(response.code(), response.message());
+            apiCallBack.onFaild(response.code(),DEFAUL_TIPS);
         } else {
             apiCallBack.onFaild(response.code(), "请检查网络");
         }
@@ -266,7 +278,7 @@ public class API {
             }
         }
         if (NetworkUtils.isConnected()) {
-            apiCallBack.onFaild(response.code(), response.message());
+            apiCallBack.onFaild(response.code(), DEFAUL_TIPS);
         } else {
             apiCallBack.onFaild(response.code(), "请检查网络");
         }

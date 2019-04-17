@@ -84,12 +84,10 @@ public class TaskDetailActivity extends BaseSimpleActivity {
     private String order_id;
     private String task_id;
 
-    private static final String APP_ID = "wx88888888";
 
     // IWXAPI 是第三方app和微信通信的openApi接口
     private IWXAPI api;
 
-    //正式数据 切换过来
     private String url, title, subInfo, shareIcon;
     private Tencent mTencent;
 
@@ -439,7 +437,7 @@ public class TaskDetailActivity extends BaseSimpleActivity {
         WXMediaMessage msg = new WXMediaMessage(webpage);
         msg.title = title;
         msg.description = subInfo;
-        Bitmap thumbBmp = BitmapFactory.decodeResource(getResources(), R.mipmap.logo);
+        Bitmap thumbBmp = BitmapFactory.decodeResource(getResources(), R.mipmap.logo_smallest);
         msg.thumbData = Util.bmpToByteArray(thumbBmp, true);
 
 //构造一个Req
@@ -497,11 +495,12 @@ public class TaskDetailActivity extends BaseSimpleActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (requestCode == 100) {
             if (resultCode == RESULT_OK) {
-//                ToastUtils.showShort("等待审核");
-                taskInfoItem.order_status = 3;
-                tvDoWork.setText("待审核");
-                tvDoWork.setBackgroundColor(getResources().getColor(R.color.give_up));
-                tvGiveUpWork.setVisibility(View.GONE);
+                if (taskInfoItem!=null) {
+                    taskInfoItem.order_status = 3;
+                    tvDoWork.setText("待审核");
+                    tvDoWork.setBackgroundColor(getResources().getColor(R.color.give_up));
+                    tvGiveUpWork.setVisibility(View.GONE);
+                }
             }
         }
         super.onActivityResult(requestCode, resultCode, data);

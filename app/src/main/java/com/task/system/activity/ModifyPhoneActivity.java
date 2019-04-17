@@ -152,14 +152,6 @@ public class ModifyPhoneActivity extends BaseSimpleActivity {
     }
 
     private void doCheckCode() {
-//        if (TextUtils.isEmpty(etPhone.getEditableText().toString())) {
-//            ToastUtils.showShort(R.string.new_phone_tips);
-//            return;
-//        }
-//        if (!RegexUtils.isMobileSimple(etPhone.getEditableText().toString())) {
-//            ToastUtils.showShort("手机号码错误");
-//            return;
-//        }
 
         if (TextUtils.isEmpty(etCode.getEditableText().toString())) {
             ToastUtils.showShort(R.string.code_tips);

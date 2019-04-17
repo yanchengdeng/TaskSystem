@@ -1,7 +1,7 @@
 package com.task.system.activity;
 
 import android.os.Bundle;
-import android.text.Html;
+import android.text.TextUtils;
 import android.widget.TextView;
 
 import com.task.system.Constans;
@@ -10,7 +10,6 @@ import com.task.system.api.API;
 import com.task.system.api.TaskInfoList;
 import com.task.system.api.TaskService;
 import com.task.system.bean.MessageItem;
-import com.task.system.common.RichTextView;
 import com.task.system.utils.TUtils;
 import com.yc.lib.api.ApiCallBackList;
 import com.yc.lib.api.ApiConfig;
@@ -29,7 +28,7 @@ public class MessageDetailActivity extends BaseActivity {
     @BindView(R.id.tv_date)
     TextView tvDate;
     @BindView(R.id.tv_content)
-    RichTextView tvContent;
+    TextView tvContent;
     private MessageItem messageItem;
 
     @Override
@@ -42,7 +41,11 @@ public class MessageDetailActivity extends BaseActivity {
 
         tvInfoTitle.setText("" + messageItem.title);
         tvDate.setText("" + messageItem.create_time);
-        tvContent.setHtml("" + Html.fromHtml(messageItem.content));
+
+//        messageItem.content="亲爱的会员：\n您的订单已通过审核，订单号";
+        if (!TextUtils.isEmpty(messageItem.content)) {
+            tvContent.setText(messageItem.content);
+        }
 
 
         HashMap<String,String> maps = new HashMap<>();

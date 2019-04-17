@@ -21,15 +21,12 @@ import com.gyf.barlibrary.ImmersionBar;
 import com.task.system.Constans;
 import com.task.system.R;
 import com.task.system.api.API;
-import com.task.system.api.TaskInfo;
 import com.task.system.api.TaskInfoList;
 import com.task.system.api.TaskService;
-import com.task.system.bean.InviteCode;
 import com.task.system.bean.RegisterParams;
 import com.task.system.bean.UserInfo;
 import com.task.system.enums.MobileCode;
 import com.task.system.utils.TUtils;
-import com.yc.lib.api.ApiCallBack;
 import com.yc.lib.api.ApiCallBackList;
 import com.yc.lib.api.ApiConfig;
 
@@ -65,6 +62,7 @@ public class RegisterActivity extends BaseSimpleActivity {
     @BindView(R.id.card_view)
     CardView cardView;
     private CountDownTimer countDownTimer;
+    private boolean isCodeOk, isInviteCodeOk;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -184,32 +182,76 @@ public class RegisterActivity extends BaseSimpleActivity {
 
                 break;
             case R.id.tv_get_inviter_code:
-                Bundle bundle  = new Bundle();
-                bundle.putBoolean(Constans.PASS_STRING,true);//ture表示来自注册  要调用获取邀请码接口 否则 去代理邀请码接口
-                ActivityUtils.startActivity(bundle,MyInviteCodeActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putBoolean(Constans.PASS_STRING, true);//ture表示来自注册  要调用获取邀请码接口 否则 去代理邀请码接口
+                ActivityUtils.startActivity(bundle, MyInviteCodeActivity.class);
                 break;
             case R.id.btn_register:
                 if (TextUtils.isEmpty(etInvideCode.getEditableText().toString())) {
                     ToastUtils.showShort("请输入邀请码");
                     return;
                 }
-                checkInviteCode();
+                doCheckCode();
                 break;
         }
     }
 
+
+    private void doCheckCode() {
+
+        if (TextUtils.isEmpty(etPhone.getEditableText().toString())) {
+            ToastUtils.showShort(getString(R.string.phone_tips));
+            return;
+        } else if (RegexUtils.isMobileSimple(etPhone.getEditableText().toString())) {
+            if (TextUtils.isEmpty(etCode.getEditableText().toString())) {
+                ToastUtils.showShort(getString(R.string.code_tips));
+                return;
+            } else {
+                if (!TextUtils.isEmpty(etInvideCode.getEditableText().toString())) {
+
+
+                } else {
+                    ToastUtils.showShort(getString(R.string.invide_code_tips));
+                    return;
+                }
+            }
+        } else {
+            ToastUtils.showShort("手机号码错误");
+            return;
+        }
+
+
+        showLoadingBar();
+        HashMap<String, String> hashMap = new HashMap();
+
+        hashMap.put("code_type", MobileCode.MOBILE_CODE_REGISTER.getType());
+        hashMap.put("mobile", etPhone.getEditableText().toString());
+        hashMap.put("mobile_code", etCode.getEditableText().toString());
+        Call<TaskInfoList> call = ApiConfig.getInstants().create(TaskService.class).checkMobileCode(TUtils.getParams(hashMap));
+        API.getList(call, UserInfo.class, new ApiCallBackList<UserInfo>() {
+            @Override
+            public void onSuccess(int msgCode, String msg, List<UserInfo> data) {
+                checkInviteCode();
+            }
+
+            @Override
+            public void onFaild(int msgCode, String msg) {
+                ToastUtils.showShort(msg);
+                dismissLoadingBar();
+            }
+        });
+    }
 
 
     //校验邀请码
     private void checkInviteCode() {
         HashMap<String, String> hashMap = new HashMap<>();
         hashMap.put("invite_code", etInvideCode.getEditableText().toString());
-        Call<TaskInfo> call = ApiConfig.getInstants().create(TaskService.class).checkInviteCode(TUtils.getParams(hashMap));
+        Call<TaskInfoList> call = ApiConfig.getInstants().create(TaskService.class).checkInviteCode(TUtils.getParams(hashMap));
 
-        API.getObject(call, UserInfo.class, new ApiCallBack<UserInfo>() {
+        API.getList(call, String.class, new ApiCallBackList<String>() {
             @Override
-            public void onSuccess(int msgCode, String msg, UserInfo data) {
-//                ToastUtils.showShort(msg);
+            public void onSuccess(int msgCode, String msg, List<String> data) {
                 checkParams(etPhone.getEditableText().toString(), etCode.getEditableText().toString(), etInvideCode.getEditableText().toString());
 
             }
@@ -217,6 +259,7 @@ public class RegisterActivity extends BaseSimpleActivity {
             @Override
             public void onFaild(int msgCode, String msg) {
                 ToastUtils.showShort(msg);
+                dismissLoadingBar();
             }
         });
 

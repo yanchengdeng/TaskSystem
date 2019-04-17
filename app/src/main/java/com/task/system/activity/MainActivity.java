@@ -48,7 +48,11 @@ public class MainActivity extends BaseSimpleActivity {
                     viewPager.setCurrentItem(1);
                     return true;
                 case R.id.navigation_notifications:
-                    viewPager.setCurrentItem(2);
+                    if (TUtils.isMemberType()) {
+                        viewPager.setCurrentItem(2);
+                    }else{
+                        viewPager.setCurrentItem(1);
+                    }
                     return true;
             }
             return false;
@@ -60,7 +64,6 @@ public class MainActivity extends BaseSimpleActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
 
 //        ImmersionBar.with(this).statusBarDarkFont(false,0.2f).init();
 //        ImmersionBar.with(mContext).statusBarDarkFont(false,0.2f).statusBarColor(R.color.trans_black).init();
@@ -78,6 +81,10 @@ public class MainActivity extends BaseSimpleActivity {
                 getSupportFragmentManager(), pages);
         viewPager.setAdapter(adapter);
         viewPager.setOffscreenPageLimit(3);
+
+        if (pages.size()==2){
+            navigation.getMenu().removeItem(R.id.navigation_dashboard);
+        }
 
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -142,8 +149,12 @@ public class MainActivity extends BaseSimpleActivity {
 
     private FragmentPagerItems getPagerItems(FragmentPagerItems pages) {
             pages.add(FragmentPagerItem.of("任务大厅", HomeFragment.class));
+        if (TUtils.isMemberType()) {
             pages.add(FragmentPagerItem.of("我的任务", TaskFragment.class));
+        }
             pages.add(FragmentPagerItem.of("个人中心", PercenterFragment.class));
+
+
         return pages;
     }
 

@@ -23,9 +23,9 @@ public class Constans {
     public static boolean HAS_VESRSION_TIPS ;//是否提示过版本更新
 
     public static String BASE_URL_TEST = "task.fzgfxz.com/api.php/V1";
-    public static String BASE_URL_ONLINE = "task.fzgfxz.com/api.php/V1";
+    public static String BASE_URL_ONLINE = "www.xhdcmgood.com//api.php/V1";
 
-    public  static boolean  IS_DEBUG = true;
+    public  static boolean  IS_DEBUG = false;
     public static String LOCATON_CITY_NAME = "location_name";
     public static String LOCATON_CITY_id = "location_name_id";
     public static String PASS_NAME = "pass_name";

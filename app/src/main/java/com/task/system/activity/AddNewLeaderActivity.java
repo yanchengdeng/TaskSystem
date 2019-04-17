@@ -212,6 +212,30 @@ public class AddNewLeaderActivity extends BaseActivity {
      * fanli_ratio 必须
      */
     private void addLeader() {
+
+
+        if (TextUtils.isEmpty(etId.getEditableText().toString())){
+            ToastUtils.showShort("请输入id");
+            return;
+        }
+
+
+        if (TextUtils.isEmpty(etPhone.getEditableText().toString())){
+            ToastUtils.showShort("请输入手机号");
+            return;
+        }
+
+        if (TextUtils.isEmpty(etPassword.getEditableText().toString())){
+            ToastUtils.showShort("请输入密码");
+            return;
+        }
+
+        if (cityInfo == null || TextUtils.isEmpty(cityInfo.region_id)){
+            ToastUtils.showShort("请选择城市");
+            return;
+        }
+
+
         HashMap<String, String> map = new HashMap<>();
         map.put("id", etId.getEditableText().toString());
         map.put("mobile", etPhone.getEditableText().toString());
@@ -221,7 +245,7 @@ public class AddNewLeaderActivity extends BaseActivity {
             map.put("remark", etMark.getEditableText().toString());
         }
 
-        if (cityInfo != null) {
+        if (cityInfo != null && !TextUtils.isEmpty(cityInfo.region_id)) {
             map.put("region_id", cityInfo.region_id);
         }
         showLoadingBar();

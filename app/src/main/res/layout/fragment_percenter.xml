@@ -145,7 +145,7 @@
             android:text="我的收藏"
             android:textColor="@color/color_info"
             android:textSize="@dimen/sp_14"
-            android:visibility="gone" />
+           />
 
         <TextView
             android:id="@+id/tv_my_accoutn"

@@ -153,7 +153,7 @@ public class TaskOrderAdapter extends BaseQuickAdapter<OrderInfo, BaseViewHolder
             //5——未通过
             case 5:
                 if (!TextUtils.isEmpty(item.cash_time)) {
-                    tvTime.setText(String.format(mContext.getString(R.string.not_pass_time_tips), TUtils.getEndTimeTips(item.cash_time)));
+                    tvTime.setText(String.format(mContext.getString(R.string.not_pass_time_tips), item.cash_time));
                 }
                 tvTime.setVisibility(View.VISIBLE);
                 dashLineTwo.setVisibility(View.VISIBLE);
@@ -173,7 +173,7 @@ public class TaskOrderAdapter extends BaseQuickAdapter<OrderInfo, BaseViewHolder
             // 6——已作废
             case 6:
                 if (!TextUtils.isEmpty(item.cash_time)) {
-                    tvTime.setText(String.format(mContext.getString(R.string.destory_time_tips), TUtils.getEndTimeTips(item.cash_time)));
+                    tvTime.setText(String.format(mContext.getString(R.string.destory_time_tips), item.cash_time));
                 }
                 tvTime.setVisibility(View.VISIBLE);
                 dashLineTwo.setVisibility(View.VISIBLE);
@@ -196,7 +196,7 @@ public class TaskOrderAdapter extends BaseQuickAdapter<OrderInfo, BaseViewHolder
 //                7——已超时
             case 7:
                 if (!TextUtils.isEmpty(item.cash_time)) {
-                    tvTime.setText(String.format(mContext.getString(R.string.destory_time_tips), TUtils.getEndTimeTips(item.cash_time)));
+                    tvTime.setText(String.format(mContext.getString(R.string.destory_time_tips), item.cash_time));
                 }
                 tvTime.setVisibility(View.VISIBLE);
                 dashLineTwo.setVisibility(View.VISIBLE);
@@ -216,9 +216,5 @@ public class TaskOrderAdapter extends BaseQuickAdapter<OrderInfo, BaseViewHolder
                 break;
 
         }
-
-
-
-
     }
 }

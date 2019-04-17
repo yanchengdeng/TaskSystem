@@ -35,7 +35,7 @@ import com.task.system.services.LocationService;
 import com.task.system.services.UpdateService;
 import com.task.system.utils.TUtils;
 import com.task.system.views.photoview.NineGridView;
-import com.tencent.bugly.crashreport.CrashReport;
+import com.tencent.bugly.Bugly;
 import com.yc.lib.api.ApiCallBack;
 import com.yc.lib.api.ApiConfig;
 import com.yc.lib.api.utils.GlideApp;
@@ -47,6 +47,7 @@ import org.greenrobot.eventbus.ThreadMode;
 import cn.bingoogolapple.swipebacklayout.BGASwipeBackHelper;
 import retrofit2.Call;
 
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
 
 public class FixApplication extends MultiDexApplication {
@@ -99,7 +100,8 @@ public class FixApplication extends MultiDexApplication {
         MultiDex.install(this);
         ToastUtils.setBgResource(R.drawable.normal_toast_black);
         ToastUtils.setGravity(Gravity.CENTER, 0, 0);
-        CrashReport.initCrashReport(getApplicationContext(), "1da049eb86", false);
+//        CrashReport.initCrashReport(getApplicationContext(), "1da049eb86", false);
+        Bugly.init(getApplicationContext(), "1da049eb86", false);
 
         //侧滑初始化
         BGASwipeBackHelper.init(this, null);
@@ -143,6 +145,7 @@ public class FixApplication extends MultiDexApplication {
                             dialog.dismiss();
                             SPUtils.getInstance().put(Constans.USER_INFO, "");
                             Intent intent = new Intent(ApiConfig.context, LoginActivity.class);
+                            intent.setFlags(FLAG_ACTIVITY_NEW_TASK);
                             startActivity(intent);
                         }
                     })

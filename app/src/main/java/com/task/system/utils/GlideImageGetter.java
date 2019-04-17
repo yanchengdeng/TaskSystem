@@ -10,8 +10,11 @@ import android.support.annotation.Nullable;
 import android.text.Html;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.ConvertUtils;
+import com.blankj.utilcode.util.ScreenUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.Request;
+import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.SizeReadyCallback;
 import com.bumptech.glide.request.target.Target;
 import com.bumptech.glide.request.transition.Transition;
@@ -35,7 +38,10 @@ public class GlideImageGetter implements Html.ImageGetter {
 //				.load(url)
 //				.into(drawable);
 
-		Glide.with(context).asBitmap().load(url).into(drawable);
+		RequestOptions requestOptions = new RequestOptions();
+		requestOptions.override(ScreenUtils.getScreenWidth()- ConvertUtils.dp2px(16*2));
+
+		Glide.with(context).applyDefaultRequestOptions(requestOptions).asBitmap().load(url).into(drawable);
 
 		return drawable;
 	}
@@ -59,7 +65,7 @@ public class GlideImageGetter implements Html.ImageGetter {
 			this.drawable = drawable;
 			int drawableWidth = drawable.getIntrinsicWidth();
 			int drawableHeight = drawable.getIntrinsicHeight();
-			int maxWidth = textView.getMeasuredWidth();
+			int maxWidth = textView.getMeasuredWidth()-ConvertUtils.dp2px(16*2);
 			if (drawableWidth > maxWidth) {
 				int calculatedHeight = maxWidth * drawableHeight / drawableWidth;
 				drawable.setBounds(0, 0, maxWidth, calculatedHeight);

@@ -188,9 +188,9 @@ public class TUtils {
         if (user_type.equals(UserType.USER_TYPE_MEMBER.getType())) {
             return "会员";
         } else if (user_type.equals(UserType.USER_TYPE_AGENT.getType())) {
-            return "代理";
+            return "二级代理";
         } else if (user_type.equals(UserType.USER_TYPE_AREA.getType())) {
-            return "区域";
+            return "一级代理";
         }
         return "未知身份";
     }
@@ -400,6 +400,7 @@ public class TUtils {
             System.out.print("erro---");
         }
         return "0";
+
     }
 
     public static void openImageViews(String[] imageUrls, int position) {
@@ -426,5 +427,10 @@ public class TUtils {
         intent.putExtras(bundle);
         ApiConfig.context.startActivity(intent);
         ((Activity) ApiConfig.context).overridePendingTransition(0, 0);
+    }
+
+
+    public static boolean isMemberType() {
+        return TUtils.getUserInfo() != null && TUtils.getUserInfo().user_type.equals(UserType.USER_TYPE_MEMBER.getType());
     }
 }
