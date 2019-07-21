@@ -147,6 +147,7 @@ public class MyInviteCodeActivity extends BaseActivity {
     }
 
     //获取邀请码  只有type=2  代理才有
+    //v2.0.1 改为 type=3 的管理权限有
     private void getLeaderInviteCode() {
         showLoadingBar();
         Call<TaskInfo> call = ApiConfig.getInstants().create(TaskService.class).getInviteByAgent(TUtils.getParams());

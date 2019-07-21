@@ -5,7 +5,7 @@ android {
         config {
             keyAlias 'new_android_sign'
             keyPassword 'zgxyzx2017'
-            storeFile file('/Users/dengyancheng/Desktop/yancheng_work/git_workspace/TaskSystem/app/Signature/zgxyzx2017.jks')
+            storeFile file('/Users/dengyancheng/GitHub/TaskSystem/app/Signature/zgxyzx2017.jks')
             storePassword 'zgxyzx2017'
         }
     }
@@ -94,7 +94,7 @@ dependencies {
     implementation 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
     //网络请求
-    implementation 'com.yc.lib.api:api:1.0.6'
+    implementation 'com.yc.lib.api:api:1.0.7'
     //下拉菜单
     implementation 'com.github.razerdp:BasePopup:2.1.6'
     /** recycleview 适配器     ***/
@@ -114,13 +114,13 @@ dependencies {
     implementation files('libs/open_sdk_r6019_lite.jar')
     implementation 'com.github.chrisbanes.photoview:library:1.2.4'
 //    implementation 'com.tencent.bugly:crashreport:latest.release'
-    implementation 'com.tencent.bugly:crashreport_upgrade:latest.release'//其中latest.release指代最新版本号，也可以指定明确的版本号，例如1.2.0
+    implementation 'com.tencent.bugly:crashreport_upgrade:latest.release'
+//其中latest.release指代最新版本号，也可以指定明确的版本号，例如1.2.0
     implementation 'com.tencent.bugly:nativecrashreport:latest.release'
 
 
-    implementation 'com.squareup.retrofit2:retrofit:2.6.0'
-    implementation 'com.squareup.okhttp3:okhttp:4.0.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
     implementation 'com.github.bumptech.glide:glide:4.8.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.8.0'
+
+
 }

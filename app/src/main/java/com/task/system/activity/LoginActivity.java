@@ -60,9 +60,18 @@ public class LoginActivity extends BaseSimpleActivity {
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
         ImmersionBar.with(this).init();
+
         checkAccoutPsw();
         mSwipeBackHelper.setSwipeBackEnable(false);
         getCustom();
+
+        if (!TextUtils.isEmpty(SPUtils.getInstance().getString(Constans.USER_ACOUNT))){
+            etAccont.setText(SPUtils.getInstance().getString(Constans.USER_ACOUNT));
+        }
+
+        if (!TextUtils.isEmpty(SPUtils.getInstance().getString(Constans.PASSWORD))){
+            etPassword.setText(SPUtils.getInstance().getString(Constans.PASSWORD));
+        }
     }
 
 

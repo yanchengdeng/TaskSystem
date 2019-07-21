@@ -1,10 +1,15 @@
 package com.task.system.utils;
 
+import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
+import android.text.TextUtils;
 import android.util.Log;
 
+import com.blankj.utilcode.util.ActivityUtils;
+import com.task.system.activity.LoginActivity;
+import com.task.system.bean.UserInfo;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -17,112 +22,113 @@ import java.net.URL;
 import java.net.URLConnection;
 
 public class Util {
-	
-	private static final String TAG = "SDK_Sample.Util";
-	
-	public static byte[] bmpToByteArray(final Bitmap bmp, final boolean needRecycle) {
-		ByteArrayOutputStream output = new ByteArrayOutputStream();
-		bmp.compress(CompressFormat.PNG, 100, output);
-		if (needRecycle) {
-			bmp.recycle();
-		}
-		
-		byte[] result = output.toByteArray();
-		try {
-			output.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-		return result;
-	}
-	
-	public static byte[] getHtmlByteArray(final String url) {
-		 URL htmlUrl = null;     
-		 InputStream inStream = null;     
-		 try {         
-			 htmlUrl = new URL(url);         
-			 URLConnection connection = htmlUrl.openConnection();         
-			 HttpURLConnection httpConnection = (HttpURLConnection)connection;         
-			 int responseCode = httpConnection.getResponseCode();         
-			 if(responseCode == HttpURLConnection.HTTP_OK){             
-				 inStream = httpConnection.getInputStream();         
-			  }     
-			 } catch (MalformedURLException e) {               
-				 e.printStackTrace();     
-			 } catch (IOException e) {              
-				e.printStackTrace();    
-		  } 
-		byte[] data = inputStreamToByte(inStream);
 
-		return data;
-	}
-	
-	public static byte[] inputStreamToByte(InputStream is) {
-		try{
-			ByteArrayOutputStream bytestream = new ByteArrayOutputStream();
-			int ch;
-			while ((ch = is.read()) != -1) {
-				bytestream.write(ch);
-			}
-			byte imgdata[] = bytestream.toByteArray();
-			bytestream.close();
-			return imgdata;
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-		
-		return null;
-	}
-	
-	public static byte[] readFromFile(String fileName, int offset, int len) {
-		if (fileName == null) {
-			return null;
-		}
+    private static final String TAG = "SDK_Sample.Util";
 
-		File file = new File(fileName);
-		if (!file.exists()) {
-			Log.i(TAG, "readFromFile: file not found");
-			return null;
-		}
+    public static byte[] bmpToByteArray(final Bitmap bmp, final boolean needRecycle) {
+        ByteArrayOutputStream output = new ByteArrayOutputStream();
+        bmp.compress(CompressFormat.PNG, 100, output);
+        if (needRecycle) {
+            bmp.recycle();
+        }
 
-		if (len == -1) {
-			len = (int) file.length();
-		}
+        byte[] result = output.toByteArray();
+        try {
+            output.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-		Log.d(TAG, "readFromFile : offset = " + offset + " len = " + len + " offset + len = " + (offset + len));
+        return result;
+    }
 
-		if(offset <0){
-			Log.e(TAG, "readFromFile invalid offset:" + offset);
-			return null;
-		}
-		if(len <=0 ){
-			Log.e(TAG, "readFromFile invalid len:" + len);
-			return null;
-		}
-		if(offset + len > (int) file.length()){
-			Log.e(TAG, "readFromFile invalid file len:" + file.length());
-			return null;
-		}
+    public static byte[] getHtmlByteArray(final String url) {
+        URL htmlUrl = null;
+        InputStream inStream = null;
+        try {
+            htmlUrl = new URL(url);
+            URLConnection connection = htmlUrl.openConnection();
+            HttpURLConnection httpConnection = (HttpURLConnection) connection;
+            int responseCode = httpConnection.getResponseCode();
+            if (responseCode == HttpURLConnection.HTTP_OK) {
+                inStream = httpConnection.getInputStream();
+            }
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        byte[] data = inputStreamToByte(inStream);
 
-		byte[] b = null;
-		try {
-			RandomAccessFile in = new RandomAccessFile(fileName, "r");
-			b = new byte[len]; // 创建合适文件大小的数组
-			in.seek(offset);
-			in.readFully(b);
-			in.close();
+        return data;
+    }
 
-		} catch (Exception e) {
-			Log.e(TAG, "readFromFile : errMsg = " + e.getMessage());
-			e.printStackTrace();
-		}
-		return b;
-	}
-	
-	private static final int MAX_DECODE_PICTURE_SIZE = 1920 * 1440;
-	public static Bitmap extractThumbNail(final String path, final int height, final int width, final boolean crop) {
-		if (path != null && !path.equals("") && height > 0 && width > 0) {
+    public static byte[] inputStreamToByte(InputStream is) {
+        try {
+            ByteArrayOutputStream bytestream = new ByteArrayOutputStream();
+            int ch;
+            while ((ch = is.read()) != -1) {
+                bytestream.write(ch);
+            }
+            byte imgdata[] = bytestream.toByteArray();
+            bytestream.close();
+            return imgdata;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public static byte[] readFromFile(String fileName, int offset, int len) {
+        if (fileName == null) {
+            return null;
+        }
+
+        File file = new File(fileName);
+        if (!file.exists()) {
+            Log.i(TAG, "readFromFile: file not found");
+            return null;
+        }
+
+        if (len == -1) {
+            len = (int) file.length();
+        }
+
+        Log.d(TAG, "readFromFile : offset = " + offset + " len = " + len + " offset + len = " + (offset + len));
+
+        if (offset < 0) {
+            Log.e(TAG, "readFromFile invalid offset:" + offset);
+            return null;
+        }
+        if (len <= 0) {
+            Log.e(TAG, "readFromFile invalid len:" + len);
+            return null;
+        }
+        if (offset + len > (int) file.length()) {
+            Log.e(TAG, "readFromFile invalid file len:" + file.length());
+            return null;
+        }
+
+        byte[] b = null;
+        try {
+            RandomAccessFile in = new RandomAccessFile(fileName, "r");
+            b = new byte[len]; // 创建合适文件大小的数组
+            in.seek(offset);
+            in.readFully(b);
+            in.close();
+
+        } catch (Exception e) {
+            Log.e(TAG, "readFromFile : errMsg = " + e.getMessage());
+            e.printStackTrace();
+        }
+        return b;
+    }
+
+    private static final int MAX_DECODE_PICTURE_SIZE = 1920 * 1440;
+
+    public static Bitmap extractThumbNail(final String path, final int height, final int width, final boolean crop) {
+        if (path != null && !path.equals("") && height > 0 && width > 0) {
 
             BitmapFactory.Options options = new BitmapFactory.Options();
 
@@ -198,15 +204,25 @@ public class Util {
             }
 
         }
-		return null;
-	}
+        return null;
+    }
 
-	public static int parseInt(final String string, final int def) {
-		try {
-			return (string == null || string.length() <= 0) ? def : Integer.parseInt(string);
+    public static int parseInt(final String string, final int def) {
+        try {
+            return (string == null || string.length() <= 0) ? def : Integer.parseInt(string);
 
-		} catch (Exception e) {
-		}
-		return def;
-	}
+        } catch (Exception e) {
+        }
+        return def;
+    }
+
+    public static boolean checkLogin(Activity context) {
+        UserInfo userInfo = TUtils.getUserInfo();
+        if (userInfo != null && !TextUtils.isEmpty(userInfo.user_type)) {
+            return true;
+        } else {
+            ActivityUtils.startActivity(context, LoginActivity.class);
+            return false;
+        }
+    }
 }

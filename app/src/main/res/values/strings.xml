@@ -62,4 +62,5 @@
     <string name="errcode_unsupported">不支持错误</string>
     <string name="errcode_unknown">发送返回</string>
     <string name="index">%1$01d/%2$01d</string>
+    <string name="add_new_memner">新增会员</string>
 </resources>

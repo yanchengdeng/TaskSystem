@@ -407,6 +407,10 @@ public interface TaskService {
 
 
     //代理获取邀请码
+//    @FormUrlEncoded
+//    @POST("user/getInviteCode")
+//    Call<TaskInfo> getInviteByAgent(@FieldMap HashMap<String,String> maps);
+
     @FormUrlEncoded
     @POST("leader/getInviteCode")
     Call<TaskInfo> getInviteByAgent(@FieldMap HashMap<String,String> maps);

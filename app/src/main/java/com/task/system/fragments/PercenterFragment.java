@@ -30,6 +30,7 @@ import com.task.system.activity.MyAccountActivity;
 import com.task.system.activity.MyCollectedActivity;
 import com.task.system.activity.MyIncomeActivity;
 import com.task.system.activity.MyInviteCodeActivity;
+import com.task.system.activity.MyTeamActivity;
 import com.task.system.activity.PersonSettingActivity;
 import com.task.system.api.API;
 import com.task.system.api.TaskInfo;
@@ -75,6 +76,8 @@ public class PercenterFragment extends Fragment {
     TextView tvCollect;
     @BindView(R.id.tv_my_accoutn)
     TextView tvMyAccoutn;
+    @BindView(R.id.tv_my_team)
+    TextView tvMyTeam;
     @BindView(R.id.tv_invite_code)
     TextView tvInviteCode;
     Unbinder unbinder;
@@ -103,13 +106,15 @@ public class PercenterFragment extends Fragment {
             //会员
             if (userInfo.user_type.equals(UserType.USER_TYPE_MEMBER.getType())) {
                 tvCollect.setVisibility(View.VISIBLE);
+                tvMyTeam.setVisibility(View.VISIBLE);
             } else if (userInfo.user_type.equals(UserType.USER_TYPE_AREA.getType())){
                 tvAddLead.setVisibility(View.VISIBLE);
+                tvInviteCode.setVisibility(View.VISIBLE);
             }else if (userInfo.user_type.equals(UserType.USER_TYPE_AGENT.getType())){
                 tvInviteCode.setVisibility(View.VISIBLE);
+                tvMyTeam.setVisibility(View.GONE);
             }
         }
-
         return view;
     }
 
@@ -173,7 +178,7 @@ public class PercenterFragment extends Fragment {
         unbinder.unbind();
     }
 
-    @OnClick({R.id.ll_user_info_ui, R.id.rl_my_money, R.id.ll_allwork_title, R.id.tv_add_lead, R.id.tv_collect, R.id.tv_my_accoutn, R.id.tv_invite_code})
+    @OnClick({R.id.ll_user_info_ui, R.id.rl_my_money, R.id.ll_allwork_title, R.id.tv_add_lead, R.id.tv_collect,R.id.tv_my_team, R.id.tv_my_accoutn, R.id.tv_invite_code})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ll_user_info_ui:
@@ -190,6 +195,9 @@ public class PercenterFragment extends Fragment {
                 break;
             case R.id.tv_collect:
                 ActivityUtils.startActivity(MyCollectedActivity.class);
+                break;
+            case R.id.tv_my_team:
+                ActivityUtils.startActivity(MyTeamActivity.class);
                 break;
             case R.id.tv_my_accoutn:
                 ActivityUtils.startActivity(MyAccountActivity.class);

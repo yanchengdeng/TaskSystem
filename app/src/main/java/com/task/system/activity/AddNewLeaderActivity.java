@@ -60,7 +60,7 @@ public class AddNewLeaderActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_new_leader);
         ButterKnife.bind(this);
-        setTitle("新增代理");
+        setTitle(getString(R.string.add_new_memner));
 
         addLisen();
 

@@ -147,6 +147,19 @@
             android:textSize="@dimen/sp_14"
            />
 
+
+        <TextView
+            android:id="@+id/tv_my_team"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:background="@color/white"
+            android:drawableRight="@mipmap/arrow_right_black"
+            android:padding="@dimen/activity_horizontal_margin"
+            android:text="我的团队"
+            android:textColor="@color/color_info"
+            android:textSize="@dimen/sp_14" />
+
         <TextView
             android:id="@+id/tv_my_accoutn"
             android:layout_width="match_parent"
@@ -167,7 +180,7 @@
             android:background="@color/white"
             android:drawableRight="@mipmap/arrow_right_black"
             android:padding="@dimen/activity_horizontal_margin"
-            android:text="新增代理"
+            android:text="@string/add_new_memner"
             android:textColor="@color/color_info"
             android:textSize="@dimen/sp_14"
             android:visibility="gone" />

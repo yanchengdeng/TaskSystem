@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.ActivityUtils;
+import com.blankj.utilcode.util.AppUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.ViewHolder;
@@ -26,6 +27,7 @@ import com.task.system.api.TaskService;
 import com.task.system.bean.OrderInfo;
 import com.task.system.bean.SimpleBeanInfo;
 import com.task.system.bean.TaskInfoItem;
+import com.task.system.bean.UserInfo;
 import com.task.system.event.RefreshUnreadCountEvent;
 import com.task.system.fragments.FragmentStepInfo;
 import com.task.system.fragments.FragmentTaskDetail;
@@ -46,6 +48,7 @@ import com.tencent.tauth.UiError;
 import com.yc.lib.api.ApiCallBack;
 import com.yc.lib.api.ApiCallBackList;
 import com.yc.lib.api.ApiConfig;
+import com.yc.lib.api.utils.SysUtils;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -91,6 +94,8 @@ public class TaskDetailActivity extends BaseSimpleActivity {
     private String url, title, subInfo, shareIcon;
     private Tencent mTencent;
 
+    private boolean isClickShareButton;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,13 +103,29 @@ public class TaskDetailActivity extends BaseSimpleActivity {
         setContentView(R.layout.activity_task_detail);
         ButterKnife.bind(this);
         tvTitle.setText("任务详情");
+
+
+        Intent intent = getIntent();
+
         task_id = getIntent().getStringExtra(Constans.PASS_STRING);
+        //xieshoujianzhi://detail?id=268
+        if (checkHasScheme()) {
+            task_id = intent.getDataString().split("id=")[1];
+        }
+
+        SysUtils.log(intent.getScheme() + "---" + intent.getDataString());
 //        initData(taskInfoItem);
         tablayout.addTab(tablayout.newTab().setText("任务描述"), 0);
         tablayout.addTab(tablayout.newTab().setText("详细流程"), 1);
         getTaskDetail();
         regToWx();
         getShareInfo();
+
+
+    }
+
+    private boolean checkHasScheme(){
+        return (!TextUtils.isEmpty(getIntent().getDataString()) && getIntent().getDataString().contains("id=")) ;
     }
 
     private void regToWx() {
@@ -127,7 +148,9 @@ public class TaskDetailActivity extends BaseSimpleActivity {
     private void getTaskDetail() {
         showLoadingBar();
         HashMap<String, String> maps = new HashMap<>();
-        maps.put("uid", TUtils.getUserId());
+        if (!TextUtils.isEmpty(TUtils.getUserId())) {
+            maps.put("uid", TUtils.getUserId());
+        }
         maps.put("task_id", task_id);
         Call<TaskInfo> call = ApiConfig.getInstants().create(TaskService.class).getTaskDetail(TUtils.getParams(maps));
 
@@ -168,8 +191,9 @@ public class TaskDetailActivity extends BaseSimpleActivity {
         API.getObject(call, SimpleBeanInfo.class, new ApiCallBack<SimpleBeanInfo>() {
             @Override
             public void onSuccess(int msgCode, String msg, SimpleBeanInfo data) {
-
+                dismissLoadingBar();
                 if (!TextUtils.isEmpty(data.url)) {
+                    data.url = "http://dev.xhdcmgood.com/index.php/task/task/detail/id/268/hide/1.html";
                     url = data.url;
                     title = data.title;
                     subInfo = data.sub_title;
@@ -179,7 +203,11 @@ public class TaskDetailActivity extends BaseSimpleActivity {
 
             @Override
             public void onFaild(int msgCode, String msg) {
-
+                if (isClickShareButton) {
+                    SysUtils.showToast("" + msg);
+                    isClickShareButton = false;
+                }
+                dismissLoadingBar();
             }
         });
     }
@@ -231,16 +259,19 @@ public class TaskDetailActivity extends BaseSimpleActivity {
                 finish();
                 break;
             case R.id.iv_collected:
-                if (isCollected) {
-                    doCancleCollected();
-                } else {
-                    doCollected();
-                }
+               if (Util.checkLogin(mContext)) {
+                   if (isCollected) {
+                       doCancleCollected();
+                   } else {
+                       doCollected();
+                   }
+               }
                 break;
             case R.id.iv_share:
                 if (!TextUtils.isEmpty(url)) {
                     shareDialog();
                 } else {
+                    isClickShareButton = true;
                     getShareInfo();
                 }
                 break;
@@ -248,24 +279,28 @@ public class TaskDetailActivity extends BaseSimpleActivity {
                 TUtils.openKf();
                 break;
             case R.id.tv_give_up_work:
-                giveUpTask();
+                if (Util.checkLogin(mContext)) {
+                    giveUpTask();
+                }
                 break;
             case R.id.tv_do_work:
-                if (taskInfoItem == null) {
-                    getTaskDetail();
-                    return;
-                }
-                if (taskInfoItem.order_status == 0) {
-                    applyTask();
-                } else if (taskInfoItem.order_status == 1) {
-                    //做下一步工作
-                    Bundle bundle = new Bundle();
-                    bundle.putSerializable(Constans.PASS_OBJECT, taskInfoItem);
-                    ActivityUtils.startActivityForResult(bundle, TaskDetailActivity.this, DoTaskStepActivity.class, 100);
-                } else if (taskInfoItem.is_apply == 1) {
-                    applyTask();
-                } else {
-                    ToastUtils.showShort("" + taskInfoItem.order_status_title);
+                if (Util.checkLogin(mContext)) {
+                    if (taskInfoItem == null) {
+                        getTaskDetail();
+                        return;
+                    }
+                    if (taskInfoItem.order_status == 0) {
+                        applyTask();
+                    } else if (taskInfoItem.order_status == 1) {
+                        //做下一步工作
+                        Bundle bundle = new Bundle();
+                        bundle.putSerializable(Constans.PASS_OBJECT, taskInfoItem);
+                        ActivityUtils.startActivityForResult(bundle, TaskDetailActivity.this, DoTaskStepActivity.class, 100);
+                    } else if (taskInfoItem.is_apply == 1) {
+                        applyTask();
+                    } else {
+                        ToastUtils.showShort("" + taskInfoItem.order_status_title);
+                    }
                 }
                 break;
         }
@@ -495,7 +530,7 @@ public class TaskDetailActivity extends BaseSimpleActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (requestCode == 100) {
             if (resultCode == RESULT_OK) {
-                if (taskInfoItem!=null) {
+                if (taskInfoItem != null) {
                     taskInfoItem.order_status = 3;
                     tvDoWork.setText("待审核");
                     tvDoWork.setBackgroundColor(getResources().getColor(R.color.give_up));
@@ -504,5 +539,22 @@ public class TaskDetailActivity extends BaseSimpleActivity {
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        if (checkHasScheme()) {
+            if (AppUtils.isAppRunning("com.task.system")) {
+                UserInfo userInfo = TUtils.getUserInfo();
+                if (userInfo != null && !TextUtils.isEmpty(userInfo.user_type)) {
+                    ActivityUtils.startActivity(MainActivity.class);
+                } else {
+                    ActivityUtils.startActivity(LoginActivity.class);
+                }
+            }
+        }else{
+            super.onBackPressed();
+        }
     }
 }
