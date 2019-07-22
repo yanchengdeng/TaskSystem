@@ -114,6 +114,10 @@ public class PercenterFragment extends Fragment {
                 tvInviteCode.setVisibility(View.VISIBLE);
                 tvMyTeam.setVisibility(View.GONE);
             }
+
+
+            //TODO  我的团队隐藏掉
+            tvMyTeam.setVisibility(View.GONE);
         }
         return view;
     }

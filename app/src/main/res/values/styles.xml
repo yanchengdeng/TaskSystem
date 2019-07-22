@@ -8,6 +8,7 @@
         <item name="colorAccent">@color/white</item>
         <item name="windowNoTitle">true</item>
         <item name="android:screenOrientation">portrait</item>
+        <item name="android:windowAnimationStyle">@style/base_activity_animation</item>
     </style>
 
     <style name="AppThemeLogin" parent="Theme.AppCompat.Light.DarkActionBar">
@@ -17,6 +18,7 @@
         <item name="colorAccent">@color/login_bg_color</item>
         <item name="android:screenOrientation">portrait</item>
         <item name="windowNoTitle">true</item>
+        <item name="android:windowAnimationStyle">@style/base_activity_animation</item>
     </style>
 
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
@@ -26,6 +28,7 @@
         <item name="colorAccent">@color/red</item>
         <item name="windowNoTitle">true</item>
         <item name="android:screenOrientation">portrait</item>
+        <item name="android:windowAnimationStyle">@style/base_activity_animation</item>
         <!--<item name="android:windowTranslucentNavigation">true</item>-->
 
     </style>
@@ -53,6 +56,7 @@
     <style name="FullscreenTheme" parent="AppTheme">
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowFullscreen">true</item>
+        <item name="android:windowAnimationStyle">@style/base_activity_animation</item>
     </style>
 
     <style name="LetterIndexTextViewStyle">
@@ -72,6 +76,21 @@
         <item name="android:textSize">@dimen/text_size_normal</item>
         <item name="android:textColor">@color/color_tittle</item>
         <item name="android:textAllCaps">false</item>
+    </style>
+
+    <style name="base_activity_animation" parent="@android:style/Animation.Activity">
+        <item name="android:activityOpenEnterAnimation">@anim/base_slide_right_in</item>
+        <item name="android:activityOpenExitAnimation">@anim/base_stay_orig</item>
+        <item name="android:activityCloseEnterAnimation">@anim/base_stay_orig</item>
+        <item name="android:activityCloseExitAnimation">@anim/base_slide_right_out</item>
+        <item name="android:taskOpenEnterAnimation">@anim/base_slide_right_in</item>
+        <item name="android:taskOpenExitAnimation">@anim/base_stay_orig</item>
+        <item name="android:taskCloseEnterAnimation">@anim/base_stay_orig</item>
+        <item name="android:taskCloseExitAnimation">@anim/base_slide_right_out</item>
+        <item name="android:taskToFrontEnterAnimation">@anim/base_slide_right_in</item>
+        <item name="android:taskToFrontExitAnimation">@anim/base_stay_orig</item>
+        <item name="android:taskToBackEnterAnimation">@anim/base_stay_orig</item>
+        <item name="android:taskToBackExitAnimation">@anim/base_slide_right_out</item>
     </style>
 
 </resources>

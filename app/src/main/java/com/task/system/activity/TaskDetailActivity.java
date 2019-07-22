@@ -193,7 +193,6 @@ public class TaskDetailActivity extends BaseSimpleActivity {
             public void onSuccess(int msgCode, String msg, SimpleBeanInfo data) {
                 dismissLoadingBar();
                 if (!TextUtils.isEmpty(data.url)) {
-                    data.url = "http://dev.xhdcmgood.com/index.php/task/task/detail/id/268/hide/1.html";
                     url = data.url;
                     title = data.title;
                     subInfo = data.sub_title;
