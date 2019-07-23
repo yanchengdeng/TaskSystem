@@ -1,5 +1,6 @@
 package com.task.system.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -21,6 +22,7 @@ import com.task.system.utils.TUtils;
 import com.yc.lib.api.ApiCallBack;
 import com.yc.lib.api.ApiCallBackList;
 import com.yc.lib.api.ApiConfig;
+import com.yc.lib.api.utils.SysUtils;
 
 import java.util.HashMap;
 import java.util.List;
@@ -137,14 +139,18 @@ public class SettingFinalRateActivity extends BaseActivity {
         API.getList(call, String.class, new ApiCallBackList<String>() {
             @Override
             public void onSuccess(int msgCode, String msg, List<String> data) {
-                ToastUtils.showShort("" + msg);
+                SysUtils.showToast("" + msg);
                 dismissLoadingBar();
+                Intent intent = new Intent();
+                intent.putExtra(Constans.PASS_STRING,etMark.getEditableText().toString());
+                setResult(RESULT_OK,intent);
+                finish();
 
             }
 
             @Override
             public void onFaild(int msgCode, String msg) {
-                ToastUtils.showShort("" + msg);
+                SysUtils.showToast("" + msg);
                 dismissLoadingBar();
             }
         });

@@ -142,6 +142,9 @@ public class HomeFragment extends Fragment {
     //声明定位回调监听器
 //   public AMapLocationListener mLocationListener ;
 
+
+    private int menuSecomdIndex ;
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.home_fragment, container, false);
@@ -367,7 +370,8 @@ public class HomeFragment extends Fragment {
                     all.title = "全部分类";
                     data.add(0, all);
                 }
-                meneLeft.setNewData(data);
+
+                meneLeft.setNewData(addExtras(data));
 
             }
 
@@ -376,6 +380,19 @@ public class HomeFragment extends Fragment {
                 ToastUtils.showShort(msg);
             }
         });
+    }
+
+    private List<CatergoryInfo> addExtras(List<CatergoryInfo> data) {
+        for (CatergoryInfo item:data){
+            if (item._child!=null && item._child.size()>0){
+                CatergoryInfo all = new CatergoryInfo();
+                all.id = item.id;
+                all.title = "全部";
+                item._child.add(0,all);
+            }
+        }
+
+        return data;
     }
 
     //智能分类
@@ -578,6 +595,7 @@ public class HomeFragment extends Fragment {
                         tvAllSort.setTextColor(getResources().getColor(R.color.red));
                         ivAllSort.setImageResource(R.mipmap.icon_arrow_down);
                     } else {
+                        menuSecomdIndex = position;
                         menuRight.setNewData(meneLeft.getData().get(position)._child);
                     }
 
@@ -587,11 +605,11 @@ public class HomeFragment extends Fragment {
             menuRight.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                    for (CatergoryInfo item : menuRight.getData()) {
+                    for (CatergoryInfo item :meneLeft.getData().get(menuSecomdIndex)._child) {
                         item.isSelected = false;
                     }
-                    menuRight.getData().get(position).isSelected = true;
-                    menuRight.notifyDataSetChanged();
+                    meneLeft.getData().get(menuSecomdIndex)._child.get(position).isSelected = true;
+                    menuRight.setNewData(meneLeft.getData().get(menuSecomdIndex)._child);
                     category_id = menuRight.getItem(position).id;
                     page = 1;
                     getTaskList();

@@ -9,4 +9,10 @@ public class ScoreAcount implements Serializable {
     public ScoreAccountUserInfo user_info;
 
     public List<ScoreAccountUserInfo> list;
+
+    /**
+     * 这边的标签遇到level=1显示下级
+     * 遇到level=2 显示二级
+     */
+    public int level;
 }

@@ -25,10 +25,10 @@ public class CategoryAdapter extends BaseQuickAdapter<CatergoryInfo, BaseViewHol
         }
 
 
-        if (item.pid>0){
-            helper.getView(R.id.tv_indictor).setVisibility(View.INVISIBLE);
-        }else {
-            helper.getView(R.id.tv_indictor).setVisibility(View.VISIBLE);
+//        if (item.pid>0){
+//            helper.getView(R.id.tv_indictor).setVisibility(View.INVISIBLE);
+//        }else {
+//            helper.getView(R.id.tv_indictor).setVisibility(View.VISIBLE);
             if (item.isSelected) {
                 helper.getView(R.id.ll_bg).setBackgroundColor(mContext.getResources().getColor(R.color.white));
                 helper.getView(R.id.tv_indictor).setVisibility(View.VISIBLE);
@@ -38,5 +38,5 @@ public class CategoryAdapter extends BaseQuickAdapter<CatergoryInfo, BaseViewHol
             }
         }
 
-    }
+//    }
 }

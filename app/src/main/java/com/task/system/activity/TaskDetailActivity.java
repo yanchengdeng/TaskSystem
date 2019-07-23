@@ -1,6 +1,7 @@
 package com.task.system.activity;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -443,6 +444,11 @@ public class TaskDetailActivity extends BaseSimpleActivity {
                         }
                     }
 
+                    if (!checkQQ()){
+                        SysUtils.showToast("请安装QQ");
+                        return;
+                    }
+
                     qqShare();
 //                    ShareUtil.share(QQ.Name, taskInfoItem.title, taskInfoItem.sub_title, "https://www.baidu.com/", taskInfoItem.thumbnail);
 
@@ -463,6 +469,10 @@ public class TaskDetailActivity extends BaseSimpleActivity {
     }
 
     private void shareWx(int flag) {
+        if (!checkWeiXin()){
+            SysUtils.showToast("请安装微信");
+            return;
+        }
         //初始化一个WXWebpageObject，填写url
         WXWebpageObject webpage = new WXWebpageObject();
         webpage.webpageUrl = url;
@@ -500,6 +510,25 @@ public class TaskDetailActivity extends BaseSimpleActivity {
         public void onError(UiError e) {
         }
     };
+
+
+    private boolean checkWeiXin() {
+        try {
+            getPackageManager().getApplicationInfo("com.tencent.mm", PackageManager.GET_UNINSTALLED_PACKAGES);
+            return true;
+        } catch (PackageManager.NameNotFoundException e) {
+            return false;
+        }
+    }
+
+    private boolean checkQQ() {
+        try {
+            getPackageManager().getApplicationInfo("com.tencent.mobileqq", PackageManager.GET_UNINSTALLED_PACKAGES);
+            return true;
+        } catch (PackageManager.NameNotFoundException e) {
+            return false;
+        }
+    }
 
 
     private void qqShare() {

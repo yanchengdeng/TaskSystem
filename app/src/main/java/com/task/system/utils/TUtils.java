@@ -195,6 +195,9 @@ public class TUtils {
         return "未知身份";
     }
 
+
+
+
     //处理列表无数据
     public static void dealNoReqestData(BaseQuickAdapter adapter, RecyclerView recycle, SmartRefreshLayout refreshLayout) {
        dealNoReqestData(adapter, recycle, refreshLayout,1);

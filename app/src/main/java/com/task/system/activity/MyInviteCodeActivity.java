@@ -93,14 +93,18 @@ public class MyInviteCodeActivity extends BaseActivity {
         findViewById(R.id.btn_share_wechat).setOnClickListener(new PerfectClickListener() {
             @Override
             protected void onNoDoubleClick(View v) {
-                shareWx(0);
+                if (chekcShare()) {
+                    shareWx(0);
+                }
             }
         });
 
         findViewById(R.id.btn_share_qq).setOnClickListener(new PerfectClickListener() {
             @Override
             protected void onNoDoubleClick(View v) {
-                qqShare();
+                if (chekcShare()) {
+                    qqShare();
+                }
             }
         });
     }

@@ -72,6 +72,17 @@ public class RegisterActivity extends BaseSimpleActivity {
         ImmersionBar.with(this).init();
         checkPhoneCode();
 
+//        xieshoujianzhi://register?id=100000623&code=w4clsd
+
+
+        String inviteCode;
+        //xieshoujianzhi://detail?id=268
+        if (checkHasScheme()) {
+            inviteCode = getIntent().getDataString().split("code=")[1];
+            etInvideCode.setText("" + inviteCode);
+        }
+
+
         countDownTimer = new CountDownTimer(60 * 1000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
@@ -90,6 +101,11 @@ public class RegisterActivity extends BaseSimpleActivity {
 
             }
         };
+    }
+
+
+    private boolean checkHasScheme() {
+        return (!TextUtils.isEmpty(getIntent().getDataString()) && getIntent().getDataString().contains("code="));
     }
 
     private void checkPhoneCode() {

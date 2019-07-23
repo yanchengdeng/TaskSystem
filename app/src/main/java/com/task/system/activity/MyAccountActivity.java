@@ -1,6 +1,8 @@
 package com.task.system.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -136,10 +138,11 @@ public class MyAccountActivity extends BaseActivity {
         tvAcitonSetting.setOnClickListener(new PerfectClickListener() {
             @Override
             protected void onNoDoubleClick(View v) {
-                if (scoreAccountUserInfo != null && scoreAccountUserInfo.user_type.equals(UserType.USER_TYPE_AGENT.getType())) {
+//                if (scoreAccountUserInfo != null && scoreAccountUserInfo.user_type.equals(UserType.USER_TYPE_AGENT.getType())) {
+                if (scoreAccountUserInfo != null){
                     Bundle bundle = new Bundle();
                     bundle.putString(Constans.PASS_CHILD_UID, child_uid);
-                    ActivityUtils.startActivity(bundle, SettingFinalRateActivity.class);
+                    ActivityUtils.startActivityForResult(bundle,mContext, SettingFinalRateActivity.class,200);
                 }
             }
         });
@@ -236,7 +239,7 @@ public class MyAccountActivity extends BaseActivity {
                 }
                 if (data.user_info.user_type.equals(UserType.USER_TYPE_AREA.getType())) {
                     //区域
-                    tvAcitonSetting.setVisibility(View.GONE);
+                    tvAcitonSetting.setVisibility(View.VISIBLE);
                     llBelowMemberInfo.setVisibility(View.VISIBLE);
                 }
             }
@@ -259,7 +262,13 @@ public class MyAccountActivity extends BaseActivity {
         if (data.list != null && data.list.size() > 0) {
             adapterStatic.setNewData(data.list);
             recycle.setVisibility(View.VISIBLE);
-            tvUidHeader.setText(TUtils.getUserTypeName(data.list.get(0).user_type));
+            String leve = "会员";
+            if (data.level==1){
+                leve = "下级";
+            }else if (data.level==2){
+                leve = "二级";
+            }
+            tvUidHeader.setText(leve);
         } else {
             recycle.setVisibility(View.GONE);
         }
@@ -334,5 +343,16 @@ public class MyAccountActivity extends BaseActivity {
 
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (requestCode==200 && resultCode==RESULT_OK){
+            String marks = data.getStringExtra(Constans.PASS_STRING);
+            if (!TextUtils.isEmpty(marks)){
+                tvRemark.setText(marks);
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }
