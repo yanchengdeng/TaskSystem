@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.task.system">
     <!-- 这个权限用于进行网络定位 -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> <!-- 这个权限用于访问GPS定位 -->
@@ -23,6 +24,8 @@
         android:label="@string/app_name"
         android:networkSecurityConfig="@xml/network_security_config"
         android:roundIcon="@mipmap/logo"
+        tools:replace="android:appComponentFactory"
+        android:appComponentFactory="android.support.v4.app.CoreComponentFactory"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".activity.MyTeamActivity"></activity>
@@ -173,7 +176,7 @@
             <!-- </intent-filter> -->
         </activity> <!-- 文件下载 -->
         <provider
-            android:name="android.support.v4.content.FileProvider"
+            android:name="androidx.core.content.FileProvider"
             android:authorities="com.task.system.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">

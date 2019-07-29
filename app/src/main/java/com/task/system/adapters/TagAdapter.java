@@ -1,6 +1,6 @@
 package com.task.system.adapters;
 
-import android.support.v7.widget.CardView;
+import androidx.cardview.widget.CardView;
 import android.text.TextUtils;
 import android.widget.TextView;
 

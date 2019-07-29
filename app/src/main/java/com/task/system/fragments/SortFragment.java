@@ -82,7 +82,13 @@ import butterknife.Unbinder;
 import razerdp.basepopup.BasePopupWindow;
 import retrofit2.Call;
 
-public class HomeFragment extends Fragment {
+/**
+*
+* Author: 邓言诚  Create at : 2019-07-29  23:10
+* Email: yanchengdeng@gmail.com
+* Describle: 分类大厅
+*/
+public class SortFragment extends Fragment {
 
     @BindView(R.id.tv_location)
     TextView tvLocation;
@@ -642,7 +648,7 @@ public class HomeFragment extends Fragment {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_location:
-                HomeFragment.this.startActivityForResult(new Intent(getContext(), CityListActivity.class), 200);
+                SortFragment.this.startActivityForResult(new Intent(getContext(), CityListActivity.class), 200);
                 break;
             case R.id.tv_message_num:
             case R.id.iv_message:

@@ -2,8 +2,8 @@ package com.task.system.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.widget.CardView;
+import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;

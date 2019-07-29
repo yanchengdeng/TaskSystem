@@ -4,7 +4,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
@@ -17,8 +17,6 @@ import com.blankj.utilcode.util.ActivityUtils;
 import com.blankj.utilcode.util.EncodeUtils;
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.ToastUtils;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.lzy.imagepicker.ImagePicker;
 import com.lzy.imagepicker.bean.ImageItem;
 import com.lzy.imagepicker.ui.ImageGridActivity;
@@ -34,6 +32,7 @@ import com.yanzhenjie.permission.AndPermission;
 import com.yanzhenjie.permission.runtime.Permission;
 import com.yc.lib.api.ApiCallBackList;
 import com.yc.lib.api.ApiConfig;
+import com.yc.lib.api.utils.ImageLoaderUtil;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -48,8 +47,6 @@ import retrofit2.Call;
 import top.zibin.luban.CompressionPredicate;
 import top.zibin.luban.Luban;
 import top.zibin.luban.OnCompressListener;
-
-import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
 
 public class PersonSettingActivity extends BaseActivity {
 
@@ -100,7 +97,8 @@ public class PersonSettingActivity extends BaseActivity {
 
     private void initData(UserInfo userInfo) {
         if (!TextUtils.isEmpty(userInfo.avatar)) {
-            Glide.with(ApiConfig.context).load(userInfo.avatar).apply(RequestOptions.circleCropTransform().placeholder(R.mipmap.defalut_header).error(R.mipmap.defalut_header)).into(ivHeader);
+            ImageLoaderUtil.loadCircle(userInfo.avatar,ivHeader,R.mipmap.defalut_header);
+//            Glide.with(ApiConfig.context).load(userInfo.avatar).apply(RequestOptions.circleCropTransform().placeholder(R.mipmap.defalut_header).error(R.mipmap.defalut_header)).into(ivHeader);
         }
 
         if (!TextUtils.isEmpty(userInfo.username)) {
@@ -273,11 +271,13 @@ public class PersonSettingActivity extends BaseActivity {
 
 
 
-                        Glide.with(ApiConfig.context)
-                                .load(lubanFile)     //设置图片路径(fix #8,文件名包含%符号 无法识别和显示)
-                                .transition(withCrossFade())
-                                .apply(new RequestOptions().circleCrop().error(R.mipmap.defalut_header))
-                                .into(ivHeader);
+//                        Glide.with(ApiConfig.context)
+//                                .load(lubanFile)     //设置图片路径(fix #8,文件名包含%符号 无法识别和显示)
+//                                .transition(withCrossFade())
+//                                .apply(new RequestOptions().circleCrop().error(R.mipmap.defalut_header))
+//                                .into(ivHeader);
+
+                        ImageLoaderUtil.loadCircle(lubanFile.getAbsolutePath(),ivHeader,R.mipmap.defalut_header);
 
 
 
@@ -291,11 +291,13 @@ public class PersonSettingActivity extends BaseActivity {
 
                     @Override
                     public void onError(Throwable e) {
-                        Glide.with(ApiConfig.context)
-                                .load(file)     //设置图片路径(fix #8,文件名包含%符号 无法识别和显示)
-                                .transition(withCrossFade())
-                                .apply(new RequestOptions().circleCrop().error(R.mipmap.defalut_header))
-                                .into(ivHeader);
+//                        Glide.with(ApiConfig.context)
+//                                .load(file)     //设置图片路径(fix #8,文件名包含%符号 无法识别和显示)
+//                                .transition(withCrossFade())
+//                                .apply(new RequestOptions().circleCrop().error(R.mipmap.defalut_header))
+//                                .into(ivHeader);
+
+                        ImageLoaderUtil.loadCircle(file.getAbsolutePath(),ivHeader,R.mipmap.defalut_header);
 
 
 

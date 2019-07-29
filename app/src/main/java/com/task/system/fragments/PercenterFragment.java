@@ -2,9 +2,9 @@ package com.task.system.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,8 +16,6 @@ import android.widget.TextView;
 
 import com.blankj.utilcode.util.ActivityUtils;
 import com.blankj.utilcode.util.SPUtils;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.google.gson.Gson;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -41,6 +39,7 @@ import com.task.system.event.UpdateUserInfoEvent;
 import com.task.system.utils.TUtils;
 import com.yc.lib.api.ApiCallBack;
 import com.yc.lib.api.ApiConfig;
+import com.yc.lib.api.utils.ImageLoaderUtil;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -155,7 +154,8 @@ public class PercenterFragment extends Fragment {
 
     private void initData(UserInfo data) {
         if (!TextUtils.isEmpty(data.avatar)) {
-            Glide.with(ApiConfig.context).load(data.avatar).apply(RequestOptions.circleCropTransform().placeholder(R.mipmap.defalut_header).error(R.mipmap.defalut_header)).into(ivHeader);
+            ImageLoaderUtil.loadCircle(data.avatar,ivHeader,R.mipmap.defalut_header);
+//            Glide.with(ApiConfig.context).load(data.avatar).apply(RequestOptions.circleCropTransform().placeholder(R.mipmap.defalut_header).error(R.mipmap.defalut_header)).into(ivHeader);
         }
 
         if (!TextUtils.isEmpty(data.username)) {

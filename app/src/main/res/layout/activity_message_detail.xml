@@ -31,7 +31,7 @@
         android:textSize="@dimen/text_size_normal" />
 
 
-    <android.support.v4.widget.NestedScrollView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1">
@@ -45,6 +45,6 @@
             android:textColor="@color/color_tittle"
             android:textSize="@dimen/text_size_normal_up" />
 
-    </android.support.v4.widget.NestedScrollView>
+    </androidx.core.widget.NestedScrollView>
 
 </LinearLayout>

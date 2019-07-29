@@ -4,9 +4,9 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.support.annotation.NonNull;
-import android.support.multidex.MultiDex;
-import android.support.multidex.MultiDexApplication;
+import androidx.annotation.NonNull;
+import androidx.multidex.MultiDex;
+import androidx.multidex.MultiDexApplication;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,7 +18,6 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.blankj.utilcode.util.Utils;
-import com.bumptech.glide.request.RequestOptions;
 import com.scwang.smartrefresh.header.MaterialHeader;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.DefaultRefreshHeaderCreator;
@@ -38,7 +37,7 @@ import com.task.system.views.photoview.NineGridView;
 import com.tencent.bugly.Bugly;
 import com.yc.lib.api.ApiCallBack;
 import com.yc.lib.api.ApiConfig;
-import com.yc.lib.api.utils.GlideApp;
+import com.yc.lib.api.utils.ImageLoaderUtil;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -48,7 +47,6 @@ import cn.bingoogolapple.swipebacklayout.BGASwipeBackHelper;
 import retrofit2.Call;
 
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
-import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
 
 public class FixApplication extends MultiDexApplication {
 
@@ -118,11 +116,13 @@ public class FixApplication extends MultiDexApplication {
             @Override
             public void onDisplayImage(Context context, ImageView imageView, String url) {
 
-                GlideApp.with(ApiConfig.context)
-                        .load(url)
-                        .transition(withCrossFade())
-                        .apply(new RequestOptions().placeholder(R.drawable.ic_default_color).error(R.mipmap.load_err))
-                        .into(imageView);
+//                GlideApp.with(ApiConfig.context)
+//                        .load(url)
+//                        .transition(withCrossFade())
+//                        .apply(new RequestOptions().placeholder(R.drawable.ic_default_color).error(R.mipmap.load_err))
+//                        .into(imageView);
+
+                ImageLoaderUtil.loadNormal(url,imageView,R.drawable.ic_default_color);
 
             }
 

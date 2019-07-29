@@ -1,15 +1,17 @@
 package com.lzy.imagepicker.adapter;
 
 import android.app.Activity;
-import android.support.v4.view.PagerAdapter;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.bumptech.glide.Glide;
+import androidx.viewpager.widget.PagerAdapter;
+
 import com.lzy.imagepicker.ImagePicker;
+import com.lzy.imagepicker.R;
 import com.lzy.imagepicker.bean.ImageItem;
 import com.lzy.imagepicker.util.Utils;
+import com.yc.lib.api.utils.ImageLoaderUtil;
 
 import java.util.ArrayList;
 
@@ -58,7 +60,8 @@ public class ImagePageAdapter extends PagerAdapter {
         ImageItem imageItem = images.get(position);
 
         if (imageItem.path.startsWith("http")){
-            Glide.with(mActivity).load(imageItem.path).into(photoView);
+            ImageLoaderUtil.loadNormal(imageItem.path,photoView, R.drawable.ic_default_image);
+//            Glide.with(mActivity).load(imageItem.path).into(photoView);
         }else {
             imagePicker.getImageLoader().displayImagePreview(mActivity, imageItem.path, photoView, screenWidth, screenHeight);
         }

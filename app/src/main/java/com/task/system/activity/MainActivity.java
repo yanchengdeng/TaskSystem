@@ -2,9 +2,9 @@ package com.task.system.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.design.widget.BottomNavigationView;
-import android.support.v4.view.ViewPager;
+import androidx.annotation.NonNull;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import androidx.viewpager.widget.ViewPager;
 import android.view.MenuItem;
 
 import com.blankj.utilcode.util.SPUtils;
@@ -18,6 +18,7 @@ import com.task.system.api.TaskService;
 import com.task.system.bean.SimpleBeanInfo;
 import com.task.system.fragments.HomeFragment;
 import com.task.system.fragments.PercenterFragment;
+import com.task.system.fragments.SortFragment;
 import com.task.system.fragments.TaskFragment;
 import com.task.system.utils.TUtils;
 import com.task.system.views.FragmentPagerItem;
@@ -47,11 +48,14 @@ public class MainActivity extends BaseSimpleActivity {
                 case R.id.navigation_dashboard:
                     viewPager.setCurrentItem(1);
                     return true;
+                case R.id.navigation_sort:
+                    viewPager.setCurrentItem(2);
+                    return true;
                 case R.id.navigation_notifications:
                     if (TUtils.isMemberType()) {
-                        viewPager.setCurrentItem(2);
+                        viewPager.setCurrentItem(3);
                     }else{
-                        viewPager.setCurrentItem(1);
+                        viewPager.setCurrentItem(2);
                     }
                     return true;
             }
@@ -80,9 +84,9 @@ public class MainActivity extends BaseSimpleActivity {
         final FragmentPagerItemAdapter adapter = new FragmentPagerItemAdapter(
                 getSupportFragmentManager(), pages);
         viewPager.setAdapter(adapter);
-        viewPager.setOffscreenPageLimit(3);
+        viewPager.setOffscreenPageLimit(4);
 
-        if (pages.size()==2){
+        if (pages.size()==3){
             navigation.getMenu().removeItem(R.id.navigation_dashboard);
         }
 
@@ -148,7 +152,8 @@ public class MainActivity extends BaseSimpleActivity {
 
 
     private FragmentPagerItems getPagerItems(FragmentPagerItems pages) {
-            pages.add(FragmentPagerItem.of("任务大厅", HomeFragment.class));
+            pages.add(FragmentPagerItem.of("首页", HomeFragment.class));
+            pages.add(FragmentPagerItem.of("分类大厅",SortFragment.class));
         if (TUtils.isMemberType()) {
             pages.add(FragmentPagerItem.of("我的任务", TaskFragment.class));
         }

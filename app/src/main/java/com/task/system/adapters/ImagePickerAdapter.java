@@ -2,7 +2,7 @@ package com.task.system.adapters;
 
 import android.app.Activity;
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,12 +11,11 @@ import android.widget.LinearLayout;
 
 import com.blankj.utilcode.util.ConvertUtils;
 import com.blankj.utilcode.util.ScreenUtils;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.lzy.imagepicker.ImagePicker;
 import com.lzy.imagepicker.bean.ImageItem;
 import com.task.system.R;
 import com.task.system.activity.DoTaskWorkStepTwoActivity;
+import com.yc.lib.api.utils.ImageLoaderUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -113,7 +112,8 @@ public class ImagePickerAdapter extends RecyclerView.Adapter<ImagePickerAdapter.
                 clickPosition = DoTaskWorkStepTwoActivity.IMAGE_ITEM_ADD;
             } else {
                 if (item.path.startsWith("http")){
-                    Glide.with(mContext).load(item.path).apply(new RequestOptions().placeholder(R.drawable.ic_default_image)).into(iv_img);
+                    ImageLoaderUtil.loadCircle(item.path,iv_img,R.drawable.ic_default_image);
+//                    Glide.with(mContext).load(item.path).apply(new RequestOptions().placeholder(R.drawable.ic_default_image)).into(iv_img);
                 }else {
                     ImagePicker.getInstance().getImageLoader().displayImage((Activity) mContext, item.path, iv_img, 0, 0);
                 }

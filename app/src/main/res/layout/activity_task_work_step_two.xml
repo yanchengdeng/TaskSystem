@@ -10,7 +10,7 @@
 
     <include layout="@layout/layout_step_index" />
 
-    <android.support.v4.widget.NestedScrollView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:fillViewport="true"
@@ -44,7 +44,7 @@
                 android:textSize="@dimen/text_size_normal_up" />
 
 
-            <android.support.v7.widget.RecyclerView
+            <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycle"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -53,7 +53,7 @@
                 android:fadingEdge="none"
                 android:listSelector="@android:color/transparent"
                 android:scrollbarStyle="outsideOverlay"
-                app:layoutManager="android.support.v7.widget.GridLayoutManager"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                 app:spanCount="3"
                 tools:listitem="@layout/adapter_select_image" />
 
@@ -76,7 +76,7 @@
 
         </LinearLayout>
 
-    </android.support.v4.widget.NestedScrollView>
+    </androidx.core.widget.NestedScrollView>
 
 
     <LinearLayout
