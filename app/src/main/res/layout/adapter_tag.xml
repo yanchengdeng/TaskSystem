@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/cv_tag"
-    android:layout_width="85dp"
-    android:layout_height="28dp"
-    android:layout_marginLeft="@dimen/image_padding"
-    android:layout_marginTop="@dimen/image_padding_big"
-    android:layout_marginBottom="@dimen/image_padding_big"
-    android:layout_marginRight="@dimen/image_padding"
-    app:cardBackgroundColor="@color/white"
-    app:cardCornerRadius="4dp"
-    app:cardElevation="1dp">
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/iv_icon"
+        android:src="@mipmap/icon_tag_default"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
     <TextView
         android:id="@+id/tv_tag"
@@ -20,9 +20,12 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:gravity="center"
-        android:text="最火"
+        android:text="最火最火最火"
+        android:paddingBottom="@dimen/image_padding"
+        android:maxLines="2"
+        android:layout_marginTop="@dimen/image_padding"
         android:textColor="@color/color_tittle"
-        android:textSize="12sp" />
-</android.support.v7.widget.CardView>
+        android:textSize="@dimen/text_size_normal_down" />
+</LinearLayout>
 
 

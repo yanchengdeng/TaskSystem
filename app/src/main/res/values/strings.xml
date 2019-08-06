@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">携手兼职</string>
-    <string name="title_home">任务大厅</string>
+    <string name="title_home">首页</string>
+    <string name="title_sort">分类大厅</string>
     <string name="title_dashboard">我的任务</string>
     <string name="title_notifications">个人中心</string>
     <string name="no_data">暂无数据</string>

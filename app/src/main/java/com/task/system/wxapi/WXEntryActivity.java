@@ -10,10 +10,13 @@ import com.task.system.R;
 import com.tencent.mm.opensdk.constants.ConstantsAPI;
 import com.tencent.mm.opensdk.modelbase.BaseReq;
 import com.tencent.mm.opensdk.modelbase.BaseResp;
+import com.tencent.mm.opensdk.modelmsg.SendAuth;
 import com.tencent.mm.opensdk.modelmsg.ShowMessageFromWX;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
+
+import org.greenrobot.eventbus.EventBus;
 
 
 public class WXEntryActivity extends Activity implements IWXAPIEventHandler{
@@ -67,6 +70,9 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler{
 		switch (resp.errCode) {
 		case BaseResp.ErrCode.ERR_OK:
 			result = R.string.errcode_success;
+			if (resp instanceof SendAuth.Resp){
+				EventBus.getDefault().post(resp);
+			}
 			break;
 		case BaseResp.ErrCode.ERR_USER_CANCEL:
 			result = R.string.errcode_cancel;

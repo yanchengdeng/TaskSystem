@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="@dimen/image_padding_big"
+    android:layout_marginBottom="1dp"
     android:background="@color/white"
     android:orientation="horizontal"
     android:paddingLeft="@dimen/activity_horizontal_margin"

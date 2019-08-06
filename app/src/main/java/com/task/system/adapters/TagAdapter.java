@@ -1,35 +1,47 @@
 package com.task.system.adapters;
 
-import android.support.v7.widget.CardView;
+import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.View;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.ActivityUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
+import com.task.system.Constans;
 import com.task.system.R;
-import com.task.system.bean.HomeMenu;
+import com.task.system.activity.TaskListActivity;
+import com.task.system.bean.CatergoryInfo;
+import com.yc.lib.api.utils.ImageLoaderUtil;
 
-public class TagAdapter extends BaseQuickAdapter<HomeMenu, BaseViewHolder> {
+import java.util.List;
+
+public class TagAdapter extends BaseQuickAdapter<CatergoryInfo, BaseViewHolder> {
 
     public TagAdapter(int layoutResId) {
         super(layoutResId);
     }
 
-    @Override
-    protected void convert(BaseViewHolder helper, HomeMenu item) {
+    public TagAdapter(int layoutResId, List<CatergoryInfo> datas) {
+        super(layoutResId,datas);
+    }
 
+    @Override
+    protected void convert(BaseViewHolder helper, CatergoryInfo item) {
+
+        ImageLoaderUtil.loadNormal(item.cover_url,helper.getView(R.id.iv_icon),R.mipmap.icon_tag_default);
 
         if (!TextUtils.isEmpty(item.title)) {
             ((TextView) helper.getView(R.id.tv_tag)).setText(item.title);
         }
 
-        if (item.isSelected) {
-            ((TextView) helper.getView(R.id.tv_tag)).setTextColor(mContext.getResources().getColor(R.color.white));
-            ((CardView)helper.getView(R.id.cv_tag)).setCardBackgroundColor(mContext.getResources().getColor(R.color.red));
-        } else {
-            ((CardView)helper.getView(R.id.cv_tag)).setCardBackgroundColor(mContext.getResources().getColor(R.color.white));
-            ((TextView) helper.getView(R.id.tv_tag)).setTextColor(mContext.getResources().getColor(R.color.color_tittle));
-        }
-
+        helper.getView(R.id.cv_tag).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle bundle = new Bundle();
+                bundle.putSerializable(Constans.PASS_OBJECT,item);
+                ActivityUtils.startActivity(bundle, TaskListActivity.class);
+            }
+        });
     }
 }

@@ -68,6 +68,7 @@ public class TaskFragment extends Fragment {
     private TextView tvCount;
 
 
+    //分类 标签
     private BubblePopupSingle quickPopupSmart;
     private MenuAdapter menuAdapter;
     private String sort_id;
@@ -178,6 +179,7 @@ public class TaskFragment extends Fragment {
     }
 
     private void getUnread() {
+
         Call<TaskInfo> call = ApiConfig.getInstants().create(TaskService.class).getUnreadInfo(TUtils.getParams());
         API.getObject(call, SimpleBeanInfo.class, new ApiCallBack<SimpleBeanInfo>() {
             @Override

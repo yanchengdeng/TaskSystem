@@ -25,8 +25,9 @@
         android:roundIcon="@mipmap/logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.MyTeamActivity"></activity>
-        <!-- Apache HTTP 客户端，以 Android 9 及更高版本为目标的应用可以 -->
+        <activity android:name=".activity.NewUserTaskActivity"></activity>
+        <activity android:name=".activity.SignActivity" />
+        <activity android:name=".activity.MyTeamActivity" /> <!-- Apache HTTP 客户端，以 Android 9 及更高版本为目标的应用可以 -->
         <uses-library
             android:name="org.apache.http.legacy"
             android:required="false" />
@@ -75,16 +76,16 @@
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity android:name=".activity.RegisterStepTwoActivity" />
         <activity android:name=".activity.CityListActivity" />
-        <activity android:name=".activity.TaskDetailActivity" >
+        <activity android:name=".activity.TaskDetailActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
-                    android:scheme="xieshoujianzhi"
-                    android:host="detail" />
-
+                    android:host="detail"
+                    android:scheme="xieshoujianzhi" />
             </intent-filter>
         </activity>
         <activity android:name=".activity.MyInviteCodeActivity" />
@@ -137,15 +138,16 @@
         <!-- &lt;!&ndash; 定位需要的服务 &ndash;&gt; -->
         <!-- <service android:name="com.amap.api.location.APSService"> -->
         <!-- </service> -->
-        <activity android:name=".activity.RegisterActivity" >
-
+        <activity android:name=".activity.RegisterActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
+
                 <data
-                    android:scheme="xieshoujianzhi"
-                    android:host="register" />
+                    android:host="register"
+                    android:scheme="xieshoujianzhi" />
             </intent-filter>
         </activity>
         <activity android:name=".activity.LoginActivity">
@@ -212,6 +214,14 @@
         <activity
             android:name=".views.photoview.preview.ImagePreviewActivity"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+
+        <receiver
+            android:name=".recieves.AppRegister"
+            android:permission="com.tencent.mm.plugin.permission.SEND" >
+            <intent-filter>
+                <action android:name="com.tencent.mm.plugin.openapi.Intent.ACTION_REFRESH_WXAPP" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

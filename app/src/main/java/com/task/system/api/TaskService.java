@@ -1,11 +1,15 @@
 package com.task.system.api;
 
+import com.task.system.bean.WxAccessToken;
+
 import java.util.HashMap;
 
 import retrofit2.Call;
 import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.QueryMap;
 
 public interface TaskService {
 
@@ -134,9 +138,13 @@ public interface TaskService {
     Call<TaskInfo> setPassword(@FieldMap HashMap<String, String> maps);
 
 
-
+    /**
+     * 1=首页 2=启动页 3 新手
+     * @param map
+     * @return 广告页面
+     */
     @FormUrlEncoded
-    @POST("public/getAdList")
+    @POST("public/getAd")
     Call<TaskInfoList> getAdList(@FieldMap HashMap<String,String> map);
 
     //城市列表
@@ -144,6 +152,12 @@ public interface TaskService {
     @POST("task/getCityList")
     Call<TaskInfoList> getCityList(@FieldMap HashMap<String, String> maps);
 
+
+
+    //用户栏目
+    @FormUrlEncoded
+    @POST("user/category")
+    Call<TaskInfoList> getUserCatergorylist(@FieldMap HashMap<String, String> maps);
 
     //任务栏目
     @FormUrlEncoded
@@ -425,5 +439,19 @@ public interface TaskService {
 
 
 
+
+    //获取今日签到情况
+    @FormUrlEncoded
+    @POST("user/sign")
+    Call<TaskInfoIgnoreBody> userSign(@FieldMap HashMap<String,String> maps);
+
+    //签到记录
+    @FormUrlEncoded
+    @POST("user/signList")
+    Call<TaskInfo> userSignList(@FieldMap HashMap<String,String> maps);
+
+
+    @GET("https://api.weixin.qq.com/sns/oauth2/access_token")
+    Call<WxAccessToken> getAccessToken(@QueryMap HashMap<String,String> maps);
 
 }

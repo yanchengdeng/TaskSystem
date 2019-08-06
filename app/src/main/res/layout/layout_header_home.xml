@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+
+    <com.youth.banner.Banner
+        android:id="@+id/banner"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/ad_heigh"
+        app:banner_default_image="@mipmap/banner1"
+        app:delay_time="5000" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycle_sort"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/iv_sign"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/image_padding_big"
+            android:layout_weight="1"
+            android:adjustViewBounds="true"
+            android:src="@mipmap/icon_sign_day" />
+
+        <ImageView
+            android:id="@+id/iv_new_user"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/image_padding_big"
+            android:layout_weight="1"
+            android:adjustViewBounds="true"
+            android:src="@mipmap/icon_new_task" />
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+
+        android:layout_marginRight="@dimen/activity_horizontal_margin">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="推荐任务"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/text_size_normal_up"
+            android:textStyle="bold" />
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/normal_submit_btn_gray_light_larger"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/iv_user_icon"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@mipmap/defalut_header" />
+
+            <TextView
+                android:id="@+id/tv_user_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minWidth="90dp"
+                android:singleLine="true"
+                android:text="王**提现6.2元"
+                android:textColor="@color/color_info"
+                android:textSize="@dimen/text_size_normal_down" />
+        </LinearLayout>
+
+    </RelativeLayout>
+
+
+</LinearLayout>
+
+

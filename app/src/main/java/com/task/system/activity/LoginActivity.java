@@ -3,6 +3,7 @@ package com.task.system.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.CardView;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -24,9 +25,18 @@ import com.task.system.api.TaskInfo;
 import com.task.system.api.TaskService;
 import com.task.system.bean.SimpleBeanInfo;
 import com.task.system.bean.UserInfo;
+import com.task.system.bean.WxAccessToken;
 import com.task.system.utils.TUtils;
+import com.tencent.mm.opensdk.modelmsg.SendAuth;
+import com.tencent.mm.opensdk.openapi.IWXAPI;
+import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.yc.lib.api.ApiCallBack;
 import com.yc.lib.api.ApiConfig;
+import com.yc.lib.api.utils.SysUtils;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.HashMap;
 
@@ -34,6 +44,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class LoginActivity extends BaseSimpleActivity {
 
@@ -52,7 +64,12 @@ public class LoginActivity extends BaseSimpleActivity {
     TextView tvGoRegister;
     @BindView(R.id.card_view)
     CardView cardView;
+    @BindView(R.id.btn_wechat)
+    AppCompatImageView btnWechat;
     private boolean canLoginStatus;
+
+
+    private IWXAPI api;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,18 +77,23 @@ public class LoginActivity extends BaseSimpleActivity {
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
         ImmersionBar.with(this).init();
+        EventBus.getDefault().register(this);
+
+        // acquire wxapi
+        api = WXAPIFactory.createWXAPI(this, Constans.WX_SHARE_APP_ID,false);
 
         checkAccoutPsw();
         mSwipeBackHelper.setSwipeBackEnable(false);
         getCustom();
 
-        if (!TextUtils.isEmpty(SPUtils.getInstance().getString(Constans.USER_ACOUNT))){
+        if (!TextUtils.isEmpty(SPUtils.getInstance().getString(Constans.USER_ACOUNT))) {
             etAccont.setText(SPUtils.getInstance().getString(Constans.USER_ACOUNT));
         }
 
-        if (!TextUtils.isEmpty(SPUtils.getInstance().getString(Constans.PASSWORD))){
+        if (!TextUtils.isEmpty(SPUtils.getInstance().getString(Constans.PASSWORD))) {
             etPassword.setText(SPUtils.getInstance().getString(Constans.PASSWORD));
         }
+
     }
 
 
@@ -81,7 +103,7 @@ public class LoginActivity extends BaseSimpleActivity {
         API.getObject(call, SimpleBeanInfo.class, new ApiCallBack<SimpleBeanInfo>() {
             @Override
             public void onSuccess(int msgCode, String msg, SimpleBeanInfo data) {
-                SPUtils.getInstance().put(Constans.KEFU,data.link);
+                SPUtils.getInstance().put(Constans.KEFU, data.link);
             }
 
             @Override
@@ -91,7 +113,7 @@ public class LoginActivity extends BaseSimpleActivity {
         });
     }
 
-    @OnClick({R.id.tv_contact, R.id.tv_forget_password, R.id.btn_login, R.id.tv_go_register})
+    @OnClick({R.id.tv_contact, R.id.tv_forget_password, R.id.btn_login, R.id.btn_wechat,R.id.tv_go_register})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_contact:
@@ -115,17 +137,27 @@ public class LoginActivity extends BaseSimpleActivity {
                 }
 
                 break;
+            case R.id.btn_wechat:
+
+
+                SendAuth.Req req = new SendAuth.Req();
+                req.scope = "snsapi_userinfo";
+                req.state = "wechat_sdk_demo_test";
+                api.sendReq(req);
+                break;
             case R.id.tv_go_register:
-                ActivityUtils.startActivityForResult( LoginActivity.this,RegisterActivity.class,200);
+                ActivityUtils.startActivityForResult(LoginActivity.this, RegisterActivity.class, 200);
                 break;
         }
     }
 
 
+
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if (requestCode==200){
-            if (resultCode==RESULT_OK){
+        if (requestCode == 200) {
+            if (resultCode == RESULT_OK) {
                 finish();
             }
         }
@@ -146,11 +178,11 @@ public class LoginActivity extends BaseSimpleActivity {
                 dismissLoadingBar();
                 ToastUtils.showShort(msg);
                 SPUtils.getInstance().put(Constans.USER_INFO, new Gson().toJson(data));
-                SPUtils.getInstance().put(Constans.TOKEN,new Gson().toJson(data.tokens));
+                SPUtils.getInstance().put(Constans.TOKEN, new Gson().toJson(data.tokens));
                 SPUtils.getInstance().put(Constans.USER_ACOUNT, etAccont.getEditableText().toString());
                 SPUtils.getInstance().put(Constans.PASSWORD, etPassword.getEditableText().toString());
 //                if (data.user_type.equals(UserType.USER_TYPE_MEMBER.getType())){
-                    ActivityUtils.startActivity(MainActivity.class);
+                ActivityUtils.startActivity(MainActivity.class);
 //                }else{
 //                    ActivityUtils.startActivity(PercentCenterActivity.class);
 //                }
@@ -228,9 +260,36 @@ public class LoginActivity extends BaseSimpleActivity {
     protected void onDestroy() {
         super.onDestroy();
         ImmersionBar.with(this).destroy();
+        EventBus.getDefault().unregister(this);
     }
 
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onChange(SendAuth.Resp resp) {
+        if (resp != null && !TextUtils.isEmpty(resp.code)) {
+
+            HashMap<String,String> maps = new HashMap<>();
+            maps.put("appid",Constans.WX_SHARE_APP_ID);
+            maps.put("secret","");
+            maps.put("code",resp.code);
+            maps.put("grant_type","authorization_code");
+
+            Call<WxAccessToken> call = ApiConfig.getInstants().create(TaskService.class).getAccessToken(maps);
+
+            call.enqueue(new Callback<WxAccessToken>() {
+                @Override
+                public void onResponse(Call<WxAccessToken> call, Response<WxAccessToken> response) {
+                    SysUtils.log(response.body().access_token);
+
+                }
+
+                @Override
+                public void onFailure(Call<WxAccessToken> call, Throwable t) {
+                    SysUtils.log(t.getMessage());
+                }
+            });
+        }
+    }
 
     @Override
     public void onBackPressed() {
@@ -256,5 +315,7 @@ public class LoginActivity extends BaseSimpleActivity {
         }
         return false;
     }
+
+
 
 }

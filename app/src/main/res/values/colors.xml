@@ -2,7 +2,7 @@
 <resources>
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#fffd6c6b</color>
+    <color name="colorAccent">#EF3635</color>
     <color name="white">#ffffff</color>
 
     <color name="color_date">#ababab</color>
@@ -16,8 +16,8 @@
     <color name="list_divider_color">#F6F7FA</color>
     <color name="color_blue">#4FBAFC</color>
 
-    <color name="red">#fffd6c6b</color>
-    <color name="ball_red">#fffd6c6b</color>
+    <color name="red">#EF3635</color>
+    <color name="ball_red">#EF3635</color>
     <color name="trans_black">#3f000000</color>
     <color name="trans_black_for_login">#1f000000</color>
     <color name="process_color">#585858</color>

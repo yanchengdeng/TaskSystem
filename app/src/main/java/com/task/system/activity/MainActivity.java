@@ -18,6 +18,7 @@ import com.task.system.api.TaskService;
 import com.task.system.bean.SimpleBeanInfo;
 import com.task.system.fragments.HomeFragment;
 import com.task.system.fragments.PercenterFragment;
+import com.task.system.fragments.SortFragment;
 import com.task.system.fragments.TaskFragment;
 import com.task.system.utils.TUtils;
 import com.task.system.views.FragmentPagerItem;
@@ -43,19 +44,26 @@ public class MainActivity extends BaseSimpleActivity {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
                     viewPager.setCurrentItem(0);
-                    return true;
-                case R.id.navigation_dashboard:
+                    break;
+//                    return true;
+                case R.id.navigation_sort:
                     viewPager.setCurrentItem(1);
-                    return true;
+                    break;
+//                    return  true;
+                case R.id.navigation_dashboard:
+                    viewPager.setCurrentItem(2);
+                    break;
+//                    return true;
                 case R.id.navigation_notifications:
                     if (TUtils.isMemberType()) {
+                        viewPager.setCurrentItem(3);
+                    } else {
                         viewPager.setCurrentItem(2);
-                    }else{
-                        viewPager.setCurrentItem(1);
                     }
-                    return true;
+//                    return true;
+                    break;
             }
-            return false;
+            return true;
         }
     };
 
@@ -71,7 +79,7 @@ public class MainActivity extends BaseSimpleActivity {
 //        StatusBarUtil.setTranslucentForImageViewInFragment(this, null);
 //        StatusBarUtil.setTranslucent(this,30);
 
-        viewPager  = findViewById(R.id.viewpage);
+        viewPager = findViewById(R.id.viewpage);
         viewPager.setScroll(false);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
@@ -80,9 +88,9 @@ public class MainActivity extends BaseSimpleActivity {
         final FragmentPagerItemAdapter adapter = new FragmentPagerItemAdapter(
                 getSupportFragmentManager(), pages);
         viewPager.setAdapter(adapter);
-        viewPager.setOffscreenPageLimit(3);
+        viewPager.setOffscreenPageLimit(4);
 
-        if (pages.size()==2){
+        if (pages.size() == 3) {
             navigation.getMenu().removeItem(R.id.navigation_dashboard);
         }
 
@@ -94,7 +102,7 @@ public class MainActivity extends BaseSimpleActivity {
 
             @Override
             public void onPageSelected(int i) {
-                switch (i){
+                switch (i) {
                     case 0:
 //                        ImmersionBar.with(mContext).statusBarDarkFont(false,0.2f).statusBarColor(R.color.red).init();
                         break;
@@ -133,33 +141,31 @@ public class MainActivity extends BaseSimpleActivity {
     private void getCustom() {
         Call<TaskInfo> call = ApiConfig.getInstants().create(TaskService.class).getCustomeSerice(TUtils.getParams());
 
-       API.getObject(call, SimpleBeanInfo.class, new ApiCallBack<SimpleBeanInfo>() {
-           @Override
-           public void onSuccess(int msgCode, String msg, SimpleBeanInfo data) {
-               SPUtils.getInstance().put(Constans.KEFU,data.link);
-           }
+        API.getObject(call, SimpleBeanInfo.class, new ApiCallBack<SimpleBeanInfo>() {
+            @Override
+            public void onSuccess(int msgCode, String msg, SimpleBeanInfo data) {
+                SPUtils.getInstance().put(Constans.KEFU, data.link);
+            }
 
-           @Override
-           public void onFaild(int msgCode, String msg) {
+            @Override
+            public void onFaild(int msgCode, String msg) {
 
-           }
-       });
+            }
+        });
     }
 
 
     private FragmentPagerItems getPagerItems(FragmentPagerItems pages) {
-            pages.add(FragmentPagerItem.of("任务大厅", HomeFragment.class));
+        pages.add(FragmentPagerItem.of("首页", HomeFragment.class));
+        pages.add(FragmentPagerItem.of("分类大厅", SortFragment.class));
         if (TUtils.isMemberType()) {
             pages.add(FragmentPagerItem.of("我的任务", TaskFragment.class));
         }
-            pages.add(FragmentPagerItem.of("个人中心", PercenterFragment.class));
+        pages.add(FragmentPagerItem.of("个人中心", PercenterFragment.class));
 
 
         return pages;
     }
-
-
-
 
 
     @Override
@@ -193,6 +199,8 @@ public class MainActivity extends BaseSimpleActivity {
         }
         return false;
     }
+
+
 
 
 }

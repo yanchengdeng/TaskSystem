@@ -32,4 +32,6 @@ public class TaskInfoList<T> implements Serializable {
     public void setData(T data) {
         this.body = data;
     }
+
+
 }

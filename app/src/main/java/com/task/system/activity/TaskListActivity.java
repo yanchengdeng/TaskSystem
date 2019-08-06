@@ -5,26 +5,34 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.KeyEvent;
+import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.ActivityUtils;
 import com.blankj.utilcode.util.KeyboardUtils;
 import com.blankj.utilcode.util.SPUtils;
+import com.blankj.utilcode.util.ScreenUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.task.system.Constans;
 import com.task.system.R;
 import com.task.system.adapters.HomeAdapter;
+import com.task.system.adapters.MenuAdapter;
 import com.task.system.api.API;
 import com.task.system.api.TaskInfo;
 import com.task.system.api.TaskService;
+import com.task.system.bean.CatergoryInfo;
+import com.task.system.bean.HomeMenu;
+import com.task.system.bean.SortTags;
 import com.task.system.bean.TaskInfoList;
 import com.task.system.utils.RecycleViewUtils;
 import com.task.system.utils.TUtils;
+import com.task.system.views.BubblePopupSingle;
 import com.yc.lib.api.ApiCallBack;
 import com.yc.lib.api.ApiConfig;
 
@@ -33,6 +41,7 @@ import java.util.HashMap;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import razerdp.basepopup.BasePopupWindow;
 import retrofit2.Call;
 
 //任务搜索
@@ -46,6 +55,22 @@ public class TaskListActivity extends BaseActivity {
     RecyclerView recycle;
     @BindView(R.id.smartRefresh)
     SmartRefreshLayout smartRefresh;
+    @BindView(R.id.ll_seach_ui)
+    LinearLayout llSeachUi;
+    @BindView(R.id.tv_sort)
+    TextView tvSort;
+    @BindView(R.id.iv_sort)
+    ImageView ivSort;
+    @BindView(R.id.ll_all_sort)
+    LinearLayout llAllSort;
+    @BindView(R.id.tv_smart_tag)
+    TextView tvSmartTag;
+    @BindView(R.id.iv_smart_tag)
+    ImageView ivSmartTag;
+    @BindView(R.id.ll_smart_tag)
+    LinearLayout llSmartTag;
+    @BindView(R.id.ll_sort_ui)
+    LinearLayout llSortUi;
 
     private HomeAdapter homeAdapter;
     private int page = 1;
@@ -55,18 +80,42 @@ public class TaskListActivity extends BaseActivity {
     private String tags_id;
     private String keywords;
 
+    //  分类   标签
+    private BubblePopupSingle quickPopupSort;
+    private BubblePopupSingle quickPopupTag;
+    private MenuAdapter menuSortAdapter, menuTagAdapter;
+
+    private CatergoryInfo catergoryInfo;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task_list);
         ButterKnife.bind(this);
-        tvTittle.setText("搜索任务");
+
         homeAdapter = new HomeAdapter(R.layout.adapter_home_item);
         recycle.addItemDecoration(RecycleViewUtils.getItemDecorationHorizontal());
         recycle.setLayoutManager(new LinearLayoutManager(ApiConfig.context));
         recycle.setAdapter(homeAdapter);
 
+        menuSortAdapter = new MenuAdapter(R.layout.adapter_drop_menu_item);
+        menuTagAdapter = new MenuAdapter(R.layout.adapter_drop_menu_item);
+
+        getSmartSort();
+
+        catergoryInfo = (CatergoryInfo) getIntent().getSerializableExtra(Constans.PASS_OBJECT);
+        if (catergoryInfo != null) {
+            tvTittle.setText("" + catergoryInfo.title);
+            llSortUi.setVisibility(View.VISIBLE);
+            findViewById(R.id.ll_seach_ui).setVisibility(View.GONE);
+        } else {
+            tvTittle.setText("搜索任务");
+            llSortUi.setVisibility(View.GONE);
+            findViewById(R.id.ll_seach_ui).setVisibility(View.VISIBLE);
+        }
+
         region_id = SPUtils.getInstance().getString(Constans.LOCATON_CITY_id);
+
         getTaskList();
 
         homeAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
@@ -106,6 +155,50 @@ public class TaskListActivity extends BaseActivity {
             ActivityUtils.startActivity(bundle, TaskDetailActivity.class);
         });
 
+
+        llAllSort.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showSmartSort();
+            }
+        });
+
+        llSmartTag.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showShowTags();
+            }
+        });
+
+    }
+
+    //智能分类
+    private void getSmartSort() {
+        Call<TaskInfo> call = ApiConfig.getInstants().create(TaskService.class).getSortTagsList(TUtils.getParams());
+
+        API.getObject(call, SortTags.class, new ApiCallBack<SortTags>() {
+            @Override
+            public void onSuccess(int msgCode, String msg, SortTags data) {
+                if (data != null) {
+                    if (data.sort != null) {
+                        menuSortAdapter.setNewData(data.sort);
+                        menuTagAdapter.setNewData(data.tags);
+//                        if (data.tags!=null && data.tags.size()>0) {
+//                            tvSmartTag.setText("" + data.tags.get(0).title);
+//                        }
+//
+//                        if (data.sort!=null && data.sort.size()>0) {
+//                            tvSort.setText("" + data.sort.get(0).title);
+//                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onFaild(int msgCode, String msg) {
+                ToastUtils.showShort(msg);
+            }
+        });
     }
 
 
@@ -163,5 +256,101 @@ public class TaskListActivity extends BaseActivity {
         etInputText.setHint("请输入差事");
         page = 1;
         getTaskList();
+    }
+
+
+    private void showSmartSort() {
+
+        if (quickPopupSort == null) {
+            quickPopupSort = new BubblePopupSingle(ApiConfig.context);
+            RecyclerView recyclerView = quickPopupSort.getContentView();
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, (int) (ScreenUtils.getScreenHeight() * 0.5));
+            recyclerView.setLayoutParams(layoutParams);
+            recyclerView.setLayoutManager(new LinearLayoutManager(ApiConfig.context));
+            recyclerView.addItemDecoration(RecycleViewUtils.getItemDecorationHorizontal());
+            recyclerView.setAdapter(menuSortAdapter);
+
+            quickPopupSort.setOnDismissListener(new BasePopupWindow.OnDismissListener() {
+                @Override
+                public void onDismiss() {
+                    ivSort.setImageResource(R.mipmap.icon_arrow_down);
+                }
+            });
+
+            menuSortAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                    for (HomeMenu item : menuSortAdapter.getData()) {
+                        item.isSelected = false;
+                    }
+                    menuSortAdapter.getData().get(position).isSelected = true;
+                    menuSortAdapter.notifyDataSetChanged();
+                    sort_id = menuSortAdapter.getItem(position).id;
+                    page = 1;
+                    getTaskList();
+                    quickPopupSort.dismiss();
+                    tvSort.setText("" + menuSortAdapter.getData().get(position).title);
+                    tvSort.setTextColor(getResources().getColor(R.color.red));
+                    ivSort.setImageResource(R.mipmap.icon_arrow_down);
+                }
+            });
+        }
+
+//
+        if (quickPopupSort.isShowing()) {
+            quickPopupSort.dismiss();
+            ivSort.setImageResource(R.mipmap.icon_arrow_down);
+        } else {
+            quickPopupSort.showPopupWindow(llSortUi);
+            ivSort.setImageResource(R.mipmap.arrwo_up_red);
+        }
+    }
+
+
+    private void showShowTags() {
+
+        if (quickPopupTag == null) {
+            quickPopupTag = new BubblePopupSingle(ApiConfig.context);
+            RecyclerView recyclerView = quickPopupTag.getContentView();
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, (int) (ScreenUtils.getScreenHeight() * 0.5));
+            recyclerView.setLayoutParams(layoutParams);
+            recyclerView.setLayoutManager(new LinearLayoutManager(ApiConfig.context));
+            recyclerView.addItemDecoration(RecycleViewUtils.getItemDecorationHorizontal());
+            recyclerView.setAdapter(menuTagAdapter);
+
+            quickPopupTag.setOnDismissListener(new BasePopupWindow.OnDismissListener() {
+                @Override
+                public void onDismiss() {
+                    ivSmartTag.setImageResource(R.mipmap.icon_arrow_down);
+                }
+            });
+
+            menuTagAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                    for (HomeMenu item : menuTagAdapter.getData()) {
+                        item.isSelected = false;
+                    }
+                    menuTagAdapter.getData().get(position).isSelected = true;
+                    menuTagAdapter.notifyDataSetChanged();
+                    tags_id = menuTagAdapter.getItem(position).id;
+                    page = 1;
+                    getTaskList();
+                    quickPopupTag.dismiss();
+                    tvSmartTag.setText("" + menuTagAdapter.getData().get(position).title);
+                    tvSmartTag.setTextColor(getResources().getColor(R.color.red));
+                    ivSmartTag.setImageResource(R.mipmap.icon_arrow_down);
+                }
+            });
+        }
+
+//
+        if (quickPopupTag.isShowing()) {
+            quickPopupTag.dismiss();
+            ivSmartTag.setImageResource(R.mipmap.icon_arrow_down);
+        } else {
+            quickPopupTag.showPopupWindow(llSortUi);
+            ivSmartTag.setImageResource(R.mipmap.arrwo_up_red);
+        }
     }
 }

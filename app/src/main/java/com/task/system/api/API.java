@@ -32,14 +32,77 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-
 /**
  * 接口
  */
 public class API {
 
 
-    private static String  DEFAUL_TIPS = "提示连接不上服务器，请联系客服";
+    private static String DEFAUL_TIPS = "提示连接不上服务器，请联系客服";
+
+
+
+
+
+
+    /**
+     * 实体对象请求
+     *
+     * @param call
+     * @param apiCallBack
+     * @param <T>
+     */
+    public static <T> void getObjectIgnoreBody(Call<TaskInfoIgnoreBody> call,  final ApiCallBack<T> apiCallBack) {
+        if (call == null) {
+            throw new IllegalArgumentException("call不能为空");
+        }
+
+        if (apiCallBack == null) {
+            throw new IllegalArgumentException("缺少ApiCallBack()回调");
+        }
+
+        call.enqueue(new Callback<TaskInfoIgnoreBody>() {
+            @Override
+            public void onResponse(Call<TaskInfoIgnoreBody> call, Response<TaskInfoIgnoreBody> response) {
+                showRequestParams(response);
+                if (apiCallBack != null && response.isSuccessful()) {
+                    TaskInfoIgnoreBody resultInfo = response.body();
+                    if (resultInfo != null) {
+                        //查询成功
+                        try {
+                            //防止服务器中的字符串不严谨 ，这做一次转化 解决：com.google.gson.stream.MalformedJsonException
+                            apiCallBack.onSuccess(resultInfo.getStatus_code(), ""+resultInfo.getMessage(), null);
+                        } catch (Exception e) {
+                            LogUtils.w("dyc", "json 数据格式异常");
+                            apiCallBack.onFaild(resultInfo.getStatus_code(), resultInfo.getMessage() + ":json 数据格式异常");
+                        }
+                    } else {
+                        if (response != null) {
+                            showResponseErrorInfo(apiCallBack, response);
+                        }
+                        apiCallBack.onFaild(response.code(), DEFAUL_TIPS);
+                    }
+                } else {
+                    if (NetworkUtils.isConnected()) {
+                        apiCallBack.onFaild(-1, DEFAUL_TIPS);
+                    } else {
+                        apiCallBack.onFaild(-1, "请检查网络");
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<TaskInfoIgnoreBody> call, Throwable t) {
+                showErroResponse(call, t);
+                if (NetworkUtils.isConnected()) {
+                    apiCallBack.onFaild(-1, DEFAUL_TIPS);
+                } else {
+                    apiCallBack.onFaild(-1, "请检查网络");
+                }
+            }
+        });
+    }
+
 
     /**
      * 实体对象请求
@@ -71,7 +134,7 @@ public class API {
                                 try {
                                     //防止服务器中的字符串不严谨 ，这做一次转化 解决：com.google.gson.stream.MalformedJsonException
                                     String json = new Gson().toJson(resultInfo.getData());
-                                    apiCallBack.onSuccess(resultInfo.getStatus_code(), resultInfo.getMessage(), (T) new Gson().fromJson(json, clz));
+                                    apiCallBack.onSuccess(resultInfo.getStatus_code(), ""+resultInfo.getMessage(), (T) new Gson().fromJson(json, clz));
                                 } catch (Exception e) {
                                     LogUtils.w("dyc", "json 数据格式异常");
                                     apiCallBack.onFaild(resultInfo.getStatus_code(), resultInfo.getMessage() + ":json 数据格式异常");
@@ -88,7 +151,7 @@ public class API {
                                     || resultInfo.getStatus_code() == -114
                             ) {
                                 EventBus.getDefault().post(new TokenTimeOut());
-                            }else if (resultInfo.getStatus_code()==-123 || resultInfo.getStatus_code()==-101){
+                            } else if (resultInfo.getStatus_code() == -123 || resultInfo.getStatus_code() == -101) {
                                 EventBus.getDefault().post(new ShowVersionUpdateEvent());
                             }
                             apiCallBack.onFaild(resultInfo.getStatus_code(), resultInfo.getMessage());
@@ -99,7 +162,7 @@ public class API {
                         }
                         apiCallBack.onFaild(response.code(), DEFAUL_TIPS);
                     }
-                }else{
+                } else {
                     if (NetworkUtils.isConnected()) {
                         apiCallBack.onFaild(-1, DEFAUL_TIPS);
                     } else {
@@ -148,7 +211,7 @@ public class API {
                                 try {
                                     apiCallBack.onSuccess(
                                             resultInfo.getStatus_code(),
-                                            resultInfo.getMessage(),
+                                           ""+ resultInfo.getMessage(),
                                             (List<T>) API.jsonStringConvertToList(json, clz));
                                 } catch (Exception e) {
                                     LogUtils.w("dyc", "json 数据格式异常");
@@ -165,7 +228,7 @@ public class API {
                                     || resultInfo.getStatus_code() == -114
                             ) {
                                 EventBus.getDefault().post(new TokenTimeOut());
-                            }else if (resultInfo.getStatus_code()==-123 || resultInfo.getStatus_code()==-101){
+                            } else if (resultInfo.getStatus_code() == -123 || resultInfo.getStatus_code() == -101) {
                                 EventBus.getDefault().post(new ShowVersionUpdateEvent());
                             }
                             apiCallBack.onFaild(resultInfo.getStatus_code(), resultInfo.getMessage());
@@ -176,7 +239,7 @@ public class API {
                         }
                         apiCallBack.onFaild(response.code(), DEFAUL_TIPS);
                     }
-                }else{
+                } else {
                     if (NetworkUtils.isConnected()) {
                         apiCallBack.onFaild(-1, DEFAUL_TIPS);
                     } else {
@@ -264,7 +327,7 @@ public class API {
             }
         }
         if (NetworkUtils.isConnected()) {
-            apiCallBack.onFaild(response.code(),DEFAUL_TIPS);
+            apiCallBack.onFaild(response.code(), DEFAUL_TIPS);
         } else {
             apiCallBack.onFaild(response.code(), "请检查网络");
         }
