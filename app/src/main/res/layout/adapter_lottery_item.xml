@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="1dp"
+    android:background="@color/white"
+    android:orientation="horizontal"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/image_padding_big"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingBottom="@dimen/image_padding_big">
+
+    <ImageView
+        android:id="@+id/iv_image"
+        android:layout_width="@dimen/list_image_size"
+        android:layout_height="@dimen/list_image_size"
+        android:src="@mipmap/load_err" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_toLeftOf="@+id/tv_price"
+        android:layout_toRightOf="@+id/iv_image"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:ellipsize="end"
+            android:maxLength="10"
+            android:singleLine="true"
+            android:text="餐厅信息收集"
+            android:textColor="@color/color_tittle"
+            android:textSize="@dimen/text_size_normal_up"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tv_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginTop="@dimen/image_padding"
+            android:layout_marginBottom="@dimen/image_padding"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:text="福建餐厅信息收集福建餐厅信息收集福建餐厅信息收集"
+            android:textColor="@color/color_info"
+            android:textSize="@dimen/text_size_normal" />
+
+        <TextView
+            android:id="@+id/tv_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text="5560关注"
+            android:textColor="@color/color_info"
+            android:textSize="@dimen/text_size_normal"
+            android:visibility="invisible" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginLeft="@dimen/image_padding_big"
+        android:drawableLeft="@mipmap/icon_intergal"
+        android:text="0"
+        android:gravity="center_vertical"
+        android:drawablePadding="3dp"
+        android:textColor="@color/red"
+        android:textSize="@dimen/text_size_normal_up"
+        android:textStyle="bold" />
+
+</RelativeLayout>

@@ -69,6 +69,7 @@
     <color name="ic_default_bg_color">#33000000</color>
     <string name="select">%1$s/%2$s</string>
 
+    <color name="color_red_5cff2500">#5cFF2500</color>
 
 
 

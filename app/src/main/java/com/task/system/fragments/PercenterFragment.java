@@ -27,6 +27,7 @@ import com.task.system.R;
 import com.task.system.activity.AddNewLeaderActivity;
 import com.task.system.activity.MainActivity;
 import com.task.system.activity.MyAccountActivity;
+import com.task.system.activity.MyAreaManageActivity;
 import com.task.system.activity.MyCollectedActivity;
 import com.task.system.activity.MyIncomeActivity;
 import com.task.system.activity.MyInviteCodeActivity;
@@ -85,6 +86,10 @@ public class PercenterFragment extends Fragment {
     SmartRefreshLayout smartRefresh;
     @BindView(R.id.tv_add_lead)
     TextView tvAddLead;
+    @BindView(R.id.tv_about_us)
+    TextView tvAboutUs;
+    @BindView(R.id.tv_my_area_manage)
+    TextView tvMyAreaManage;
 
     @Nullable
     @Override
@@ -108,12 +113,16 @@ public class PercenterFragment extends Fragment {
                 tvCollect.setVisibility(View.VISIBLE);
                 tvMyTeam.setVisibility(View.VISIBLE);
                 tvInviteCode.setVisibility(View.VISIBLE);
-            } else if (userInfo.user_type.equals(UserType.USER_TYPE_AREA.getType())){
+                tvMyAreaManage.setVisibility(View.GONE);
+            } else if (userInfo.user_type.equals(UserType.USER_TYPE_AREA.getType())) {
+                //区域管理
+                tvMyAreaManage.setVisibility(View.VISIBLE);
                 tvAddLead.setVisibility(View.VISIBLE);
                 tvInviteCode.setVisibility(View.VISIBLE);
-            }else if (userInfo.user_type.equals(UserType.USER_TYPE_AGENT.getType())){
+            } else if (userInfo.user_type.equals(UserType.USER_TYPE_AGENT.getType())) {
                 tvInviteCode.setVisibility(View.VISIBLE);
                 tvMyTeam.setVisibility(View.GONE);
+
             }
 
 
@@ -127,7 +136,7 @@ public class PercenterFragment extends Fragment {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(Object event) {
         if (event instanceof UpdateUserInfoEvent) {
-          smartRefresh.autoRefresh();
+            smartRefresh.autoRefresh();
         }
     }
 
@@ -183,11 +192,11 @@ public class PercenterFragment extends Fragment {
         unbinder.unbind();
     }
 
-    @OnClick({R.id.ll_user_info_ui, R.id.rl_my_money, R.id.ll_allwork_title, R.id.tv_add_lead, R.id.tv_collect,R.id.tv_my_team, R.id.tv_my_accoutn, R.id.tv_invite_code})
+    @OnClick({R.id.ll_user_info_ui, R.id.rl_my_money, R.id.ll_allwork_title, R.id.tv_add_lead, R.id.tv_collect, R.id.tv_my_team, R.id.tv_my_accoutn, R.id.tv_invite_code,R.id.tv_about_us,R.id.tv_my_area_manage})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ll_user_info_ui:
-                PercenterFragment.this.startActivityForResult(new Intent(ApiConfig.context,PersonSettingActivity.class),20);
+                PercenterFragment.this.startActivityForResult(new Intent(ApiConfig.context, PersonSettingActivity.class), 20);
 //                ActivityUtils.startActivity(PersonSettingActivity.class);
                 break;
             case R.id.rl_my_money:
@@ -195,7 +204,7 @@ public class PercenterFragment extends Fragment {
                 break;
             case R.id.ll_allwork_title:
                 if (getActivity() != null) {
-                    ((MainActivity) ((com.task.system.activity.MainActivity) getActivity())).viewPager.setCurrentItem(1);
+                    ((MainActivity) ((MainActivity) getActivity())).viewPager.setCurrentItem(1);
                 }
                 break;
             case R.id.tv_collect:
@@ -213,13 +222,18 @@ public class PercenterFragment extends Fragment {
             case R.id.tv_invite_code:
                 ActivityUtils.startActivity(MyInviteCodeActivity.class);
                 break;
+            case R.id.tv_about_us:
+                break;
+            case R.id.tv_my_area_manage:
+                ActivityUtils.startActivity(MyAreaManageActivity.class);
+                break;
         }
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode==20){
-            if (resultCode==-1){
+        if (requestCode == 20) {
+            if (resultCode == -1) {
                 getUserDetail();
             }
         }

@@ -7,6 +7,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.ActivityUtils;
 import com.task.system.R;
 import com.task.system.api.API;
 import com.task.system.api.TaskInfo;
@@ -79,8 +80,6 @@ public class SignActivity extends BaseActivity {
         setTitle("每日领红包");
 
 
-
-
         getUserSign();
         getSignList();
 
@@ -95,7 +94,7 @@ public class SignActivity extends BaseActivity {
         HashMap<String, String> maps = new HashMap<>();
         maps.put("mode", "check");
         Call<TaskInfoIgnoreBody> call = ApiConfig.getInstants().create(TaskService.class).userSign(TUtils.getParams(maps));
-        API.getObjectIgnoreBody(call,  new ApiCallBack<SimpleBeanInfo>() {
+        API.getObjectIgnoreBody(call, new ApiCallBack<SimpleBeanInfo>() {
             @Override
             public void onSuccess(int msgCode, String msg, SimpleBeanInfo data) {
                 tvGoSign.setText(msg);
@@ -114,7 +113,7 @@ public class SignActivity extends BaseActivity {
      */
     private void doSign() {
         Call<TaskInfoIgnoreBody> call = ApiConfig.getInstants().create(TaskService.class).userSign(TUtils.getParams());
-        API.getObjectIgnoreBody(call,  new ApiCallBack<SimpleBeanInfo>() {
+        API.getObjectIgnoreBody(call, new ApiCallBack<SimpleBeanInfo>() {
             @Override
             public void onSuccess(int msgCode, String msg, SimpleBeanInfo data) {
                 tvGoSign.setText(msg);
@@ -138,8 +137,8 @@ public class SignActivity extends BaseActivity {
         API.getObject(call, SignTotal.class, new ApiCallBack<SignTotal>() {
             @Override
             public void onSuccess(int msgCode, String msg, SignTotal data) {
-                if (data!=null && data.data!=null && data.data.size()>0 ){
-                    tvWeekSignNum.setText("当前有"+data.total+"人参加");
+                if (data != null && data.data != null && data.data.size() > 0) {
+                    tvWeekSignNum.setText("当前有" + data.total + "人参加");
                     fillSignStasus(data.data);
                 }
             }
@@ -154,20 +153,20 @@ public class SignActivity extends BaseActivity {
 
 
     private void fillSignStasus(List<SignInfo> data) {
-        for (SignInfo item:data){
-            if (item.week_n.equals("1")){
+        for (SignInfo item : data) {
+            if (item.week_n.equals("1")) {
                 ivSignOne.setImageResource(R.mipmap.checkbox_checked);
-            }else if (item.week_n.equals("2")){
+            } else if (item.week_n.equals("2")) {
                 ivSignTwo.setImageResource(R.mipmap.checkbox_checked);
-            }else if (item.week_n.equals("3")){
+            } else if (item.week_n.equals("3")) {
                 ivSignThree.setImageResource(R.mipmap.checkbox_checked);
-            }else if (item.week_n.equals("4")){
+            } else if (item.week_n.equals("4")) {
                 ivSignFour.setImageResource(R.mipmap.checkbox_checked);
-            }else if (item.week_n.equals("5")){
+            } else if (item.week_n.equals("5")) {
                 ivSignFive.setImageResource(R.mipmap.checkbox_checked);
-            }else if (item.week_n.equals("6")){
+            } else if (item.week_n.equals("6")) {
                 ivSignSix.setImageResource(R.mipmap.checkbox_checked);
-            }else if (item.week_n.equals("0")){
+            } else if (item.week_n.equals("0")) {
                 ivSignSeven.setImageResource(R.mipmap.checkbox_checked);
             }
         }
@@ -182,8 +181,10 @@ public class SignActivity extends BaseActivity {
                 doSign();
                 break;
             case R.id.do_share:
+                ActivityUtils.startActivity(MyInviteActivity.class);
                 break;
             case R.id.do_award:
+                ActivityUtils.startActivity(IntegralLotteryActivity.class);
                 break;
         }
     }

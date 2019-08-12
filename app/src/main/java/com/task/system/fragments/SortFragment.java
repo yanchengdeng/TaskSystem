@@ -30,7 +30,6 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.task.system.Constans;
 import com.task.system.FixApplication;
 import com.task.system.R;
-import com.task.system.activity.CityListActivity;
 import com.task.system.activity.MessageListActivity;
 import com.task.system.activity.OpenWebViewActivity;
 import com.task.system.activity.TaskListActivity;
@@ -52,12 +51,11 @@ import com.yanzhenjie.permission.runtime.Permission;
 import com.yc.lib.api.ApiCallBack;
 import com.yc.lib.api.ApiCallBackList;
 import com.yc.lib.api.ApiConfig;
+import com.yc.lib.api.utils.SysUtils;
 import com.youth.banner.Banner;
 import com.youth.banner.listener.OnBannerListener;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
@@ -99,7 +97,7 @@ public class SortFragment extends Fragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        final View view = inflater.inflate(R.layout.home_fragment, container, false);
+        final View view = inflater.inflate(R.layout.sort_fragment, container, false);
 
         unbinder = ButterKnife.bind(this, view);
         banner = new Banner(ApiConfig.context);
@@ -125,10 +123,9 @@ public class SortFragment extends Fragment {
         //设置图片加载器
         banner.setImageLoader(new GlideImageLoader());
 
-        region_id = SPUtils.getInstance().getString(Constans.LOCATON_CITY_id);
+        region_id = SPUtils.getInstance().getString(Constans.SAVE_LOCATION_REGION_ID);
 
         getAds();
-        getCityList();
         getAllSort();
         smartRefresh.setOnRefreshListener(new OnRefreshListener() {
             @Override
@@ -262,36 +259,6 @@ public class SortFragment extends Fragment {
         });
     }
 
-
-    private void getCityList() {
-        Call<com.task.system.api.TaskInfoList> call = ApiConfig.getInstants().create(TaskService.class).getCityList(TUtils.getParams());
-
-        API.getList(call, CityInfo.class, new ApiCallBackList<CityInfo>() {
-            @Override
-            public void onSuccess(int msgCode, String msg, List<CityInfo> data) {
-                if (data != null && data.size() > 0) {
-                    Collections.sort(data, new Comparator<CityInfo>() {
-                        @Override
-                        public int compare(CityInfo o1, CityInfo o2) {
-                            return o1.pinyin.compareTo(o2.pinyin);
-                        }
-                    });
-                    TUtils.setAllCitys(data);
-                    mAllCities = data;
-                    getReginId();
-
-
-                }
-            }
-
-            @Override
-            public void onFaild(int msgCode, String msg) {
-            }
-        });
-
-    }
-
-
     @Override
     public void onDestroyView() {
         super.onDestroyView();
@@ -302,7 +269,9 @@ public class SortFragment extends Fragment {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_location:
-                SortFragment.this.startActivityForResult(new Intent(getContext(), CityListActivity.class), 200);
+                //TODO
+                SysUtils.showToast("dingwei");
+//                SortFragment.this.startActivityForResult(new Intent(getContext(), CityListActivity.class), 200);
                 break;
             case R.id.tv_message_num:
             case R.id.iv_message:
@@ -403,14 +372,7 @@ public class SortFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    private void getReginId() {
-        for (CityInfo cityInfo : mAllCities) {
-            if (cityInfo.region_name.equals(loctionCity)) {
-                region_id = cityInfo.getRegion_id();
-                SPUtils.getInstance().put(Constans.LOCATON_CITY_id, region_id);
-            }
-        }
-    }
+
 
     @Override
     public void onDetach() {

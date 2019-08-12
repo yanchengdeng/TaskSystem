@@ -37,4 +37,11 @@ public class TaskInfoItem implements Serializable {
     public int order_status;
     public String order_status_title;
     public int is_apply;//1  可以申请 0 不可以
+
+
+
+
+
+
+
 }

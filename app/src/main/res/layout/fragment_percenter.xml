@@ -199,6 +199,35 @@
             android:visibility="gone" />
 
 
+        <TextView
+            android:id="@+id/tv_about_us"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:background="@color/white"
+            android:drawableRight="@mipmap/arrow_right_black"
+            android:padding="@dimen/activity_horizontal_margin"
+            android:text="关于我们"
+            android:textColor="@color/color_info"
+            android:textSize="@dimen/sp_14"
+            />
+
+        <TextView
+            android:id="@+id/tv_my_area_manage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:background="@color/white"
+            android:drawableRight="@mipmap/arrow_right_black"
+            android:padding="@dimen/activity_horizontal_margin"
+            android:text="我的区域管理"
+            android:textColor="@color/color_info"
+            android:textSize="@dimen/sp_14"
+            android:visibility="gone"
+            />
+
+
+
     </LinearLayout>
 
 

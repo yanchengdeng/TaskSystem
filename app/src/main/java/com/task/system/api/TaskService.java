@@ -144,7 +144,7 @@ public interface TaskService {
      * @return 广告页面
      */
     @FormUrlEncoded
-    @POST("public/getAd")
+    @POST("public/getAdList")
     Call<TaskInfoList> getAdList(@FieldMap HashMap<String,String> map);
 
     //城市列表
@@ -453,5 +453,26 @@ public interface TaskService {
 
     @GET("https://api.weixin.qq.com/sns/oauth2/access_token")
     Call<WxAccessToken> getAccessToken(@QueryMap HashMap<String,String> maps);
+
+    //第三方登录
+    @FormUrlEncoded
+    @POST("public/loginByThird")
+    Call<TaskInfo> loginByThird(@FieldMap HashMap<String,String> maps);
+
+
+    //绑定账号
+    @FormUrlEncoded
+    @POST("public/bindByLogin")
+    Call<TaskInfo> bindByLogin(@FieldMap HashMap<String,String> maps);
+
+    //启动app 首页
+    @GET("public/appinit")
+    Call<TaskInfo>  appInit(@QueryMap HashMap<String,String> maps);
+
+
+    //游戏列表
+    @FormUrlEncoded
+    @POST("wheel/getList")
+    Call<TaskInfoList> getWheelList(@FieldMap HashMap<String,String> maps);
 
 }

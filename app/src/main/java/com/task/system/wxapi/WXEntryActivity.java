@@ -15,6 +15,7 @@ import com.tencent.mm.opensdk.modelmsg.ShowMessageFromWX;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
+import com.yc.lib.api.utils.SysUtils;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -66,29 +67,39 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler{
 	@Override
 	public void onResp(BaseResp resp) {
 		int result = 0;
-		
-		switch (resp.errCode) {
-		case BaseResp.ErrCode.ERR_OK:
-			result = R.string.errcode_success;
-			if (resp instanceof SendAuth.Resp){
-				EventBus.getDefault().post(resp);
+
+		if (resp instanceof SendAuth.Resp) {
+			switch (resp.errCode) {
+				case BaseResp.ErrCode.ERR_OK:
+					EventBus.getDefault().post(resp);
+					break;
+				default:
+					SysUtils.showToast("授权失败");
 			}
-			break;
-		case BaseResp.ErrCode.ERR_USER_CANCEL:
-			result = R.string.errcode_cancel;
-			break;
-		case BaseResp.ErrCode.ERR_AUTH_DENIED:
-			result = R.string.errcode_deny;
-			break;
-		case BaseResp.ErrCode.ERR_UNSUPPORT:
-			result = R.string.errcode_unsupported;
-			break;
-		default:
-			result = R.string.errcode_unknown;
-			break;
-		}
-		
-		Toast.makeText(this, getString(result), Toast.LENGTH_SHORT).show();
+			finish();
+		}else {
+			switch (resp.errCode) {
+				case BaseResp.ErrCode.ERR_OK:
+					result = R.string.errcode_success;
+					if (resp instanceof SendAuth.Resp) {
+						EventBus.getDefault().post(resp);
+					}
+					break;
+				case BaseResp.ErrCode.ERR_USER_CANCEL:
+					result = R.string.errcode_cancel;
+					break;
+				case BaseResp.ErrCode.ERR_AUTH_DENIED:
+					result = R.string.errcode_deny;
+					break;
+				case BaseResp.ErrCode.ERR_UNSUPPORT:
+					result = R.string.errcode_unsupported;
+					break;
+				default:
+					result = R.string.errcode_unknown;
+					break;
+			}
+
+			Toast.makeText(this, getString(result), Toast.LENGTH_SHORT).show();
 
 
 	/*	if (resp.getType() == ConstantsAPI.COMMAND_SUBSCRIBE_MESSAGE) {
@@ -123,7 +134,8 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler{
         }
 */
 
-        finish();
+			finish();
+		}
 	}
 	
 	private void goToGetMsg() {

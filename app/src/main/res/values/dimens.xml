@@ -54,4 +54,7 @@
 
 
     <dimen name="dash_line">1.2dp</dimen>
+    <dimen name="dp_16">16dp</dimen>
+    <dimen name="sp_15">15sp</dimen>
+    <dimen name="dp_30">30dp</dimen>
 </resources>

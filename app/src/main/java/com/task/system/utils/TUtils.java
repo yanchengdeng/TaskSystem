@@ -20,7 +20,7 @@ import com.google.gson.reflect.TypeToken;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.task.system.Constans;
 import com.task.system.activity.OpenWebViewActivity;
-import com.task.system.bean.CityInfo;
+import com.task.system.bean.AreaBean;
 import com.task.system.bean.TaskInfoList;
 import com.task.system.bean.TaskType;
 import com.task.system.bean.UserInfo;
@@ -29,6 +29,8 @@ import com.task.system.views.photoview.ImageInfo;
 import com.task.system.views.photoview.preview.ImagePreviewActivity;
 import com.yc.lib.api.ApiConfig;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -38,7 +40,7 @@ import java.util.regex.Pattern;
 
 public class TUtils {
 
-    private static List<CityInfo> cityInfos = new ArrayList<>();
+    private static List<AreaBean> cityInfos = new ArrayList<>();
 
     public static HashMap<String, String> getParams(HashMap<String, String> data) {
         data.put("version", AppUtils.getAppVersionName());
@@ -196,18 +198,16 @@ public class TUtils {
     }
 
 
-
-
     //处理列表无数据
     public static void dealNoReqestData(BaseQuickAdapter adapter, RecyclerView recycle, SmartRefreshLayout refreshLayout) {
-       dealNoReqestData(adapter, recycle, refreshLayout,1);
+        dealNoReqestData(adapter, recycle, refreshLayout, 1);
     }
 
 
     //处理列表无数据
-    public static void dealNoReqestData(BaseQuickAdapter adapter, RecyclerView recycle, SmartRefreshLayout refreshLayout,int page) {
+    public static void dealNoReqestData(BaseQuickAdapter adapter, RecyclerView recycle, SmartRefreshLayout refreshLayout, int page) {
         if (adapter != null && recycle != null && refreshLayout != null) {
-            if (page==1){
+            if (page == 1) {
                 adapter.getData().clear();
             }
             if (adapter.getData().size() > 0) {
@@ -226,12 +226,12 @@ public class TUtils {
     }
 
     //处理列表无数据
-    public static void dealNoReqestData(BaseQuickAdapter adapter, RecyclerView recycle,int page) {
+    public static void dealNoReqestData(BaseQuickAdapter adapter, RecyclerView recycle, int page) {
         if (adapter == null && recycle == null) {
             return;
         }
 
-        if (page==1){
+        if (page == 1) {
             adapter.getData().clear();
         }
         if (adapter.getData().size() > 0) {
@@ -248,15 +248,14 @@ public class TUtils {
     }
 
 
-
     //处理列表无数据
     public static void dealNoReqestData(BaseQuickAdapter adapter, RecyclerView recycle) {
-       dealNoReqestData(adapter,recycle,1);
+        dealNoReqestData(adapter, recycle, 1);
     }
 
     //处理请求列表数据
     public static void dealReqestData(BaseQuickAdapter adapter, RecyclerView recycle, List list, int page, SmartRefreshLayout refreshLayout) {
-        if (adapter != null && recycle != null && refreshLayout != null) {
+        if (adapter != null && recycle != null) {
             if (page == 1) {
                 adapter.getData().clear();
             }
@@ -271,21 +270,45 @@ public class TUtils {
             } else {
                 TUtils.dealNoReqestData(adapter, recycle);
             }
-            refreshLayout.finishRefresh();
+            if (refreshLayout != null) {
+                refreshLayout.finishRefresh();
+            }
         }
 
     }
 
-    public static List<CityInfo> getAllCitys() {
+    public static void dealReqestData(BaseQuickAdapter adapter, RecyclerView recycle, List list, int page) {
+        dealReqestData(adapter, recycle, list, page, null);
+        if (adapter != null && recycle != null) {
+            if (page == 1) {
+                adapter.getData().clear();
+            }
+            if (list != null && list.size() > 0) {
+                adapter.addData(list);
+                if (list.size() == Integer.parseInt(Constans.PAGE_SIZE)) {
+                    adapter.loadMoreComplete();
+                } else {
+                    adapter.loadMoreComplete();
+                    adapter.loadMoreEnd();
+                }
+            } else {
+                TUtils.dealNoReqestData(adapter, recycle);
+            }
+        }
+
+    }
+
+    public static List<AreaBean> getAllCitys() {
         String citys = SPUtils.getInstance().getString(Constans.PASS_ALL_CITYS);
         if (!TextUtils.isEmpty(citys)) {
-            cityInfos = new Gson().fromJson(citys, new TypeToken<List<CityInfo>>() {
+            cityInfos = new Gson().fromJson(citys, new TypeToken<List<AreaBean>>() {
             }.getType());
+            return cityInfos;
         }
-        return cityInfos;
+        return null;
     }
 
-    public static void setAllCitys(List<CityInfo> citys) {
+    public static void setAllCitys(List<AreaBean> citys) {
         SPUtils.getInstance().put(Constans.PASS_ALL_CITYS, new Gson().toJson(citys));
 
     }
@@ -380,7 +403,7 @@ public class TUtils {
         taskTypeList.add(new TaskType(3, "待审核"));
         taskTypeList.add(new TaskType(4, "已通过"));
         taskTypeList.add(new TaskType(5, "未通过"));//6 、7 未通过、已作废、已超时合并
-        taskTypeList.add(new TaskType(6,"已作废"));
+        taskTypeList.add(new TaskType(6, "已作废"));
 
 
         return taskTypeList;
@@ -409,18 +432,17 @@ public class TUtils {
     public static void openImageViews(String[] imageUrls, int position) {
 
 
-         List<ImageInfo> imageInfo = new ArrayList<>();
-         if (imageUrls==null || imageUrls.length==0){
-             return;
-         }
+        List<ImageInfo> imageInfo = new ArrayList<>();
+        if (imageUrls == null || imageUrls.length == 0) {
+            return;
+        }
 
-         for (String item:imageUrls){
-             ImageInfo info = new ImageInfo();
-             info.bigImageUrl = item;
-             info.thumbnailUrl  = item;
-             imageInfo.add(info);
-         }
-
+        for (String item : imageUrls) {
+            ImageInfo info = new ImageInfo();
+            info.bigImageUrl = item;
+            info.thumbnailUrl = item;
+            imageInfo.add(info);
+        }
 
 
         Intent intent = new Intent(ApiConfig.context, ImagePreviewActivity.class);
@@ -435,5 +457,20 @@ public class TUtils {
 
     public static boolean isMemberType() {
         return TUtils.getUserInfo() != null && TUtils.getUserInfo().user_type.equals(UserType.USER_TYPE_MEMBER.getType());
+    }
+
+    public static String getFromAssets(String fileName) {
+        try {
+            InputStreamReader inputReader = new InputStreamReader(ApiConfig.context.getResources().getAssets().open(fileName));
+            BufferedReader bufReader = new BufferedReader(inputReader);
+            String line = "";
+            String Result = "";
+            while ((line = bufReader.readLine()) != null)
+                Result += line;
+            return Result;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "";
     }
 }

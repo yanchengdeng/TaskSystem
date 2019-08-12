@@ -19,7 +19,10 @@ public class Constans {
     public static final String KEFU = "kefu";
     public static final String PASS_CHILD_UID = "pass_child_uid";
     public static final String WX_SHARE_APP_ID = "wxcf64941387b26a63";
+    public static final String WX_SHARE_SECRET = "e3275d65c1be124879a7dfe5ae948d93";
     public static final String QQ_SHARE_ID = "101577408";
+    public static final String SAVE_LOCATION_REGION_NAME = "save_region_name";
+    public static final String SAVE_LOCATION_REGION_ID = "save_region_id";
     public static boolean HAS_VESRSION_TIPS ;//是否提示过版本更新
 
 //    public static String BASE_URL_TEST = "syn.xhdcmgood.com/api.php/V2";
@@ -27,7 +30,5 @@ public class Constans {
     public static String BASE_URL_ONLINE = "www.xhdcmgood.com//api.php/V2";
 
     public  static boolean  IS_DEBUG = true;
-    public static String LOCATON_CITY_NAME = "location_name";
-    public static String LOCATON_CITY_id = "location_name_id";
     public static String PASS_NAME = "pass_name";
 }

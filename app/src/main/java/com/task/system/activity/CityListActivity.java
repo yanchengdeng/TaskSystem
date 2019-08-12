@@ -131,7 +131,7 @@ public class CityListActivity extends BaseActivity {
                     @Override
                     public void run() {
                         if (!TextUtils.isEmpty(bdLocation.getCity())) {
-                            SPUtils.getInstance().put(Constans.LOCATON_CITY_NAME, bdLocation.getCity());
+                            SPUtils.getInstance().put(Constans.SAVE_LOCATION_REGION_NAME, bdLocation.getCity());
                             adapter.updateLocateState(LocateState.SUCCESS, bdLocation.getCity());
                         } else {
                             adapter.updateLocateState(LocateState.FAILED, "定位失败");
@@ -185,7 +185,8 @@ public class CityListActivity extends BaseActivity {
 
     private List<CityInfo> subAllCities(String keys) {
         List<CityInfo> subCitys = new ArrayList<>();
-        List<CityInfo> allCitys = TUtils.getAllCitys();
+        List<CityInfo> allCitys = null;
+//        List<CityInfo> allCitys = TUtils.getAllCitys();
         for (CityInfo item : allCitys) {
             if (item.region_name.contains(keys)) {
                 subCitys.add(item);
@@ -279,7 +280,9 @@ public class CityListActivity extends BaseActivity {
             @Override
             public void afterTextChanged(Editable editable) {
 
-                mAllCities = TUtils.getAllCitys();
+                mAllCities = null;
+                //TODO 修改
+//                mAllCities = TUtils.getAllCitys();
                 if (mAllCities != null && mAllCities.size() > 0) {
                     if (subAllCities(etInputText.getEditableText().toString()).size() > 0) {
                         adapter.setNewData(subAllCities(etInputText.getEditableText().toString()));
@@ -314,7 +317,7 @@ public class CityListActivity extends BaseActivity {
                 return cityInfo.region_id;
             }
         }
-        return SPUtils.getInstance().getString(Constans.LOCATON_CITY_id);
+        return SPUtils.getInstance().getString(Constans.SAVE_LOCATION_REGION_ID);
     }
 
     @Override

@@ -94,7 +94,10 @@ public class LoginActivity extends BaseSimpleActivity {
             etPassword.setText(SPUtils.getInstance().getString(Constans.PASSWORD));
         }
 
+
+
     }
+
 
 
     private void getCustom() {
@@ -156,7 +159,7 @@ public class LoginActivity extends BaseSimpleActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if (requestCode == 200) {
+        if (requestCode == 200 || requestCode==100) {
             if (resultCode == RESULT_OK) {
                 finish();
             }
@@ -267,10 +270,11 @@ public class LoginActivity extends BaseSimpleActivity {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onChange(SendAuth.Resp resp) {
         if (resp != null && !TextUtils.isEmpty(resp.code)) {
+            showLoadingBar("微信登录中...");
 
             HashMap<String,String> maps = new HashMap<>();
             maps.put("appid",Constans.WX_SHARE_APP_ID);
-            maps.put("secret","");
+            maps.put("secret",Constans.WX_SHARE_SECRET);
             maps.put("code",resp.code);
             maps.put("grant_type","authorization_code");
 
@@ -279,17 +283,63 @@ public class LoginActivity extends BaseSimpleActivity {
             call.enqueue(new Callback<WxAccessToken>() {
                 @Override
                 public void onResponse(Call<WxAccessToken> call, Response<WxAccessToken> response) {
-                    SysUtils.log(response.body().access_token);
+                    doThirdLogin(response.body());
 
                 }
 
                 @Override
                 public void onFailure(Call<WxAccessToken> call, Throwable t) {
                     SysUtils.log(t.getMessage());
+                    dismissLoadingBar();
                 }
             });
         }
     }
+
+    private void doThirdLogin(WxAccessToken wxAccessToken) {
+        HashMap<String, String> hashMap = new HashMap();
+        hashMap.put("oauth_type", "wx");
+        hashMap.put("oauth_uid", wxAccessToken.openid);
+        hashMap.put("oauth_token",wxAccessToken.access_token);
+        hashMap.put("expire_time", String.valueOf(wxAccessToken.expires_in));
+        Call<TaskInfo> call = ApiConfig.getInstants().create(TaskService.class).loginByThird(TUtils.getParams(hashMap));
+
+        API.getObject(call, UserInfo.class, new ApiCallBack<UserInfo>() {
+            @Override
+            public void onSuccess(int msgCode, String msg, UserInfo data) {
+                dismissLoadingBar();
+                if (data!=null && !TextUtils.isEmpty(data.mobile)){
+                    //已绑定过
+                    SPUtils.getInstance().put(Constans.USER_INFO, new Gson().toJson(data));
+                    SPUtils.getInstance().put(Constans.TOKEN, new Gson().toJson(data.tokens));
+                    SPUtils.getInstance().put(Constans.USER_ACOUNT, data.username);
+                    ActivityUtils.startActivity(MainActivity.class);
+                    finish();
+                }else{
+                    //未绑定过
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable(Constans.PASS_OBJECT,wxAccessToken);
+                    ActivityUtils.startActivityForResult(bundle,LoginActivity.this,BindWxActivity.class,100);
+
+                }
+            }
+
+            @Override
+            public void onFaild(int msgCode, String msg) {
+                dismissLoadingBar();
+                if (msgCode==2){
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable(Constans.PASS_OBJECT,wxAccessToken);
+                    ActivityUtils.startActivityForResult(bundle,LoginActivity.this,BindWxActivity.class,100);
+                }else {
+                    ToastUtils.showShort(msg);
+                }
+            }
+        });
+
+    }
+
+
 
     @Override
     public void onBackPressed() {

@@ -114,7 +114,7 @@ public class TaskListActivity extends BaseActivity {
             findViewById(R.id.ll_seach_ui).setVisibility(View.VISIBLE);
         }
 
-        region_id = SPUtils.getInstance().getString(Constans.LOCATON_CITY_id);
+        region_id = SPUtils.getInstance().getString(Constans.SAVE_LOCATION_REGION_ID);
 
         getTaskList();
 

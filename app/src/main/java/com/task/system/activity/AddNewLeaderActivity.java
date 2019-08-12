@@ -1,32 +1,34 @@
 package com.task.system.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.blankj.utilcode.util.ActivityUtils;
 import com.blankj.utilcode.util.ToastUtils;
-import com.task.system.Constans;
 import com.task.system.R;
 import com.task.system.api.API;
 import com.task.system.api.TaskInfo;
 import com.task.system.api.TaskService;
 import com.task.system.bean.AddLeaderInfo;
-import com.task.system.bean.CityInfo;
+import com.task.system.bean.AreaBean;
 import com.task.system.bean.SimpleBeanInfo;
 import com.task.system.utils.PerfectClickListener;
 import com.task.system.utils.TUtils;
+import com.task.system.views.AddressPickerView;
 import com.yc.lib.api.ApiCallBack;
+import com.yc.lib.api.ApiCallBackList;
 import com.yc.lib.api.ApiConfig;
 
 import java.util.HashMap;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -53,7 +55,9 @@ public class AddNewLeaderActivity extends BaseActivity {
     TextView tvSelectRegion;
     @BindView(R.id.btn_confirm)
     Button btnConfirm;
-    private CityInfo cityInfo;
+
+    private List<AreaBean> mAllCities;
+    private String region_id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +67,12 @@ public class AddNewLeaderActivity extends BaseActivity {
         setTitle(getString(R.string.add_new_memner));
 
         addLisen();
+
+
+        mAllCities = TUtils.getAllCitys();
+        if (mAllCities == null) {
+            getCityList();
+        }
 
 
         btnConfirm.setOnClickListener(new PerfectClickListener() {
@@ -75,6 +85,25 @@ public class AddNewLeaderActivity extends BaseActivity {
 
 
         getLeaderInfo();
+    }
+
+    private void getCityList() {
+        Call<com.task.system.api.TaskInfoList> call = ApiConfig.getInstants().create(TaskService.class).getCityList(TUtils.getParams());
+
+        API.getList(call, AreaBean.class, new ApiCallBackList<AreaBean>() {
+            @Override
+            public void onSuccess(int msgCode, String msg, List<AreaBean> data) {
+                if (data != null && data.size() > 0) {
+                    mAllCities = data;
+                    TUtils.setAllCitys(data);
+                }
+            }
+
+            @Override
+            public void onFaild(int msgCode, String msg) {
+            }
+        });
+
     }
 
     private void getLeaderInfo() {
@@ -180,11 +209,41 @@ public class AddNewLeaderActivity extends BaseActivity {
         tvSelectRegion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ActivityUtils.startActivityForResult(AddNewLeaderActivity.this, CityListActivity.class, 100);
+                if (mAllCities == null) {
+                    getCityList();
+                } else {
+                    showAddressDialog();
+                }
             }
         });
+    }
 
+    /**
+     * 显示地址选择，点击事件
+     */
+    private void showAddressDialog() {
+        AddressPickerView addressView = new AddressPickerView(ApiConfig.context);
+        AlertDialog addressDialog =
+                new AlertDialog.Builder(ApiConfig.context, R.style.Dialog_FS)
+                        .setView(addressView)
+                        .setCancelable(true)
+                        .create();
+        addressDialog.show();
+        addressView.initData(mAllCities);
+        if (addressDialog.getWindow() != null) {
+            addressDialog.getWindow().setGravity(Gravity.BOTTOM);
+            addressDialog.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT);
+        }
 
+        addressView.setOnAddressPickerSure(new AddressPickerView.OnAddressPickerSureListener() {
+            @Override
+            public void onSureClick(String address, String provinceCode, String cityCode, String districtCode) {
+                addressDialog.dismiss();
+                tvSelectRegion.setText(address);
+                region_id = districtCode;
+            }
+        });
     }
 
 
@@ -193,9 +252,9 @@ public class AddNewLeaderActivity extends BaseActivity {
                 && etId.getEditableText().toString().length() == 8
                 && !TextUtils.isEmpty(etNickname.getEditableText().toString())
                 && !TextUtils.isEmpty(etPhone.getEditableText().toString())
-                && !TextUtils.isEmpty(etPassword.getEditableText().toString()
-        )
-                && !TextUtils.isEmpty(tvSelectRegion.getText().toString())) {
+                && !TextUtils.isEmpty(etPassword.getEditableText().toString())
+                && !TextUtils.isEmpty(tvSelectRegion.getText().toString())
+        ) {
             btnConfirm.setBackground(getResources().getDrawable(R.drawable.normal_submit_btn_red));
         } else {
             btnConfirm.setBackground(getResources().getDrawable(R.drawable.normal_submit_btn_gray));
@@ -214,23 +273,23 @@ public class AddNewLeaderActivity extends BaseActivity {
     private void addLeader() {
 
 
-        if (TextUtils.isEmpty(etId.getEditableText().toString())){
+        if (TextUtils.isEmpty(etId.getEditableText().toString())) {
             ToastUtils.showShort("请输入id");
             return;
         }
 
 
-        if (TextUtils.isEmpty(etPhone.getEditableText().toString())){
+        if (TextUtils.isEmpty(etPhone.getEditableText().toString())) {
             ToastUtils.showShort("请输入手机号");
             return;
         }
 
-        if (TextUtils.isEmpty(etPassword.getEditableText().toString())){
+        if (TextUtils.isEmpty(etPassword.getEditableText().toString())) {
             ToastUtils.showShort("请输入密码");
             return;
         }
 
-        if (cityInfo == null || TextUtils.isEmpty(cityInfo.region_id)){
+        if (TextUtils.isEmpty(region_id)) {
             ToastUtils.showShort("请选择城市");
             return;
         }
@@ -244,10 +303,7 @@ public class AddNewLeaderActivity extends BaseActivity {
         if (!TextUtils.isEmpty(etMark.getEditableText().toString())) {
             map.put("remark", etMark.getEditableText().toString());
         }
-
-        if (cityInfo != null && !TextUtils.isEmpty(cityInfo.region_id)) {
-            map.put("region_id", cityInfo.region_id);
-        }
+        map.put("region_id", region_id);
         showLoadingBar();
 
         Call<TaskInfo> call = ApiConfig.getInstants().create(TaskService.class).addLeader(TUtils.getParams(map));
@@ -267,23 +323,7 @@ public class AddNewLeaderActivity extends BaseActivity {
 
             }
         });
-
-
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if (requestCode == 100) {
-            if (resultCode == RESULT_OK) {
-                if (data != null && data.getExtras() != null && data.getExtras().getSerializable(Constans.PASS_OBJECT) != null) {
-                    cityInfo = (CityInfo) data.getExtras().getSerializable(Constans.PASS_OBJECT);
-                    if (!TextUtils.isEmpty(cityInfo.region_name)) {
-                        tvSelectRegion.setText(cityInfo.region_name);
-                        doCheckId();
-                    }
-                }
-                super.onActivityResult(requestCode, resultCode, data);
-            }
-        }
-    }
+
 }

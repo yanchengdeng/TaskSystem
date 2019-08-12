@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.task.system">
     <!-- 这个权限用于进行网络定位 -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> <!-- 这个权限用于访问GPS定位 -->
@@ -11,9 +12,16 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> <!-- 访问网络，网络定位需要上网 -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-    <uses-permission android:name="android.permission.READ_LOGS" /> <!-- SD卡读取权限，用户写入离线定位数据 -->
-    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+    <uses-permission
+        android:name="android.permission.READ_LOGS"
+        tools:ignore="ProtectedPermissions" /> <!-- SD卡读取权限，用户写入离线定位数据 -->
+    <uses-permission
+        android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"
+        tools:ignore="ProtectedPermissions" />
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+    <uses-permission
+        android:name="android.permission.WRITE_SETTINGS"
+        tools:ignore="ProtectedPermissions" />
 
     <application
         android:name=".FixApplication"
@@ -25,7 +33,12 @@
         android:roundIcon="@mipmap/logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.NewUserTaskActivity"></activity>
+        <activity android:name=".activity.MyAreaManageActivity"></activity>
+        <activity android:name=".activity.IntegralLotteryActivity" />
+        <activity android:name=".activity.MyInviteActivity" />
+        <activity android:name=".activity.BindWxHaveAccountActivity" />
+        <activity android:name=".activity.BindWxActivity" />
+        <activity android:name=".activity.NewUserTaskActivity" />
         <activity android:name=".activity.SignActivity" />
         <activity android:name=".activity.MyTeamActivity" /> <!-- Apache HTTP 客户端，以 Android 9 及更高版本为目标的应用可以 -->
         <uses-library
@@ -217,7 +230,7 @@
 
         <receiver
             android:name=".recieves.AppRegister"
-            android:permission="com.tencent.mm.plugin.permission.SEND" >
+            android:permission="com.tencent.mm.plugin.permission.SEND">
             <intent-filter>
                 <action android:name="com.tencent.mm.plugin.openapi.Intent.ACTION_REFRESH_WXAPP" />
             </intent-filter>

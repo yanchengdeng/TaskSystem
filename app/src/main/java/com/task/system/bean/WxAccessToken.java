@@ -13,7 +13,7 @@ import java.io.Serializable;
 public class WxAccessToken implements Serializable {
 
     public String access_token;//ACCESS_TOKEN,
-    public String expires_in;//7200,
+    public int expires_in;//7200,
     public String refresh_token;//REFRESH_TOKEN,
     public String openid;//OPENID,
     public String scope;//SCOPE,

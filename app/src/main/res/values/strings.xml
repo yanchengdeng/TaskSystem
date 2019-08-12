@@ -64,4 +64,7 @@
     <string name="errcode_unknown">发送返回</string>
     <string name="index">%1$01d/%2$01d</string>
     <string name="add_new_memner">新增会员</string>
+    <string name="bind_phone">绑定手机号</string>
+    <string name="register_new"><![CDATA[注册&绑定]]></string>
+    <string name="input_your_username">请输入您的用户名</string>
 </resources>

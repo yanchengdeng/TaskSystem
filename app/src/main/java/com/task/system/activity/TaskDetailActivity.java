@@ -420,6 +420,11 @@ public class TaskDetailActivity extends BaseSimpleActivity {
                 @Override
                 protected void onNoDoubleClick(View v) {
                     shareDialog.dismiss();
+
+                    if (!checkWeiXin()){
+                        SysUtils.showToast("请安装微信");
+                        return;
+                    }
                     shareWx(1);
                 }
             });
@@ -428,6 +433,11 @@ public class TaskDetailActivity extends BaseSimpleActivity {
                 @Override
                 protected void onNoDoubleClick(View v) {
                     shareDialog.dismiss();
+
+                    if (!checkWeiXin()){
+                        SysUtils.showToast("请安装微信");
+                        return;
+                    }
                     shareWx(0);
 
                 }
