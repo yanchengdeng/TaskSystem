@@ -33,7 +33,10 @@
         android:roundIcon="@mipmap/logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.MyAreaManageActivity"></activity>
+        <activity android:name=".activity.AddressDetailActivity"></activity>
+        <activity android:name=".activity.MyAddressActivity" />
+        <activity android:name=".activity.AddIdCardActivity" />
+        <activity android:name=".activity.MyAreaManageActivity" />
         <activity android:name=".activity.IntegralLotteryActivity" />
         <activity android:name=".activity.MyInviteActivity" />
         <activity android:name=".activity.BindWxHaveAccountActivity" />

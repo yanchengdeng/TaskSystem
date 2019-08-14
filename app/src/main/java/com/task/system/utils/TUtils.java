@@ -2,6 +2,7 @@ package com.task.system.utils;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -30,6 +31,7 @@ import com.task.system.views.photoview.preview.ImagePreviewActivity;
 import com.yc.lib.api.ApiConfig;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.InputStreamReader;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -473,4 +475,11 @@ public class TUtils {
         }
         return "";
     }
+
+    public static byte[] getBytesByBitmap(Bitmap bitmap) {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream(bitmap.getByteCount());
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
+        return outputStream.toByteArray();
+    }
+
 }

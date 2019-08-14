@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.AddressDetailActivity">
+
+
+
+    <TextView
+        android:id="@+id/tv_post_name_tips"
+        android:layout_margin="@dimen/activity_horizontal_margin"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:text="       收件人："
+        android:textSize="@dimen/text_size_normal"
+        app:layout_constraintBaseline_toBaselineOf="@+id/et_post_name"
+        android:textColor="@color/color_tittle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+
+
+    <EditText
+        android:id="@+id/et_post_name"
+        android:layout_margin="@dimen/activity_horizontal_margin"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/tv_post_name_tips"
+        android:hint="收件人姓名"
+        android:singleLine="true"
+        android:maxLength="10"
+        android:textSize="@dimen/text_size_normal"
+        android:textColor="@color/color_info"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content" />
+
+
+
+
+    <TextView
+        android:id="@+id/tv_post_phone_tips"
+        android:layout_margin="@dimen/activity_horizontal_margin"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_post_name_tips"
+        android:text="收件人电话："
+        android:textSize="@dimen/text_size_normal"
+        app:layout_constraintBaseline_toBaselineOf="@+id/et_post_phone"
+        android:textColor="@color/color_tittle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+
+
+    <EditText
+        android:id="@+id/et_post_phone"
+        android:layout_margin="@dimen/activity_horizontal_margin"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/tv_post_phone_tips"
+        app:layout_constraintTop_toBottomOf="@+id/et_post_name"
+        android:hint="联系电话"
+        android:inputType="number"
+        android:maxLength="11"
+        android:textSize="@dimen/text_size_normal"
+        android:textColor="@color/color_info"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content" />
+
+
+    <TextView
+        android:id="@+id/tv_post_address_tips"
+        android:layout_margin="@dimen/activity_horizontal_margin"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_post_phone_tips"
+        android:text="收件人地址："
+        android:textSize="@dimen/text_size_normal"
+        android:textColor="@color/color_tittle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+
+
+    <EditText
+        android:id="@+id/et_post_address"
+        android:layout_margin="@dimen/activity_horizontal_margin"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_post_address_tips"
+        android:hint="收件人地址"
+        android:gravity="top|left"
+        android:padding="@dimen/image_padding_big"
+        android:minHeight="100dp"
+        android:background="@drawable/normal_submit_add_card"
+        android:lineSpacingMultiplier="1.2"
+        android:textSize="@dimen/text_size_normal"
+        android:textColor="@color/color_info"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/tv_submit"
+        app:layout_constraintTop_toBottomOf="@+id/et_post_address"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/nav_bar_height"
+        android:background="@drawable/normal_submit_btn_red"
+        android:gravity="center"
+        android:padding="@dimen/activity_horizontal_margin"
+        android:text="提交"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:textSize="@dimen/sp_14" />
+
+
+
+
+
+
+
+
+</android.support.constraint.ConstraintLayout>

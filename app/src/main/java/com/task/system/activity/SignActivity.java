@@ -155,21 +155,37 @@ public class SignActivity extends BaseActivity {
     private void fillSignStasus(List<SignInfo> data) {
         for (SignInfo item : data) {
             if (item.week_n.equals("1")) {
-                ivSignOne.setImageResource(R.mipmap.checkbox_checked);
+                ivSignOne.setImageResource(getSignIcon(item.is_sign));
+                ivSignOne.setVisibility(item.is_sign==0?View.GONE:View.VISIBLE);
             } else if (item.week_n.equals("2")) {
-                ivSignTwo.setImageResource(R.mipmap.checkbox_checked);
+                ivSignTwo.setImageResource(getSignIcon(item.is_sign));
+                ivSignTwo.setVisibility(item.is_sign==0?View.GONE:View.VISIBLE);
             } else if (item.week_n.equals("3")) {
-                ivSignThree.setImageResource(R.mipmap.checkbox_checked);
+                ivSignThree.setImageResource(getSignIcon(item.is_sign));
+                ivSignThree.setVisibility(item.is_sign==0?View.GONE:View.VISIBLE);
             } else if (item.week_n.equals("4")) {
-                ivSignFour.setImageResource(R.mipmap.checkbox_checked);
+                ivSignFour.setImageResource(getSignIcon(item.is_sign));
+                ivSignFour.setVisibility(item.is_sign==0?View.GONE:View.VISIBLE);
             } else if (item.week_n.equals("5")) {
-                ivSignFive.setImageResource(R.mipmap.checkbox_checked);
+                ivSignFive.setImageResource(getSignIcon(item.is_sign));
+                ivSignFive.setVisibility(item.is_sign==0?View.GONE:View.VISIBLE);
             } else if (item.week_n.equals("6")) {
-                ivSignSix.setImageResource(R.mipmap.checkbox_checked);
-            } else if (item.week_n.equals("0")) {
-                ivSignSeven.setImageResource(R.mipmap.checkbox_checked);
+                ivSignSix.setImageResource(getSignIcon(item.is_sign));
+                ivSignSix.setVisibility(item.is_sign==0?View.GONE:View.VISIBLE);
+            } else if (item.week_n.equals("7")) {
+                ivSignSeven.setImageResource(getSignIcon(item.is_sign));
+                ivSignSeven.setVisibility(item.is_sign==0?View.GONE:View.VISIBLE);
             }
         }
+    }
+
+    private int getSignIcon(int is_sign) {
+        if (is_sign == 0) {
+            return R.mipmap.checkbox_normal;
+        } else if (is_sign == 2) {
+            return R.mipmap.checkbox_checked;
+        }
+        return R.mipmap.checkbox_normal;
     }
 
     @OnClick({R.id.tv_rule, R.id.tv_go_sign, R.id.do_share, R.id.do_award})

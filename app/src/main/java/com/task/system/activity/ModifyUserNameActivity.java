@@ -41,6 +41,7 @@ public class ModifyUserNameActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_modify_user_name);
         ButterKnife.bind(this);
+        setTitle("修改用户名");
 
         etUsername.addTextChangedListener(new TextWatcher() {
             @Override

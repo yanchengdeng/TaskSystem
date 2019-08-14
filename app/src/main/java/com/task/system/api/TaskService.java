@@ -475,4 +475,41 @@ public interface TaskService {
     @POST("wheel/getList")
     Call<TaskInfoList> getWheelList(@FieldMap HashMap<String,String> maps);
 
+    //上传身份证信息
+    @FormUrlEncoded
+    @POST("user/addIdCard")
+    Call<TaskInfo> addIdCards(@FieldMap HashMap<String,String> maps);
+
+    //单张图片上传
+
+    /**
+     * 图片类型：task=任务，order=订单，avatar=头像，certificate=证件
+     */
+    @FormUrlEncoded
+    @POST("user/uploadImage")
+    Call<TaskInfo>  uploadImage(@FieldMap HashMap<String,String> maps);
+
+
+    //获取地址
+    @FormUrlEncoded
+    @POST("user/getAddressList")
+    Call<TaskInfoList> getAddressList(@FieldMap HashMap<String,String> maps);
+
+    //修改地址
+    @FormUrlEncoded
+    @POST("user/setAddress")
+    Call<TaskInfo> setAddress(@FieldMap HashMap<String,String> maps);
+
+    //新增地址
+    @FormUrlEncoded
+    @POST("user/addAddress")
+    Call<TaskInfo> addAddress(@FieldMap HashMap<String,String> maps);
+
+
+    //删除地址
+    @FormUrlEncoded
+    @POST("user/delAddress")
+    Call<TaskInfo> delAddress(@FieldMap HashMap<String,String> maps);
+
+
 }

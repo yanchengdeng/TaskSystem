@@ -155,12 +155,92 @@
     </RelativeLayout>
 
 
+
+    <RelativeLayout
+        android:id="@+id/rl_id_card"
+        android:layout_marginTop="@dimen/activity_horizontal_margin"
+        android:layout_width="match_parent"
+        android:background="@color/white"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:padding="@dimen/activity_horizontal_margin"
+            android:text="身份证验证"
+            android:textColor="@color/color_info"
+            android:textSize="@dimen/sp_14" />
+
+
+        <TextView
+            android:id="@+id/tv_idcard_vertify_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:drawableRight="@mipmap/arrow_right_black"
+            android:drawablePadding="@dimen/image_padding_big"
+            android:padding="@dimen/activity_horizontal_margin"
+            android:text="已验证"
+            android:textColor="@color/color_date"
+            android:textSize="@dimen/sp_14" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_wx"
+        android:layout_marginTop="1dp"
+        android:layout_width="match_parent"
+        android:background="@color/white"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:padding="@dimen/activity_horizontal_margin"
+            android:text="微信绑定"
+            android:textColor="@color/color_info"
+            android:textSize="@dimen/sp_14" />
+
+
+        <TextView
+            android:id="@+id/tv_wx_bind_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:drawableRight="@mipmap/arrow_right_black"
+            android:drawablePadding="@dimen/image_padding_big"
+            android:padding="@dimen/activity_horizontal_margin"
+            android:text="已绑定"
+            android:textColor="@color/color_date"
+            android:textSize="@dimen/sp_14" />
+
+    </RelativeLayout>
+
+
+
+    <TextView
+        android:id="@+id/tv_mange_address_ui"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginTop="@dimen/activity_horizontal_margin"
+        android:background="@color/white"
+        android:drawableRight="@mipmap/arrow_right_black"
+        android:drawablePadding="@dimen/image_padding_big"
+        android:padding="@dimen/activity_horizontal_margin"
+        android:text="我的收货地址"
+        android:textColor="@color/color_info"
+        android:textSize="@dimen/sp_14" />
+
+
     <TextView
         android:id="@+id/tv_modify_password_ui"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_marginTop="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="1dp"
         android:background="@color/white"
         android:drawableRight="@mipmap/arrow_right_black"
         android:drawablePadding="@dimen/image_padding_big"

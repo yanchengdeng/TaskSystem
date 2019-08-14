@@ -11,4 +11,6 @@ public class SimpleBeanInfo implements Serializable {
     public String  thumbnail;//: "http://task.fzgfxz.com/Uploads/2019/03/5c9dfcc19986d.jpg",
     public String title;//: "ddd",
     public String sub_title;//:
+
+
 }

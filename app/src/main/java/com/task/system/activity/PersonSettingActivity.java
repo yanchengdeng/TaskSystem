@@ -84,7 +84,17 @@ public class PersonSettingActivity extends BaseActivity {
     TextView tvPhone;
     @BindView(R.id.tv_uid)
     TextView tvUid;
-    private boolean  isUplaodImage;
+    @BindView(R.id.tv_idcard_vertify_status)
+    TextView tvIdcardVertifyStatus;
+    @BindView(R.id.rl_id_card)
+    RelativeLayout rlIdCard;
+    @BindView(R.id.tv_wx_bind_status)
+    TextView tvWxBindStatus;
+    @BindView(R.id.rl_wx)
+    RelativeLayout rlWx;
+    @BindView(R.id.tv_mange_address_ui)
+    TextView tvMangeAddressUi;
+    private boolean isUplaodImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -133,7 +143,7 @@ public class PersonSettingActivity extends BaseActivity {
     }
 
 
-    @OnClick({R.id.rl_header_ui, R.id.rl_name_ui, R.id.rl_phone_ui, R.id.rl_sysyte_id_ui, R.id.tv_modify_password_ui, R.id.tv_login_out})
+    @OnClick({R.id.rl_header_ui, R.id.rl_name_ui, R.id.rl_phone_ui, R.id.rl_sysyte_id_ui, R.id.tv_modify_password_ui,R.id.rl_id_card,R.id.rl_wx,R.id.tv_mange_address_ui, R.id.tv_login_out})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.rl_header_ui:
@@ -272,13 +282,11 @@ public class PersonSettingActivity extends BaseActivity {
                     public void onSuccess(File lubanFile) {
 
 
-
                         Glide.with(ApiConfig.context)
                                 .load(lubanFile)     //设置图片路径(fix #8,文件名包含%符号 无法识别和显示)
                                 .transition(withCrossFade())
                                 .apply(new RequestOptions().circleCrop().error(R.mipmap.defalut_header))
                                 .into(ivHeader);
-
 
 
                         LogUtils.w("dyc---原始文件大小", lubanFile.length());
@@ -298,7 +306,6 @@ public class PersonSettingActivity extends BaseActivity {
                                 .into(ivHeader);
 
 
-
                         BitmapFactory.Options options = new BitmapFactory.Options();
                         options.inPreferredConfig = Bitmap.Config.RGB_565;
                         options.inDither = true;
@@ -309,8 +316,6 @@ public class PersonSettingActivity extends BaseActivity {
     }
 
     private void doUploadImage(String base64Encode) {
-
-
 
 
         HashMap<String, String> hashMap = new HashMap();
@@ -371,7 +376,7 @@ public class PersonSettingActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
         UserInfo userInfo = TUtils.getUserInfo();
-        if (!TextUtils.isEmpty(userInfo.username)){
+        if (!TextUtils.isEmpty(userInfo.username)) {
             tvUserName.setText(userInfo.username);
         }
         tvPhone.setText(TUtils.getHidePhone());
@@ -379,10 +384,10 @@ public class PersonSettingActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
-        if (isUplaodImage){
+        if (isUplaodImage) {
             setResult(RESULT_OK);
             finish();
-        }else {
+        } else {
             super.onBackPressed();
         }
     }
