@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
+import android.text.TextUtils;
 import android.webkit.JsResult;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
@@ -14,6 +15,17 @@ import android.webkit.WebViewClient;
 import com.blankj.utilcode.util.LogUtils;
 import com.task.system.Constans;
 import com.task.system.R;
+import com.task.system.api.API;
+import com.task.system.api.TaskInfo;
+import com.task.system.api.TaskService;
+import com.task.system.bean.SimpleBeanInfo;
+import com.task.system.utils.TUtils;
+import com.yc.lib.api.ApiCallBack;
+import com.yc.lib.api.ApiConfig;
+
+import java.util.HashMap;
+
+import retrofit2.Call;
 
 
 //打开网页
@@ -26,6 +38,8 @@ public class OpenWebViewActivity extends BaseActivity {
     public final static int FILECHOOSER_RESULTCODE = 1;
     public final static int FILECHOOSER_RESULTCODE_FOR_ANDROID_5 = 2;
 
+    private String webType;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,6 +47,7 @@ public class OpenWebViewActivity extends BaseActivity {
         webView = getView(R.id.webview);
         name = getIntent().getStringExtra(Constans.PASS_NAME);
         url = getIntent().getStringExtra(Constans.PASS_STRING);
+        webType = getIntent().getStringExtra(Constans.ARTICAL_TYPE);
         LogUtils.w("dyc",url);
         setTitle("" + name);
         initwebview();
@@ -84,17 +99,35 @@ public class OpenWebViewActivity extends BaseActivity {
         });
 
 
+        if (TextUtils.isEmpty(webType)) {
 
-        webView.loadUrl(url);
+            webView.loadUrl(url);
+        }else{
+            getWebType();
+        }
 
 
     }
 
+    private void getWebType() {
+        HashMap<String, String> hashMap = new HashMap();
+        hashMap.put("aid", webType);
+        Call<TaskInfo> call = ApiConfig.getInstants().create(TaskService.class).getArticalDetail(TUtils.getParams(hashMap));
+
+        API.getObject(call, SimpleBeanInfo.class, new ApiCallBack<SimpleBeanInfo>() {
+            @Override
+            public void onSuccess(int msgCode, String msg, SimpleBeanInfo data) {
+                setTitle(data.title);
+                webView.loadUrl(data.link_url);
+            }
+
+            @Override
+            public void onFaild(int msgCode, String msg) {
 
 
-
-
-
+            }
+        });
+    }
 
 
     public ValueCallback<Uri> mUploadMessage;

@@ -24,6 +24,5 @@ public class LotteryItem implements Serializable {
     public String thumbnail_url;// http;////joyce.task.com/Uploads/2019/03/5c9dfcc19986d.jpg,
     public String bg_image_url;// http;////joyce.task.com/Public/default.png
 
-    //TODO  待接口完善后 确定
-    public String url;//游戏地址
+    public String play_url;//游戏地址
 }

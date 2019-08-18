@@ -32,6 +32,7 @@ import com.task.system.activity.MyCollectedActivity;
 import com.task.system.activity.MyIncomeActivity;
 import com.task.system.activity.MyInviteCodeActivity;
 import com.task.system.activity.MyTeamActivity;
+import com.task.system.activity.OpenWebViewActivity;
 import com.task.system.activity.PersonSettingActivity;
 import com.task.system.api.API;
 import com.task.system.api.TaskInfo;
@@ -90,6 +91,8 @@ public class PercenterFragment extends Fragment {
     TextView tvAboutUs;
     @BindView(R.id.tv_my_area_manage)
     TextView tvMyAreaManage;
+    @BindView(R.id.tv_help_center)
+    TextView tvHelpCenter;
 
     @Nullable
     @Override
@@ -192,7 +195,7 @@ public class PercenterFragment extends Fragment {
         unbinder.unbind();
     }
 
-    @OnClick({R.id.ll_user_info_ui, R.id.rl_my_money, R.id.ll_allwork_title, R.id.tv_add_lead, R.id.tv_collect, R.id.tv_my_team, R.id.tv_my_accoutn, R.id.tv_invite_code,R.id.tv_about_us,R.id.tv_my_area_manage})
+    @OnClick({R.id.ll_user_info_ui, R.id.rl_my_money, R.id.ll_allwork_title, R.id.tv_add_lead, R.id.tv_collect, R.id.tv_my_team, R.id.tv_my_accoutn, R.id.tv_invite_code, R.id.tv_help_center,R.id.tv_about_us, R.id.tv_my_area_manage})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ll_user_info_ui:
@@ -223,6 +226,16 @@ public class PercenterFragment extends Fragment {
                 ActivityUtils.startActivity(MyInviteCodeActivity.class);
                 break;
             case R.id.tv_about_us:
+                Bundle about = new Bundle();
+                about.putString(Constans.PASS_NAME,"关于我们");
+                about.putString(Constans.ARTICAL_TYPE,"11");
+                ActivityUtils.startActivity(about, OpenWebViewActivity.class);
+                break;
+            case R.id.tv_help_center:
+                Bundle help = new Bundle();
+                help.putString(Constans.PASS_NAME,"帮助中心");
+                help.putString(Constans.ARTICAL_TYPE,"12");
+                ActivityUtils.startActivity(help, OpenWebViewActivity.class);
                 break;
             case R.id.tv_my_area_manage:
                 ActivityUtils.startActivity(MyAreaManageActivity.class);

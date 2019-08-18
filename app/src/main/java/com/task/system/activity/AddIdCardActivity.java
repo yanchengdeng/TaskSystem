@@ -22,11 +22,13 @@ import com.lzy.imagepicker.ImagePicker;
 import com.lzy.imagepicker.bean.ImageItem;
 import com.lzy.imagepicker.ui.ImageGridActivity;
 import com.lzy.imagepicker.view.CropImageView;
+import com.task.system.Constans;
 import com.task.system.R;
 import com.task.system.api.API;
 import com.task.system.api.TaskInfo;
 import com.task.system.api.TaskService;
 import com.task.system.bean.SimpleBeanInfo;
+import com.task.system.bean.UserExt;
 import com.task.system.common.GlideLoadFileLoader;
 import com.task.system.utils.TUtils;
 import com.yanzhenjie.permission.AndPermission;
@@ -97,6 +99,9 @@ public class AddIdCardActivity extends BaseActivity {
     public static final int REQUEST_CODE_SELECT = 105;
     public static final int REQUEST_CODE_PREVIEW = 106;
 
+
+    private UserExt.IdCardInfo userExt;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -104,8 +109,37 @@ public class AddIdCardActivity extends BaseActivity {
         ButterKnife.bind(this);
         setTitle("上传身份信息");
         initImagePicker();
+        if (getIntent() != null && getIntent().getSerializableExtra(Constans.PASS_OBJECT) != null) {
+            userExt = (UserExt.IdCardInfo) getIntent().getSerializableExtra(Constans.PASS_OBJECT);
+            if (userExt != null) {
+                setTitle("查看身份信息");
+                ivAdDownReal.setClickable(false);
+                ivAdUpReal.setClickable(false);
+                ivIdHoldReal.setClickable(false);
+                btnLogin.setVisibility(View.GONE);
+                etId.setText(userExt.idcard);
+                etName.setText(userExt.idcard_name);
 
 
+                Glide.with(ApiConfig.context)
+                        .load(userExt.idcard_front)     //设置图片路径(fix #8,文件名包含%符号 无法识别和显示)
+                        .transition(withCrossFade())
+                        .apply(new RequestOptions())
+                        .into(ivAdUpReal);
+
+                Glide.with(ApiConfig.context)
+                        .load(userExt.idcard_back)     //设置图片路径(fix #8,文件名包含%符号 无法识别和显示)
+                        .transition(withCrossFade())
+                        .apply(new RequestOptions())
+                        .into(ivAdDownReal);
+
+                Glide.with(ApiConfig.context)
+                        .load(userExt.idcard_hand)     //设置图片路径(fix #8,文件名包含%符号 无法识别和显示)
+                        .transition(withCrossFade())
+                        .apply(new RequestOptions())
+                        .into(ivIdHoldReal);
+            }
+        }
     }
 
     //图片选择
@@ -125,6 +159,9 @@ public class AddIdCardActivity extends BaseActivity {
 
     @OnClick({R.id.iv_id_up, R.id.iv_id_down, R.id.iv_id_hold, R.id.btn_login})
     public void onViewClicked(View view) {
+        if (userExt!=null){
+            return;
+        }
         switch (view.getId()) {
             case R.id.iv_id_up:
                 selectPicture(0);
@@ -161,11 +198,11 @@ public class AddIdCardActivity extends BaseActivity {
 
         HashMap<String, String> hashMap = new HashMap();
         hashMap.put("uid", TUtils.getUserId());
-        hashMap.put("idcard_front", carsdImages.get(0) );
-        hashMap.put("idcard_back", carsdImages.get(1) );
-        hashMap.put("idcard_hand", carsdImages.get(2) );
+        hashMap.put("idcard_front", carsdImages.get(0));
+        hashMap.put("idcard_back", carsdImages.get(1));
+        hashMap.put("idcard_hand", carsdImages.get(2));
         hashMap.put("idcard_name", etName.getEditableText().toString());
-        hashMap.put("idcard", etId.getEditableText().toString() );
+        hashMap.put("idcard", etId.getEditableText().toString());
         Call<TaskInfo> call = ApiConfig.getInstants().create(TaskService.class).addIdCards(TUtils.getParams(hashMap));
 
         API.getObject(call, SimpleBeanInfo.class, new ApiCallBack<SimpleBeanInfo>() {
@@ -184,7 +221,6 @@ public class AddIdCardActivity extends BaseActivity {
                 ToastUtils.showShort("" + msg);
             }
         });
-
 
 
     }
@@ -229,8 +265,6 @@ public class AddIdCardActivity extends BaseActivity {
                     @Override
                     public void onSuccess(File lubanFile) {
 
-                        initCards(lubanFile);
-
 
                         LogUtils.w("dyc---原始文件大小", lubanFile.length());
                         BitmapFactory.Options options = new BitmapFactory.Options();
@@ -242,7 +276,6 @@ public class AddIdCardActivity extends BaseActivity {
 
                     @Override
                     public void onError(Throwable e) {
-                        initCards(file);
                         BitmapFactory.Options options = new BitmapFactory.Options();
                         options.inPreferredConfig = Bitmap.Config.RGB_565;
                         options.inDither = true;
@@ -253,7 +286,7 @@ public class AddIdCardActivity extends BaseActivity {
     }
 
 
-    private void initCards(File lubanFile) {
+    private void initCards(String lubanFile) {
         if (selectedPicsPosition == 0) {
             //身份证上
             Glide.with(ApiConfig.context)
@@ -287,21 +320,26 @@ public class AddIdCardActivity extends BaseActivity {
         HashMap<String, String> hashMap = new HashMap();
         hashMap.put("uid", TUtils.getUserId());
         hashMap.put("image", "data:image/png;base64," + base64Encode);
-        hashMap.put("image_type","certificate");
+        hashMap.put("image_type", "certificate");
         Call<TaskInfo> call = ApiConfig.getInstants().create(TaskService.class).uploadImage(TUtils.getParams(hashMap));
 
         API.getObject(call, SimpleBeanInfo.class, new ApiCallBack<SimpleBeanInfo>() {
             @Override
             public void onSuccess(int msgCode, String msg, SimpleBeanInfo data) {
-                ToastUtils.showShort("" + msg);
                 dismissLoadingBar();
-                carsdImages.put(selectedPicsPosition, data.url);
-
+                if (!TextUtils.isEmpty(data.path) && !TextUtils.isEmpty(data.url)) {
+                    ToastUtils.showShort("" + msg);
+                    carsdImages.put(selectedPicsPosition, data.path);
+                    initCards(data.url);
+                } else {
+                    ToastUtils.showShort("请重新上传");
+                }
             }
 
             @Override
             public void onFaild(int msgCode, String msg) {
                 dismissLoadingBar();
+                ToastUtils.showShort("" + msg);
             }
         });
 

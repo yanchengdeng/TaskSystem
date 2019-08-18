@@ -460,6 +460,11 @@ public interface TaskService {
     Call<TaskInfo> loginByThird(@FieldMap HashMap<String,String> maps);
 
 
+    //账号绑定微信
+    @FormUrlEncoded
+    @POST("user/bind")
+    Call<TaskInfo> AccountbindWx(@FieldMap HashMap<String,String> maps);
+
     //绑定账号
     @FormUrlEncoded
     @POST("public/bindByLogin")
@@ -511,5 +516,49 @@ public interface TaskService {
     @POST("user/delAddress")
     Call<TaskInfo> delAddress(@FieldMap HashMap<String,String> maps);
 
+
+    //用户身份 微信绑定数据
+    @GET("user/detailext")
+    Call<TaskInfo> getUserDetailExt(@QueryMap HashMap<String,String > maps);
+
+
+    /**
+     * aid
+     * 6-联系客服
+     * 7-隐私声明
+     * 8-社会公约
+     * 9-服务条款
+     * 10-用户注册协议
+     * 11-关于我们
+     * 12-帮助中心
+     */
+    //文章
+    @FormUrlEncoded
+    @POST("public/articleDetail")
+    Call<TaskInfo> getArticalDetail(@FieldMap HashMap<String,String > maps);
+
+
+    /**
+     * 人气排行
+     */
+    @FormUrlEncoded
+    @POST("task/getPopularityTaskList")
+    Call<TaskInfoList> getPopulatityTaskLst(@FieldMap HashMap<String,String> maps);
+
+
+    /**
+     * 订单 标签
+     */
+    @FormUrlEncoded
+    @POST("order/getStatus")
+    Call<TaskInfoList> getOrderStatus(@FieldMap HashMap<String,String> maps);
+
+
+    /**
+     * 争议 标签
+     */
+    @FormUrlEncoded
+    @POST("order/disputeStatus")
+    Call<TaskInfoList> getDisputeStatus(@FieldMap HashMap<String,String> maps);
 
 }

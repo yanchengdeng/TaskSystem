@@ -31,4 +31,6 @@ public class Constans {
 
     public  static boolean  IS_DEBUG = true;
     public static String PASS_NAME = "pass_name";
+    //网页类型
+    public static String ARTICAL_TYPE = "artical_type";
 }

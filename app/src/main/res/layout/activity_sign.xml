@@ -156,7 +156,7 @@
             <ImageView
                 android:id="@+id/iv_sign_one"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="@color/char_bg"
                 android:paddingTop="@dimen/padding_larger"
@@ -166,7 +166,7 @@
             <ImageView
                 android:id="@+id/iv_sign_two"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_marginLeft="1dp"
                 android:layout_marginRight="1dp"
                 android:layout_weight="1"
@@ -178,7 +178,7 @@
             <ImageView
                 android:id="@+id/iv_sign_three"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="@color/char_bg"
                 android:paddingTop="@dimen/padding_larger"
@@ -188,7 +188,7 @@
             <ImageView
                 android:id="@+id/iv_sign_four"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_marginLeft="1dp"
                 android:layout_marginRight="1dp"
                 android:layout_weight="1"
@@ -200,7 +200,7 @@
             <ImageView
                 android:id="@+id/iv_sign_five"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="@color/char_bg"
                 android:paddingTop="@dimen/padding_larger"
@@ -210,19 +210,19 @@
             <ImageView
                 android:id="@+id/iv_sign_six"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_marginLeft="1dp"
                 android:layout_marginRight="1dp"
                 android:layout_weight="1"
                 android:background="@color/char_bg"
                 android:paddingTop="@dimen/padding_larger"
                 android:paddingBottom="@dimen/padding_larger"
-                android:src="@mipmap/checkbox_normal" />
+                android:src="@android:color/transparent" />
 
             <ImageView
                 android:id="@+id/iv_sign_seven"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="@color/char_bg"
                 android:paddingTop="@dimen/padding_larger"

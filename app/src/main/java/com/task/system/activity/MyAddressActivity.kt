@@ -2,6 +2,7 @@ package com.task.system.activity
 
 import android.app.Activity
 import android.os.Bundle
+import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import com.blankj.utilcode.util.ActivityUtils
@@ -33,6 +34,7 @@ class MyAddressActivity : BaseActivity() {
 
 
         recyclerView = findViewById(R.id.recycle)
+        recyclerView?.layoutManager = LinearLayoutManager(this)
         adapter = AddressAdapter(R.layout.adapter_address, mutableListOf())
         recyclerView?.adapter = adapter
 

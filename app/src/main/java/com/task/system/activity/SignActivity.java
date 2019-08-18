@@ -1,6 +1,8 @@
 package com.task.system.activity;
 
 import android.os.Bundle;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
@@ -9,18 +11,22 @@ import android.widget.TextView;
 
 import com.blankj.utilcode.util.ActivityUtils;
 import com.task.system.R;
+import com.task.system.adapters.PopulorAdapter;
 import com.task.system.api.API;
 import com.task.system.api.TaskInfo;
 import com.task.system.api.TaskInfoIgnoreBody;
+import com.task.system.api.TaskInfoList;
 import com.task.system.api.TaskService;
 import com.task.system.bean.SignInfo;
 import com.task.system.bean.SignTotal;
 import com.task.system.bean.SimpleBeanInfo;
 import com.task.system.utils.TUtils;
 import com.yc.lib.api.ApiCallBack;
+import com.yc.lib.api.ApiCallBackList;
 import com.yc.lib.api.ApiConfig;
 import com.yc.lib.api.utils.SysUtils;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -28,6 +34,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import retrofit2.Call;
+
+import static android.support.v7.widget.DividerItemDecoration.VERTICAL;
 
 /**
  * Email: dengyc@dadaodata.com
@@ -72,6 +80,8 @@ public class SignActivity extends BaseActivity {
     @BindView(R.id.recycle)
     RecyclerView recycle;
 
+    private PopulorAdapter populorAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,9 +89,16 @@ public class SignActivity extends BaseActivity {
         ButterKnife.bind(this);
         setTitle("每日领红包");
 
+        populorAdapter = new PopulorAdapter(R.layout.adapter_populor_item, new ArrayList<>());
+        recycle.addItemDecoration(new DividerItemDecoration(this, VERTICAL));
+        recycle.setLayoutManager(new LinearLayoutManager(this));
+        recycle.setAdapter(populorAdapter);
+
 
         getUserSign();
         getSignList();
+
+        getPopularList();
 
     }
 
@@ -108,6 +125,7 @@ public class SignActivity extends BaseActivity {
         });
     }
 
+
     /***
      * 去签到
      */
@@ -126,6 +144,26 @@ public class SignActivity extends BaseActivity {
             @Override
             public void onFaild(int msgCode, String msg) {
 //                tvGoSign.setText(msg);
+            }
+        });
+    }
+
+
+    /**
+     * 人气排行
+     */
+    private void getPopularList() {
+        Call<TaskInfoList> call = ApiConfig.getInstants().create(TaskService.class).getPopulatityTaskLst(TUtils.getParams());
+        API.getList(call, SimpleBeanInfo.class, new ApiCallBackList<SimpleBeanInfo>() {
+            @Override
+            public void onSuccess(int msgCode, String msg, List<SimpleBeanInfo> data) {
+                TUtils.dealReqestData(populorAdapter, recycle, data);
+
+            }
+
+            @Override
+            public void onFaild(int msgCode, String msg) {
+                TUtils.dealNoReqestData(populorAdapter, recycle);
             }
         });
     }
@@ -154,39 +192,69 @@ public class SignActivity extends BaseActivity {
 
     private void fillSignStasus(List<SignInfo> data) {
         for (SignInfo item : data) {
-            if (item.week_n.equals("1")) {
+            if (item.week_n==0) {
                 ivSignOne.setImageResource(getSignIcon(item.is_sign));
-                ivSignOne.setVisibility(item.is_sign==0?View.GONE:View.VISIBLE);
-            } else if (item.week_n.equals("2")) {
+//                ivSignOne.setVisibility(item.is_sign==0?View.INVISIBLE:View.VISIBLE);
+            } else if (item.week_n==1) {
                 ivSignTwo.setImageResource(getSignIcon(item.is_sign));
-                ivSignTwo.setVisibility(item.is_sign==0?View.GONE:View.VISIBLE);
-            } else if (item.week_n.equals("3")) {
+//                ivSignTwo.setVisibility(item.is_sign==0?View.INVISIBLE:View.VISIBLE);
+            } else if (item.week_n==2) {
                 ivSignThree.setImageResource(getSignIcon(item.is_sign));
-                ivSignThree.setVisibility(item.is_sign==0?View.GONE:View.VISIBLE);
-            } else if (item.week_n.equals("4")) {
+//                ivSignThree.setVisibility(item.is_sign==0?View.INVISIBLE:View.VISIBLE);
+            } else if (item.week_n==3) {
                 ivSignFour.setImageResource(getSignIcon(item.is_sign));
-                ivSignFour.setVisibility(item.is_sign==0?View.GONE:View.VISIBLE);
-            } else if (item.week_n.equals("5")) {
+//                ivSignFour.setVisibility(item.is_sign==0?View.INVISIBLE:View.VISIBLE);
+            } else if (item.week_n==4) {
                 ivSignFive.setImageResource(getSignIcon(item.is_sign));
-                ivSignFive.setVisibility(item.is_sign==0?View.GONE:View.VISIBLE);
-            } else if (item.week_n.equals("6")) {
+//                ivSignFive.setVisibility(item.is_sign==0?View.INVISIBLE:View.VISIBLE);
+            } else if (item.week_n==5) {
                 ivSignSix.setImageResource(getSignIcon(item.is_sign));
-                ivSignSix.setVisibility(item.is_sign==0?View.GONE:View.VISIBLE);
-            } else if (item.week_n.equals("7")) {
+//                ivSignSix.setVisibility(item.is_sign==0?View.INVISIBLE:View.VISIBLE);
+            } else if (item.week_n==6) {
                 ivSignSeven.setImageResource(getSignIcon(item.is_sign));
-                ivSignSeven.setVisibility(item.is_sign==0?View.GONE:View.VISIBLE);
+//                ivSignSeven.setVisibility(item.is_sign==0?View.INVISIBLE:View.VISIBLE);
             }
         }
     }
 
-    private int getSignIcon(int is_sign) {
-        if (is_sign == 0) {
-            return R.mipmap.checkbox_normal;
-        } else if (is_sign == 2) {
-            return R.mipmap.checkbox_checked;
+
+   /* private void fillSignStasus(List<SignInfo> data) {
+        for (SignInfo item : data) {
+            if (item.week_n.equals("1")) {
+                ivSignOne.setImageResource(getSignIcon(item.is_sign));
+                ivSignOne.setVisibility(item.is_sign==0?View.INVISIBLE:View.VISIBLE);
+            } else if (item.week_n.equals("2")) {
+                ivSignTwo.setImageResource(getSignIcon(item.is_sign));
+                ivSignTwo.setVisibility(item.is_sign==0?View.INVISIBLE:View.VISIBLE);
+            } else if (item.week_n.equals("3")) {
+                ivSignThree.setImageResource(getSignIcon(item.is_sign));
+                ivSignThree.setVisibility(item.is_sign==0?View.INVISIBLE:View.VISIBLE);
+            } else if (item.week_n.equals("4")) {
+                ivSignFour.setImageResource(getSignIcon(item.is_sign));
+                ivSignFour.setVisibility(item.is_sign==0?View.INVISIBLE:View.VISIBLE);
+            } else if (item.week_n.equals("5")) {
+                ivSignFive.setImageResource(getSignIcon(item.is_sign));
+                ivSignFive.setVisibility(item.is_sign==0?View.INVISIBLE:View.VISIBLE);
+            } else if (item.week_n.equals("6")) {
+                ivSignSix.setImageResource(getSignIcon(item.is_sign));
+                ivSignSix.setVisibility(item.is_sign==0?View.INVISIBLE:View.VISIBLE);
+            } else if (item.week_n.equals("7")) {
+                ivSignSeven.setImageResource(getSignIcon(item.is_sign));
+                ivSignSeven.setVisibility(item.is_sign==0?View.INVISIBLE:View.VISIBLE);
+            }
         }
-        return R.mipmap.checkbox_normal;
     }
+*/
+    private int getSignIcon(Double is_sign) {
+        if (is_sign == 2) {
+            return R.mipmap.checkbox_checked;
+        } else if (is_sign == 0) {
+            return R.mipmap.checkbox_normal;
+        }
+        return android.R.color.transparent;
+    }
+
+
 
     @OnClick({R.id.tv_rule, R.id.tv_go_sign, R.id.do_share, R.id.do_award})
     public void onViewClicked(View view) {

@@ -63,7 +63,7 @@ public class IntegralLotteryActivity extends BaseActivity {
         homeAdapter.setOnItemClickListener((adapter, view, position) -> {
             Bundle bundle = new Bundle();
             bundle.putString(Constans.PASS_NAME,homeAdapter.getData().get(position).title);
-            bundle.putString(Constans.PASS_STRING, "");
+            bundle.putString(Constans.PASS_STRING, homeAdapter.getData().get(position).play_url);
             ActivityUtils.startActivity(bundle, OpenWebViewActivity.class);
         });
 

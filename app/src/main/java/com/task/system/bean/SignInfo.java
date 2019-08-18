@@ -14,7 +14,7 @@ public class SignInfo implements Serializable {
     public int id;// 1,
     public String uid;// 100000623,
     public String create_time;// 2019-07-03 15:01:53,
-    public String week_n ="1";// 3//1  星期一  。。。7 星期日
-    public  int is_sign ;// 0  未签   1漏签  2 已签
+    public Double week_n  ;// 3//1  星期一  。。。7 星期日
+    public  Double is_sign ;// 0  未签   1漏签  2 已签
 
 }

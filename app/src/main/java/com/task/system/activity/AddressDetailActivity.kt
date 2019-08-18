@@ -30,17 +30,20 @@ class AddressDetailActivity : BaseActivity() {
         setContentView(R.layout.activity_address_detail)
         title = "收货信息"
 
+        editName = findViewById(R.id.et_post_name)
+        etPhone = findViewById(R.id.et_post_phone)
+        etAddess = findViewById(R.id.et_post_address)
+
         if (intent != null && intent.getSerializableExtra(Constans.PASS_OBJECT) != null) {
             addressInfo = intent.getSerializableExtra(Constans.PASS_OBJECT) as AddressInfo?
             tvRightFunction.visibility = View.VISIBLE
             tvRightFunction.text = "删除"
+
+
+            editName?.setText(addressInfo?.contact_name)
+            etPhone?.setText(addressInfo?.contact_mobile)
+            etAddess?.setText(addressInfo?.address)
         }
-
-
-
-        editName = findViewById(R.id.et_post_name)
-        etPhone = findViewById(R.id.et_post_phone)
-        etAddess = findViewById(R.id.et_post_address)
 
 
         findViewById<TextView>(R.id.tv_submit).setOnClickListener {
@@ -137,7 +140,7 @@ class AddressDetailActivity : BaseActivity() {
 
         var maps = HashMap<String, String>()
         maps.put("id", addressInfo?.id.toString())
-        val call = ApiConfig.getInstants().create(TaskService::class.java).setAddress(
+        val call = ApiConfig.getInstants().create(TaskService::class.java).delAddress(
             TUtils.getParams(maps)
         )
         API.getObject(call, SimpleBeanInfo::class.java, object : ApiCallBack<SimpleBeanInfo> {

@@ -16,24 +16,39 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.blankj.utilcode.util.ActivityUtils;
 import com.blankj.utilcode.util.EncodeUtils;
 import com.blankj.utilcode.util.LogUtils;
+import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.gson.Gson;
 import com.lzy.imagepicker.ImagePicker;
 import com.lzy.imagepicker.bean.ImageItem;
 import com.lzy.imagepicker.ui.ImageGridActivity;
 import com.lzy.imagepicker.view.CropImageView;
+import com.task.system.Constans;
 import com.task.system.R;
 import com.task.system.api.API;
+import com.task.system.api.TaskInfo;
 import com.task.system.api.TaskInfoList;
 import com.task.system.api.TaskService;
+import com.task.system.bean.UserExt;
 import com.task.system.bean.UserInfo;
+import com.task.system.bean.WxAccessToken;
 import com.task.system.common.GlideLoadFileLoader;
 import com.task.system.utils.TUtils;
+import com.tencent.mm.opensdk.modelmsg.SendAuth;
+import com.tencent.mm.opensdk.openapi.IWXAPI;
+import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.yanzhenjie.permission.AndPermission;
 import com.yanzhenjie.permission.runtime.Permission;
+import com.yc.lib.api.ApiCallBack;
 import com.yc.lib.api.ApiCallBackList;
 import com.yc.lib.api.ApiConfig;
+import com.yc.lib.api.utils.SysUtils;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -45,6 +60,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import top.zibin.luban.CompressionPredicate;
 import top.zibin.luban.Luban;
 import top.zibin.luban.OnCompressListener;
@@ -96,16 +113,58 @@ public class PersonSettingActivity extends BaseActivity {
     TextView tvMangeAddressUi;
     private boolean isUplaodImage;
 
+    private static final int ADD_CARD_REQUEST = 105;
+
+    private UserExt userExt;
+
+    private IWXAPI api;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_person_setting);
         ButterKnife.bind(this);
+        EventBus.getDefault().register(this);
+        // acquire wxapi
+        api = WXAPIFactory.createWXAPI(this, Constans.WX_SHARE_APP_ID, false);
         setTitle("个人设置");
         initImagePicker();
         UserInfo userInfo = TUtils.getUserInfo();
         initData(userInfo);
+        getDetailExt();
 
+    }
+
+    //身份 绑定信息
+    private void getDetailExt() {
+        HashMap<String, String> hashMap = new HashMap();
+        hashMap.put("uid", TUtils.getUserId());
+        Call<TaskInfo> call = ApiConfig.getInstants().create(TaskService.class).getUserDetailExt(TUtils.getParams(hashMap));
+
+        API.getObject(call, UserExt.class, new ApiCallBack<UserExt>() {
+            @Override
+            public void onSuccess(int msgCode, String msg, UserExt data) {
+
+                if (data != null) {
+                    userExt = data;
+                    if (!TextUtils.isEmpty(data.idcard_bind) && data.idcard_bind.equals("1")) {
+                        tvIdcardVertifyStatus.setText("已验证");
+                    } else {
+                        tvIdcardVertifyStatus.setText("未验证");
+                    }
+
+                    if (!TextUtils.isEmpty(data.wx_bind) && data.wx_bind.equals("1")) {
+                        tvWxBindStatus.setText("已绑定");
+                    } else {
+                        tvWxBindStatus.setText("未绑定");
+                    }
+                }
+            }
+
+            @Override
+            public void onFaild(int msgCode, String msg) {
+            }
+        });
     }
 
     private void initData(UserInfo userInfo) {
@@ -143,7 +202,7 @@ public class PersonSettingActivity extends BaseActivity {
     }
 
 
-    @OnClick({R.id.rl_header_ui, R.id.rl_name_ui, R.id.rl_phone_ui, R.id.rl_sysyte_id_ui, R.id.tv_modify_password_ui,R.id.rl_id_card,R.id.rl_wx,R.id.tv_mange_address_ui, R.id.tv_login_out})
+    @OnClick({R.id.rl_header_ui, R.id.rl_name_ui, R.id.rl_phone_ui, R.id.rl_sysyte_id_ui, R.id.tv_modify_password_ui, R.id.rl_id_card, R.id.rl_wx, R.id.tv_mange_address_ui, R.id.tv_login_out})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.rl_header_ui:
@@ -171,10 +230,99 @@ public class PersonSettingActivity extends BaseActivity {
             case R.id.tv_modify_password_ui:
                 ActivityUtils.startActivity(ModifyPasswordActivity.class);
                 break;
+            case R.id.tv_mange_address_ui:
+                startActivity(new Intent(PersonSettingActivity.this, MyAddressActivity.class));
+                break;
+            case R.id.rl_wx:
+                if (userExt != null && !TextUtils.isEmpty(userExt.wx_bind) && userExt.wx_bind.equals("1")) {
+                    SysUtils.showToast("已绑定");
+                } else {
+                    SendAuth.Req req = new SendAuth.Req();
+                    req.scope = "snsapi_userinfo";
+                    req.state = "wechat_sdk_demo_test";
+                    api.sendReq(req);
+                }
+                break;
+            case R.id.rl_id_card:
+                Bundle bundle = new Bundle();
+                if (userExt!=null && userExt.idcard_info!=null) {
+                    bundle.putSerializable(Constans.PASS_OBJECT, userExt.idcard_info);
+                }
+                ActivityUtils.startActivityForResult(bundle,PersonSettingActivity.this, AddIdCardActivity.class, ADD_CARD_REQUEST);
+                break;
             case R.id.tv_login_out:
                 showExitDialog();
                 break;
         }
+    }
+
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onChange(SendAuth.Resp resp) {
+        if (resp != null && !TextUtils.isEmpty(resp.code)) {
+            showLoadingBar("微信绑定中...");
+
+            HashMap<String, String> maps = new HashMap<>();
+            maps.put("appid", Constans.WX_SHARE_APP_ID);
+            maps.put("secret", Constans.WX_SHARE_SECRET);
+            maps.put("code", resp.code);
+            maps.put("grant_type", "authorization_code");
+
+            Call<WxAccessToken> call = ApiConfig.getInstants().create(TaskService.class).getAccessToken(maps);
+
+            call.enqueue(new Callback<WxAccessToken>() {
+                @Override
+                public void onResponse(Call<WxAccessToken> call, Response<WxAccessToken> response) {
+                    doBindWx(response.body());
+
+                }
+
+                @Override
+                public void onFailure(Call<WxAccessToken> call, Throwable t) {
+                    SysUtils.log(t.getMessage());
+                    dismissLoadingBar();
+                }
+            });
+        }
+    }
+
+    private void doBindWx(WxAccessToken wxAccessToken) {
+        HashMap<String, String> hashMap = new HashMap();
+        hashMap.put("oauth_type", "wx");
+        hashMap.put("oauth_uid", wxAccessToken.openid);
+        hashMap.put("oauth_token", wxAccessToken.access_token);
+        hashMap.put("expire_time", String.valueOf(wxAccessToken.expires_in));
+        Call<TaskInfo> call = ApiConfig.getInstants().create(TaskService.class).AccountbindWx(TUtils.getParams(hashMap));
+
+        API.getObject(call, UserInfo.class, new ApiCallBack<UserInfo>() {
+            @Override
+            public void onSuccess(int msgCode, String msg, UserInfo data) {
+                dismissLoadingBar();
+                ToastUtils.showShort(msg);
+                getDetailExt();
+//                if (data!=null && !TextUtils.isEmpty(data.mobile)){
+//                    //已绑定过
+//                    SPUtils.getInstance().put(Constans.USER_INFO, new Gson().toJson(data));
+//                    SPUtils.getInstance().put(Constans.TOKEN, new Gson().toJson(data.tokens));
+//                    SPUtils.getInstance().put(Constans.USER_ACOUNT, data.username);
+//                    ActivityUtils.startActivity(MainActivity.class);
+//                    finish();
+//                }else{
+//                    //未绑定过
+//                    Bundle bundle = new Bundle();
+//                    bundle.putSerializable(Constans.PASS_OBJECT,wxAccessToken);
+//                    ActivityUtils.startActivityForResult(bundle,LoginActivity.this,BindWxActivity.class,100);
+//
+//                }
+            }
+
+            @Override
+            public void onFaild(int msgCode, String msg) {
+                dismissLoadingBar();
+                ToastUtils.showShort(msg);
+            }
+        });
+
     }
 
 
@@ -255,6 +403,9 @@ public class PersonSettingActivity extends BaseActivity {
                     updateImageByBase64(file);
                 }
             }
+        } else if (requestCode == ADD_CARD_REQUEST && resultCode == RESULT_OK) {
+//            getUserDetail();
+            getDetailExt();
         }
     }
 
@@ -390,5 +541,30 @@ public class PersonSettingActivity extends BaseActivity {
         } else {
             super.onBackPressed();
         }
+    }
+
+    private void getUserDetail() {
+        HashMap<String, String> hashMap = new HashMap();
+        hashMap.put("uid", TUtils.getUserId());
+        Call<TaskInfo> call = ApiConfig.getInstants().create(TaskService.class).getUserInfo(TUtils.getParams(hashMap));
+
+        API.getObject(call, UserInfo.class, new ApiCallBack<UserInfo>() {
+            @Override
+            public void onSuccess(int msgCode, String msg, UserInfo data) {
+                SPUtils.getInstance().put(Constans.USER_INFO, new Gson().toJson(data));
+                initData(data);
+            }
+
+            @Override
+            public void onFaild(int msgCode, String msg) {
+            }
+        });
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 }

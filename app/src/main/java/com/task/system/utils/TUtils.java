@@ -300,6 +300,10 @@ public class TUtils {
 
     }
 
+    public static void dealReqestData(BaseQuickAdapter adapter, RecyclerView recycle, List list) {
+        dealReqestData(adapter, recycle, list, 1, null);
+    }
+
     public static List<AreaBean> getAllCitys() {
         String citys = SPUtils.getInstance().getString(Constans.PASS_ALL_CITYS);
         if (!TextUtils.isEmpty(citys)) {
