@@ -17,7 +17,7 @@ public interface TaskService {
     //检查版本更新
     @FormUrlEncoded
     @POST("client/checkVersion")
-    Call<TaskInfo> checkVersion(@FieldMap HashMap<String,String> maps);
+    Call<TaskInfo> checkVersion(@FieldMap HashMap<String, String> maps);
 
     //登陆接口
     @FormUrlEncoded
@@ -37,7 +37,7 @@ public interface TaskService {
      * 1-注册时的手机验证码，不需要uid、token
      * 2-找回密码的时候的手机验证码，不需要uid、token
      * 3-修改密码的时候的手机验证码,需要uid、token
-     *
+     * <p>
      * 4-新增银行账户信息，
      * 5-申请提现
      */
@@ -81,13 +81,13 @@ public interface TaskService {
     //验证验证码
     @FormUrlEncoded
     @POST("public/checkMobileCode")
-    Call<TaskInfoList>  checkMobileCode(@FieldMap HashMap<String,String> maps);
+    Call<TaskInfoList> checkMobileCode(@FieldMap HashMap<String, String> maps);
 
 
     //修改手机号
     @FormUrlEncoded
     @POST("user/setMobile")
-    Call<TaskInfoList>  setMobile(@FieldMap HashMap<String,String> maps);
+    Call<TaskInfoList> setMobile(@FieldMap HashMap<String, String> maps);
 
 
     //获取用户基本信息
@@ -119,11 +119,9 @@ public interface TaskService {
      * avatar
      * app_token
      */
-    @FormUrlEncoded
-    @POST("user/setAvatar")
-    Call<TaskInfoList> setUserAvatar(@FieldMap HashMap<String, String> maps);
-
-
+//    @FormUrlEncoded
+//    @POST("user/setAvatar")
+//    Call<TaskInfoList> setUserAvatar(@FieldMap HashMap<String, String> maps);
 
 
     /**
@@ -140,18 +138,18 @@ public interface TaskService {
 
     /**
      * 1=首页 2=启动页 3 新手
+     *
      * @param map
      * @return 广告页面
      */
     @FormUrlEncoded
     @POST("public/getAdList")
-    Call<TaskInfoList> getAdList(@FieldMap HashMap<String,String> map);
+    Call<TaskInfoList> getAdList(@FieldMap HashMap<String, String> map);
 
     //城市列表
     @FormUrlEncoded
     @POST("task/getCityList")
     Call<TaskInfoList> getCityList(@FieldMap HashMap<String, String> maps);
-
 
 
     //用户栏目
@@ -187,7 +185,7 @@ public interface TaskService {
     //分享
     @FormUrlEncoded
     @POST("taskOperate/share")
-    Call<TaskInfo> getTaskShare(@FieldMap HashMap<String,String> maps);
+    Call<TaskInfo> getTaskShare(@FieldMap HashMap<String, String> maps);
 
     /**
      * 任务详情
@@ -201,40 +199,39 @@ public interface TaskService {
     //检查邀请码
     @FormUrlEncoded
     @POST("public/checkInviteCode")
-    Call<TaskInfoList> checkInviteCode(@FieldMap HashMap<String,String> maps );
+    Call<TaskInfoList> checkInviteCode(@FieldMap HashMap<String, String> maps);
 
 
     //获取邀请码
     @FormUrlEncoded
     @POST("public/getInviteCode")
-    Call<TaskInfo> getInviteCode(@FieldMap HashMap<String,String> maps);
-
+    Call<TaskInfo> getInviteCode(@FieldMap HashMap<String, String> maps);
 
 
     //添加收藏
     @FormUrlEncoded
     @POST("taskOperate/collect")
-    Call<TaskInfoList> collectTask(@FieldMap HashMap<String,String> maps);
+    Call<TaskInfoList> collectTask(@FieldMap HashMap<String, String> maps);
 
 
     //取消收藏
     @FormUrlEncoded
     @POST("taskOperate/cancelCollect")
-    Call<TaskInfoList> cancleCollectTask(@FieldMap HashMap<String,String> maps);
+    Call<TaskInfoList> cancleCollectTask(@FieldMap HashMap<String, String> maps);
 
 
     //收藏列表
     //page
     @FormUrlEncoded
     @POST("taskOperate/collectList")
-    Call<TaskInfoList> getCollectList(@FieldMap HashMap<String,String> maps);
+    Call<TaskInfoList> getCollectList(@FieldMap HashMap<String, String> maps);
 
     //申请任务
 
     /**
      * task_id
      * uid
-     *
+     * <p>
      * 任务不存在
      * 用户不存在
      * 任务已结束
@@ -246,7 +243,7 @@ public interface TaskService {
      */
     @FormUrlEncoded
     @POST("taskOperate/apply")
-    Call<TaskInfo>  applyTaskOperate(@FieldMap HashMap<String,String> maps);
+    Call<TaskInfo> applyTaskOperate(@FieldMap HashMap<String, String> maps);
 
     /**
      * task_id
@@ -255,21 +252,22 @@ public interface TaskService {
     //放弃任务
     @FormUrlEncoded
     @POST("order/giveUp")
-    Call<TaskInfoList>  giveUpTaskOperate(@FieldMap HashMap<String,String> maps);
+    Call<TaskInfoList> giveUpTaskOperate(@FieldMap HashMap<String, String> maps);
 
     //客服地址
     @FormUrlEncoded
     @POST("public/getCustomerService")
-    Call<TaskInfo> getCustomeSerice(@FieldMap HashMap<String,String> maps);
+    Call<TaskInfo> getCustomeSerice(@FieldMap HashMap<String, String> maps);
 
 
-    /**添加银行卡
-     *
+    /**
+     * 添加银行卡
+     * <p>
      * account
      * account_name
      * account_type
      * mobile_code
-     *
+     * <p>
      * 账户，支付宝账号或者银行账户
      * 账户全名
      * 账户类型，1-支付宝账户，2-银行卡账户
@@ -278,22 +276,22 @@ public interface TaskService {
 
     @FormUrlEncoded
     @POST("user/addCard")
-    Call<TaskInfoList>  addCard(@FieldMap HashMap<String,String> maps);
+    Call<TaskInfoList> addCard(@FieldMap HashMap<String, String> maps);
 
 
     /**
      * id
-     *   解绑账号
+     * 解绑账号
      */
     @FormUrlEncoded
     @POST("user/delCard")
-    Call<TaskInfoList>  delCard(@FieldMap HashMap<String,String> maps);
+    Call<TaskInfoList> delCard(@FieldMap HashMap<String, String> maps);
 
 
     //获取银行卡账号
     @FormUrlEncoded
     @POST("user/getCard")
-    Call<TaskInfo> getCards(@FieldMap HashMap<String,String> maps);
+    Call<TaskInfo> getCards(@FieldMap HashMap<String, String> maps);
 
 
     /**
@@ -304,59 +302,46 @@ public interface TaskService {
 
     @FormUrlEncoded
     @POST("user/deposit")
-    Call<TaskInfoList> deposite(@FieldMap HashMap<String,String> maps);
+    Call<TaskInfoList> deposite(@FieldMap HashMap<String, String> maps);
 
 
     /**
      * task_id
      * uid
      * images
-     上传多张图片
+     * 上传多张图片
      */
     @FormUrlEncoded
     @POST("order/uploadImages")
-    Call<TaskInfoList> uploadIamges(@FieldMap HashMap<String,String> maps);
+    Call<TaskInfoList> uploadIamges(@FieldMap HashMap<String, String> maps);
 
     /**
      * order_id
      * uid
      * content
-     //上传信息 变更状态
+     * //上传信息 变更状态
      */
     @FormUrlEncoded
     @POST("order/uploadContent")
-    Call<TaskInfoList> uploadContent(@FieldMap HashMap<String,String> maps);
-
-
-    /** 订单列表
-     * status
-     * page
-     * keywords
-     * sort
-     */
-    @FormUrlEncoded
-    @POST("order/getList")
-    Call<TaskInfo> getOrderList(@FieldMap HashMap<String,String> maps);
+    Call<TaskInfoList> uploadContent(@FieldMap HashMap<String, String> maps);
 
 
     //短消息数量
     @FormUrlEncoded
     @POST("message/newMesssageSum")
-    Call<TaskInfo> getMessageCount(@FieldMap HashMap<String,String> maps);
-
+    Call<TaskInfo> getMessageCount(@FieldMap HashMap<String, String> maps);
 
 
     //消息列表
     @FormUrlEncoded
     @POST("message/getlist")
-    Call<TaskInfo> getMessageList(@FieldMap HashMap<String,String> maps);
-
+    Call<TaskInfo> getMessageList(@FieldMap HashMap<String, String> maps);
 
 
     //消息详情
     @FormUrlEncoded
     @POST("message/detail")
-    Call<TaskInfoList> getMessagDetail(@FieldMap HashMap<String,String> maps);
+    Call<TaskInfoList> getMessagDetail(@FieldMap HashMap<String, String> maps);
 
 
     //积分记录、
@@ -364,29 +349,27 @@ public interface TaskService {
     //end_date
     @FormUrlEncoded
     @POST("statistics/getList")
-    Call<TaskInfo> getStaticsList(@FieldMap HashMap<String,String> maps);
+    Call<TaskInfo> getStaticsList(@FieldMap HashMap<String, String> maps);
 
 
     //积分详情 log_id
     @FormUrlEncoded
     @POST("statistics/detail")
-    Call<TaskInfoList> getStaticDetail(@FieldMap HashMap<String,String> maps);
+    Call<TaskInfoList> getStaticDetail(@FieldMap HashMap<String, String> maps);
 
 
     /**
-     *
-     child_uid
-     search_key
-     start_date
-     end_date
-     page
-
+     * child_uid
+     * search_key
+     * start_date
+     * end_date
+     * page
      */
 
     //我的账户
     @FormUrlEncoded
     @POST("statistics/getStatistics")
-    Call<TaskInfo> getStatistics(@FieldMap HashMap<String,String> maps);
+    Call<TaskInfo> getStatistics(@FieldMap HashMap<String, String> maps);
 
 
     //设置返佣比例饿
@@ -396,34 +379,33 @@ public interface TaskService {
     //user_type=3的用户才能修改
     @FormUrlEncoded
     @POST("leader/setUser")
-    Call<TaskInfoList>  setUseScale(@FieldMap HashMap<String,String> maps);
+    Call<TaskInfoList> setUseScale(@FieldMap HashMap<String, String> maps);
 
 
     /**
      * user_type=3的用户才能新增、修改会员
-     * @param maps
      *
-     *operate
-     * add-新增会员，edit-修改会员@return
+     * @param maps operate
+     *             add-新增会员，edit-修改会员@return
      */
     @FormUrlEncoded
     @POST("leader/getUserOption")
-    Call<TaskInfo> getUserOptionEdit(@FieldMap HashMap<String,String> maps);
+    Call<TaskInfo> getUserOptionEdit(@FieldMap HashMap<String, String> maps);
 
     @FormUrlEncoded
     @POST("leader/getUserOption")
-    Call<TaskInfo> getUserOptionAdd(@FieldMap HashMap<String,String> maps);
+    Call<TaskInfo> getUserOptionAdd(@FieldMap HashMap<String, String> maps);
 
     //新增用户
     @FormUrlEncoded
     @POST("leader/addLeader")
-    Call<TaskInfo> addLeader(@FieldMap HashMap<String,String> maps);
+    Call<TaskInfo> addLeader(@FieldMap HashMap<String, String> maps);
 
 
     //代理获取邀请码
     @FormUrlEncoded
     @POST("user/getInviteCode")
-    Call<TaskInfo> getInviteByAgent(@FieldMap HashMap<String,String> maps);
+    Call<TaskInfo> getInviteByAgent(@FieldMap HashMap<String, String> maps);
 
 //    @FormUrlEncoded
 //    @POST("leader/getInviteCode")
@@ -433,57 +415,55 @@ public interface TaskService {
     //获取未读消息
     @FormUrlEncoded
     @POST("order/getOrderSum")
-    Call<TaskInfo> getUnreadInfo(@FieldMap HashMap<String,String> maps);
+    Call<TaskInfo> getUnreadInfo(@FieldMap HashMap<String, String> maps);
 
     //  Call<com.task.system.api.TaskInfoList> call = ApiConfig.getInstants().create(TaskService.class).getCityList(TUtils.getParams());
-
-
 
 
     //获取今日签到情况
     @FormUrlEncoded
     @POST("user/sign")
-    Call<TaskInfoIgnoreBody> userSign(@FieldMap HashMap<String,String> maps);
+    Call<TaskInfoIgnoreBody> userSign(@FieldMap HashMap<String, String> maps);
 
     //签到记录
     @FormUrlEncoded
     @POST("user/signList")
-    Call<TaskInfo> userSignList(@FieldMap HashMap<String,String> maps);
+    Call<TaskInfo> userSignList(@FieldMap HashMap<String, String> maps);
 
 
     @GET("https://api.weixin.qq.com/sns/oauth2/access_token")
-    Call<WxAccessToken> getAccessToken(@QueryMap HashMap<String,String> maps);
+    Call<WxAccessToken> getAccessToken(@QueryMap HashMap<String, String> maps);
 
     //第三方登录
     @FormUrlEncoded
     @POST("public/loginByThird")
-    Call<TaskInfo> loginByThird(@FieldMap HashMap<String,String> maps);
+    Call<TaskInfo> loginByThird(@FieldMap HashMap<String, String> maps);
 
 
     //账号绑定微信
     @FormUrlEncoded
     @POST("user/bind")
-    Call<TaskInfo> AccountbindWx(@FieldMap HashMap<String,String> maps);
+    Call<TaskInfo> AccountbindWx(@FieldMap HashMap<String, String> maps);
 
     //绑定账号
     @FormUrlEncoded
     @POST("public/bindByLogin")
-    Call<TaskInfo> bindByLogin(@FieldMap HashMap<String,String> maps);
+    Call<TaskInfo> bindByLogin(@FieldMap HashMap<String, String> maps);
 
     //启动app 首页
     @GET("public/appinit")
-    Call<TaskInfo>  appInit(@QueryMap HashMap<String,String> maps);
+    Call<TaskInfo> appInit(@QueryMap HashMap<String, String> maps);
 
 
     //游戏列表
     @FormUrlEncoded
     @POST("wheel/getList")
-    Call<TaskInfoList> getWheelList(@FieldMap HashMap<String,String> maps);
+    Call<TaskInfo> getWheelList(@FieldMap HashMap<String, String> maps);
 
     //上传身份证信息
     @FormUrlEncoded
     @POST("user/addIdCard")
-    Call<TaskInfo> addIdCards(@FieldMap HashMap<String,String> maps);
+    Call<TaskInfo> addIdCards(@FieldMap HashMap<String, String> maps);
 
     //单张图片上传
 
@@ -492,34 +472,34 @@ public interface TaskService {
      */
     @FormUrlEncoded
     @POST("user/uploadImage")
-    Call<TaskInfo>  uploadImage(@FieldMap HashMap<String,String> maps);
+    Call<TaskInfo> uploadImage(@FieldMap HashMap<String, String> maps);
 
 
     //获取地址
     @FormUrlEncoded
     @POST("user/getAddressList")
-    Call<TaskInfoList> getAddressList(@FieldMap HashMap<String,String> maps);
+    Call<TaskInfoList> getAddressList(@FieldMap HashMap<String, String> maps);
 
     //修改地址
     @FormUrlEncoded
     @POST("user/setAddress")
-    Call<TaskInfo> setAddress(@FieldMap HashMap<String,String> maps);
+    Call<TaskInfo> setAddress(@FieldMap HashMap<String, String> maps);
 
     //新增地址
     @FormUrlEncoded
     @POST("user/addAddress")
-    Call<TaskInfo> addAddress(@FieldMap HashMap<String,String> maps);
+    Call<TaskInfo> addAddress(@FieldMap HashMap<String, String> maps);
 
 
     //删除地址
     @FormUrlEncoded
     @POST("user/delAddress")
-    Call<TaskInfo> delAddress(@FieldMap HashMap<String,String> maps);
+    Call<TaskInfo> delAddress(@FieldMap HashMap<String, String> maps);
 
 
     //用户身份 微信绑定数据
     @GET("user/detailext")
-    Call<TaskInfo> getUserDetailExt(@QueryMap HashMap<String,String > maps);
+    Call<TaskInfo> getUserDetailExt(@QueryMap HashMap<String, String> maps);
 
 
     /**
@@ -535,7 +515,7 @@ public interface TaskService {
     //文章
     @FormUrlEncoded
     @POST("public/articleDetail")
-    Call<TaskInfo> getArticalDetail(@FieldMap HashMap<String,String > maps);
+    Call<TaskInfo> getArticalDetail(@FieldMap HashMap<String, String> maps);
 
 
     /**
@@ -543,22 +523,91 @@ public interface TaskService {
      */
     @FormUrlEncoded
     @POST("task/getPopularityTaskList")
-    Call<TaskInfoList> getPopulatityTaskLst(@FieldMap HashMap<String,String> maps);
+    Call<TaskInfoList> getPopulatityTaskLst(@FieldMap HashMap<String, String> maps);
 
 
-    /**
+    /*****会员使用**/
+
+     /**
      * 订单 标签
      */
     @FormUrlEncoded
     @POST("order/getStatus")
-    Call<TaskInfoList> getOrderStatus(@FieldMap HashMap<String,String> maps);
+    Call<TaskInfoList> getOrderStatus(@FieldMap HashMap<String, String> maps);
 
+
+    /**
+     * 订单列表
+     * status
+     * page
+     * keywords
+     * sort
+     */
+    @FormUrlEncoded
+    @POST("order/getList")
+    Call<TaskInfo> getOrderList(@FieldMap HashMap<String, String> maps);
 
     /**
      * 争议 标签
      */
     @FormUrlEncoded
     @POST("order/disputeStatus")
-    Call<TaskInfoList> getDisputeStatus(@FieldMap HashMap<String,String> maps);
+    Call<TaskInfoList> getDisputeStatus(@FieldMap HashMap<String, String> maps);
 
-}
+
+    /*****区域使用**/
+
+    /**
+     * 任务列表标签
+     */
+    @FormUrlEncoded
+    @POST("operator/getTaskTabs")
+    Call<TaskInfoList> getOperatorTaskTags(@FieldMap HashMap<String, String> maps);
+
+    /**
+     * 任务列表
+     */
+    @FormUrlEncoded
+    @POST("operator/getTaskList")
+    Call<TaskInfoList>  getOperaorTaskList(@FieldMap HashMap<String,String> maps);
+
+
+
+    /**
+     * 订单列表
+     * status
+     * page
+     * keywords
+     * sort
+     */
+    @FormUrlEncoded
+    @POST("operator/getOrderList")
+    Call<TaskInfoList> getOperatOrderList(@FieldMap HashMap<String, String> maps);
+
+    /**
+     * 争议 标签
+     */
+    @FormUrlEncoded
+    @POST("operator/getOrderTabs")
+    Call<TaskInfoList> getOperatorOrderTabs(@FieldMap HashMap<String, String> maps);
+
+
+    //任务列表标签
+    @FormUrlEncoded
+    @POST("operator/getTaskSorts")
+    Call<TaskInfoList> getOperateTaskSorts(@FieldMap HashMap<String, String> maps);
+
+
+    //根据转盘id 获取游戏playurl
+    @FormUrlEncoded
+    @POST("wheel/getUrl")
+    Call<TaskInfo> getPlayUl(@FieldMap HashMap<String,String> maps);
+
+
+    //发布者 取消任务接口
+    @FormUrlEncoded
+    @POST("operator/setTaskStatus")
+    Call<TaskInfoList> operatorTaskStatus(@FieldMap HashMap<String,String> mapas);
+
+
+ }

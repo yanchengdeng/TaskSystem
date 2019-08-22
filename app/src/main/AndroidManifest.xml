@@ -33,7 +33,11 @@
         android:roundIcon="@mipmap/logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.AddressDetailActivity"></activity>
+        <activity android:name=".activity.OrderManageActivity"></activity>
+        <activity android:name=".activity.LinkOrdersActivity" />
+        <activity android:name=".activity.OrdersManageActivity" />
+        <activity android:name=".activity.PublishManageActivity" />
+        <activity android:name=".activity.AddressDetailActivity" />
         <activity android:name=".activity.MyAddressActivity" />
         <activity android:name=".activity.AddIdCardActivity" />
         <activity android:name=".activity.MyAreaManageActivity" />

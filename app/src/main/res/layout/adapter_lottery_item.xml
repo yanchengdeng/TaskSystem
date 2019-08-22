@@ -47,7 +47,6 @@
             android:layout_marginBottom="@dimen/image_padding"
             android:ellipsize="end"
             android:maxLines="2"
-            android:text="福建餐厅信息收集福建餐厅信息收集福建餐厅信息收集"
             android:textColor="@color/color_info"
             android:textSize="@dimen/text_size_normal" />
 

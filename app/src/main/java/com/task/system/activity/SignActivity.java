@@ -10,6 +10,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.ActivityUtils;
+import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.task.system.Constans;
 import com.task.system.R;
 import com.task.system.adapters.PopulorAdapter;
 import com.task.system.api.API;
@@ -99,6 +101,15 @@ public class SignActivity extends BaseActivity {
         getSignList();
 
         getPopularList();
+
+        populorAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                Bundle bundle = new Bundle();
+                bundle.putString(Constans.PASS_STRING, populorAdapter.getData().get(position).id);
+                ActivityUtils.startActivity(bundle, TaskDetailActivity.class);
+            }
+        });
 
     }
 
@@ -247,9 +258,9 @@ public class SignActivity extends BaseActivity {
 */
     private int getSignIcon(Double is_sign) {
         if (is_sign == 2) {
-            return R.mipmap.checkbox_checked;
+            return R.mipmap.icon_signed;
         } else if (is_sign == 0) {
-            return R.mipmap.checkbox_normal;
+            return R.mipmap.icon_no_sign;
         }
         return android.R.color.transparent;
     }
@@ -265,7 +276,7 @@ public class SignActivity extends BaseActivity {
                 doSign();
                 break;
             case R.id.do_share:
-                ActivityUtils.startActivity(MyInviteActivity.class);
+                ActivityUtils.startActivity(MyInviteCodeActivity.class);
                 break;
             case R.id.do_award:
                 ActivityUtils.startActivity(IntegralLotteryActivity.class);

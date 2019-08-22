@@ -13,15 +13,14 @@ import com.task.system.Constans;
 import com.task.system.R;
 import com.task.system.adapters.LotteryAdapter;
 import com.task.system.api.API;
-import com.task.system.api.TaskInfoList;
+import com.task.system.api.TaskInfo;
 import com.task.system.api.TaskService;
-import com.task.system.bean.LotteryItem;
+import com.task.system.bean.LotteryList;
 import com.task.system.utils.TUtils;
-import com.yc.lib.api.ApiCallBackList;
+import com.yc.lib.api.ApiCallBack;
 import com.yc.lib.api.ApiConfig;
 
 import java.util.HashMap;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -43,6 +42,9 @@ public class IntegralLotteryActivity extends BaseActivity {
     SmartRefreshLayout smartRefresh;
     private int page = 1;
 
+
+
+
     private LotteryAdapter homeAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,10 +63,12 @@ public class IntegralLotteryActivity extends BaseActivity {
 
 
         homeAdapter.setOnItemClickListener((adapter, view, position) -> {
-            Bundle bundle = new Bundle();
-            bundle.putString(Constans.PASS_NAME,homeAdapter.getData().get(position).title);
-            bundle.putString(Constans.PASS_STRING, homeAdapter.getData().get(position).play_url);
-            ActivityUtils.startActivity(bundle, OpenWebViewActivity.class);
+            Bundle about = new Bundle();
+            about.putString(Constans.PASS_NAME,homeAdapter.getData().get(position).title);
+            about.putString(Constans.ARTICAL_TYPE,Constans.INTERGRAY_CODE);
+            ActivityUtils.startActivity(about, OpenWebViewActivity.class);
+
+
         });
 
 
@@ -106,12 +110,12 @@ public class IntegralLotteryActivity extends BaseActivity {
 //        }
 
 
-        Call<TaskInfoList> call = ApiConfig.getInstants().create(TaskService.class).getWheelList(TUtils.getParams(maps));
+        Call<TaskInfo> call = ApiConfig.getInstants().create(TaskService.class).getWheelList(TUtils.getParams(maps));
 
-        API.getList(call, LotteryItem.class, new ApiCallBackList<LotteryItem>() {
+        API.getObject(call, LotteryList.class, new ApiCallBack<LotteryList>() {
             @Override
-            public void onSuccess(int msgCode, String msg, List<LotteryItem> data) {
-                TUtils.dealReqestData(homeAdapter, recycle, data, page);
+            public void onSuccess(int msgCode, String msg,LotteryList  data) {
+                TUtils.dealReqestData(homeAdapter, recycle, data.list, page);
                 dismissLoadingBar();
             }
 

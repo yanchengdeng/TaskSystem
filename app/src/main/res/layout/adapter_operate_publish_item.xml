@@ -42,7 +42,7 @@
                 android:layout_marginBottom="@dimen/image_padding"
                 android:ellipsize="end"
                 android:maxLines="2"
-                android:text=""
+                android:text="福建餐厅信息收集福建餐厅信息收集福建餐厅信息收集"
                 android:textColor="@color/color_info"
                 android:textSize="@dimen/text_size_normal" />
 
@@ -94,7 +94,7 @@
             android:gravity="center_vertical"
             android:text="剩余时间：19天20小时"
             android:textColor="@color/color_date"
-            android:visibility="gone" />
+            />
 
 
         <include
@@ -102,7 +102,7 @@
             layout="@layout/dash_line"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dash_line"
-            android:visibility="gone" />
+            />
 
     </LinearLayout>
 
@@ -113,33 +113,32 @@
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:layout_marginRight="@dimen/activity_horizontal_margin">
 
-
         <TextView
-            android:id="@+id/tv_destory_reason"
+            android:id="@+id/tv_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:background="#fceee9"
-            android:paddingLeft="@dimen/image_padding_big"
-            android:paddingTop="2dp"
-            android:paddingRight="@dimen/image_padding_big"
-            android:paddingBottom="2dp"
-            android:text="作废"
-            android:textColor="#E8541E"
-            android:textSize="@dimen/text_size_normal_down"
-            android:visibility="gone" />
+            android:text="状态：xx"
+            android:textColor="@color/color_tittle"
+            android:textSize="@dimen/text_size_normal" />
+
+
+        <LinearLayout
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
 
         <TextView
             android:id="@+id/tv_look_for_reason"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
             android:background="@drawable/normal_submit_btn_red_trans"
-            android:paddingLeft="@dimen/image_padding"
-            android:paddingTop="2dp"
-            android:paddingRight="@dimen/image_padding"
-            android:paddingBottom="2dp"
-            android:text="查看原因"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingTop="@dimen/image_padding"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:paddingBottom="@dimen/image_padding"
+            android:text="审核理由"
             android:textColor="@color/red"
             android:textSize="@dimen/text_size_normal_down"
             android:visibility="gone" />
@@ -150,7 +149,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="@dimen/activity_horizontal_margin"
-            android:layout_toLeftOf="@+id/tv_going_work_task"
+            android:layout_toLeftOf="@+id/tv_edit_again"
             android:background="@drawable/normal_submit_btn_gray_deep_trans"
             android:paddingLeft="@dimen/activity_horizontal_margin"
             android:paddingTop="@dimen/image_padding"
@@ -161,26 +160,25 @@
             android:textSize="@dimen/text_size_normal"
             android:visibility="gone" />
 
-
         <TextView
-            android:id="@+id/tv_going_work_task"
+            android:id="@+id/tv_edit_again"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_marginLeft="@dimen/activity_horizontal_margin"
-            android:background="@drawable/normal_submit_btn_red"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:layout_toLeftOf="@+id/tv_order_data"
+            android:background="@drawable/normal_submit_btn_green"
             android:paddingLeft="@dimen/activity_horizontal_margin"
             android:paddingTop="@dimen/image_padding"
             android:paddingRight="@dimen/activity_horizontal_margin"
             android:paddingBottom="@dimen/image_padding"
-            android:text="继续工作"
+            android:text="再次编辑"
             android:textColor="@color/white"
             android:textSize="@dimen/text_size_normal"
             android:visibility="gone" />
 
 
         <TextView
-            android:id="@+id/tv_else_function"
+            android:id="@+id/tv_order_data"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
@@ -190,10 +188,12 @@
             android:paddingTop="@dimen/image_padding"
             android:paddingRight="@dimen/activity_horizontal_margin"
             android:paddingBottom="@dimen/image_padding"
-            android:text="待审核"
+            android:text="订单数据"
             android:textColor="@color/color_tittle"
             android:textSize="@dimen/text_size_normal"
             android:visibility="gone" />
+
+        </LinearLayout>
 
     </RelativeLayout>
 

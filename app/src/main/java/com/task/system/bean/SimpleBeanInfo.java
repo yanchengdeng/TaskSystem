@@ -10,6 +10,7 @@ public class SimpleBeanInfo implements Serializable {
     public String url;
     public String  thumbnail;//;// http;////task.fzgfxz.com/Uploads/2019/03/5c9dfcc19986d.jpg,
     public String title;//;// ddd,
+    public String content;
     public String sub_title;//;//
     public String path;//图片路径
 
@@ -22,8 +23,6 @@ public class SimpleBeanInfo implements Serializable {
     public String   market_score;// 16.00,
     public String   success_total;// 0,
     public String   storages;// 940
-    //todo 待补充
-    public String avator;
 
 
 }

@@ -52,7 +52,7 @@ import retrofit2.Call;
 
 public class TaskFragment extends Fragment {
 
-    @BindView(R.id.tv_title)
+    @BindView(R.id.tv_title_top)
     TextView tvTitle;
     @BindView(R.id.tablayout)
     TabLayout tabLayout;

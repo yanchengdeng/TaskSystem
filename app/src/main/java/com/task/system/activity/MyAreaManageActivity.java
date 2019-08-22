@@ -3,6 +3,7 @@ package com.task.system.activity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 
 import com.blankj.utilcode.util.ActivityUtils;
 import com.blankj.utilcode.util.ToastUtils;
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gyf.barlibrary.ImmersionBar;
 import com.task.system.Constans;
 import com.task.system.R;
@@ -20,12 +22,15 @@ import com.task.system.api.API;
 import com.task.system.api.TaskInfoList;
 import com.task.system.api.TaskService;
 import com.task.system.bean.AreaManageIitem;
+import com.task.system.bean.UserInfo;
 import com.task.system.utils.TUtils;
 import com.yanzhenjie.permission.AndPermission;
 import com.yanzhenjie.permission.runtime.Permission;
 import com.yc.lib.api.ApiCallBackList;
 import com.yc.lib.api.ApiConfig;
+import com.yc.lib.api.utils.ImageLoaderUtil;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -69,6 +74,8 @@ public class MyAreaManageActivity extends BaseSimpleActivity {
     RecyclerView recyclePublish;
     @BindView(R.id.recycle_orders)
     RecyclerView recycleOrders;
+    @BindView(R.id.tv_balance)
+    TextView tvBalance;
     private int REQUEST_CODE_SELECT = 402;
 
 
@@ -92,15 +99,47 @@ public class MyAreaManageActivity extends BaseSimpleActivity {
         recycleOrders.setNestedScrollingEnabled(false);
         recycleOrders.setAdapter( disputeAdapter);
 
+        disputeAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                Bundle bundle = new Bundle();
+                bundle.putSerializable(Constans.PASS_OBJECT, (Serializable) disputeAdapter.getData());
+                bundle.putInt(Constans.PASS_STRING,position);
+                ActivityUtils.startActivity(bundle, OrderManageActivity.class);
+            }
+        });
+
 
         //发布
         recyclePublish.setLayoutManager(new GridLayoutManager(this,3));
         recyclePublish.setAdapter( publishAdapter);
         recyclePublish.setNestedScrollingEnabled(false);
 
+        publishAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                Bundle bundle = new Bundle();
+                bundle.putSerializable(Constans.PASS_OBJECT, (Serializable) publishAdapter.getData());
+                bundle.putInt(Constans.PASS_STRING,position);
+                ActivityUtils.startActivity(bundle, PublishManageActivity.class);
+            }
+        });
+
 
 
         getRecycleList();
+
+        UserInfo userInfo = TUtils.getUserInfo();
+        if (userInfo!=null){
+            if (!TextUtils.isEmpty(userInfo.username)) {
+                tvName.setText(userInfo.username);
+            }
+
+            ImageLoaderUtil.loadCircle(userInfo.avatar,ivHeader,R.mipmap.defalut_header);
+
+            tvBalance.setText("￥"+userInfo.score+" >");
+
+        }
 
 
     }
@@ -110,7 +149,7 @@ public class MyAreaManageActivity extends BaseSimpleActivity {
 
 
         //争议
-        Call<TaskInfoList> callDispute = ApiConfig.getInstants().create(TaskService.class).getDisputeStatus(TUtils.getParams());
+        Call<TaskInfoList> callDispute = ApiConfig.getInstants().create(TaskService.class).getOperatorOrderTabs(TUtils.getParams());
         API.getList(callDispute, AreaManageIitem.class, new ApiCallBackList<AreaManageIitem>() {
             @Override
             public void onSuccess(int msgCode, String msg, List<AreaManageIitem> data) {
@@ -126,7 +165,7 @@ public class MyAreaManageActivity extends BaseSimpleActivity {
 
 
         //发布
-        Call<TaskInfoList> callPublish = ApiConfig.getInstants().create(TaskService.class).getOrderStatus(TUtils.getParams());
+        Call<TaskInfoList> callPublish = ApiConfig.getInstants().create(TaskService.class).getOperatorTaskTags(TUtils.getParams());
         API.getList(callPublish, AreaManageIitem.class, new ApiCallBackList<AreaManageIitem>() {
             @Override
             public void onSuccess(int msgCode, String msg, List<AreaManageIitem> data) {

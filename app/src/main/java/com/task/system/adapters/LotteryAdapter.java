@@ -8,18 +8,18 @@ import android.widget.TextView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.task.system.R;
-import com.task.system.bean.LotteryItem;
+import com.task.system.bean.LotteryList;
 import com.yc.lib.api.utils.ImageLoaderUtil;
 
 //积分
-public class LotteryAdapter extends BaseQuickAdapter<LotteryItem, BaseViewHolder> {
+public class LotteryAdapter extends BaseQuickAdapter<LotteryList.LotteryItem, BaseViewHolder> {
 
     public LotteryAdapter(int layoutResId) {
         super(layoutResId);
     }
 
     @Override
-    protected void convert(BaseViewHolder helper, LotteryItem item) {
+    protected void convert(BaseViewHolder helper, LotteryList.LotteryItem item) {
 
         ImageLoaderUtil.loadNormal(item.thumbnail_url, (ImageView) helper.getView(R.id.iv_image), R.mipmap.load_err);
 

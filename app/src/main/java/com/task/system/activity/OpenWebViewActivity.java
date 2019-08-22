@@ -1,16 +1,19 @@
 package com.task.system.activity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
+import android.view.View;
 import android.webkit.JsResult;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.TextView;
 
 import com.blankj.utilcode.util.LogUtils;
 import com.task.system.Constans;
@@ -59,12 +62,18 @@ public class OpenWebViewActivity extends BaseActivity {
             @Override
             public boolean onJsAlert(WebView view, String url, String message, JsResult result) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
-                builder.setTitle("温馨提示").setMessage(message).setPositiveButton("确定", null);
+                builder.setTitle("温馨提示").setMessage(message).setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        result.cancel();
+                        result.confirm();
+                    }
+                });
                 builder.setCancelable(false);
 //                builder.setIcon(R.mipmap.);
                 AlertDialog dialog = builder.create();
+                dialog.setCanceledOnTouchOutside(false);
                 dialog.show();
-                result.confirm();
                 return true;
             }
 
@@ -100,13 +109,52 @@ public class OpenWebViewActivity extends BaseActivity {
 
 
         if (TextUtils.isEmpty(webType)) {
-
             webView.loadUrl(url);
         }else{
-            getWebType();
+            if (webType.equals(Constans.INTERGRAY_CODE)){
+                getIntergrayGame();
+            }else {
+                getWebType();
+            }
         }
 
 
+        ivBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               onBackPressed();
+            }
+        });
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (webView.canGoBack()){
+            webView.goBack();
+        }else{
+            OpenWebViewActivity.super.onBackPressed();
+        }
+    }
+
+    private void getIntergrayGame() {
+        HashMap<String, String> hashMap = new HashMap();
+        hashMap.put("wheel_id", webType);
+        Call<TaskInfo> call = ApiConfig.getInstants().create(TaskService.class).getPlayUl(TUtils.getParams(hashMap));
+
+        API.getObject(call, SimpleBeanInfo.class, new ApiCallBack<SimpleBeanInfo>() {
+            @Override
+            public void onSuccess(int msgCode, String msg, SimpleBeanInfo data) {
+                setTitle(data.title);
+                webView.loadUrl(data.url);
+            }
+
+            @Override
+            public void onFaild(int msgCode, String msg) {
+
+
+            }
+        });
     }
 
     private void getWebType() {
@@ -118,7 +166,10 @@ public class OpenWebViewActivity extends BaseActivity {
             @Override
             public void onSuccess(int msgCode, String msg, SimpleBeanInfo data) {
                 setTitle(data.title);
-                webView.loadUrl(data.link_url);
+                if (!TextUtils.isEmpty(data.content)) {
+                    ((TextView)  findViewById(R.id.tv_content)).setText(data.content);
+//                    webView.loadDataWithBaseURL("about:blank",data.content, "text/html",  "utf-8", null);
+                }
             }
 
             @Override
@@ -199,6 +250,24 @@ public class OpenWebViewActivity extends BaseActivity {
         // 设置默认字体大小
         webSettings.setDefaultFontSize(12);
         webSettings.setPluginState(WebSettings.PluginState.ON_DEMAND);
+        webSettings.setDatabaseEnabled(true);
+
+
+        //文件权限
+        webSettings.setAllowFileAccess(true);
+        webSettings.setAllowFileAccessFromFileURLs(true);
+        webSettings.setAllowUniversalAccessFromFileURLs(true);
+
+
+        webSettings.setDomStorageEnabled(true);//开启DOM storage API功能
+        webSettings.setDatabaseEnabled(true);//开启database storeage API功能
+        String cacheDirPath = getFilesDir().getAbsolutePath()+ "/webcache";//缓存路径
+        webSettings.setDatabasePath(cacheDirPath);//设置数据库缓存路径
+        webSettings.setAppCachePath(cacheDirPath);//设置AppCaches缓存路径
+        webSettings.setAppCacheEnabled(true);
+
+
+        webSettings.setUserAgentString("Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36");
     }
 
     @Override

@@ -12,6 +12,8 @@ import java.io.Serializable;
  */
 public class AreaManageIitem implements Serializable {
 
-    public int status;// 1,
+    public String status;// 1,
     public String title;// 待工作
+    public String count;
+    public String image;
 }

@@ -28,9 +28,14 @@ public class PopulorAdapter extends BaseQuickAdapter<SimpleBeanInfo, BaseViewHol
     @Override
     protected void convert(BaseViewHolder helper, SimpleBeanInfo item) {
 
-        ImageLoaderUtil.loadCircle(item.avator,helper.getView(R.id.iv_header),R.mipmap.defalut_header);
+        ImageLoaderUtil.loadCircle(item.thumbnail,helper.getView(R.id.iv_header),R.mipmap.defalut_header);
 
         ((TextView)helper.getView(R.id.tv_tittle)).setText(item.title);
+
+        ((TextView)helper.getView(R.id.tv_money)).setText("+"+item.market_score);
+
+        ((TextView)helper.getView(R.id.tv_content)).setText(item.success_total+"人已找到赏金,剩"+item.storages+"个名额");
+
 
     }
 }

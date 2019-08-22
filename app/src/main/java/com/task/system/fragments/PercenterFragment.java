@@ -228,13 +228,13 @@ public class PercenterFragment extends Fragment {
             case R.id.tv_about_us:
                 Bundle about = new Bundle();
                 about.putString(Constans.PASS_NAME,"关于我们");
-                about.putString(Constans.ARTICAL_TYPE,"11");
+                about.putString(Constans.ARTICAL_TYPE,Constans.ABOUT_US);
                 ActivityUtils.startActivity(about, OpenWebViewActivity.class);
                 break;
             case R.id.tv_help_center:
                 Bundle help = new Bundle();
                 help.putString(Constans.PASS_NAME,"帮助中心");
-                help.putString(Constans.ARTICAL_TYPE,"12");
+                help.putString(Constans.ARTICAL_TYPE,Constans.HELP_CENTER);
                 ActivityUtils.startActivity(help, OpenWebViewActivity.class);
                 break;
             case R.id.tv_my_area_manage:

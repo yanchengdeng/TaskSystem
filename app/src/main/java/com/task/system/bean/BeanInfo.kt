@@ -22,3 +22,35 @@ data class AddressInfo(
     val status: String,
     val uid: String
 ) : Serializable
+
+
+/**
+ * 区域管理 发布
+ */
+data class AreaManagePublish(
+    val actual_score: String,
+    val create_time: String,
+    val edit_step_url: String,
+    val edit_url: String,
+    val id: String,
+    val status: String,
+    val status_title: String,
+    val sub_title: String,
+    val title: String
+):Serializable
+
+/**
+ * 区域管理订单
+ */
+
+data class AreaManageOrder(
+    val actual_score: String,
+    val create_time: String,
+    val edit_step_url: String,
+    val edit_url: String,
+    val id: String,
+    val status: String,
+    val status_title: String,
+    val sub_title: String,
+    val title: String
+):Serializable

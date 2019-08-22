@@ -33,4 +33,25 @@ public class Constans {
     public static String PASS_NAME = "pass_name";
     //网页类型
     public static String ARTICAL_TYPE = "artical_type";
+
+
+
+    //积分抽奖
+    public static final String  INTERGRAY_CODE = "100";
+    /**
+     *  * 6-联系客服
+     *      * 7-隐私声明
+     *      * 8-社会公约
+     *      * 9-服务条款
+     *      * 10-用户注册协议
+     *      * 11-关于我们
+     *      * 12-帮助中心
+     */
+    public static final String  LINK_CUSTOM = "6";
+    public static final String  PRIVATE_SASTAMENT = "7";
+    public static final String  SOCITY_ORDER = "8";
+    public static final String  SERVER_ITEM = "9";
+    public static final String  REGISTER_DEAL = "10";
+    public static final String  ABOUT_US = "11";
+    public static final String  HELP_CENTER = "12";
 }

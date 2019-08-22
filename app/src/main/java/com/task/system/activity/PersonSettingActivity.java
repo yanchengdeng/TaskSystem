@@ -31,6 +31,7 @@ import com.task.system.api.API;
 import com.task.system.api.TaskInfo;
 import com.task.system.api.TaskInfoList;
 import com.task.system.api.TaskService;
+import com.task.system.bean.SimpleBeanInfo;
 import com.task.system.bean.UserExt;
 import com.task.system.bean.UserInfo;
 import com.task.system.bean.WxAccessToken;
@@ -471,13 +472,14 @@ public class PersonSettingActivity extends BaseActivity {
 
         HashMap<String, String> hashMap = new HashMap();
         hashMap.put("uid", TUtils.getUserId());
-        hashMap.put("avatar", "data:image/png;base64," + base64Encode);
-        Call<TaskInfoList> call = ApiConfig.getInstants().create(TaskService.class).setUserAvatar(TUtils.getParams(hashMap));
+        hashMap.put("image", "data:image/png;base64," + base64Encode);
+        hashMap.put("image_type", "avatar");
+        Call<TaskInfo> call = ApiConfig.getInstants().create(TaskService.class).uploadImage(TUtils.getParams(hashMap));
 
-        API.getList(call, String.class, new ApiCallBackList<String>() {
+        API.getObject(call, SimpleBeanInfo.class, new ApiCallBack<SimpleBeanInfo>() {
 
             @Override
-            public void onSuccess(int msgCode, String msg, List<String> data) {
+            public void onSuccess(int msgCode, String msg, SimpleBeanInfo data) {
                 ToastUtils.showShort("" + msg);
                 dismissLoadingBar();
                 isUplaodImage = true;
