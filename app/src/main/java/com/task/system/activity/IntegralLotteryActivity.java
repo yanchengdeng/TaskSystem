@@ -66,6 +66,7 @@ public class IntegralLotteryActivity extends BaseActivity {
             Bundle about = new Bundle();
             about.putString(Constans.PASS_NAME,homeAdapter.getData().get(position).title);
             about.putString(Constans.ARTICAL_TYPE,Constans.INTERGRAY_CODE);
+            about.putString(Constans.PASS_STRING,homeAdapter.getData().get(position).id);
             ActivityUtils.startActivity(about, OpenWebViewActivity.class);
 
 
