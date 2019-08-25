@@ -280,8 +280,9 @@ public class TaskListAreaOrdersFragment extends BaseFragment {
     }
 
     private void getOrderList() {
-        if (getActivity() != null) {
-            ((BaseActivity) getActivity()).showLoadingBar();
+        SysUtils.log(getActivity()+"----"+getContext()+ApiConfig.context);
+        if (ApiConfig.context!= null) {
+            ((OrderManageActivity)ApiConfig.context).showLoadingBar();
         }
 
         HashMap<String, String> maps = new HashMap<>();
@@ -293,9 +294,11 @@ public class TaskListAreaOrdersFragment extends BaseFragment {
             maps.put("sort", sort);
         }
 
-        if (getActivity()!=null) {
-            if (!TextUtils.isEmpty (((OrderManageActivity)getActivity()).etKey.getEditableText().toString())) {
-                maps.put("keywords", ((OrderManageActivity)getActivity()).etKey.getEditableText().toString());
+        maps.put("keywords", "");
+
+        if (ApiConfig.context!= null) {
+            if (!TextUtils.isEmpty (((OrderManageActivity)ApiConfig.context).etKey.getEditableText().toString())) {
+                maps.put("keywords", ((OrderManageActivity)ApiConfig.context).etKey.getEditableText().toString());
             }
         }
 
@@ -304,8 +307,8 @@ public class TaskListAreaOrdersFragment extends BaseFragment {
         API.getList(call, AreaManagePublish.class, new ApiCallBackList<AreaManageOrder>() {
             @Override
             public void onSuccess(int msgCode, String msg, List<AreaManageOrder> data) {
-                if (getActivity() != null) {
-                    ((BaseActivity) getActivity()).dismissLoadingBar();
+                if (ApiConfig.context!= null) {
+                    ((OrderManageActivity)ApiConfig.context).dismissLoadingBar();
                 }
 
                 TUtils.dealReqestData(taskOrderAdapter, recycle, data, page, smartRefresh);
@@ -313,8 +316,8 @@ public class TaskListAreaOrdersFragment extends BaseFragment {
 
             @Override
             public void onFaild(int msgCode, String msg) {
-                if (getActivity() != null) {
-                    ((BaseActivity) getActivity()).dismissLoadingBar();
+                if (ApiConfig.context != null) {
+                    ((OrderManageActivity)ApiConfig.context).dismissLoadingBar();
                 }
 
                 TUtils.dealNoReqestData(taskOrderAdapter, recycle, smartRefresh);

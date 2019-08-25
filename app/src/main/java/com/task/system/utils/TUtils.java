@@ -66,6 +66,26 @@ public class TUtils {
         return data;
     }
 
+/*    public static HashMap<String, String> getParamsWithoutUid(HashMap<String, String> data) {
+        data.put("version", AppUtils.getAppVersionName());
+        data.put("app_imei", getImei());
+        data.put("app_id", Constans.APP_ID);
+        data.put("app_sign", getAppSign());
+
+        if (!TextUtils.isEmpty(getToken())) {
+            data.put("app_token", getToken());
+        }
+        if (Constans.IS_DEBUG) {
+            StringBuffer stringBuffer = new StringBuffer();
+            stringBuffer.append("?");
+            for (String key : data.keySet()) {
+                stringBuffer.append(key).append("=").append(data.get(key)).append("&");
+            }
+            LogUtils.d("dyc", stringBuffer.toString());
+        }
+        return data;
+    }*/
+
 
     public static HashMap<String, String> getParams() {
         HashMap<String, String> data = new HashMap<>();

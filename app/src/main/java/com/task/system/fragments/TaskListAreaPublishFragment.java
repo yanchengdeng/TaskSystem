@@ -20,6 +20,7 @@ import com.task.system.R;
 import com.task.system.activity.BaseActivity;
 import com.task.system.activity.LinkOrdersActivity;
 import com.task.system.activity.OpenWebViewActivity;
+import com.task.system.activity.PublishManageActivity;
 import com.task.system.activity.TaskDetailActivity;
 import com.task.system.adapters.AreaManagePublishAdapter;
 import com.task.system.api.API;
@@ -215,8 +216,8 @@ public class TaskListAreaPublishFragment extends BaseFragment {
     }
 
     private void getOrderList() {
-        if (getActivity() != null) {
-            ((BaseActivity) getActivity()).showLoadingBar();
+        if (ApiConfig.context != null) {
+            ((BaseActivity) ApiConfig.context).showLoadingBar();
         }
 
         HashMap<String, String> maps = new HashMap<>();
@@ -228,13 +229,21 @@ public class TaskListAreaPublishFragment extends BaseFragment {
             maps.put("sort", sort);
         }
 
+        maps.put("keywords", "");
+
+        if (ApiConfig.context!=null) {
+            if (!TextUtils.isEmpty (((PublishManageActivity)ApiConfig.context).etKey.getEditableText().toString())) {
+                maps.put("keywords", ((PublishManageActivity)ApiConfig.context).etKey.getEditableText().toString());
+            }
+        }
+
         Call<TaskInfoList> call = ApiConfig.getInstants().create(TaskService.class).getOperaorTaskList(TUtils.getParams(maps));
 
         API.getList(call, AreaManagePublish.class, new ApiCallBackList<AreaManagePublish>() {
             @Override
             public void onSuccess(int msgCode, String msg, List<AreaManagePublish> data) {
-                if (getActivity() != null) {
-                    ((BaseActivity) getActivity()).dismissLoadingBar();
+                if (ApiConfig.context != null) {
+                    ((BaseActivity) ApiConfig.context).dismissLoadingBar();
                 }
 
                 TUtils.dealReqestData(taskOrderAdapter, recycle, data, page, smartRefresh);
@@ -242,8 +251,8 @@ public class TaskListAreaPublishFragment extends BaseFragment {
 
             @Override
             public void onFaild(int msgCode, String msg) {
-                if (getActivity() != null) {
-                    ((BaseActivity) getActivity()).dismissLoadingBar();
+                if (ApiConfig.context != null) {
+                    ((BaseActivity) ApiConfig.context).dismissLoadingBar();
                 }
 
                 TUtils.dealNoReqestData(taskOrderAdapter, recycle, smartRefresh);

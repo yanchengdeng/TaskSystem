@@ -27,7 +27,6 @@ import com.task.system.views.FragmentPagerItem
 import com.task.system.views.FragmentPagerItems
 import com.yc.lib.api.ApiCallBackList
 import com.yc.lib.api.ApiConfig
-import com.yc.lib.api.utils.SysUtils
 import kotlinx.android.synthetic.main.task_fragment.*
 import razerdp.basepopup.BasePopupWindow
 
@@ -79,19 +78,16 @@ class OrderManageActivity : BaseActivity() {
 
 
         iv_search.setOnClickListener {
-            if (TextUtils.isEmpty(et_keys.editableText.toString())) {
-                SysUtils.showToast("请输入任务名/任务ID")
-                return@setOnClickListener
-            }
+//            if (TextUtils.isEmpty(et_keys.editableText.toString())) {
+//                SysUtils.showToast("请输入任务名/任务ID")
+//                return@setOnClickListener
+//            }
             if (viewpage.adapter != null && viewpage.adapter is FragmentPagerItemAdapter) {
                 val fragment =
-                    (viewpage.adapter as FragmentPagerItemAdapter).getItem(viewpage.currentItem) as TaskListAreaOrdersFragment
-                fragment.setSortRefresh()
+                    (viewpage.adapter as FragmentPagerItemAdapter).getPage(viewpage.currentItem) as TaskListAreaOrdersFragment
+                fragment?.setSortRefresh()
             }
-
         }
-
-
 
         menuAdapter = MenuAdapter(R.layout.adapter_drop_menu_item)
 

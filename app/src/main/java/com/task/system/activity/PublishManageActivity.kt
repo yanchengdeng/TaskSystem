@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.text.TextUtils
 import android.view.View
+import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.blankj.utilcode.util.ScreenUtils
@@ -44,7 +45,7 @@ class PublishManageActivity : BaseActivity() {
 
     private var selectPostion :Int =  0
     private var tabs:List<AreaManageIitem> ?= null
-
+    lateinit  var etKey: EditText
 
     private var tvCount: TextView? = null
 
@@ -97,11 +98,30 @@ class PublishManageActivity : BaseActivity() {
         viewpage.offscreenPageLimit = tabs?.size!!
 
 
+        iv_search.visibility = View.VISIBLE
+        etKey = findViewById(R.id.et_keys)
+        et_keys.visibility = View.VISIBLE
+
+
         ll_smart_sort.setOnClickListener(object : PerfectClickListener() {
             override fun onNoDoubleClick(v: View) {
                 showSmartSort()
             }
         })
+
+
+        iv_search.setOnClickListener {
+//            if (TextUtils.isEmpty(et_keys.editableText.toString())) {
+//                SysUtils.showToast("请输入任务名/任务ID")
+//                return@setOnClickListener
+//            }
+            if (viewpage.adapter != null && viewpage.adapter is FragmentPagerItemAdapter) {
+                val fragment =
+                    (viewpage.adapter as FragmentPagerItemAdapter).getPage(viewpage.currentItem) as TaskListAreaPublishFragment
+                fragment?.setSortRefresh()
+            }
+
+        }
 
 
     }

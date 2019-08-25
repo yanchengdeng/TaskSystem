@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/list_divider_color"
+    android:orientation="horizontal">
+
+    <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="0dp"
+        android:id="@+id/tv_one"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:layout_marginLeft="1dp"
+        android:paddingTop="@dimen/image_padding"
+        android:paddingBottom="@dimen/image_padding"
+        android:background="@color/white"
+        android:gravity="center"
+        android:text="0"
+        android:textColor="@color/color_tittle"
+        android:textSize="@dimen/text_size_normal"
+        />
+
+    <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="0dp"
+        android:id="@+id/tv_two"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="1dp"
+        android:layout_weight="1"
+        android:background="@color/white"
+        android:gravity="center"
+        android:text="0"
+        android:textColor="@color/color_tittle"
+        android:textSize="@dimen/text_size_normal"
+        />
+
+    <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="0dp"
+        android:id="@+id/tv_three"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="1dp"
+        android:layout_marginRight="1dp"
+        android:layout_weight="1"
+        android:background="@color/white"
+        android:gravity="center"
+        android:text="0"
+        android:textColor="@color/red"
+        android:textSize="@dimen/text_size_normal"
+        />
+
+
+    <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="0dp"
+        android:id="@+id/tv_four"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="1dp"
+        android:layout_marginRight="1dp"
+        android:layout_weight="1"
+        android:background="@color/white"
+        android:gravity="center"
+        android:text="0"
+        android:textColor="@color/blue_ball"
+        android:textSize="@dimen/text_size_normal"
+        />
+
+
+
+</LinearLayout>
+

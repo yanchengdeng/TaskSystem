@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:orientation="vertical">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:orientation="vertical"
+            tools:context=".activities.BuyLotteryRecordActivity">
+
+
+            <include layout="@layout/layout_date_pick" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/activity_horizontal_margin"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="搜索会员请输入\n用户UID或手机号码:"
+                    android:textColor="@color/color_tittle"
+                    android:textSize="@dimen/text_size_normal_down" />
+
+                <EditText
+                    android:id="@+id/et_input"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                    android:layout_weight="1"
+                    android:background="@drawable/normal_submit_btn_gray_trans"
+                    android:hint="用户uid/手机号码"
+                    android:inputType="phone"
+                    android:maxLength="11"
+                    android:padding="@dimen/image_padding"
+                    android:textColor="@color/color_info"
+                    android:textSize="@dimen/text_size_normal" />
+
+                <TextView
+                    android:id="@+id/tv_key_search"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                    android:background="@drawable/normal_submit_btn_gray_trans"
+                    android:paddingLeft="@dimen/activity_horizontal_margin"
+                    android:paddingTop="@dimen/image_padding"
+                    android:paddingRight="@dimen/activity_horizontal_margin"
+                    android:paddingBottom="@dimen/image_padding"
+                    android:text="搜索"
+                    android:textColor="@color/color_info"
+                    android:textSize="@dimen/text_size_normal" />
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+        <include layout="@layout/layout_static_business_info" />
+
+
+        <TextView
+            android:id="@+id/tv_aciton_setting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:background="@drawable/normal_submit_btn_gray_trans"
+            android:drawableLeft="@mipmap/small_setting"
+            android:gravity="center"
+            android:padding="@dimen/image_padding"
+            android:visibility="gone"
+            android:text="设置"
+            android:textColor="@color/color_tittle"
+            android:textSize="@dimen/text_size_normal" />
+
+
+        <LinearLayout
+            android:id="@+id/ll_below_member_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/image_padding_big"
+            android:orientation="vertical"
+            android:visibility="visible">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="下级会员总数为："
+                    android:textColor="@color/color_tittle"
+                    android:textSize="@dimen/text_size_normal" />
+
+                <TextView
+                    android:id="@+id/tv_below_nums"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0"
+                    android:textColor="@color/red"
+                    android:textSize="@dimen/text_size_normal"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="人"
+                    android:textColor="@color/color_tittle"
+                    android:textSize="@dimen/text_size_normal" />
+
+
+                <TextView
+                    android:layout_width="1dp"
+                    android:background="@color/list_divider_color"
+                    android:layout_height="@dimen/activity_horizontal_margin"
+                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                    android:layout_marginRight="@dimen/activity_horizontal_margin"/>
+
+
+                <TextView
+                    android:id="@+id/tv_new_num"
+                    android:textColor="@color/color_info"
+                    android:textSize="@dimen/text_size_normal_down"
+                    android:text="@string/new_num"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/image_padding_big" />
+
+
+    </LinearLayout>
+</android.support.v4.widget.NestedScrollView>

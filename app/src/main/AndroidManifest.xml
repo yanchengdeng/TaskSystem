@@ -3,26 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.task.system">
     <!-- 这个权限用于进行网络定位 -->
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> <!-- 这个权限用于访问GPS定位 -->
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> <!-- 用于访问wifi网络信息，wifi信息会用于进行网络定位 -->
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" /> <!-- 获取运营商信息，用于支持提供运营商信息相关的接口 -->
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> <!-- 这个权限用于获取wifi的获取权限，wifi信息会用来进行网络定位 -->
-    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" /> <!-- 用于读取手机当前的状态 -->
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" /> <!-- 写入扩展存储，向扩展卡写入数据，用于写入离线定位数据 -->
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> <!-- 访问网络，网络定位需要上网 -->
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-    <uses-permission
-        android:name="android.permission.READ_LOGS"
-        tools:ignore="ProtectedPermissions" /> <!-- SD卡读取权限，用户写入离线定位数据 -->
-    <uses-permission
-        android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"
-        tools:ignore="ProtectedPermissions" />
-    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
-    <uses-permission
-        android:name="android.permission.WRITE_SETTINGS"
-        tools:ignore="ProtectedPermissions" />
-
     <application
         android:name=".FixApplication"
         android:allowBackup="true"
@@ -33,7 +13,8 @@
         android:roundIcon="@mipmap/logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.OrderManageActivity"></activity>
+        <activity android:name=".activity.BusinessDataActivity"></activity>
+        <activity android:name=".activity.OrderManageActivity" />
         <activity android:name=".activity.LinkOrdersActivity" />
         <activity android:name=".activity.OrdersManageActivity" />
         <activity android:name=".activity.PublishManageActivity" />
@@ -48,10 +29,6 @@
         <activity android:name=".activity.NewUserTaskActivity" />
         <activity android:name=".activity.SignActivity" />
         <activity android:name=".activity.MyTeamActivity" /> <!-- Apache HTTP 客户端，以 Android 9 及更高版本为目标的应用可以 -->
-        <uses-library
-            android:name="org.apache.http.legacy"
-            android:required="false" />
-
         <activity
             android:name=".activity.SplashActivity"
             android:theme="@style/FullscreenTheme">
@@ -61,6 +38,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name="com.tencent.bugly.beta.ui.BetaActivity"
             android:configChanges="keyboardHidden|orientation|screenSize|locale"
@@ -112,6 +90,18 @@
         <activity android:name=".activity.MyCollectedActivity" />
         <activity android:name=".activity.ForgetPasswordActivity" />
         <activity android:name=".activity.PersonSettingActivity" />
+        <activity android:name=".activity.RegisterActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="register"
+                    android:scheme="xieshoujianzhi" />
+            </intent-filter>
+        </activity>
         <!--
              &lt;!&ndash;全面屏&ndash;&gt;
         <meta-data
@@ -136,40 +126,6 @@
         <!-- <category android:name="android.intent.category.HOME"/> -->
         <!-- </intent-filter> -->
         <!-- </receiver> -->
-        <meta-data
-            android:name="com.baidu.lbsapi.API_KEY"
-            android:value="4rwhxfNGulmUfI8mHZhNWagaLxImlESU" />
-
-        <service
-            android:name="com.baidu.location.f"
-            android:enabled="true"
-            android:process=":remote">
-
-            <!--
-                    <intent-filter>
-                    <action android:name="com.baidu.location.service_v2.2" />
-                </intent-filter>
-            -->
-        </service> <!-- 文件下载 -->
-        <!-- &lt;!&ndash; 设置key &ndash;&gt; -->
-        <!-- <meta-data -->
-        <!-- android:name="com.amap.api.v2.apikey" -->
-        <!-- android:value="2589408a389f570f21045ba678bcfbc6"/> -->
-        <!-- &lt;!&ndash; 定位需要的服务 &ndash;&gt; -->
-        <!-- <service android:name="com.amap.api.location.APSService"> -->
-        <!-- </service> -->
-        <activity android:name=".activity.RegisterActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:host="register"
-                    android:scheme="xieshoujianzhi" />
-            </intent-filter>
-        </activity>
         <activity android:name=".activity.LoginActivity">
 
             <!-- <intent-filter> -->
@@ -179,6 +135,7 @@
             <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
             <!-- </intent-filter> -->
         </activity>
+
         <activity
             android:name=".activity.MainActivity"
             android:label="@string/app_name">
@@ -194,17 +151,13 @@
             <!-- &lt;!&ndash; <category android:name="android.intent.category.DEFAULT" /> &ndash;&gt; -->
             <!-- </intent-filter> -->
         </activity> <!-- 文件下载 -->
-        <provider
-            android:name="android.support.v4.content.FileProvider"
-            android:authorities="com.task.system.fileprovider"
-            android:exported="false"
-            android:grantUriPermissions="true">
-            <meta-data
-                android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_paths" />
-        </provider> <!-- apk 下载服务 -->
-        <service android:name=".services.UpdateService" />
-
+        <!-- &lt;!&ndash; 设置key &ndash;&gt; -->
+        <!-- <meta-data -->
+        <!-- android:name="com.amap.api.v2.apikey" -->
+        <!-- android:value="2589408a389f570f21045ba678bcfbc6"/> -->
+        <!-- &lt;!&ndash; 定位需要的服务 &ndash;&gt; -->
+        <!-- <service android:name="com.amap.api.location.APSService"> -->
+        <!-- </service> -->
         <activity android:name=".activity.OpenWebViewActivity" />
         <activity
             android:name=".wxapi.WXEntryActivity"
@@ -225,16 +178,28 @@
 
                 <data android:scheme="tencent101564744" />
             </intent-filter>
-        </activity>
+        </activity> <!-- 文件下载 -->
         <activity
             android:name="com.tencent.connect.common.AssistActivity"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="behind"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" /> <!-- apk 下载服务 -->
         <activity
             android:name=".views.photoview.preview.ImagePreviewActivity"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 
+        <meta-data
+            android:name="com.baidu.lbsapi.API_KEY"
+            android:value="4rwhxfNGulmUfI8mHZhNWagaLxImlESU" />
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.task.system.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
         <receiver
             android:name=".recieves.AppRegister"
             android:permission="com.tencent.mm.plugin.permission.SEND">
@@ -242,6 +207,42 @@
                 <action android:name="com.tencent.mm.plugin.openapi.Intent.ACTION_REFRESH_WXAPP" />
             </intent-filter>
         </receiver>
-    </application>
+        <service
+            android:name="com.baidu.location.f"
+            android:enabled="true"
+            android:process=":remote">
+
+            <!--
+                    <intent-filter>
+                    <action android:name="com.baidu.location.service_v2.2" />
+                </intent-filter>
+            -->
+        </service>
+        <service android:name=".services.UpdateService" />
+
+        <uses-library
+            android:name="org.apache.http.legacy"
+            android:required="false" />
+    </application> <!-- 这个权限用于访问GPS定位 -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> <!-- 用于访问wifi网络信息，wifi信息会用于进行网络定位 -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> <!-- 获取运营商信息，用于支持提供运营商信息相关的接口 -->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" /> <!-- 这个权限用于获取wifi的获取权限，wifi信息会用来进行网络定位 -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> <!-- 用于读取手机当前的状态 -->
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" /> <!-- 写入扩展存储，向扩展卡写入数据，用于写入离线定位数据 -->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" /> <!-- 访问网络，网络定位需要上网 -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" /> <!-- SD卡读取权限，用户写入离线定位数据 -->
+    <uses-permission
+        android:name="android.permission.READ_LOGS"
+        tools:ignore="ProtectedPermissions" />
+    <uses-permission
+        android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"
+        tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+
+    <uses-permission
+        android:name="android.permission.WRITE_SETTINGS"
+        tools:ignore="ProtectedPermissions" />
 
 </manifest>

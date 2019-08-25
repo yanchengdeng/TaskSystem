@@ -22,4 +22,5 @@ public class ScoreAccountUserInfo implements Serializable {
 
     //TODO 缺少
     public String address;
+    public String task_repulse_sum;
 }

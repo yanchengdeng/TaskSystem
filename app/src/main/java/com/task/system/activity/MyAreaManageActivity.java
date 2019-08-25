@@ -110,6 +110,21 @@ public class MyAreaManageActivity extends BaseSimpleActivity {
         });
 
 
+        tvRightFunction.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ActivityUtils.startActivity(BusinessDataActivity.class);
+            }
+        });
+
+        //我的收益
+        findViewById(R.id.card_my_benifity).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ActivityUtils.startActivity(MyIncomeActivity.class);
+            }
+        });
+
         //发布
         recyclePublish.setLayoutManager(new GridLayoutManager(this,3));
         recyclePublish.setAdapter( publishAdapter);
