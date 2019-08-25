@@ -615,4 +615,17 @@ public interface TaskService {
     Call<TaskInfoList> operatorTaskStatus(@FieldMap HashMap<String,String> mapas);
 
 
+    //获取订单审核理由
+    @FormUrlEncoded
+    @POST("order/getAuditReason")
+    Call<TaskInfo> getAuditReason(@FieldMap HashMap<String,String> maps);
+
+
+
+    //获取任务审核理由
+    @FormUrlEncoded
+    @POST("operator/getTaskAuditReason")
+    Call<TaskInfo> getTaskAuditReason(@FieldMap HashMap<String,String> maps);
+
+
  }

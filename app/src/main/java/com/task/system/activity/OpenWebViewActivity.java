@@ -154,6 +154,10 @@ public class OpenWebViewActivity extends BaseActivity {
                 ivRightFunction.setImageResource(R.mipmap.iv_share);
                 getIntergrayGame();
                 getShareInfo();
+            }else if (webType.equals(Constans.ORDER_ROOLBACK_REASON)){
+                getOrderReaseon();
+            }else if(webType.equals(Constans.TASK_ROOLBACK_REASON)){
+                getTaskReaseon();
             }else {
                 getWebType();
             }
@@ -255,6 +259,57 @@ public class OpenWebViewActivity extends BaseActivity {
             }
         });
     }
+
+
+    //订单审核理由
+    private void getOrderReaseon() {
+        HashMap<String, String> hashMap = new HashMap();
+        hashMap.put("order_id", webType);
+        Call<TaskInfo> call = ApiConfig.getInstants().create(TaskService.class).getAuditReason(TUtils.getParams(hashMap));
+
+        API.getObject(call, SimpleBeanInfo.class, new ApiCallBack<SimpleBeanInfo>() {
+            @Override
+            public void onSuccess(int msgCode, String msg, SimpleBeanInfo data) {
+                if (!TextUtils.isEmpty(data.content)) {
+                    ((TextView)  findViewById(R.id.tv_content)).setText(data.content);
+                }else{
+                    ((TextView) findViewById(R.id.tv_content)).setText(getString(R.string.no_reason_tips));
+                }
+            }
+
+            @Override
+            public void onFaild(int msgCode, String msg) {
+                ((TextView) findViewById(R.id.tv_content)).setText(getString(R.string.no_reason_tips));
+
+            }
+        });
+    }
+
+    //任务审核理由
+    private void getTaskReaseon() {
+        HashMap<String, String> hashMap = new HashMap();
+        hashMap.put("task_id", webType);
+        Call<TaskInfo> call = ApiConfig.getInstants().create(TaskService.class).getTaskAuditReason(TUtils.getParams(hashMap));
+
+        API.getObject(call, SimpleBeanInfo.class, new ApiCallBack<SimpleBeanInfo>() {
+            @Override
+            public void onSuccess(int msgCode, String msg, SimpleBeanInfo data) {
+                if (!TextUtils.isEmpty(data.content)) {
+                    ((TextView)  findViewById(R.id.tv_content)).setText(data.content);
+                }else{
+                    ((TextView) findViewById(R.id.tv_content)).setText(getString(R.string.no_reason_tips));
+                }
+            }
+
+            @Override
+            public void onFaild(int msgCode, String msg) {
+                ((TextView) findViewById(R.id.tv_content)).setText(getString(R.string.no_reason_tips));
+
+            }
+        });
+    }
+
+
 
 
     public ValueCallback<Uri> mUploadMessage;

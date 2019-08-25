@@ -5,6 +5,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -13,6 +14,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.blankj.utilcode.util.ActivityUtils;
 import com.blankj.utilcode.util.AppUtils;
 import com.blankj.utilcode.util.ToastUtils;
@@ -290,7 +293,11 @@ public class TaskDetailActivity extends BaseSimpleActivity {
                         return;
                     }
                     if (taskInfoItem.order_status == 0) {
-                        applyTask();
+                        if (taskInfoItem.deposit_score>0){
+                            showDepositDialog();
+                        }else {
+                            applyTask();
+                        }
                     } else if (taskInfoItem.order_status == 1) {
                         //做下一步工作
                         Bundle bundle = new Bundle();
@@ -304,6 +311,30 @@ public class TaskDetailActivity extends BaseSimpleActivity {
                 }
                 break;
         }
+    }
+
+    //弹出保证金提示
+    private void showDepositDialog() {
+
+        MaterialDialog.Builder builder = new MaterialDialog.Builder(ApiConfig.context)
+                .title("温馨提示")
+                .content(""+taskInfoItem.deposit_score_tips)
+                .positiveText("确定").positiveColor(getResources().getColor(R.color.color_blue)).onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        dialog.dismiss();
+                        applyTask();
+
+                    }
+                }).negativeText("取消").negativeColor(getResources().getColor(R.color.color_info)).onNegative(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        dialog.dismiss();
+                    }
+                });
+
+        MaterialDialog dialog = builder.build();
+        dialog.show();
     }
 
     //申请任务

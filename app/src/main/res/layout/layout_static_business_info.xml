@@ -133,6 +133,7 @@
 
     <include layout="@layout/view_line" />
     <LinearLayout
+        android:id="@+id/hide_view1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
@@ -157,8 +158,13 @@
 
     </LinearLayout>
 
-    <include layout="@layout/view_line" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/list_divider_color"
+        android:id="@+id/hide_view2"/>
     <LinearLayout
+        android:id="@+id/hide_view3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
@@ -184,9 +190,15 @@
     </LinearLayout>
 
 
-    <include layout="@layout/view_line" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/list_divider_color"
+        android:id="@+id/hide_view4"/>
 
     <LinearLayout
+        android:id="@+id/hide_view5"
+
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
@@ -226,9 +238,15 @@
 
 
 
-    <include layout="@layout/view_line" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/list_divider_color"
+        android:id="@+id/hide_view6"/>
 
     <LinearLayout
+
+        android:id="@+id/hide_view7"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
@@ -437,6 +455,7 @@
 
 
     <LinearLayout
+        android:id="@+id/hide_view8"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
@@ -475,8 +494,14 @@
     </LinearLayout>
 
 
-    <include layout="@layout/view_line"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/list_divider_color"
+        android:id="@+id/hide_view9"/>
     <LinearLayout
+        android:id="@+id/hide_view10"
+
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
@@ -504,6 +529,44 @@
 
 
     <include layout="@layout/view_line"/>
+
+
+    <LinearLayout
+        android:id="@+id/hide_view11"
+
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:background="@color/white"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:text="备注"
+            android:textSize="@dimen/text_size_normal_up"
+            android:textColor="@color/color_tittle"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:padding="@dimen/activity_horizontal_margin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_width="1dp"
+            android:layout_margin="@dimen/image_padding_big"
+            android:background="@color/list_divider_color"
+            android:layout_height="match_parent" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:id="@+id/tv_remark"
+            android:padding="@dimen/image_padding"
+            android:gravity="center_vertical"
+            android:textColor="@color/color_tittle"
+            android:textSize="@dimen/text_size_normal"
+            android:maxLines="3"
+            android:ellipsize="end"
+            android:layout_height="match_parent" />
+    </LinearLayout>
 
 
 

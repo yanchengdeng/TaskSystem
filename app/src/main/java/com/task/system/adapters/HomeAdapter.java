@@ -1,6 +1,7 @@
 package com.task.system.adapters;
 
 import android.text.TextUtils;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -31,8 +32,10 @@ public class HomeAdapter extends BaseQuickAdapter<TaskInfoItem, BaseViewHolder> 
 
 
         if (!TextUtils.isEmpty(item.views)) {
-            ((TextView) helper.getView(R.id.tv_num)).setText(item.views + "人浏览");
+            ((TextView) helper.getView(R.id.tv_num)).setText(item.views + "");
         }
+
+        helper.getView(R.id.iv_sign).setVisibility(item.deposit_score>0? View.VISIBLE:View.INVISIBLE);
 
         if (!TextUtils.isEmpty(item.market_score)) {
             ((TextView) helper.getView(R.id.tv_price)).setText(mContext.getString(R.string.money_unit) + item.market_score);

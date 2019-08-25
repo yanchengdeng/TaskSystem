@@ -69,4 +69,5 @@
     <string name="input_your_username">请输入您的用户名</string>
     <string name="submit">提交</string>
     <string name="my_area_manage">我的区域管理</string>
+    <string name="no_reason_tips">审核理由不存在</string>
 </resources>

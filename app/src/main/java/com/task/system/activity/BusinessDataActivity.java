@@ -114,6 +114,36 @@ public class BusinessDataActivity extends BaseActivity {
     LinearLayout llBelowMemberInfo;
     @BindView(R.id.recycle)
     RecyclerView recycle;
+    @BindView(R.id.hide_view1)
+    LinearLayout hideView1;
+    @BindView(R.id.hide_view3)
+    LinearLayout hideView3;
+    @BindView(R.id.hide_view5)
+    LinearLayout hideView5;
+    @BindView(R.id.hide_view7)
+    LinearLayout hideView7;
+    @BindView(R.id.tv_member_account_intergray)
+    TextView tvMemberAccountIntergray;
+    @BindView(R.id.tv_member_address)
+    TextView tvMemberAddress;
+    @BindView(R.id.ll_for_member)
+    LinearLayout llForMember;
+    @BindView(R.id.hide_view8)
+    LinearLayout hideView8;
+    @BindView(R.id.hide_view10)
+    LinearLayout hideView10;
+    @BindView(R.id.tv_remark)
+    TextView tvRemark;
+    @BindView(R.id.hide_view11)
+    LinearLayout hideView11;
+    @BindView(R.id.hide_view2)
+    TextView hideView2;
+    @BindView(R.id.hide_view4)
+    TextView hideView4;
+    @BindView(R.id.hide_view6)
+    TextView hideView6;
+    @BindView(R.id.hide_view9)
+    TextView hideView9;
     private String child_uid;//要查看的用户的uid
     public String search_key;//要搜索的用户uid
     private int page = 1;
@@ -133,6 +163,22 @@ public class BusinessDataActivity extends BaseActivity {
         initPickView();
         if (!TextUtils.isEmpty(getIntent().getStringExtra(Constans.PASS_CHILD_UID))) {
             child_uid = getIntent().getStringExtra(Constans.PASS_CHILD_UID);
+
+            //会员
+            hideView1.setVisibility(View.GONE);
+            hideView2.setVisibility(View.GONE);
+            hideView3.setVisibility(View.GONE);
+            hideView4.setVisibility(View.GONE);
+            hideView5.setVisibility(View.GONE);
+            hideView6.setVisibility(View.GONE);
+            hideView7.setVisibility(View.GONE);
+            hideView8.setVisibility(View.GONE);
+            hideView9.setVisibility(View.GONE);
+            hideView10.setVisibility(View.GONE);
+        } else {
+            //区域管理
+            hideView11.setVisibility(View.GONE);
+            llForMember.setVisibility(View.GONE);
         }
         if (!TextUtils.isEmpty(getIntent().getStringExtra(Constans.PASS_START_TIME))) {
             start_date = getIntent().getStringExtra(Constans.PASS_START_TIME);
@@ -260,7 +306,7 @@ public class BusinessDataActivity extends BaseActivity {
                 }
                 if (data.user_info.user_type.equals(UserType.USER_TYPE_AREA.getType())) {
                     //区域
-                    tvAcitonSetting.setVisibility(View.VISIBLE);
+                    tvAcitonSetting.setVisibility(View.GONE);
                     llBelowMemberInfo.setVisibility(View.VISIBLE);
                 }
             }
@@ -270,7 +316,7 @@ public class BusinessDataActivity extends BaseActivity {
 
 
             tvPublishBalance.setText("发布账户余额：" + data.user_info.score);
-            tvHistoryPublishBalance.setText("历史发布总金额：" + data.user_info.score);
+            tvHistoryPublishBalance.setText("历史发布总金额：" + data.user_info.history_score);
             tvPublishCount.setText("发布任务：" + data.user_statistics.publish_task_num);
             tvFinishTask.setText("完成任务：" + data.user_statistics.complete_task_num);
             tvMemberCount.setText("会员总数：" + data.user_statistics.member_num);
@@ -283,6 +329,13 @@ public class BusinessDataActivity extends BaseActivity {
             tvFinishOrdersScale.setText("成单比例：" + data.user_statistics.order_complete_ratio);
             tvPassScale.setText("通过比例：" + data.user_statistics.order_adopt_ratio);
             tvZhengyiScale.setText("争议比例：" + data.user_statistics.order_dispute_ratio);
+            if (!TextUtils.isEmpty(data.user_info.remark)) {
+                tvRemark.setText(data.user_info.remark);
+            }
+
+            if (!TextUtils.isEmpty(data.user_info.region_name)) {
+                tvMemberAddress.setText("所在地："+data.user_info.region_name);
+            }
 
 
             tvBelowNums.setText("" + data.user_statistics.member_num);

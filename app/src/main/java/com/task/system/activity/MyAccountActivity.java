@@ -249,12 +249,12 @@ public class MyAccountActivity extends BaseActivity {
             tvAccoutIntergray.setText("账户积分：" + data.user_info.score);
             tvHistoryMoney.setText("历史积分：" + data.user_info.history_score);
             tvCreateValue.setText("创造价值：" + data.user_info.task_score);
-            tvFinishTask.setText("完成任务：" + data.user_info.task_num);
+            tvFinishTask.setText("完成任务：" + data.user_statistics.complete_task_num);
             tvRemark.setText("" + data.user_info.remark);
-            tvBelowNums.setText("" + data.user_info.member_num);
-            tvNewNum.setText(String.format(getString(R.string.new_num), data.user_info.member_new_num));
+            tvBelowNums.setText("" + data.user_statistics.member_num);
+            tvNewNum.setText(String.format(getString(R.string.new_num), data.user_statistics.member_new_num));
             tvAgentCreateValue.setText(String.format(getString(R.string.agent_create_value), data.user_info.task_score));
-            tvAgentFinishTask.setText(String.format(getString(R.string.agent_finish_tast), data.user_info.task_num));
+            tvAgentFinishTask.setText(String.format(getString(R.string.agent_finish_tast), data.user_statistics.complete_task_num));
         } else {
             llStaticInfo.setVisibility(View.GONE);
         }

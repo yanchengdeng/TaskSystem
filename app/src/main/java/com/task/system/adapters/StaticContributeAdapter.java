@@ -28,9 +28,9 @@ public class StaticContributeAdapter extends BaseQuickAdapter<ScoreAccountUserIn
     protected void convert(BaseViewHolder helper, final ScoreAccountUserInfo item) {
         ((TextView) helper.getView(R.id.tv_one)).setText(""+item.uid);
         ((TextView) helper.getView(R.id.tv_two)).setText(""+item.task_num);
-        ((TextView) helper.getView(R.id.tv_three)).setText(""+item.history_score);
+        ((TextView) helper.getView(R.id.tv_three)).setText(""+item.task_score);
         ((TextView) helper.getView(R.id.tv_four)).setText(""+item.score);
-        ((TextView) helper.getView(R.id.tv_five)).setText(""+item.member_num);
+        ((TextView) helper.getView(R.id.tv_five)).setText(""+item.task_repulse_sum);
 
 
     }

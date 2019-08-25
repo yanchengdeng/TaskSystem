@@ -126,7 +126,11 @@ public class TaskListAreaOrdersFragment extends BaseFragment {
 
                 switch (view.getId()) {
                     case R.id.tv_look_for_reason:
-                        SysUtils.showToast("给一个原因！！！！xxxx");
+                        Bundle about = new Bundle();
+                        about.putString(Constans.PASS_NAME,"审核理由");
+                        about.putString(Constans.ARTICAL_TYPE,Constans.ORDER_ROOLBACK_REASON);
+                        about.putString(Constans.PASS_STRING,taskOrderAdapter.getData().get(position).getId());
+                        ActivityUtils.startActivity(about, OpenWebViewActivity.class);
                         break;
                     case R.id.tv_cancle_task:
                         cancleTask(position,taskOrderAdapter.getData().get(position));

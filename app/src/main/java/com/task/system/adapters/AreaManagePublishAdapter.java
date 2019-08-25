@@ -46,7 +46,7 @@ public class AreaManagePublishAdapter extends BaseQuickAdapter<AreaManagePublish
         }
 
 
-         ((TextView)helper.getView(R.id.tv_time)).setText(item.getCreate_time());
+         ((TextView)helper.getView(R.id.tv_time)).setText(getTimeTips(item.getStatus())+item.getCreate_time());
 
         ((TextView) helper.getView(R.id.tv_status)).setText("状态："+item.getStatus_title());
 
@@ -135,6 +135,38 @@ public class AreaManagePublishAdapter extends BaseQuickAdapter<AreaManagePublish
                 break;
         }
 
+
+    }
+
+    /**
+     "status": 0,"title": "已中止" --显示编辑按钮
+     "status": "1","title": "展示中"--中止任务 订单数据
+     "status": "2","title": "草稿箱"--显示编辑按钮
+     "status": "3","title": "待审核"--显示编辑按钮 取消任务
+     "status": "4","title": "未通过"--显示编辑按钮 显示审核理由按钮
+     "status": "5","title": "已完结"--显示编辑按钮 显示订单数据按钮
+     "status": "6","title": "已过期"--显示编辑按钮
+     "status": "7","title": "未开始"--显示编辑按钮
+     */
+    private String getTimeTips(String status) {
+        switch (status){
+            case "0":
+                return "中止时间：";
+            case "1":
+                return "到期时间：";
+            case "2":
+                return "到期时间：";
+            case "3":
+                return "提交时间：";
+            case "4":
+                return "提交时间：";
+            case "5":
+                return "结束时间：";
+            case "6":
+                return "过期时间：";
+            default:
+                return "开始时间：";
+        }
 
     }
 }

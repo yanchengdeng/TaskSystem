@@ -38,6 +38,11 @@ public class Constans {
 
     //积分抽奖
     public static final String  INTERGRAY_CODE = "100";
+    //订单审核理由
+    public static final String ORDER_ROOLBACK_REASON ="200";
+    //任务审核理由
+    public static final String TASK_ROOLBACK_REASON ="300";
+
     /**
      *  * 6-联系客服
      *      * 7-隐私声明

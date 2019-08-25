@@ -52,9 +52,9 @@ public class DoTaskStepActivity extends BaseActivity {
         }
 
 
-        if (!TextUtils.isEmpty(taskInfoItem.step_1)){
-            richStepOne.setHtml(taskInfoItem.step_1);
-        }
+//        if (!TextUtils.isEmpty(taskInfoItem.step_1)){
+//            richStepOne.setHtml(taskInfoItem.step_1);
+//        }
 
         richStepTwo.setVisibility(View.GONE);
         richStepThree.setVisibility(View.GONE);

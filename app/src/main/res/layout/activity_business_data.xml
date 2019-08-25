@@ -73,6 +73,8 @@
 
         </LinearLayout>
 
+
+
         <include layout="@layout/layout_static_business_info" />
 
 

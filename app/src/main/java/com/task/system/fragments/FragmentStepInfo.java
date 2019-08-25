@@ -19,7 +19,7 @@ import com.task.system.utils.TUtils;
 //任务步骤介绍
 public class FragmentStepInfo extends Fragment {
 
-    private RichTextView tvOne,tvTwo,tvThree;
+    private RichTextView tvOne, tvTwo, tvThree;
 
     private TaskInfoItem taskInfoItem;
 
@@ -28,7 +28,7 @@ public class FragmentStepInfo extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_detail_step,container,false);
+        View view = inflater.inflate(R.layout.fragment_detail_step, container, false);
         tvOne = view.findViewById(R.id.rich_step_one);
         tvTwo = view.findViewById(R.id.rich_step_two);
         tvThree = view.findViewById(R.id.rich_step_three);
@@ -36,16 +36,20 @@ public class FragmentStepInfo extends Fragment {
         taskInfoItem = (TaskInfoItem) getArguments().getSerializable(Constans.PASS_OBJECT);
 
 
-        if (!TextUtils.isEmpty(taskInfoItem.end_time)){
-            tvEndTime.setText(String.format(getString(R.string.end_time_tips),TUtils.getEndTimeTips(taskInfoItem.end_time)));
+        if (!TextUtils.isEmpty(taskInfoItem.end_time)) {
+            tvEndTime.setText(String.format(getString(R.string.end_time_tips), TUtils.getEndTimeTips(taskInfoItem.end_time)));
         }
+
 
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(taskInfoItem.step_1).append(taskInfoItem.step_2).append(taskInfoItem.step_3);
+        if (taskInfoItem.task_step!=null && taskInfoItem.task_step.size()>0){
+            for (TaskInfoItem.TaskStep item: taskInfoItem.task_step){
+                stringBuilder.append(item.step).append("</br>");
 
-        if (!TextUtils.isEmpty(stringBuilder.toString())){
-            tvOne.setHtml(stringBuilder.toString());
+            }
         }
+        tvOne.setHtml(stringBuilder.toString());
+
 
         tvTwo.setVisibility(View.GONE);
         tvThree.setVisibility(View.GONE);
@@ -61,7 +65,7 @@ public class FragmentStepInfo extends Fragment {
         tvOne.setOnImageClickListener(new RichTextView.ImageClickListener() {
             @Override
             public void onImageClick(String imageUrl, String[] imageUrls, int position) {
-                TUtils.openImageViews(imageUrls,position);
+                TUtils.openImageViews(imageUrls, position);
             }
         });
 

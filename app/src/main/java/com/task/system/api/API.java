@@ -136,7 +136,7 @@ public class API {
                                     String json = new Gson().toJson(resultInfo.getData());
                                     apiCallBack.onSuccess(resultInfo.getStatus_code(), ""+resultInfo.getMessage(), (T) new Gson().fromJson(json, clz));
                                 } catch (Exception e) {
-                                    LogUtils.w("dyc", "json 数据格式异常");
+                                    LogUtils.w("dyc", "json 数据格式异常"+e.getMessage());
                                     apiCallBack.onSuccess(resultInfo.getStatus_code(), resultInfo.getMessage() + ":json 数据格式异常",null);
                                 }
                             } else {

@@ -68,9 +68,9 @@ public class DoTaskWordStepThreeActivity extends BaseActivity {
         tvTwo.setBackground(getResources().getDrawable(R.drawable.view_unread_gray_bg));
         tvThree.setBackground(getResources().getDrawable(R.drawable.view_unread_red_bg));
 
-        if (!TextUtils.isEmpty(taskInfoItem.step_3)){
-            richStepThree.setHtml(taskInfoItem.step_3);
-        }
+//        if (!TextUtils.isEmpty(taskInfoItem.step_3)){
+//            richStepThree.setHtml(taskInfoItem.step_3);
+//        }
 
         richStepThree.setOnImageClickListener(new RichTextView.ImageClickListener() {
             @Override

@@ -291,7 +291,7 @@ public class HomeFragment extends Fragment {
 
                                 ImageLoaderUtil.loadCircle(data.deposit.get(despositPostion).avatar, headerView.findViewById(R.id.iv_user_icon), R.mipmap.defalut_header);
 
-                                String despositContent = "<div>" + data.deposit.get(despositPostion).nickname_txt + "提现 <span style=\"color:red\">" + data.deposit.get(despositPostion).cash_txt + " 元</span></div>";
+                                String despositContent = "<div>" + data.deposit.get(despositPostion).nickname_txt + "提现 <span style=\"color:red\">" + data.deposit.get(despositPostion).cash_txt + "</span>元</div>";
                                 ((TextView) headerView.findViewById(R.id.tv_user_name)).setText(Html.fromHtml(despositContent));
 
                             }

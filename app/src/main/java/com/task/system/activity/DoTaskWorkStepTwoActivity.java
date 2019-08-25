@@ -107,9 +107,9 @@ public class DoTaskWorkStepTwoActivity extends BaseActivity implements ImagePick
         recycle.setAdapter(imageAdapter);
         recycle.setNestedScrollingEnabled(false);
 
-        if (!TextUtils.isEmpty(taskInfoItem.step_2)){
-            richStepTwo.setHtml(taskInfoItem.step_2);
-        }
+//        if (!TextUtils.isEmpty(taskInfoItem.step_2)){
+//            richStepTwo.setHtml(taskInfoItem.step_2);
+//        }
 
         richStepTwo.setOnImageClickListener(new RichTextView.ImageClickListener() {
             @Override
@@ -130,7 +130,7 @@ public class DoTaskWorkStepTwoActivity extends BaseActivity implements ImagePick
         imagePicker.setShowCamera(true);                      //显示拍照按钮
         imagePicker.setCrop(true);                           //允许裁剪（单选才有效）
         imagePicker.setSaveRectangle(true);                   //是否按矩形区域保存
-        imagePicker.setSelectLimit(maxImgCount);                      //选中数量限制
+        imagePicker.setSelectLimit(1);                      //选中数量限制
         imagePicker.setStyle(CropImageView.Style.CIRCLE);  //裁剪框的形状
         imagePicker.setFocusWidth(800);                       //裁剪框的宽度。单位像素（圆形自动取宽高最小值）
         imagePicker.setFocusHeight(800);                      //裁剪框的高度。单位像素（圆形自动取宽高最小值）
