@@ -417,7 +417,7 @@ public class PersonSettingActivity extends BaseActivity {
         showLoadingBar("上传中...");
         Luban.with(this)
                 .load(file)
-                .ignoreBy(30)
+                .ignoreBy(Constans.LUBAN_SIZE)
 //                .setTargetDir(getPath())
                 .filter(new CompressionPredicate() {
                     @Override

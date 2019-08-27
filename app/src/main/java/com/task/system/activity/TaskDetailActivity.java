@@ -7,8 +7,6 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.TabLayout;
-import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
@@ -18,12 +16,12 @@ import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.blankj.utilcode.util.ActivityUtils;
 import com.blankj.utilcode.util.AppUtils;
+import com.blankj.utilcode.util.FragmentUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.ViewHolder;
 import com.task.system.Constans;
 import com.task.system.R;
-import com.task.system.adapters.FragmentPagerItemAdapter;
 import com.task.system.api.API;
 import com.task.system.api.TaskInfo;
 import com.task.system.api.TaskInfoList;
@@ -74,10 +72,10 @@ public class TaskDetailActivity extends BaseSimpleActivity {
     ImageView ivCollected;
     @BindView(R.id.iv_share)
     ImageView ivShare;
-    @BindView(R.id.tablayout)
-    TabLayout tablayout;
-    @BindView(R.id.viewpage)
-    ViewPager viewpage;
+//    @BindView(R.id.tablayout)
+//    TabLayout tablayout;
+//    @BindView(R.id.viewpage)
+//    ViewPager viewpage;
     @BindView(R.id.tv_custome)
     TextView tvCustome;
     @BindView(R.id.tv_give_up_work)
@@ -119,8 +117,8 @@ public class TaskDetailActivity extends BaseSimpleActivity {
 
         SysUtils.log(intent.getScheme() + "---" + intent.getDataString());
 //        initData(taskInfoItem);
-        tablayout.addTab(tablayout.newTab().setText("任务描述"), 0);
-        tablayout.addTab(tablayout.newTab().setText("详细流程"), 1);
+//        tablayout.addTab(tablayout.newTab().setText("任务描述"), 0);
+//        tablayout.addTab(tablayout.newTab().setText("详细流程"), 1);
         getTaskDetail();
         regToWx();
         getShareInfo();
@@ -249,9 +247,14 @@ public class TaskDetailActivity extends BaseSimpleActivity {
 
         Bundle bundle = new Bundle();
         bundle.putSerializable(Constans.PASS_OBJECT, data);
-        FragmentPagerItemAdapter fragmentPagerItemAdapter = new FragmentPagerItemAdapter(getSupportFragmentManager(), getFragmentsItem(bundle));
-        viewpage.setAdapter(fragmentPagerItemAdapter);
-        tablayout.setupWithViewPager(viewpage);
+
+        FragmentTaskDetail fragmentTaskDetail = new FragmentTaskDetail();
+        fragmentTaskDetail.setArguments(bundle);
+
+        FragmentUtils.add(getSupportFragmentManager(),fragmentTaskDetail,R.id.container);
+//        FragmentPagerItemAdapter fragmentPagerItemAdapter = new FragmentPagerItemAdapter(getSupportFragmentManager(), getFragmentsItem(bundle));
+//        viewpage.setAdapter(fragmentPagerItemAdapter);
+//        tablayout.setupWithViewPager(viewpage);
 
     }
 
