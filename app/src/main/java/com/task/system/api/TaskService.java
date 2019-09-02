@@ -628,4 +628,24 @@ public interface TaskService {
     Call<TaskInfo> getTaskAuditReason(@FieldMap HashMap<String,String> maps);
 
 
+
+    //我参与过的的活动
+    @FormUrlEncoded
+    @POST("wheel/getListByUid")
+    Call<TaskInfo> getWheelListByUid(@FieldMap HashMap<String,String> mapas);
+
+    //我的中奖列表
+    @FormUrlEncoded
+    @POST("wheel/getPrizeListByUid")
+    Call<TaskInfo> getPrizeListByUid(@FieldMap HashMap<String,String> maps);
+
+    //中奖详情
+    @FormUrlEncoded
+    @POST("wheel/getDetailById")
+    Call<TaskInfo> getAwardDetail(@FieldMap HashMap<String,String> maps);
+
+    //兑换奖品
+    @FormUrlEncoded
+    @POST("wheel/setAddress")
+    Call<TaskInfo> setAwardAddress(@FieldMap HashMap<String,String> maps);
  }

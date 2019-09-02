@@ -198,6 +198,37 @@
             android:textSize="@dimen/sp_14"
             android:visibility="gone" />
 
+
+
+        <TextView
+            android:id="@+id/tv_my_activity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:background="@color/white"
+            android:drawableRight="@mipmap/arrow_right_black"
+            android:padding="@dimen/activity_horizontal_margin"
+            android:text="我的活动"
+            android:visibility="gone"
+            android:textColor="@color/color_info"
+            android:textSize="@dimen/sp_14"
+            />
+
+        <TextView
+            android:id="@+id/tv_my_awards"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:visibility="gone"
+            android:background="@color/white"
+            android:drawableRight="@mipmap/arrow_right_black"
+            android:padding="@dimen/activity_horizontal_margin"
+            android:text="我的奖品"
+            android:textColor="@color/color_info"
+            android:textSize="@dimen/sp_14"
+            />
+
+
         <TextView
             android:id="@+id/tv_help_center"
             android:layout_width="match_parent"
@@ -232,7 +263,7 @@
             android:background="@color/white"
             android:drawableRight="@mipmap/arrow_right_black"
             android:padding="@dimen/activity_horizontal_margin"
-            android:text="我的区域管理"
+            android:text="我的运营商"
             android:textColor="@color/color_info"
             android:textSize="@dimen/sp_14"
             android:visibility="gone"

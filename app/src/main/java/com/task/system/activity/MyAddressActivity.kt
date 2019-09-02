@@ -1,6 +1,7 @@
 package com.task.system.activity
 
 import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -39,10 +40,19 @@ class MyAddressActivity : BaseActivity() {
         recyclerView?.adapter = adapter
 
         adapter?.setOnItemClickListener { adapter, view, position ->
-
             var bundle = Bundle()
-            bundle.putSerializable(Constans.PASS_OBJECT,adapter.getItem(position) as AddressInfo)
-            ActivityUtils.startActivity(bundle,AddressDetailActivity::class.java)
+            bundle.putSerializable(
+                Constans.PASS_OBJECT,
+                adapter.getItem(position) as AddressInfo
+            )
+
+            if (intent.getBooleanExtra(Constans.PASS_STRING,false)){
+                setResult(Activity.RESULT_OK, Intent(this@MyAddressActivity,AwardDetailActivity::class.java).putExtras(bundle))
+                finish()
+            }else {
+
+                ActivityUtils.startActivity(bundle, AddressDetailActivity::class.java)
+            }
 
         }
 

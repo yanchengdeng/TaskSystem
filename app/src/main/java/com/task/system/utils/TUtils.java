@@ -21,7 +21,11 @@ import com.google.gson.reflect.TypeToken;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.task.system.Constans;
 import com.task.system.activity.OpenWebViewActivity;
+import com.task.system.activity.TaskDetailActivity;
+import com.task.system.activity.TaskListActivity;
+import com.task.system.bean.AdInfo;
 import com.task.system.bean.AreaBean;
+import com.task.system.bean.CatergoryInfo;
 import com.task.system.bean.TaskInfoList;
 import com.task.system.bean.TaskType;
 import com.task.system.bean.UserInfo;
@@ -506,4 +510,42 @@ public class TUtils {
         return outputStream.toByteArray();
     }
 
+    public static void openBanner(AdInfo adInfo) {
+        if (adInfo!=null){
+            if (adInfo.link_type.equals("1")){
+                Bundle bundle = new Bundle();
+                bundle.putString(Constans.PASS_NAME, adInfo.title);
+                bundle.putString(Constans.PASS_STRING, adInfo.link_url);
+                ActivityUtils.startActivity(bundle, OpenWebViewActivity.class);
+
+            }else if (adInfo.link_type.equals("2")){
+                //任务
+                Bundle bundle = new Bundle();
+                bundle.putString(Constans.PASS_STRING, adInfo.link_url);
+                ActivityUtils.startActivity(bundle, TaskDetailActivity.class);
+
+            }else if (adInfo.link_type.equals("3")){
+                //专题
+                CatergoryInfo catergoryInfo = new CatergoryInfo();
+                catergoryInfo.id = adInfo.link_type;
+                catergoryInfo.title = adInfo.title;
+
+                Bundle bundle = new Bundle();
+                bundle.putSerializable(Constans.PASS_OBJECT,catergoryInfo);
+                ActivityUtils.startActivity(bundle, TaskListActivity.class);
+
+            }else if (adInfo.link_type.equals("4")){
+                Bundle about = new Bundle();
+                about.putString(Constans.PASS_NAME,adInfo.title);
+                about.putString(Constans.ARTICAL_TYPE,Constans.INTERGRAY_CODE);
+                about.putString(Constans.PASS_STRING,adInfo.link_url);
+                ActivityUtils.startActivity(about, OpenWebViewActivity.class);
+            }
+
+
+        }
+
+
+
+    }
 }

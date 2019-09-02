@@ -108,6 +108,7 @@ public class TaskListActivity extends BaseActivity {
             tvTittle.setText("" + catergoryInfo.title);
             llSortUi.setVisibility(View.VISIBLE);
             findViewById(R.id.ll_seach_ui).setVisibility(View.GONE);
+            category_id = catergoryInfo.id;
         } else {
             tvTittle.setText("搜索任务");
             llSortUi.setVisibility(View.GONE);

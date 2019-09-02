@@ -32,6 +32,7 @@ import com.yc.lib.api.utils.ImageLoaderUtil;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
@@ -164,7 +165,9 @@ public class MyAreaManageActivity extends BaseSimpleActivity {
 
 
         //争议
-        Call<TaskInfoList> callDispute = ApiConfig.getInstants().create(TaskService.class).getOperatorOrderTabs(TUtils.getParams());
+        HashMap<String,String> maps = new HashMap<>();
+        maps.put("show_image","show");
+        Call<TaskInfoList> callDispute = ApiConfig.getInstants().create(TaskService.class).getOperatorOrderTabs(TUtils.getParams(maps));
         API.getList(callDispute, AreaManageIitem.class, new ApiCallBackList<AreaManageIitem>() {
             @Override
             public void onSuccess(int msgCode, String msg, List<AreaManageIitem> data) {
@@ -180,7 +183,7 @@ public class MyAreaManageActivity extends BaseSimpleActivity {
 
 
         //发布
-        Call<TaskInfoList> callPublish = ApiConfig.getInstants().create(TaskService.class).getOperatorTaskTags(TUtils.getParams());
+        Call<TaskInfoList> callPublish = ApiConfig.getInstants().create(TaskService.class).getOperatorTaskTags(TUtils.getParams(maps));
         API.getList(callPublish, AreaManageIitem.class, new ApiCallBackList<AreaManageIitem>() {
             @Override
             public void onSuccess(int msgCode, String msg, List<AreaManageIitem> data) {

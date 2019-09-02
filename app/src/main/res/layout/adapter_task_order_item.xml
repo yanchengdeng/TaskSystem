@@ -146,6 +146,24 @@
 
 
         <TextView
+            android:id="@+id/tv_apply_dispute"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:layout_toLeftOf="@+id/tv_going_work_task"
+            android:background="@drawable/normal_submit_btn_gray_deep_trans"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingTop="@dimen/image_padding"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:paddingBottom="@dimen/image_padding"
+            android:text="提出争议"
+            android:textColor="@color/color_tittle"
+            android:textSize="@dimen/text_size_normal"
+            />
+
+
+
+        <TextView
             android:id="@+id/tv_cancle_task"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

@@ -35,4 +35,31 @@ public class OrderInfo implements Serializable {
     public String remark ="xx客户取消";//TODO 假设失败理由
     public String sub_title;//简介
     public int is_apply;//1可以申请，0不能申请
+    public String order_score;
+
+
+    /**
+     * can_send_dispute=1表示可以提起争议，或者回复争议
+     */
+    public int can_send_dispute;//
+
+
+    /**
+     * 当dispute_status=0时：显示提出争议按钮-跳转到提出争议页面
+     * 【order/dispute】，通过此接口可以提交争议
+     *
+     *
+     * 当dispute_status=1 、2、 3时：显示查看争议-跳转到争议列表
+     * 争议内容：这个使用接口【争议内容列表 order/disputeList】
+     *
+     *
+     *
+     * dispute_status=4、5时：只显示争议的最终状态，不显示按钮
+     *
+     *
+     *
+     */
+    public int dispute_status;
+
+    public String dispute_status_title;//争议名称
 }

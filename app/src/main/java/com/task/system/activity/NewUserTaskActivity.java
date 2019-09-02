@@ -21,7 +21,6 @@ import com.yc.lib.api.ApiCallBack;
 import com.yc.lib.api.ApiCallBackList;
 import com.yc.lib.api.ApiConfig;
 import com.youth.banner.Banner;
-import com.youth.banner.listener.OnBannerListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -105,16 +104,7 @@ public class NewUserTaskActivity extends BaseActivity {
                     }
                 }
                 banner.setImages(images);
-                banner.setOnBannerListener(new OnBannerListener() {
-                    @Override
-                    public void OnBannerClick(int position) {
-                        Bundle bundle = new Bundle();
-                        bundle.putString(Constans.PASS_NAME, data.get(position).title);
-                        bundle.putString(Constans.PASS_STRING, data.get(position).link_url);
-                        ActivityUtils.startActivity(bundle, OpenWebViewActivity.class);
-
-                    }
-                });
+                banner.setOnBannerListener(position -> TUtils.openBanner(data.get(position)));
                 //banner设置方法全部调用完毕时最后调用
                 banner.start();
 

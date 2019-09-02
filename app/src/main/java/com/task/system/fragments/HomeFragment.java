@@ -256,16 +256,7 @@ public class HomeFragment extends Fragment {
                             images.add(item.cover);
                         }
                         banner.setImages(images);
-                        banner.setOnBannerListener(new OnBannerListener() {
-                            @Override
-                            public void OnBannerClick(int position) {
-                                Bundle bundle = new Bundle();
-                                bundle.putString(Constans.PASS_NAME, data.ad.get(position).title);
-                                bundle.putString(Constans.PASS_STRING, data.ad.get(position).link_url);
-                                ActivityUtils.startActivity(bundle, OpenWebViewActivity.class);
-
-                            }
-                        });
+                        banner.setOnBannerListener(position -> TUtils.openBanner(data.ad.get(position)));
                         //banner设置方法全部调用完毕时最后调用
                         banner.start();
                     }

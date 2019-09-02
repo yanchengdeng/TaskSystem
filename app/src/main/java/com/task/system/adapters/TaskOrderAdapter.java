@@ -38,8 +38,8 @@ public class TaskOrderAdapter extends BaseQuickAdapter<OrderInfo, BaseViewHolder
             ((TextView)helper.getView(R.id.tv_info)).setText(Html.fromHtml(item.sub_title));
         }
 
-        if (!TextUtils.isEmpty(item.score)) {
-            ((TextView)helper.getView(R.id.tv_price)).setText(mContext.getString(R.string.money_unit)+item.score);
+        if (!TextUtils.isEmpty(item.order_score)) {
+            ((TextView)helper.getView(R.id.tv_price)).setText(mContext.getString(R.string.money_unit)+item.order_score);
         }
 
         if (!TextUtils.isEmpty(item.order_id)) {
@@ -52,6 +52,7 @@ public class TaskOrderAdapter extends BaseQuickAdapter<OrderInfo, BaseViewHolder
         helper.addOnClickListener(R.id.tv_look_for_reason);
         helper.addOnClickListener(R.id.tv_going_work_task);
         helper.addOnClickListener(R.id.tv_else_function);
+        helper.addOnClickListener(R.id.tv_apply_dispute);//提起争议
 
 
 
@@ -69,11 +70,14 @@ public class TaskOrderAdapter extends BaseQuickAdapter<OrderInfo, BaseViewHolder
         TextView tvGoingWord = helper.getView(R.id.tv_going_work_task);
         //其他任务提示
         TextView tvElseFunction = helper.getView(R.id.tv_else_function);
+
+        //提起争议
+        TextView tvApplyDispute = helper.getView(R.id.tv_apply_dispute);
        /** * 1——待工作
                 * 2——待提交 // 待审核--客服审核
                 * 3——待审核 // 待审核--客户审核
                 * 4——已通过
-                * 5——未通过
+                * 5——未通过  只有5 才有提出争议状态
                 * 6——已作废
                 * 7——已超时*/
 
@@ -116,6 +120,7 @@ public class TaskOrderAdapter extends BaseQuickAdapter<OrderInfo, BaseViewHolder
                 tvCancleTask.setVisibility(View.VISIBLE);
                 tvGoingWord.setVisibility(View.VISIBLE);
                 tvElseFunction.setVisibility(View.GONE);
+                tvApplyDispute.setVisibility(View.GONE);
                 break;
             case 3:
 //                待审核
@@ -129,6 +134,7 @@ public class TaskOrderAdapter extends BaseQuickAdapter<OrderInfo, BaseViewHolder
                 tvElseFunction.setBackground(mContext.getResources().getDrawable(R.drawable.normal_submit_btn_red_trans));
                 tvElseFunction.setText("待审核");
                 tvElseFunction.setTextColor(mContext.getResources().getColor(R.color.red));
+                tvApplyDispute.setVisibility(View.GONE);
                 break;
             //4——已通过
             case 4:
@@ -149,6 +155,7 @@ public class TaskOrderAdapter extends BaseQuickAdapter<OrderInfo, BaseViewHolder
                 }else{
                     tvElseFunction.setVisibility(View.GONE);
                 }
+                tvApplyDispute.setVisibility(View.GONE);
                 break;
             //5——未通过
             case 5:
@@ -158,7 +165,7 @@ public class TaskOrderAdapter extends BaseQuickAdapter<OrderInfo, BaseViewHolder
                 tvTime.setVisibility(View.VISIBLE);
                 dashLineTwo.setVisibility(View.VISIBLE);
                 tvReason.setVisibility(View.GONE);
-                tvLookReason.setVisibility(View.VISIBLE);
+//                tvLookReason.setVisibility(View.GONE);
                 tvCancleTask.setVisibility(View.GONE);
                 tvGoingWord.setVisibility(View.GONE);
                 tvElseFunction.setBackground(mContext.getResources().getDrawable(R.drawable.normal_submit_btn_red));
@@ -169,6 +176,23 @@ public class TaskOrderAdapter extends BaseQuickAdapter<OrderInfo, BaseViewHolder
                 }else{
                     tvElseFunction.setVisibility(View.GONE);
                 }
+                tvApplyDispute.setVisibility(View.VISIBLE);
+                if (item.dispute_status==0){
+                    tvApplyDispute.setText("提出争议");
+                    tvApplyDispute.setTextColor(mContext.getResources().getColor(R.color.color_info));
+                    tvApplyDispute.setBackground(mContext.getResources().getDrawable(R.drawable.normal_submit_btn_gray_deep_trans));
+                }else if (item.dispute_status==1 || item.dispute_status==2 || item.dispute_status==3){
+                    tvApplyDispute.setText("查看争议");
+                    tvApplyDispute.setTextColor(mContext.getResources().getColor(R.color.color_info));
+                    tvApplyDispute.setBackground(mContext.getResources().getDrawable(R.drawable.normal_submit_btn_gray_deep_trans));
+                }else{
+                    if (!TextUtils.isEmpty(item.dispute_status_title)) {
+                        tvApplyDispute.setText(item.dispute_status_title);
+                        tvApplyDispute.setBackground(null);
+                        tvApplyDispute.setTextColor(mContext.getResources().getColor(R.color.red));
+                    }
+                }
+
                 break;
             // 6——已作废
             case 6:
@@ -192,6 +216,8 @@ public class TaskOrderAdapter extends BaseQuickAdapter<OrderInfo, BaseViewHolder
                 }else{
                     tvElseFunction.setVisibility(View.GONE);
                 }
+                tvApplyDispute.setVisibility(View.GONE);
+
                 break;
 //                7——已超时
             case 7:
@@ -213,6 +239,7 @@ public class TaskOrderAdapter extends BaseQuickAdapter<OrderInfo, BaseViewHolder
                 }else{
                     tvElseFunction.setVisibility(View.GONE);
                 }
+                tvApplyDispute.setVisibility(View.GONE);
                 break;
 
         }

@@ -27,7 +27,9 @@ import com.task.system.R;
 import com.task.system.activity.AddNewLeaderActivity;
 import com.task.system.activity.MainActivity;
 import com.task.system.activity.MyAccountActivity;
+import com.task.system.activity.MyActivityActivity;
 import com.task.system.activity.MyAreaManageActivity;
+import com.task.system.activity.MyAwardActivity;
 import com.task.system.activity.MyCollectedActivity;
 import com.task.system.activity.MyIncomeActivity;
 import com.task.system.activity.MyInviteCodeActivity;
@@ -93,6 +95,10 @@ public class PercenterFragment extends Fragment {
     TextView tvMyAreaManage;
     @BindView(R.id.tv_help_center)
     TextView tvHelpCenter;
+    @BindView(R.id.tv_my_activity)
+    TextView tvMyActivity;
+    @BindView(R.id.tv_my_awards)
+    TextView tvMyAwards;
 
     @Nullable
     @Override
@@ -117,11 +123,15 @@ public class PercenterFragment extends Fragment {
                 tvMyTeam.setVisibility(View.VISIBLE);
                 tvInviteCode.setVisibility(View.VISIBLE);
                 tvMyAreaManage.setVisibility(View.GONE);
+                tvMyActivity.setVisibility(View.VISIBLE);
+                tvMyAwards.setVisibility(View.VISIBLE);
             } else if (userInfo.user_type.equals(UserType.USER_TYPE_AREA.getType())) {
                 //区域管理
                 tvMyAreaManage.setVisibility(View.VISIBLE);
                 tvAddLead.setVisibility(View.VISIBLE);
                 tvInviteCode.setVisibility(View.VISIBLE);
+                tvMyActivity.setVisibility(View.GONE);
+                tvMyAwards.setVisibility(View.GONE);
             } else if (userInfo.user_type.equals(UserType.USER_TYPE_AGENT.getType())) {
                 tvInviteCode.setVisibility(View.VISIBLE);
                 tvMyTeam.setVisibility(View.GONE);
@@ -195,7 +205,7 @@ public class PercenterFragment extends Fragment {
         unbinder.unbind();
     }
 
-    @OnClick({R.id.ll_user_info_ui, R.id.rl_my_money, R.id.ll_allwork_title, R.id.tv_add_lead, R.id.tv_collect, R.id.tv_my_team, R.id.tv_my_accoutn, R.id.tv_invite_code, R.id.tv_help_center,R.id.tv_about_us, R.id.tv_my_area_manage})
+    @OnClick({R.id.ll_user_info_ui, R.id.rl_my_money, R.id.ll_allwork_title, R.id.tv_add_lead, R.id.tv_collect, R.id.tv_my_team, R.id.tv_my_accoutn, R.id.tv_invite_code,R.id.tv_my_activity,R.id.tv_my_awards, R.id.tv_help_center, R.id.tv_about_us, R.id.tv_my_area_manage})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ll_user_info_ui:
@@ -227,15 +237,23 @@ public class PercenterFragment extends Fragment {
                 break;
             case R.id.tv_about_us:
                 Bundle about = new Bundle();
-                about.putString(Constans.PASS_NAME,"关于我们");
-                about.putString(Constans.ARTICAL_TYPE,Constans.ABOUT_US);
+                about.putString(Constans.PASS_NAME, "关于我们");
+                about.putString(Constans.ARTICAL_TYPE, Constans.ABOUT_US);
                 ActivityUtils.startActivity(about, OpenWebViewActivity.class);
                 break;
             case R.id.tv_help_center:
                 Bundle help = new Bundle();
-                help.putString(Constans.PASS_NAME,"帮助中心");
-                help.putString(Constans.ARTICAL_TYPE,Constans.HELP_CENTER);
+                help.putString(Constans.PASS_NAME, "帮助中心");
+                help.putString(Constans.ARTICAL_TYPE, Constans.HELP_CENTER);
                 ActivityUtils.startActivity(help, OpenWebViewActivity.class);
+                break;
+            case R.id.tv_my_activity:
+                //我的活动
+                ActivityUtils.startActivity(MyActivityActivity.class);
+                break;
+            case R.id.tv_my_awards:
+                //我的奖品
+                ActivityUtils.startActivity(MyAwardActivity.class);
                 break;
             case R.id.tv_my_area_manage:
                 ActivityUtils.startActivity(MyAreaManageActivity.class);

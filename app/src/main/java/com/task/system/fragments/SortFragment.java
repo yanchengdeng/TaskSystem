@@ -31,7 +31,6 @@ import com.task.system.Constans;
 import com.task.system.FixApplication;
 import com.task.system.R;
 import com.task.system.activity.MessageListActivity;
-import com.task.system.activity.OpenWebViewActivity;
 import com.task.system.activity.TaskListActivity;
 import com.task.system.adapters.FatherTagAdapter;
 import com.task.system.api.API;
@@ -53,7 +52,6 @@ import com.yc.lib.api.ApiCallBackList;
 import com.yc.lib.api.ApiConfig;
 import com.yc.lib.api.utils.SysUtils;
 import com.youth.banner.Banner;
-import com.youth.banner.listener.OnBannerListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -198,16 +196,7 @@ public class SortFragment extends Fragment {
                     }
                 }
                 banner.setImages(images);
-                banner.setOnBannerListener(new OnBannerListener() {
-                    @Override
-                    public void OnBannerClick(int position) {
-                        Bundle bundle = new Bundle();
-                        bundle.putString(Constans.PASS_NAME, data.get(position).title);
-                        bundle.putString(Constans.PASS_STRING, data.get(position).link_url);
-                        ActivityUtils.startActivity(bundle, OpenWebViewActivity.class);
-
-                    }
-                });
+                banner.setOnBannerListener(position -> TUtils.openBanner(data.get(position)));
                 //banner设置方法全部调用完毕时最后调用
                 banner.start();
 

@@ -17,6 +17,8 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.task.system.Constans;
 import com.task.system.R;
+import com.task.system.activity.ApplyDisputeOrReplyActivity;
+import com.task.system.activity.DisputeListActivity;
 import com.task.system.activity.DoTaskStepActivity;
 import com.task.system.activity.MainActivity;
 import com.task.system.activity.TaskDetailActivity;
@@ -111,6 +113,7 @@ public class TaskListFragment extends BaseFragment {
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
                 int status = taskOrderAdapter.getData().get(position).status;
+                OrderInfo item = taskOrderAdapter.getData().get(position);
                 //待工作
                 if (status == 1 || status == 2) {
                     if (view.getId() == R.id.tv_cancle_task) {
@@ -123,13 +126,33 @@ public class TaskListFragment extends BaseFragment {
                 //未通过  4  5   6  7   可添加一个 立即申请的功能按钮
                 if (status > 3) {
                     if (view.getId() == R.id.tv_look_for_reason) {
-                        if (TextUtils.isEmpty(taskOrderAdapter.getData().get(position).remark)){
-                            taskOrderAdapter.getData().get(position).remark="请联系客服";
+                        if (TextUtils.isEmpty(taskOrderAdapter.getData().get(position).remark)) {
+                            taskOrderAdapter.getData().get(position).remark = "请联系客服";
                         }
                         showDialogTips(taskOrderAdapter.getData().get(position).remark);
-                    }else  if (view.getId() == R.id.tv_else_function) {
+                    } else if (view.getId() == R.id.tv_else_function) {
                         //立即申请
                         applyTask(position, taskOrderAdapter.getItem(position).task_id);
+                    } else if (view.getId() == R.id.tv_apply_dispute) {
+                        if (status == 5) {
+                            /**
+                             * 当dispute_status=0时：显示提出争议按钮-跳转到提出争议页面
+                             * 【order/dispute】，通过此接口可以提交争议
+                             *
+                             *
+                             * 当dispute_status=1 、2、 3时：显示查看争议-跳转到争议列表
+                             * 争议内容：这个使用接口【争议内容列表 order/disputeList】
+                             */
+                            if (item.dispute_status == 0) {
+                                Bundle bundle = new Bundle();
+                                bundle.putSerializable(Constans.PASS_OBJECT, item);
+                                ActivityUtils.startActivity(bundle, ApplyDisputeOrReplyActivity.class);
+                            } else if (item.dispute_status == 1 || item.dispute_status == 2 || item.dispute_status == 3) {
+                                Bundle bundle = new Bundle();
+                                bundle.putSerializable(Constans.PASS_OBJECT, item);
+                                ActivityUtils.startActivity(bundle, DisputeListActivity.class);
+                            }
+                        }
                     }
                 }
             }
@@ -138,7 +161,7 @@ public class TaskListFragment extends BaseFragment {
     }
 
     //刷新数据
-    public void setSortRefresh(){
+    public void setSortRefresh() {
         page = 1;
         getOrderList();
     }
@@ -271,7 +294,7 @@ public class TaskListFragment extends BaseFragment {
 
         HashMap<String, String> maps = new HashMap<>();
         maps.put("page", String.valueOf(page));
-        if (status>0) {
+        if (status > 0) {
             maps.put("status", String.valueOf(status));
         }
 

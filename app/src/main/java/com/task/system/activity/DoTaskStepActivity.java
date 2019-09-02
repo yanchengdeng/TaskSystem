@@ -112,6 +112,10 @@ public class DoTaskStepActivity extends BaseActivity {
 
                 }
             });
+            if (fragments.size() ==1) {
+                tvNextStep.setText("提交");
+            }
+
         }
 
 

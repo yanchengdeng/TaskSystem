@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.AwardDetailActivity">
+
+
+
+    <TextView
+        android:id="@+id/tv_award_name"
+        android:layout_width="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:textSize="@dimen/text_size_normal_up"
+        android:textColor="@color/color_tittle"
+        android:layout_margin="@dimen/activity_horizontal_margin"
+        android:layout_height="wrap_content"/>
+
+
+
+    <TextView
+        android:id="@+id/tv_award_time_tips"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_award_name"
+        android:layout_width="wrap_content"
+        android:text="中奖时间："
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/activity_horizontal_margin"
+        android:textColor="@color/color_info"
+        android:layout_height="wrap_content"/>
+
+
+    <TextView
+        android:id="@+id/tv_award_time"
+        app:layout_constraintLeft_toRightOf="@+id/tv_award_time_tips"
+        android:layout_width="wrap_content"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        app:layout_constraintBaseline_toBaselineOf="@+id/tv_award_time_tips"
+        android:textColor="@color/color_info"
+        android:layout_height="wrap_content"/>
+
+
+
+
+
+
+
+    <TextView
+        android:id="@+id/tv_award_info_tips"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_award_time_tips"
+        android:layout_width="wrap_content"
+        android:text="中奖信息："
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/activity_horizontal_margin"
+        android:textColor="@color/color_info"
+        android:layout_height="wrap_content"/>
+
+
+    <TextView
+        app:layout_constraintLeft_toRightOf="@+id/tv_award_info_tips"
+        android:layout_width="wrap_content"
+        android:id="@+id/tv_award_info"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        app:layout_constraintBaseline_toBaselineOf="@+id/tv_award_info_tips"
+        android:textColor="@color/red"
+        android:layout_height="wrap_content"/>
+
+
+
+    <TextView
+        android:id="@+id/tv_award_status_tips"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_award_info_tips"
+        android:layout_width="wrap_content"
+        android:text="中奖状态："
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/activity_horizontal_margin"
+        android:textColor="@color/color_info"
+        android:layout_height="wrap_content"/>
+
+
+
+
+
+    <TextView
+        android:id="@+id/tv_award_status"
+        app:layout_constraintLeft_toRightOf="@+id/tv_award_status_tips"
+        android:layout_width="wrap_content"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        app:layout_constraintBaseline_toBaselineOf="@+id/tv_award_status_tips"
+        android:text=""
+        android:textColor="@color/blue_ball"
+        android:layout_height="wrap_content"/>
+
+
+
+
+
+    <TextView
+        android:id="@+id/tv_add_address"
+        android:text="使用收货地址"
+        android:visibility="gone"
+        android:textColor="@color/color_tittle"
+        android:textSize="@dimen/text_size_normal_up"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:padding="@dimen/activity_horizontal_margin"
+        app:layout_constraintTop_toBottomOf="@+id/tv_award_status_tips"
+        android:layout_marginTop="@dimen/nav_bar_height"
+        android:drawableRight="@mipmap/arrow_right_black"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+
+
+
+    <TextView
+        android:id="@+id/tv_address"
+        android:layout_margin="@dimen/activity_horizontal_margin"
+        android:textColor="@color/color_date"
+        android:textSize="@dimen/text_size_normal"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_add_address"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+
+
+    <TextView
+        android:id="@+id/tv_address_name"
+        android:textColor="@color/color_date"
+        android:textSize="@dimen/text_size_normal"
+        android:layout_margin="@dimen/activity_horizontal_margin"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_address"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+
+    <TextView
+        android:id="@+id/tv_address_phone"
+        android:layout_margin="@dimen/activity_horizontal_margin"
+        android:textColor="@color/color_date"
+        android:textSize="@dimen/text_size_normal"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_address_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+
+
+    <TextView
+        android:id="@+id/tv_award_exchange"
+        android:text="点击兑换"
+        android:textSize="@dimen/text_size_normal"
+        android:textColor="@color/white"
+        android:layout_margin="@dimen/nav_bar_height"
+        android:background="@drawable/normal_submit_btn_red"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_address_phone"
+        android:paddingTop="@dimen/image_padding"
+        android:paddingBottom="@dimen/image_padding"
+        android:gravity="center"
+        android:visibility="gone"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"/>
+
+</android.support.constraint.ConstraintLayout>
