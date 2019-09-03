@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="1dp"
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/image_padding_big"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingBottom="@dimen/image_padding_big">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/iv_image"
+            android:layout_width="@dimen/icon_head_size_middle"
+            android:layout_height="@dimen/icon_head_size_middle"
+            android:src="@mipmap/defalut_header" />
+
+        <RelativeLayout
+            android:id="@+id/rl_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_toRightOf="@+id/iv_image"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_uuid"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:ellipsize="end"
+                android:maxLength="10"
+                android:singleLine="true"
+                android:text="8080808"
+                android:textColor="@color/color_tittle"
+                android:textSize="@dimen/text_size_normal_up" />
+
+
+            <TextView
+                android:id="@+id/tv_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/image_padding"
+                android:layout_toRightOf="@+id/tv_uuid"
+                android:singleLine="true"
+                android:text="10:00:00"
+                android:textColor="@color/color_date"
+                android:textSize="@dimen/text_size_normal" />
+
+            <TextView
+                android:id="@+id/tv_reply"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_gravity="center_vertical"
+                android:layout_marginTop="@dimen/image_padding"
+                android:padding="@dimen/image_padding"
+                android:text="回复"
+                android:textColor="@color/color_info"
+                android:textSize="@dimen/text_size_normal" />
+
+            <TextView
+                android:id="@+id/tv_conten"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_uuid"
+                android:layout_marginTop="@dimen/image_padding_big"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:text="争议内容"
+                android:textColor="@color/color_info"
+                android:textSize="@dimen/text_size_normal" />
+
+
+        </RelativeLayout>
+    </LinearLayout>
+
+    <com.task.system.views.NineGridTestLayout
+        android:id="@+id/nineGrid"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_margin="@dimen/activity_horizontal_margin"
+        app:sapcing="@dimen/activity_horizontal_margin" />
+
+</LinearLayout>

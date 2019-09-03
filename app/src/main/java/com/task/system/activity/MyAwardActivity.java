@@ -66,11 +66,11 @@ public class MyAwardActivity extends BaseActivity {
 
     private FragmentPagerItems getPagerItems(FragmentPagerItems fragmentPagerItems) {
         Bundle bundle = new Bundle();
-        bundle.putInt(Constans.PASS_STRING, 0);
+        bundle.putInt(Constans.PASS_STRING, 1);
         fragmentPagerItems.add(FragmentPagerItem.of("未兑换", AwardListFragment.class, bundle));
 
         Bundle bundle1 = new Bundle();
-        bundle1.putInt(Constans.PASS_STRING, 1);
+        bundle1.putInt(Constans.PASS_STRING, 0);
         fragmentPagerItems.add(FragmentPagerItem.of("已兑换", AwardListFragment.class, bundle1));
         return fragmentPagerItems;
     }

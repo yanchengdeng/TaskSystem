@@ -32,6 +32,7 @@ public class LotteryList implements Serializable{
         public String bg_image_url;// http;////joyce.task.com/Public/default.png
 
         public String play_url;//游戏地址
+        public String sub_title;
     }
     
     

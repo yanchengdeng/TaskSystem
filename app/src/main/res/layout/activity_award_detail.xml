@@ -167,6 +167,6 @@
         android:gravity="center"
         android:visibility="gone"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"/>
+        android:layout_height="40dp"/>
 
 </android.support.constraint.ConstraintLayout>

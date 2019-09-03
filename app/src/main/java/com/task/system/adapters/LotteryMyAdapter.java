@@ -27,8 +27,8 @@ public class LotteryMyAdapter extends BaseQuickAdapter<LotteryList.LotteryItem, 
             ((TextView) helper.getView(R.id.tv_title)).setText(item.title);
         }
 
-        if (!TextUtils.isEmpty(item.content)) {
-            ((TextView) helper.getView(R.id.tv_info)).setText(Html.fromHtml(item.content));
+        if (!TextUtils.isEmpty(item.sub_title)) {
+            ((TextView) helper.getView(R.id.tv_status)).setText(Html.fromHtml(item.sub_title));
         }
 
     }

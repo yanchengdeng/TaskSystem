@@ -27,10 +27,10 @@ import butterknife.ButterKnife;
 import retrofit2.Call;
 
 /**
- * Author: dengyancheng
- * Date: 2019-09-01 21:42
- * Description: 中奖详情
- * History:
+ * Author;// dengyancheng
+ * Date;// 2019-09-01 21;//42
+ * Description;// 中奖详情
+ * History;//
  */
 public class AwardDetailActivity extends BaseActivity {
 
@@ -82,10 +82,10 @@ public class AwardDetailActivity extends BaseActivity {
         tvAddAddress.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (awardItem!=null){
+                if (awardItem != null) {
                     Bundle bundle = new Bundle();
-                    bundle.putBoolean(Constans.PASS_STRING,true);
-                    ActivityUtils.startActivityForResult(bundle,AwardDetailActivity.this,MyAddressActivity.class,100);
+                    bundle.putBoolean(Constans.PASS_STRING, true);
+                    ActivityUtils.startActivityForResult(bundle, AwardDetailActivity.this, MyAddressActivity.class, 100);
                 }
             }
         });
@@ -95,10 +95,10 @@ public class AwardDetailActivity extends BaseActivity {
         tvAwardExchange.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (awardItem!=null){
-                    if (TextUtils.isEmpty(addressId)){
+                if (awardItem != null) {
+                    if (awardItem.can_set_address==1 ) {
                         SysUtils.showToast("请选择收货地址");
-                    }else{
+                    } else {
                         doExchage();
                     }
                 }
@@ -112,16 +112,19 @@ public class AwardDetailActivity extends BaseActivity {
         showLoadingBar();
 
         HashMap<String, String> maps = new HashMap();
+
         maps.put("log_id", id);
 
-        maps.put("address_id",addressId);
+        if (!TextUtils.isEmpty(addressId)){
+            maps.put("address_id", addressId);
+        }
         Call<TaskInfo> call = ApiConfig.getInstants().create(TaskService.class).setAwardAddress(TUtils.getParams(maps));
 
         API.getObject(call, AwardItem.class, new ApiCallBack<AwardItem>() {
             @Override
             public void onSuccess(int msgCode, String msg, AwardItem data) {
                 dismissLoadingBar();
-                SysUtils.showToast(msg+" ");
+                SysUtils.showToast("已兑换");
                 finish();
 
             }
@@ -166,8 +169,8 @@ public class AwardDetailActivity extends BaseActivity {
             tvAwardName.setText(data.title);
         }
 
-        if (!TextUtils.isEmpty(data.time)) {
-            tvAwardTime.setText(data.time);
+        if (!TextUtils.isEmpty(data.create_time)) {
+            tvAwardTime.setText(data.create_time);
         }
 
         if (!TextUtils.isEmpty(data.prize_name)) {
@@ -177,23 +180,33 @@ public class AwardDetailActivity extends BaseActivity {
         if (!TextUtils.isEmpty(data.status_title)) {
             tvAwardStatus.setText(data.status_title);
         }
-        if (data.status==0){
+        if (data.status == 1) {
             tvAwardExchange.setVisibility(View.VISIBLE);
-            tvAddress.setVisibility(View.VISIBLE);
+            if (data.can_set_address == 1) {
+                tvAddAddress.setVisibility(View.VISIBLE);
+            } else {
+                if (data.address!=null) {
+                        tvAddress.setText(""+data.address.address);
+                        tvAddressPhone.setText(""+data.address.mobile);
+                        tvAddressName.setText(""+data.address.name);
+                }
+            }
         }
+
     }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode==100 && resultCode==RESULT_OK){
-            if (data.getSerializableExtra(Constans.PASS_OBJECT)!=null){
+        if (requestCode == 100 && resultCode == RESULT_OK) {
+            if (data.getSerializableExtra(Constans.PASS_OBJECT) != null) {
                 AddressInfo addressInfo = (AddressInfo) data.getSerializableExtra(Constans.PASS_OBJECT);
-                if (addressInfo!=null && !TextUtils.isEmpty(addressInfo.getAddress())) {
-                    tvAddAddress.setText(addressInfo.getAddress());
-                    tvAddressPhone.setText(""+addressInfo.getContact_mobile());
-                    tvAddressName.setText(""+addressInfo.getContact_name());
-                    addressId =addressInfo.getId();
+                if (addressInfo != null && !TextUtils.isEmpty(addressInfo.getAddress())) {
+                    tvAddress.setText(addressInfo.getAddress());
+                    tvAddressPhone.setText("" + addressInfo.getContact_mobile());
+                    tvAddressName.setText("" + addressInfo.getContact_name());
+                    addressId = addressInfo.getId();
                 }
             }
         }

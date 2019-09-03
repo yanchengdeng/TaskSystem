@@ -648,4 +648,14 @@ public interface TaskService {
     @FormUrlEncoded
     @POST("wheel/setAddress")
     Call<TaskInfo> setAwardAddress(@FieldMap HashMap<String,String> maps);
+
+    //提交争议
+    @FormUrlEncoded
+    @POST("order/dispute")
+    Call<TaskInfo>  disputeOrder(@FieldMap HashMap<String,String> maps);
+
+    //提交争议
+    @FormUrlEncoded
+    @POST("order/disputeList")
+    Call<TaskInfoList>  disputeList(@FieldMap HashMap<String,String> maps);
  }

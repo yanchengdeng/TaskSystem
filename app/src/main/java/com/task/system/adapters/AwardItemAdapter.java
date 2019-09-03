@@ -35,11 +35,9 @@ public class AwardItemAdapter extends BaseQuickAdapter<AwardItem, BaseViewHolder
             ((TextView)helper.getView(R.id.tv_title)).setText(item.title);
         }
 
-        if (!TextUtils.isEmpty(item.time)) {
-            ((TextView)helper.getView(R.id.tv_date)).setText(item.time);
+        if (!TextUtils.isEmpty(item.create_time)) {
+            ((TextView)helper.getView(R.id.tv_date)).setText(item.create_time);
         }
-
-
 
     }
 }

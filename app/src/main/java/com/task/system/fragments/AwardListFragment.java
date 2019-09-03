@@ -1,6 +1,7 @@
 package com.task.system.fragments;
 
 import android.os.Bundle;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -18,7 +19,7 @@ import com.task.system.adapters.AwardItemAdapter;
 import com.task.system.api.API;
 import com.task.system.api.TaskInfo;
 import com.task.system.api.TaskService;
-import com.task.system.bean.OrderList;
+import com.task.system.bean.AwardList;
 import com.task.system.utils.TUtils;
 import com.yc.lib.api.ApiCallBack;
 import com.yc.lib.api.ApiConfig;
@@ -61,6 +62,7 @@ public class AwardListFragment extends BaseFragment {
 
         taskOrderAdapter = new AwardItemAdapter(R.layout.adapter_award_item, status);
         recycle.setLayoutManager(new LinearLayoutManager(ApiConfig.context));
+        recycle.addItemDecoration(new DividerItemDecoration(ApiConfig.context, DividerItemDecoration.VERTICAL));
         recycle.setAdapter(taskOrderAdapter);
 
         taskOrderAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
@@ -105,19 +107,14 @@ public class AwardListFragment extends BaseFragment {
 
         HashMap<String, String> maps = new HashMap<>();
         maps.put("page", String.valueOf(page));
-        if (status>0) {
-            maps.put("status", String.valueOf(status));
-        }
-
-
-
+        maps.put("status", String.valueOf(status));
         Call<TaskInfo> call = ApiConfig.getInstants().create(TaskService.class).getPrizeListByUid(TUtils.getParams(maps));
 
-        API.getObject(call, OrderList.class, new ApiCallBack<OrderList>() {
+        API.getObject(call, AwardList.class, new ApiCallBack<AwardList>() {
             @Override
-            public void onSuccess(int msgCode, String msg, OrderList data) {
+            public void onSuccess(int msgCode, String msg, AwardList data) {
                 if (getActivity() != null) {
-                    ((BaseActivity)getActivity()).dismissLoadingBar();
+                    ((BaseActivity) getActivity()).dismissLoadingBar();
                 }
 
                 TUtils.dealReqestData(taskOrderAdapter, recycle, data.list, page, smartRefresh);
