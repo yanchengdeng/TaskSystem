@@ -31,6 +31,8 @@ public class FragmentTaskDetail extends Fragment {
     TextView tvWaitTime;
     @BindView(R.id.tv_easy_or)
     TextView tvEasyOr;
+    @BindView(R.id.tv_deposit_score)
+    TextView tvDepositScore;
     @BindView(R.id.tv_left_num)
     TextView tvLeftNum;
     @BindView(R.id.tv_task_id)
@@ -67,6 +69,10 @@ public class FragmentTaskDetail extends Fragment {
         tvTaskId.setText(String.format(getString(R.string.task_id),taskInfoItem.id));
 
         tvEasyOr.setText(String.format(getString(R.string.easy_or),taskInfoItem.difficulty));
+
+        if (taskInfoItem.deposit_score>0) {
+            tvDepositScore.setText(String.format(getString(R.string.deposit_score), String.valueOf(taskInfoItem.deposit_score)));
+        }
 
         tvLeftNum.setVisibility(View.GONE);
 

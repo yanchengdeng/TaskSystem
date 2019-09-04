@@ -1,6 +1,8 @@
 package com.task.system.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -124,8 +126,17 @@ public class DisputeListActivity extends BaseActivity {
             case R.id.tv_next_step:
                 Bundle bundle = new Bundle();
                 bundle.putSerializable(Constans.PASS_OBJECT, orderInfo);
-                ActivityUtils.startActivity(bundle, ApplyDisputeOrReplyActivity.class);
+                ActivityUtils.startActivityForResult(bundle,DisputeListActivity.this, ApplyDisputeOrReplyActivity.class,100);
                 break;
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode==100 && resultCode==RESULT_OK){
+            page = 1;
+            getDisputeList();
         }
     }
 }

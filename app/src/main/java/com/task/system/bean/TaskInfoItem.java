@@ -23,6 +23,7 @@ public class TaskInfoItem implements Serializable {
 //    public String step_3;// "<img src="http;////task.mayimayi.cn/Uploads/2019/03/2.jpg" alt="" />"
     public int is_collect;//为收藏
     public String order_id;
+    public String button_title;
     /**
      * 0——待申请
      * 1——待工作
@@ -41,6 +42,8 @@ public class TaskInfoItem implements Serializable {
 
     public Double deposit_score;//保证金 >0   申请给提示
     public String deposit_score_tips;//保证金tips
+
+    public int is_show_tips;//弹出 社会公约
 
     public List<TaskStep> task_step;
 

@@ -15,6 +15,7 @@ import com.task.system.adapters.FragmentPagerItemAdapter;
 import com.task.system.api.API;
 import com.task.system.api.TaskInfo;
 import com.task.system.api.TaskService;
+import com.task.system.bean.AdInfo;
 import com.task.system.bean.SimpleBeanInfo;
 import com.task.system.fragments.HomeFragment;
 import com.task.system.fragments.PercenterFragment;
@@ -27,7 +28,11 @@ import com.task.system.views.NoScrollViewPager;
 import com.yanzhenjie.permission.AndPermission;
 import com.yanzhenjie.permission.runtime.Permission;
 import com.yc.lib.api.ApiCallBack;
+import com.yc.lib.api.ApiCallBackList;
 import com.yc.lib.api.ApiConfig;
+
+import java.util.HashMap;
+import java.util.List;
 
 import retrofit2.Call;
 
@@ -136,7 +141,34 @@ public class MainActivity extends BaseSimpleActivity {
 
         getCustom();
 
+        getAds();
     }
+
+
+    private void getAds() {
+        HashMap<String, String> maps = new HashMap<>();
+        maps.put("uid", TUtils.getUserId());
+        maps.put("position", "2");
+        Call<com.task.system.api.TaskInfoList> call = ApiConfig.getInstants().create(TaskService.class).getAdList(TUtils.getParams(maps));
+        API.getList(call, AdInfo.class, new ApiCallBackList<AdInfo>() {
+            @Override
+            public void onSuccess(int msgCode, String msg, List<AdInfo> data) {
+
+                if (data!=null && data.size()>0){
+                    SPUtils.getInstance().put(Constans.SAVE_SPLASH_AD,data.get(0).cover);
+                }
+
+
+            }
+
+            @Override
+            public void onFaild(int msgCode, String msg) {
+                ToastUtils.showShort(msg);
+            }
+        });
+    }
+
+
 
     private void getCustom() {
         Call<TaskInfo> call = ApiConfig.getInstants().create(TaskService.class).getCustomeSerice(TUtils.getParams());

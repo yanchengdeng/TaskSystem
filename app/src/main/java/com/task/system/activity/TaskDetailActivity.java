@@ -224,8 +224,8 @@ public class TaskDetailActivity extends BaseSimpleActivity {
      * 7——已超时
      */
     private void initData(TaskInfoItem data) {
-        if (!TextUtils.isEmpty(data.order_status_title)) {
-            tvDoWork.setText(data.order_status_title);
+        if (!TextUtils.isEmpty(data.button_title)) {
+            tvDoWork.setText(data.button_title);
         }
         if (data.order_status == 1) {
             tvDoWork.setBackgroundColor(getResources().getColor(R.color.red));
@@ -296,8 +296,13 @@ public class TaskDetailActivity extends BaseSimpleActivity {
                         return;
                     }
                     if (taskInfoItem.order_status == 0) {
+
                         if (taskInfoItem.deposit_score>0){
                             showDepositDialog();
+                        }else
+                            if(taskInfoItem.is_show_tips==1){
+                            //社会公约
+                            getSocietyOrder();
                         }else {
                             applyTask();
                         }
@@ -309,19 +314,94 @@ public class TaskDetailActivity extends BaseSimpleActivity {
                     } else if (taskInfoItem.is_apply == 1) {
                         applyTask();
                     } else {
-                        ToastUtils.showShort("" + taskInfoItem.order_status_title);
+                        ToastUtils.showShort("" + taskInfoItem.button_title);
                     }
                 }
                 break;
         }
     }
 
+    //社会公约
+    private void getSocietyOrder() {
+        HashMap<String, String> hashMap = new HashMap();
+        hashMap.put("aid", "8");
+        Call<TaskInfo> call = ApiConfig.getInstants().create(TaskService.class).getArticalDetail(TUtils.getParams(hashMap));
+
+        API.getObject(call, SimpleBeanInfo.class, new ApiCallBack<SimpleBeanInfo>() {
+            @Override
+            public void onSuccess(int msgCode, String msg, SimpleBeanInfo data) {
+                if (!TextUtils.isEmpty(data.content)) {
+                    showSocityOrder(data.content);
+                }
+            }
+
+            @Override
+            public void onFaild(int msgCode, String msg) {
+
+
+
+            }
+        });
+    }
+
+
+    //社会公约111111
+    private void getSocietyOrder1() {
+        HashMap<String, String> hashMap = new HashMap();
+        hashMap.put("aid", "8");
+        Call<TaskInfo> call = ApiConfig.getInstants().create(TaskService.class).getArticalDetail(TUtils.getParams(hashMap));
+
+        API.getObject(call, SimpleBeanInfo.class, new ApiCallBack<SimpleBeanInfo>() {
+            @Override
+            public void onSuccess(int msgCode, String msg, SimpleBeanInfo data) {
+                if (!TextUtils.isEmpty(data.content)) {
+                    showSocityOrder(data.content);
+                }
+            }
+
+            @Override
+            public void onFaild(int msgCode, String msg) {
+
+
+
+            }
+        });
+    }
     //弹出保证金提示
     private void showDepositDialog() {
 
         MaterialDialog.Builder builder = new MaterialDialog.Builder(ApiConfig.context)
                 .title("温馨提示")
                 .content(""+taskInfoItem.deposit_score_tips)
+                .positiveText("确定").positiveColor(getResources().getColor(R.color.color_blue)).onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        dialog.dismiss();
+                        if(taskInfoItem.is_show_tips==1){
+                            //社会公约
+                            getSocietyOrder1();
+                        }else {
+                            applyTask();
+                        }
+
+                    }
+                }).negativeText("取消").negativeColor(getResources().getColor(R.color.color_info)).onNegative(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        dialog.dismiss();
+                    }
+                });
+
+        MaterialDialog dialog = builder.build();
+        dialog.show();
+    }
+
+    //弹出社会公约
+    private void showSocityOrder(String content) {
+
+        MaterialDialog.Builder builder = new MaterialDialog.Builder(ApiConfig.context)
+                .title("社会公约")
+                .content(""+content)
                 .positiveText("确定").positiveColor(getResources().getColor(R.color.color_blue)).onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {

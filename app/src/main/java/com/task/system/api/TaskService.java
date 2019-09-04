@@ -587,7 +587,7 @@ public interface TaskService {
      */
     @FormUrlEncoded
     @POST("operator/getOrderList")
-    Call<TaskInfoList> getOperatOrderList(@FieldMap HashMap<String, String> maps);
+    Call<TaskInfo> getOperatOrderList(@FieldMap HashMap<String, String> maps);
 
     /**
      * 争议 标签
@@ -658,4 +658,9 @@ public interface TaskService {
     @FormUrlEncoded
     @POST("order/disputeList")
     Call<TaskInfoList>  disputeList(@FieldMap HashMap<String,String> maps);
+
+    //待审核数量
+    @FormUrlEncoded
+    @POST("operator/getTaskCount")
+    Call<TaskInfo> getOperateTaskCount(@FieldMap HashMap<String,String> maps);
  }

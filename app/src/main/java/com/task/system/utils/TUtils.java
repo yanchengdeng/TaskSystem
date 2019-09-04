@@ -218,7 +218,7 @@ public class TUtils {
         } else if (user_type.equals(UserType.USER_TYPE_AGENT.getType())) {
             return "二级代理";
         } else if (user_type.equals(UserType.USER_TYPE_AREA.getType())) {
-            return "区域代理";
+            return "运营商";
         }
         return "未知身份";
     }

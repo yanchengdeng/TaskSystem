@@ -18,6 +18,7 @@ import com.task.system.api.API
 import com.task.system.api.TaskService
 import com.task.system.bean.AreaManageIitem
 import com.task.system.bean.HomeMenu
+import com.task.system.bean.SimpleBeanInfo
 import com.task.system.fragments.TaskListAreaPublishFragment
 import com.task.system.utils.PerfectClickListener
 import com.task.system.utils.RecycleViewUtils
@@ -25,6 +26,7 @@ import com.task.system.utils.TUtils
 import com.task.system.views.BubblePopupSingle
 import com.task.system.views.FragmentPagerItem
 import com.task.system.views.FragmentPagerItems
+import com.yc.lib.api.ApiCallBack
 import com.yc.lib.api.ApiCallBackList
 import com.yc.lib.api.ApiConfig
 import kotlinx.android.synthetic.main.task_fragment.*
@@ -124,6 +126,34 @@ class PublishManageActivity : BaseActivity() {
         }
 
 
+    }
+
+    override fun onResume() {
+        super.onResume()
+        getWaitCheckNum()
+    }
+
+
+    //待审核数量向
+    private fun getWaitCheckNum() {
+
+        val call = ApiConfig.getInstants().create(TaskService::class.java)
+            .getOperateTaskCount(TUtils.getParams())
+
+        API.getObject(call, SimpleBeanInfo::class.java, object : ApiCallBack<SimpleBeanInfo> {
+            override fun onSuccess(msgCode: Int, msg: String, data: SimpleBeanInfo?) {
+                tvCount?.setText(data?.sum.toString())
+                if (data?.sum!! > 0) {
+                    tvCount?.setVisibility(View.VISIBLE)
+                } else {
+                    tvCount?.setVisibility(View.GONE)
+                }
+            }
+
+            override fun onFaild(msgCode: Int, msg: String) {
+                ToastUtils.showShort(msg)
+            }
+        })
     }
 
     //智能分类

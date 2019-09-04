@@ -5,10 +5,10 @@ import com.task.system.Constans
 import com.task.system.R
 import com.task.system.api.API
 import com.task.system.api.TaskService
-import com.task.system.bean.AreaManagePublish
-import com.task.system.bean.SimpleBeanInfo
+import com.task.system.bean.AreaManageOrder
+import com.task.system.bean.OperateOrderList
 import com.task.system.utils.TUtils
-import com.yc.lib.api.ApiCallBackList
+import com.yc.lib.api.ApiCallBack
 import com.yc.lib.api.ApiConfig
 
 /**
@@ -21,14 +21,14 @@ import com.yc.lib.api.ApiConfig
 class LinkOrdersActivity : BaseActivity() {
 
 
-    private var taskItem: AreaManagePublish?= null
+    private var taskItem: AreaManageOrder?= null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_link_orders)
 
-        taskItem = intent.getSerializableExtra(Constans.PASS_OBJECT) as AreaManagePublish
+        taskItem = intent.getSerializableExtra(Constans.PASS_OBJECT) as AreaManageOrder
 
         setTitle("关联订单")
         if (taskItem==null){
@@ -49,13 +49,13 @@ class LinkOrdersActivity : BaseActivity() {
 
     private fun getLinkOrders(){
         var params = HashMap<String,String>()
-        taskItem?.id?.let {
+        taskItem?.task_id?.let {
             params["task_id"] =it
         }
         var call = ApiConfig.getInstants().create(TaskService::class.java).getOperatOrderList(TUtils.getParams(params))
 
-        API.getList(call,SimpleBeanInfo::class.java, object : ApiCallBackList<SimpleBeanInfo> {
-            override fun onSuccess(msgCode: Int, msg: String?, data: MutableList<SimpleBeanInfo>?) {
+        API.getObject(call, OperateOrderList::class.java, object : ApiCallBack<OperateOrderList> {
+            override fun onSuccess(msgCode: Int, msg: String?, data: OperateOrderList?) {
 
 
             }

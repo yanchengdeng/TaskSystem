@@ -10,6 +10,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
@@ -23,11 +25,13 @@ import com.blankj.utilcode.util.ToastUtils;
 import com.lzy.imagepicker.bean.ImageItem;
 import com.task.system.Constans;
 import com.task.system.R;
+import com.task.system.adapters.IndicatorAdapter;
 import com.task.system.api.API;
 import com.task.system.api.TaskInfo;
 import com.task.system.api.TaskInfoList;
 import com.task.system.api.TaskService;
 import com.task.system.bean.SimpleBeanInfo;
+import com.task.system.bean.TaskIndicator;
 import com.task.system.bean.TaskInfoItem;
 import com.task.system.bean.UploadTaskImageItem;
 import com.task.system.fragments.TaskStepFragment;
@@ -62,12 +66,16 @@ public class DoTaskStepActivity extends BaseActivity {
     ViewPager viewPager;
     @BindView(R.id.tv_next_step)
     TextView tvNextStep;
+    @BindView(R.id.recycle_indicator)
+    RecyclerView recyleIndicator;
     private TaskInfoItem taskInfoItem;
 
 
     private List<TaskStepFragment> fragments = new ArrayList<>();
     private MyAdapter myAdapter;
     private int currentPosition = 0;
+
+    private IndicatorAdapter indicatorAdapter;
 
     private HashMap<Integer, UploadTaskImageItem> uploadHash = new HashMap<>();
 
@@ -81,6 +89,15 @@ public class DoTaskStepActivity extends BaseActivity {
 
         if (!TextUtils.isEmpty(taskInfoItem.title)) {
             setTitle(taskInfoItem.title);
+        }
+
+
+        if (taskInfoItem.task_step!=null && taskInfoItem.task_step.size()>1){
+            //显示步骤引导
+            indicatorAdapter = new IndicatorAdapter(R.layout.adapter_step_index,parseIndicatorData(taskInfoItem.task_step));
+            recyleIndicator.setVisibility(View.VISIBLE);
+            recyleIndicator.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false));
+            recyleIndicator.setAdapter(indicatorAdapter);
         }
 
 
@@ -104,6 +121,8 @@ public class DoTaskStepActivity extends BaseActivity {
                     } else {
                         tvNextStep.setText("下一步");
                     }
+
+                    updateIndicators(i);
 
                 }
 
@@ -131,6 +150,44 @@ public class DoTaskStepActivity extends BaseActivity {
 
     }
 
+    //更新指引数据
+    private void updateIndicators(int index) {
+        if (indicatorAdapter!=null && indicatorAdapter.getData()!=null && indicatorAdapter.getData().size()>0) {
+            for (int i = 0;i<indicatorAdapter.getData().size();i++) {
+//                indicatorAdapter.getData().get(i).isSelect = false;
+            }
+
+            indicatorAdapter.getData().get(index).isSelect = true;
+
+            indicatorAdapter.notifyDataSetChanged();
+
+        }
+
+    }
+
+    //初始话引导数据
+    private ArrayList<TaskIndicator> parseIndicatorData(List<TaskInfoItem.TaskStep> task_step) {
+        ArrayList<TaskIndicator> taskIndicators = new ArrayList<>();
+        for (int i = 0;i<task_step.size();i++){
+            TaskIndicator taskIndicator = new TaskIndicator();
+            if (i ==0){
+                taskIndicator.isSelect = true;
+                taskIndicator.isShowLineLeft = false;
+                taskIndicator.num =i+1;
+            }else if (i == task_step.size()-1){
+                taskIndicator.isSelect = false;
+                taskIndicator.isShowLineLeft = true;
+                taskIndicator.num =i+1;
+            }else{
+                taskIndicator.isSelect = false;
+                taskIndicator.isShowLineLeft = true;
+                taskIndicator.num =i+1;
+            }
+            taskIndicators.add(taskIndicator);
+        }
+        return taskIndicators;
+    }
+
     private void getPagerItems() {
         for (int i = 0; i < taskInfoItem.task_step.size(); i++) {
             Bundle bundle = new Bundle();
@@ -152,7 +209,7 @@ public class DoTaskStepActivity extends BaseActivity {
                 TUtils.openKf();
                 break;
             case R.id.tv_next_step:
-                if (taskInfoItem.task_step==null && taskInfoItem.task_step.size()==0){
+                if (taskInfoItem.task_step==null || taskInfoItem.task_step.size()==0){
                     ToastUtils.showShort("不存在任务步骤");
                     return;
                 }

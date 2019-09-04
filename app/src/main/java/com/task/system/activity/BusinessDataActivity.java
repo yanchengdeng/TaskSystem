@@ -314,6 +314,7 @@ public class BusinessDataActivity extends BaseActivity {
             tvNickname.setText("昵称：" + data.user_info.username);
             tvPhone.setText("手机：" + data.user_info.mobile);
 
+            tvMemberAccountIntergray.setText("账户积分："+data.user_info.score);
 
             tvPublishBalance.setText("发布账户余额：" + data.user_info.score);
             tvHistoryPublishBalance.setText("历史发布总金额：" + data.user_info.history_score);

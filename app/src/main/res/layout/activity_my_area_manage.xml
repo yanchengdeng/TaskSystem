@@ -95,7 +95,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/image_padding"
                     android:layout_marginBottom="@dimen/image_padding"
-                    android:text="区域运营者"
+                    android:text="运营商"
                     android:textColor="@color/white"
                     android:textSize="@dimen/sp_14" />
 

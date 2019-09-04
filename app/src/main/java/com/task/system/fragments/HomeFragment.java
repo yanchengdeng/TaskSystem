@@ -325,43 +325,6 @@ public class HomeFragment extends Fragment {
         }
     }
 
-    private void getAds() {
-        HashMap<String, String> maps = new HashMap<>();
-        maps.put("uid", TUtils.getUserId());
-        maps.put("position", "1");
-        Call<com.task.system.api.TaskInfoList> call = ApiConfig.getInstants().create(TaskService.class).getAdList(TUtils.getParams(maps));
-        API.getList(call, AdInfo.class, new ApiCallBackList<AdInfo>() {
-            @Override
-            public void onSuccess(int msgCode, String msg, List<AdInfo> data) {
-
-                List<String> images = new ArrayList<>();
-                if (data != null && data.size() > 0) {
-                    for (AdInfo item : data) {
-                        images.add(item.cover);
-                    }
-                }
-                banner.setImages(images);
-                banner.setOnBannerListener(new OnBannerListener() {
-                    @Override
-                    public void OnBannerClick(int position) {
-                        Bundle bundle = new Bundle();
-                        bundle.putString(Constans.PASS_NAME, data.get(position).title);
-                        bundle.putString(Constans.PASS_STRING, data.get(position).link_url);
-                        ActivityUtils.startActivity(bundle, OpenWebViewActivity.class);
-
-                    }
-                });
-                //banner设置方法全部调用完毕时最后调用
-                banner.start();
-
-            }
-
-            @Override
-            public void onFaild(int msgCode, String msg) {
-                ToastUtils.showShort(msg);
-            }
-        });
-    }
 
     //用户全部分类
     private void getUserCatogry() {

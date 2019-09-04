@@ -8,10 +8,10 @@ import android.widget.TextView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.task.system.R;
-import com.task.system.bean.AreaManagePublish;
+import com.task.system.bean.AreaManageOrder;
 
 //订单
-public class AreaManageOrdersAdapter extends BaseQuickAdapter<AreaManagePublish, BaseViewHolder> {
+public class AreaManageOrdersAdapter extends BaseQuickAdapter<AreaManageOrder, BaseViewHolder> {
 
     private String status;
 
@@ -25,7 +25,7 @@ public class AreaManageOrdersAdapter extends BaseQuickAdapter<AreaManagePublish,
     }
 
     @Override
-    protected void convert(BaseViewHolder helper, AreaManagePublish item) {
+    protected void convert(BaseViewHolder helper, AreaManageOrder item) {
 
 
 
@@ -37,16 +37,16 @@ public class AreaManageOrdersAdapter extends BaseQuickAdapter<AreaManagePublish,
             ((TextView)helper.getView(R.id.tv_info)).setText(Html.fromHtml(item.getSub_title()));
         }
 
-        if (!TextUtils.isEmpty(item.getActual_score())) {
-            ((TextView)helper.getView(R.id.tv_price)).setText(mContext.getString(R.string.money_unit)+item.getActual_score());
+        if (!TextUtils.isEmpty(item.getTask_score())) {
+            ((TextView)helper.getView(R.id.tv_price)).setText(mContext.getString(R.string.money_unit)+item.getTask_score());
         }
 
-        if (!TextUtils.isEmpty(item.getId())) {
-            ((TextView)helper.getView(R.id.tv_order_id)).setText("ID:"+item.getId());
+        if (!TextUtils.isEmpty(item.getOrder_id())) {
+            ((TextView)helper.getView(R.id.tv_order_id)).setText("ID:"+item.getOrder_id());
         }
 
 
-         ((TextView)helper.getView(R.id.tv_time)).setText(item.getCreate_time());
+
 
         ((TextView) helper.getView(R.id.tv_status)).setText("状态："+item.getStatus_title());
 
@@ -85,34 +85,42 @@ public class AreaManageOrdersAdapter extends BaseQuickAdapter<AreaManagePublish,
 
         switch (item.getStatus()){
             case "0":
+                ((TextView)helper.getView(R.id.tv_time)).setText("结束时间："+item.getTask_end_time());
                 funOrderData.setVisibility(View.GONE);
                 funLookReason.setVisibility(View.GONE);
                 break;
             case "1":
+                ((TextView)helper.getView(R.id.tv_time)).setText("结束时间："+item.getTask_end_time());
                 funOrderData.setVisibility(View.VISIBLE);
                 funLookReason.setVisibility(View.GONE);
                 break;
             case "2":
+                ((TextView)helper.getView(R.id.tv_time)).setText("创建时间："+item.getUpdate_time());
                 funOrderData.setVisibility(View.GONE);
                 funLookReason.setVisibility(View.GONE);
                 break;
             case "3":
+                ((TextView)helper.getView(R.id.tv_time)).setText("结束时间："+item.getTask_end_time());
                 funOrderData.setVisibility(View.GONE);
                 funLookReason.setVisibility(View.GONE);
                 break;
             case "4":
+                ((TextView)helper.getView(R.id.tv_time)).setText("审核时间："+item.getUpdate_time());
                 funOrderData.setVisibility(View.GONE);
                 funLookReason.setVisibility(View.VISIBLE);
                 break;
             case "5":
+                ((TextView)helper.getView(R.id.tv_time)).setText("审核时间："+item.getUpdate_time());
                 funOrderData.setVisibility(View.VISIBLE);
                 funLookReason.setVisibility(View.GONE);
                 break;
             case "6":
+                ((TextView)helper.getView(R.id.tv_time)).setText("审核时间："+item.getUpdate_time());
                 funOrderData.setVisibility(View.GONE);
                 funLookReason.setVisibility(View.GONE);
                 break;
             case "7":
+                ((TextView)helper.getView(R.id.tv_time)).setText("到期时间："+item.getUpdate_time());
                 funOrderData.setVisibility(View.GONE);
                 funLookReason.setVisibility(View.GONE);
                 break;

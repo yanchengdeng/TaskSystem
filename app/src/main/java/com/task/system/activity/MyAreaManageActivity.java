@@ -143,7 +143,7 @@ public class MyAreaManageActivity extends BaseSimpleActivity {
 
 
 
-        getRecycleList();
+
 
         UserInfo userInfo = TUtils.getUserInfo();
         if (userInfo!=null){
@@ -160,6 +160,12 @@ public class MyAreaManageActivity extends BaseSimpleActivity {
 
     }
 
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getRecycleList();
+    }
 
     private void getRecycleList(){
 

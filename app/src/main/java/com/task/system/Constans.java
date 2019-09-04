@@ -24,6 +24,8 @@ public class Constans {
     public static final String SAVE_LOCATION_REGION_NAME = "save_region_name";
     public static final String SAVE_LOCATION_REGION_ID = "save_region_id";
     public static final int LUBAN_SIZE = 100;
+    //本地广告
+    public static final String SAVE_SPLASH_AD = "splash_ad";
     public static boolean HAS_VESRSION_TIPS ;//是否提示过版本更新
 
 //    public static String BASE_URL_TEST = "syn.xhdcmgood.com/api.php/V2";

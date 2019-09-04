@@ -19,6 +19,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.blankj.utilcode.util.EncodeUtils;
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.ToastUtils;
+import com.google.gson.Gson;
 import com.lzy.imagepicker.ImagePicker;
 import com.lzy.imagepicker.bean.ImageItem;
 import com.lzy.imagepicker.ui.ImageGridActivity;
@@ -314,7 +315,7 @@ public class ApplyDisputeOrReplyActivity extends BaseActivity implements ImagePi
         hashMap.put("uid", TUtils.getUserId());
         hashMap.put("order_id", orderInfo.order_id);
         hashMap.put("dispute_id", "0");
-        hashMap.put("images", uploadHash.toArray().toString());
+        hashMap.put("images", new Gson().toJson(uploadHash));
         hashMap.put("content", editDispute.getEditableText().toString());
         Call<TaskInfo> call = ApiConfig.getInstants().create(TaskService.class).disputeOrder(TUtils.getParams(hashMap));
 
@@ -324,6 +325,7 @@ public class ApplyDisputeOrReplyActivity extends BaseActivity implements ImagePi
             public void onSuccess(int msgCode, String msg, SimpleBeanInfo data) {
                 ToastUtils.showShort("提交成功");
                 EventBus.getDefault().post(new RefreshUnreadCountEvent());
+                setResult(RESULT_OK);
                 finish();
 
             }

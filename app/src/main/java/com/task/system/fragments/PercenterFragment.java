@@ -130,8 +130,8 @@ public class PercenterFragment extends Fragment {
                 tvMyAreaManage.setVisibility(View.VISIBLE);
                 tvAddLead.setVisibility(View.VISIBLE);
                 tvInviteCode.setVisibility(View.VISIBLE);
-                tvMyActivity.setVisibility(View.GONE);
-                tvMyAwards.setVisibility(View.GONE);
+                tvMyActivity.setVisibility(View.VISIBLE);
+                tvMyAwards.setVisibility(View.VISIBLE);
             } else if (userInfo.user_type.equals(UserType.USER_TYPE_AGENT.getType())) {
                 tvInviteCode.setVisibility(View.VISIBLE);
                 tvMyTeam.setVisibility(View.GONE);

@@ -29,7 +29,7 @@ import com.task.system.api.TaskInfo;
 import com.task.system.api.TaskInfoList;
 import com.task.system.api.TaskService;
 import com.task.system.bean.AreaManageOrder;
-import com.task.system.bean.AreaManagePublish;
+import com.task.system.bean.OperateOrderList;
 import com.task.system.bean.OrderInfo;
 import com.task.system.bean.TaskInfoItem;
 import com.task.system.event.RefreshUnreadCountEvent;
@@ -105,7 +105,7 @@ public class TaskListAreaOrdersFragment extends BaseFragment {
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 Bundle bundle = new Bundle();
                 bundle.putString(Constans.PASS_NAME, "任务详情");
-                bundle.putString(Constans.PASS_STRING, taskOrderAdapter.getData().get(position).getId());
+                bundle.putString(Constans.PASS_STRING, taskOrderAdapter.getData().get(position).getTask_id());
                 ActivityUtils.startActivity(bundle, TaskDetailActivity.class);
             }
         });
@@ -129,7 +129,7 @@ public class TaskListAreaOrdersFragment extends BaseFragment {
                         Bundle about = new Bundle();
                         about.putString(Constans.PASS_NAME,"审核理由");
                         about.putString(Constans.ARTICAL_TYPE,Constans.ORDER_ROOLBACK_REASON);
-                        about.putString(Constans.PASS_STRING,taskOrderAdapter.getData().get(position).getId());
+                        about.putString(Constans.PASS_STRING,taskOrderAdapter.getData().get(position).getOrder_id());
                         ActivityUtils.startActivity(about, OpenWebViewActivity.class);
                         break;
                     case R.id.tv_cancle_task:
@@ -209,12 +209,12 @@ public class TaskListAreaOrdersFragment extends BaseFragment {
 
 
     //放弃任务
-    private void cancleTask(int position, AreaManagePublish orderInfo) {
+    private void cancleTask(int position, AreaManageOrder orderInfo) {
         if (getActivity() != null) {
             ((BaseActivity) getActivity()).showLoadingBar("取消任务..");
         }
         HashMap<String, String> maps = new HashMap<>();
-        maps.put("task_id", orderInfo.getId());
+        maps.put("task_id", orderInfo.getTask_id());
         //要变更的状态，中止任务和取消任务的值均为0
         maps.put("status", "0");
         Call<TaskInfoList> call = ApiConfig.getInstants().create(TaskService.class).operatorTaskStatus(TUtils.getParams(maps));
@@ -306,16 +306,16 @@ public class TaskListAreaOrdersFragment extends BaseFragment {
             }
         }
 
-        Call<TaskInfoList> call = ApiConfig.getInstants().create(TaskService.class).getOperatOrderList(TUtils.getParams(maps));
+        Call<TaskInfo> call = ApiConfig.getInstants().create(TaskService.class).getOperatOrderList(TUtils.getParams(maps));
 
-        API.getList(call, AreaManagePublish.class, new ApiCallBackList<AreaManageOrder>() {
+        API.getObject(call, OperateOrderList.class, new ApiCallBack<OperateOrderList>() {
             @Override
-            public void onSuccess(int msgCode, String msg, List<AreaManageOrder> data) {
+            public void onSuccess(int msgCode, String msg, OperateOrderList data) {
                 if (ApiConfig.context!= null) {
                     ((OrderManageActivity)ApiConfig.context).dismissLoadingBar();
                 }
 
-                TUtils.dealReqestData(taskOrderAdapter, recycle, data, page, smartRefresh);
+                TUtils.dealReqestData(taskOrderAdapter, recycle, data.list, page, smartRefresh);
             }
 
             @Override
