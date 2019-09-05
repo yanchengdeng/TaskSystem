@@ -1,6 +1,5 @@
 package com.task.system.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -21,6 +20,7 @@ import com.task.system.fragments.HomeFragment;
 import com.task.system.fragments.PercenterFragment;
 import com.task.system.fragments.SortFragment;
 import com.task.system.fragments.TaskFragment;
+import com.task.system.utils.AppManager;
 import com.task.system.utils.TUtils;
 import com.task.system.views.FragmentPagerItem;
 import com.task.system.views.FragmentPagerItems;
@@ -223,11 +223,12 @@ public class MainActivity extends BaseSimpleActivity {
             mExitTime = System.currentTimeMillis();
             return true;
         } else {
-            Intent home = new Intent(Intent.ACTION_MAIN);
-            home.addCategory(Intent.CATEGORY_HOME);
-            startActivity(home);
-//            AppManager.getAppManager().AppExit(this);
-//            finish();
+//            Intent home = new Intent(Intent.ACTION_MAIN);
+//            home.addCategory(Intent.CATEGORY_HOME);
+//            startActivity(home);
+            AppManager.getAppManager().finishAllActivity();
+            AppManager.getAppManager().AppExit(this);
+            finish();
         }
         return false;
     }

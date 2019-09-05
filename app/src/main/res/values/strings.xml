@@ -33,7 +33,7 @@
     <string name="wait_time">审核时间：%s </string>
     <string name="easy_or">难易程度：%s</string>
     <string name="deposit_score">保证金：%s</string>
-    <string name="left_num">剩余名额：%</string>
+    <string name="left_num">剩余名额：%s</string>
     <string name="task_id">任务ID：%S</string>
     <string name="modify_password">修改密码</string>
     <string name="old_password_tips">请输入旧密码</string>

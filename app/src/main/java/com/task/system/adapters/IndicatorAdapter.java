@@ -26,7 +26,11 @@ public class IndicatorAdapter extends BaseQuickAdapter<TaskIndicator, BaseViewHo
         super(layoutResId, arrayList);
         this.datas = arrayList;
 
-        paramsline = new LinearLayout.LayoutParams((ScreenUtils.getScreenWidth() / (arrayList.size() + 1)), ConvertUtils.dp2px(1));
+        if (arrayList.size()>4){
+            paramsline = new LinearLayout.LayoutParams((ScreenUtils.getScreenWidth() / (arrayList.size() + 5)), ConvertUtils.dp2px(1));
+        }else {
+            paramsline = new LinearLayout.LayoutParams((ScreenUtils.getScreenWidth() / (arrayList.size() + 1)), ConvertUtils.dp2px(1));
+        }
         paramsline.gravity = Gravity.CENTER_VERTICAL;
     }
 

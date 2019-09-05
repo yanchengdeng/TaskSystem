@@ -226,7 +226,9 @@ public class TaskListAreaPublishFragment extends BaseFragment {
         HashMap<String, String> maps = new HashMap<>();
         maps.put("page", String.valueOf(page));
         if (!TextUtils.isEmpty(status)){
-            maps.put("tab",status);
+            maps.put("tab",String.valueOf((int)Double.parseDouble(status)));
+        }else{
+            maps.put("tab","");
         }
         if (!TextUtils.isEmpty(sort)) {
             maps.put("sort", sort);

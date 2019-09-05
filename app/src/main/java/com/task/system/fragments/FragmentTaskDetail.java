@@ -55,26 +55,28 @@ public class FragmentTaskDetail extends Fragment {
 
     private void initData() {
         if (!TextUtils.isEmpty(taskInfoItem.market_score)) {
-            tvMoney.setText(getString(R.string.money_unit)+taskInfoItem.market_score);
+            tvMoney.setText(getString(R.string.money_unit) + taskInfoItem.market_score);
         }
 
         if (!TextUtils.isEmpty(taskInfoItem.audit_date)) {
-            tvWaitTime.setText(String.format(getString(R.string.wait_time),taskInfoItem.audit_date));
+            tvWaitTime.setText(String.format(getString(R.string.wait_time), taskInfoItem.audit_date));
         }
 
         if (!TextUtils.isEmpty(taskInfoItem.end_time)) {
-            tvEndTime.setText(String.format(getString(R.string.end_time),taskInfoItem.end_time));
+            tvEndTime.setText(String.format(getString(R.string.end_time), taskInfoItem.end_time));
         }
 
-        tvTaskId.setText(String.format(getString(R.string.task_id),taskInfoItem.id));
+        tvTaskId.setText(String.format(getString(R.string.task_id), taskInfoItem.id));
 
-        tvEasyOr.setText(String.format(getString(R.string.easy_or),taskInfoItem.difficulty));
+        tvEasyOr.setText(String.format(getString(R.string.easy_or), taskInfoItem.difficulty));
 
-        if (taskInfoItem.deposit_score>0) {
-            tvDepositScore.setText(String.format(getString(R.string.deposit_score), String.valueOf(taskInfoItem.deposit_score)));
+        tvDepositScore.setText(String.format(getString(R.string.deposit_score), String.valueOf(taskInfoItem.deposit_score)));
+
+        if (TextUtils.isEmpty(taskInfoItem.storages)) {
+            taskInfoItem.storages = "0";
         }
+        tvLeftNum.setText(String.format(getString(R.string.left_num), taskInfoItem.storages));
 
-        tvLeftNum.setVisibility(View.GONE);
 
         if (!TextUtils.isEmpty(taskInfoItem.description)) {
             richText.setHtml(taskInfoItem.description);
@@ -84,7 +86,7 @@ public class FragmentTaskDetail extends Fragment {
             @Override
             public void onImageClick(String imageUrl, String[] imageUrls, int position) {
 
-                TUtils.openImageViews(imageUrls,position);
+                TUtils.openImageViews(imageUrls, position);
 
             }
         });
