@@ -145,7 +145,6 @@ public class PersonSettingActivity extends BaseActivity {
         API.getObject(call, UserExt.class, new ApiCallBack<UserExt>() {
             @Override
             public void onSuccess(int msgCode, String msg, UserExt data) {
-
                 if (data != null) {
                     userExt = data;
                     if (!TextUtils.isEmpty(data.idcard_bind) && data.idcard_bind.equals("1")) {
@@ -245,11 +244,16 @@ public class PersonSettingActivity extends BaseActivity {
                 }
                 break;
             case R.id.rl_id_card:
-                Bundle bundle = new Bundle();
+                Bundle bundle = null;
                 if (userExt!=null && userExt.idcard_info!=null) {
+                    bundle = new Bundle();
                     bundle.putSerializable(Constans.PASS_OBJECT, userExt.idcard_info);
                 }
-                ActivityUtils.startActivityForResult(bundle,PersonSettingActivity.this, AddIdCardActivity.class, ADD_CARD_REQUEST);
+                Intent intent = new Intent(ApiConfig.context,AddIdCardActivity.class);
+                if (bundle!=null){
+                    intent.putExtras(bundle);
+                }
+                startActivityForResult(intent, ADD_CARD_REQUEST);
                 break;
             case R.id.tv_login_out:
                 showExitDialog();

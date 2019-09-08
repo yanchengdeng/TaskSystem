@@ -41,8 +41,8 @@ public class AreaManageOrdersAdapter extends BaseQuickAdapter<AreaManageOrder, B
             ((TextView)helper.getView(R.id.tv_price)).setText(mContext.getString(R.string.money_unit)+item.getTask_score());
         }
 
-        if (!TextUtils.isEmpty(item.getOrder_id())) {
-            ((TextView)helper.getView(R.id.tv_order_id)).setText("ID:"+item.getOrder_id());
+        if (!TextUtils.isEmpty(item.getUid())) {
+            ((TextView)helper.getView(R.id.tv_order_id)).setText("用户ID:"+item.getUid());
         }
 
 

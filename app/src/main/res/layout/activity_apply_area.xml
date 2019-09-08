@@ -1,0 +1,383 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.AddIdCardActivity">
+
+
+    <TextView
+        android:id="@+id/tv_name_tips"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/activity_horizontal_margin"
+        android:text="企业名称："
+        android:textColor="@color/color_tittle"
+        android:textSize="@dimen/text_size_normal"
+        app:layout_constraintBaseline_toBaselineOf="@+id/et_name"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <EditText
+        android:id="@+id/et_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/activity_horizontal_margin"
+        android:hint="输入企业名称"
+        android:maxLength="18"
+        android:padding="5dp"
+        android:singleLine="true"
+        android:textColor="@color/color_info"
+        android:textSize="@dimen/text_size_normal"
+        app:layout_constraintLeft_toRightOf="@+id/tv_name_tips"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <TextView
+        android:id="@+id/tv_address_tips"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/activity_horizontal_margin"
+        android:text="联系地址："
+        android:textColor="@color/color_tittle"
+        android:textSize="@dimen/text_size_normal"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_name_tips" />
+
+
+    <EditText
+        android:id="@+id/et_address"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/activity_horizontal_margin"
+        android:hint="输入联系地址"
+        android:maxLength="18"
+        android:padding="5dp"
+        android:singleLine="true"
+        android:textColor="@color/color_info"
+        android:textSize="@dimen/text_size_normal"
+        app:layout_constraintBaseline_toBaselineOf="@+id/tv_address_tips"
+        app:layout_constraintLeft_toRightOf="@+id/tv_address_tips"
+        app:layout_constraintRight_toRightOf="parent" />
+
+
+    <TextView
+        android:id="@+id/tv_bandnum_tips"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/activity_horizontal_margin"
+        android:text="银行账号："
+        android:textColor="@color/color_tittle"
+        android:textSize="@dimen/text_size_normal"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_address_tips" />
+
+
+    <EditText
+        android:id="@+id/et_band_num"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/activity_horizontal_margin"
+        android:hint="输入银行账号"
+        android:maxLength="18"
+        android:padding="5dp"
+        android:singleLine="true"
+        android:textColor="@color/color_info"
+        android:textSize="@dimen/text_size_normal"
+        app:layout_constraintBaseline_toBaselineOf="@+id/tv_bandnum_tips"
+        app:layout_constraintLeft_toRightOf="@+id/tv_bandnum_tips"
+        app:layout_constraintRight_toRightOf="parent" />
+
+
+    <TextView
+        android:id="@+id/tv_open_brand_tips"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/activity_horizontal_margin"
+        android:text="开户行："
+        android:textColor="@color/color_tittle"
+        android:textSize="@dimen/text_size_normal"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_bandnum_tips" />
+
+
+    <EditText
+        android:id="@+id/et_open_brand"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/activity_horizontal_margin"
+        android:hint="输入开户行地址"
+        android:maxLength="18"
+        android:padding="5dp"
+        android:singleLine="true"
+        android:textColor="@color/color_info"
+        android:textSize="@dimen/text_size_normal"
+        app:layout_constraintBaseline_toBaselineOf="@+id/tv_open_brand_tips"
+        app:layout_constraintLeft_toRightOf="@+id/tv_open_brand_tips"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_link_person"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/activity_horizontal_margin"
+        android:text="联系人："
+        android:textColor="@color/color_tittle"
+        android:textSize="@dimen/text_size_normal"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_open_brand_tips" />
+
+
+    <EditText
+        android:id="@+id/et_link_person"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/activity_horizontal_margin"
+        android:hint="输入联系人"
+        android:maxLength="18"
+        android:padding="5dp"
+        android:singleLine="true"
+        android:textColor="@color/color_info"
+        android:textSize="@dimen/text_size_normal"
+        app:layout_constraintBaseline_toBaselineOf="@+id/tv_link_person"
+        app:layout_constraintLeft_toRightOf="@+id/tv_link_person"
+        app:layout_constraintRight_toRightOf="parent" />
+
+
+
+
+    <TextView
+        android:id="@+id/tv_link_phone_tips"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/activity_horizontal_margin"
+        android:text="联系人手机："
+        android:textColor="@color/color_tittle"
+        android:textSize="@dimen/text_size_normal"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_link_person" />
+
+
+    <EditText
+        android:id="@+id/et_link_phone"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/activity_horizontal_margin"
+        android:hint="输入联系人手机号"
+        android:maxLength="11"
+        android:padding="5dp"
+        android:singleLine="true"
+        android:textColor="@color/color_info"
+        android:textSize="@dimen/text_size_normal"
+        app:layout_constraintBaseline_toBaselineOf="@+id/tv_link_phone_tips"
+        app:layout_constraintLeft_toRightOf="@+id/tv_link_phone_tips"
+        app:layout_constraintRight_toRightOf="parent" />
+
+
+
+
+
+
+
+    <LinearLayout
+        android:id="@+id/rl_car_up"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/activity_horizontal_margin"
+        android:orientation="vertical"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/et_link_phone">
+
+
+   <LinearLayout
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:orientation="horizontal">
+
+       <TextView
+           android:layout_width="0dp"
+           android:layout_weight="1"
+           android:layout_height="wrap_content"
+           android:text="营业执照："
+           android:gravity="center"
+           android:textColor="@color/color_tittle"
+           android:textSize="@dimen/text_size_normal"
+           app:layout_constraintLeft_toLeftOf="parent" />
+
+       <TextView
+           android:layout_width="0dp"
+           android:layout_weight="1"
+           android:layout_height="wrap_content"
+           android:text="开户许可："
+           android:gravity="center"
+           android:textColor="@color/color_tittle"
+           android:textSize="@dimen/text_size_normal"
+           app:layout_constraintLeft_toLeftOf="parent" />
+   </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/activity_horizontal_margin"
+            android:orientation="horizontal">
+
+
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:layout_marginRight="@dimen/image_padding_big"
+                android:layout_weight="1">
+
+
+                <ImageView
+                    android:id="@+id/iv_ad_up_real"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:adjustViewBounds="true"
+                    android:background="@drawable/normal_submit_add_card"
+                    android:scaleType="fitXY" />
+
+
+                <TextView
+                    android:id="@+id/iv_id_up"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="正面"
+                    android:textColor="@color/color_date"
+                    android:textSize="@dimen/text_size_normal" />
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:layout_marginLeft="@dimen/image_padding_big"
+                android:layout_weight="1">
+
+
+                <ImageView
+                    android:id="@+id/iv_ad_down_real"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:adjustViewBounds="true"
+                    android:background="@drawable/normal_submit_add_card"
+                    android:scaleType="fitXY" />
+
+                <TextView
+                    android:id="@+id/iv_id_down"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+
+                    android:gravity="center"
+                    android:text="正面"
+                    android:textColor="@color/color_date"
+                    android:textSize="@dimen/text_size_normal" />
+            </FrameLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/rl_card_hold"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/activity_horizontal_margin"
+        android:orientation="vertical"
+        android:visibility="gone"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rl_car_up">
+
+
+        <TextView
+            android:id="@+id/tv_id_up"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="手持身份证："
+            android:textColor="@color/color_tittle"
+            android:textSize="@dimen/text_size_normal"
+            app:layout_constraintLeft_toLeftOf="parent" />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/activity_horizontal_margin"
+            android:orientation="horizontal">
+
+
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:layout_marginRight="@dimen/image_padding_big"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/iv_id_hold_real"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:adjustViewBounds="true"
+                    android:background="@drawable/normal_submit_add_card"
+                    android:scaleType="fitXY" />
+
+                <TextView
+                    android:id="@+id/iv_id_hold"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:gravity="center"
+                    android:text="手持身份证"
+                    android:textColor="@color/color_date"
+                    android:textSize="@dimen/text_size_normal" />
+            </FrameLayout>
+
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:layout_marginLeft="@dimen/image_padding_big"
+                android:layout_weight="1"
+                android:background="@drawable/normal_submit_add_card"
+                android:gravity="center"
+                android:text="国徽像"
+                android:textColor="@color/color_info"
+                android:textSize="@dimen/text_size_normal"
+                android:visibility="invisible" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+    <Button
+        android:id="@+id/btn_login"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/nav_bar_height"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:background="@drawable/normal_submit_btn_red"
+        android:gravity="center"
+        android:text="@string/submit"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_size_normal_up"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@+id/rl_card_hold" />
+
+</android.support.constraint.ConstraintLayout>
+</android.support.v4.widget.NestedScrollView>

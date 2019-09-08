@@ -273,6 +273,20 @@
                 android:visibility="gone"
                 />
 
+            <TextView
+                android:id="@+id/tv_my_applay"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:background="@color/white"
+                android:drawableRight="@mipmap/arrow_right_black"
+                android:padding="@dimen/activity_horizontal_margin"
+                android:text="我的申请"
+                android:textColor="@color/color_info"
+                android:textSize="@dimen/sp_14"
+                android:visibility="gone"
+                />
+
 
 
         </LinearLayout>

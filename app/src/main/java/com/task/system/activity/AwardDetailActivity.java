@@ -132,6 +132,7 @@ public class AwardDetailActivity extends BaseActivity {
             @Override
             public void onFaild(int msgCode, String msg) {
                 dismissLoadingBar();
+                SysUtils.showToast(""+msg);
             }
         });
 
@@ -185,7 +186,7 @@ public class AwardDetailActivity extends BaseActivity {
             if (data.can_set_address == 1) {
                 tvAddAddress.setVisibility(View.VISIBLE);
             } else {
-                if (data.address!=null) {
+                if (data.address!=null && !TextUtils.isEmpty(data.address.address)) {
                         tvAddress.setText(""+data.address.address);
                         tvAddressPhone.setText(""+data.address.mobile);
                         tvAddressName.setText(""+data.address.name);

@@ -83,6 +83,7 @@
     
     
     <LinearLayout
+        android:id="@+id/ll_bottom"
         android:layout_width="match_parent"
         android:orientation="horizontal"
         android:layout_height="@dimen/nav_bar_height">

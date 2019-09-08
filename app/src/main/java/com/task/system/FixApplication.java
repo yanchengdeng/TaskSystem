@@ -15,7 +15,6 @@ import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.blankj.utilcode.util.Utils;
 import com.bumptech.glide.request.RequestOptions;
@@ -49,6 +48,7 @@ import retrofit2.Call;
 
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
+import static com.task.system.utils.TUtils.clearUserInfo;
 
 public class FixApplication extends MultiDexApplication {
 
@@ -143,7 +143,9 @@ public class FixApplication extends MultiDexApplication {
                         @Override
                         public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                             dialog.dismiss();
-                            SPUtils.getInstance().put(Constans.USER_INFO, "");
+                            materialDialog = null;
+
+                            clearUserInfo();
                             Intent intent = new Intent(ApiConfig.context, LoginActivity.class);
                             intent.setFlags(FLAG_ACTIVITY_NEW_TASK);
                             startActivity(intent);
@@ -157,6 +159,7 @@ public class FixApplication extends MultiDexApplication {
         }
         if (materialDialog.isShowing()) {
             materialDialog.dismiss();
+            materialDialog.show();
         } else {
             materialDialog.show();
         }

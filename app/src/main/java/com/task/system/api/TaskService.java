@@ -468,7 +468,14 @@ public interface TaskService {
     //上传身份证信息
     @FormUrlEncoded
     @POST("user/addIdCard")
-    Call<TaskInfo> addIdCards(@FieldMap HashMap<String, String> maps);
+    Call<TaskInfoIgnoreBody> addIdCards(@FieldMap HashMap<String, String> maps);
+
+
+    //修改省份证
+
+    @FormUrlEncoded
+    @POST("user/setIdCard")
+    Call<TaskInfoIgnoreBody> setIdCards(@FieldMap HashMap<String, String> maps);
 
     //单张图片上传
 
@@ -663,4 +670,14 @@ public interface TaskService {
     @FormUrlEncoded
     @POST("operator/getTaskCount")
     Call<TaskInfo> getOperateTaskCount(@FieldMap HashMap<String,String> maps);
+
+
+    //上传企业认证
+    @FormUrlEncoded
+    @POST("user/addBusiness")
+    Call<TaskInfoIgnoreBody>  userAddBuisness(@FieldMap HashMap<String,String> maps);
+
+    @FormUrlEncoded
+    @POST("user/setBusiness")
+    Call<TaskInfoIgnoreBody>  userSetBusiness(@FieldMap HashMap<String,String> maps);
  }

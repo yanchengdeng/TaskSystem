@@ -10,7 +10,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.EncodeUtils;
@@ -42,7 +41,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -55,90 +53,87 @@ import top.zibin.luban.OnCompressListener;
 import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
 
 /**
- * Email: dengyc@dadaodata.com
- * FileName: AddIdCardActivity.java
  * Author: dengyancheng
- * Date: 2019-08-14 00:32
- * Description: 上传身份信息
+ * Date: 2019-09-08 09:20
+ * Description: 我的申请
  * History:
  */
-public class AddIdCardActivity extends BaseActivity {
+public class MyApplyActivity extends BaseActivity {
 
 
-    @BindView(R.id.tv_name_tips)
-    TextView tvNameTips;
     @BindView(R.id.et_name)
     EditText etName;
-    @BindView(R.id.tv_id_tips)
-    TextView tvIdTips;
-    @BindView(R.id.et_id)
-    EditText etId;
-    @BindView(R.id.iv_id_up)
-    TextView ivIdUp;
-    @BindView(R.id.iv_id_down)
-    TextView ivIdDown;
-    @BindView(R.id.rl_car_up)
-    LinearLayout rlCarUp;
-    @BindView(R.id.tv_id_up)
-    TextView tvIdUp;
-    @BindView(R.id.iv_id_hold)
-    TextView ivIdHold;
-    @BindView(R.id.rl_card_hold)
-    LinearLayout rlCardHold;
-    @BindView(R.id.btn_login)
-    Button btnLogin;
+    @BindView(R.id.et_address)
+    EditText etAddress;
+    @BindView(R.id.et_band_num)
+    EditText etBandNum;
+    @BindView(R.id.et_open_brand)
+    EditText etOpenBrand;
+    @BindView(R.id.et_link_person)
+    EditText etLinkPerson;
+    @BindView(R.id.et_link_phone)
+    EditText etLinkPhone;
     @BindView(R.id.iv_ad_up_real)
     ImageView ivAdUpReal;
+    @BindView(R.id.iv_id_up)
+    TextView ivIdUp;
     @BindView(R.id.iv_ad_down_real)
     ImageView ivAdDownReal;
-    @BindView(R.id.iv_id_hold_real)
-    ImageView ivIdHoldReal;
+    @BindView(R.id.iv_id_down)
+    TextView ivIdDown;
+    @BindView(R.id.btn_login)
+    Button btnLogin;
+
+    private UserExt.BussinessInfo bussinessInfo;
+
     private int selectedPicsPosition = 0;//被选中的图片
 
-    private Map<Integer, String> carsdImages = new HashMap<>();
+    private String businessImage;//营业执照
+    private String businessOpenPermit;//开户许可
+
+//    private Map<Integer, String> carsdImages = new HashMap<>();
 
     public static final int REQUEST_CODE_SELECT = 105;
     public static final int REQUEST_CODE_PREVIEW = 106;
 
-
-    private UserExt.IdCardInfo userExt;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_id_card);
+        setContentView(R.layout.activity_apply_area);
         ButterKnife.bind(this);
-        setTitle("上传身份信息");
+        setTitle("我的申请");
+
+
         initImagePicker();
         if (getIntent() != null && getIntent().getSerializableExtra(Constans.PASS_OBJECT) != null) {
-            userExt = (UserExt.IdCardInfo) getIntent().getSerializableExtra(Constans.PASS_OBJECT);
-            if (userExt != null) {
-                setTitle("查看身份信息");
+            bussinessInfo = (UserExt.BussinessInfo) getIntent().getSerializableExtra(Constans.PASS_OBJECT);
+            if (bussinessInfo != null) {
+                setTitle("查看申请信息");
 //                ivAdDownReal.setClickable(false);
 //                ivAdUpReal.setClickable(false);
 //                ivIdHoldReal.setClickable(false);
 //                btnLogin.setVisibility(View.GONE);
-                etId.setText(userExt.idcard);
-                etName.setText(userExt.idcard_name);
+//                etId.setText(userExt.idcard);
+                etName.setText(bussinessInfo.business_name);
+                etAddress.setText(bussinessInfo.business_address);
+                etBandNum.setText(bussinessInfo.business_bank_account);
+                etLinkPerson.setText(bussinessInfo.business_contact);
+                etOpenBrand.setText(bussinessInfo.business_open_bank);
+                etLinkPhone.setText(bussinessInfo.business_contact_mobile);
 
 
                 Glide.with(ApiConfig.context)
-                        .load(userExt.idcard_front)     //设置图片路径(fix #8,文件名包含%符号 无法识别和显示)
+                        .load(bussinessInfo.business_image)     //设置图片路径(fix #8,文件名包含%符号 无法识别和显示)
                         .transition(withCrossFade())
                         .apply(new RequestOptions())
                         .into(ivAdUpReal);
 
                 Glide.with(ApiConfig.context)
-                        .load(userExt.idcard_back)     //设置图片路径(fix #8,文件名包含%符号 无法识别和显示)
+                        .load(bussinessInfo.business_open_permit)     //设置图片路径(fix #8,文件名包含%符号 无法识别和显示)
                         .transition(withCrossFade())
                         .apply(new RequestOptions())
                         .into(ivAdDownReal);
 
-                Glide.with(ApiConfig.context)
-                        .load(userExt.idcard_hand)     //设置图片路径(fix #8,文件名包含%符号 无法识别和显示)
-                        .transition(withCrossFade())
-                        .apply(new RequestOptions())
-                        .into(ivIdHoldReal);
             }
         }
     }
@@ -158,56 +153,80 @@ public class AddIdCardActivity extends BaseActivity {
         imagePicker.setOutPutY(1000);                         //保存文件的高度。单位像素
     }
 
-    @OnClick({R.id.iv_id_up, R.id.iv_id_down, R.id.iv_id_hold, R.id.btn_login})
+
+    @OnClick({R.id.iv_ad_up_real, R.id.iv_ad_down_real, R.id.btn_login})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.iv_id_up:
+            case R.id.iv_ad_up_real:
                 selectPicture(0);
                 break;
-            case R.id.iv_id_down:
+            case R.id.iv_ad_down_real:
                 selectPicture(1);
                 break;
-            case R.id.iv_id_hold:
-                selectPicture(2);
-                break;
             case R.id.btn_login:
-                if (userExt!=null) {
-                    updateCardInfo();
-                }else{
+                if (bussinessInfo == null) {
                     upLoadCardInfo();
+                } else {
+                    updateCardInfo();
                 }
                 break;
         }
     }
 
+    //上传认证
     private void upLoadCardInfo() {
         if (TextUtils.isEmpty(etName.getEditableText().toString())) {
-            SysUtils.showToast("请输入姓名");
+            SysUtils.showToast("请企业名称");
             return;
         }
 
-        if (TextUtils.isEmpty(etId.getEditableText().toString())) {
-            SysUtils.showToast("请输入身份证号");
+        if (TextUtils.isEmpty(etAddress.getEditableText().toString())) {
+            SysUtils.showToast("请输入联系地址");
             return;
         }
 
-        if (carsdImages.size() != 3) {
-            SysUtils.showToast("请上传完成身份证图片");
+        if (TextUtils.isEmpty(etBandNum.getEditableText().toString())) {
+            SysUtils.showToast("请输入银行卡号");
             return;
         }
+
+        if (TextUtils.isEmpty(etOpenBrand.getEditableText().toString())) {
+            SysUtils.showToast("请输入开户行");
+            return;
+        }
+        if (TextUtils.isEmpty(etLinkPerson.getEditableText().toString())) {
+            SysUtils.showToast("请输入联系人");
+            return;
+        }
+        if (TextUtils.isEmpty(etLinkPhone.getEditableText().toString())) {
+            SysUtils.showToast("请输入联系人号码");
+            return;
+        }
+
+
+        if (TextUtils.isEmpty(businessImage) || TextUtils.isEmpty(businessOpenPermit)) {
+            SysUtils.showToast("请完成图片上传");
+            return;
+        }
+
 
         showLoadingBar("上传中...");
 
         HashMap<String, String> hashMap = new HashMap();
         hashMap.put("uid", TUtils.getUserId());
-        hashMap.put("idcard_front", carsdImages.get(0));
-        hashMap.put("idcard_back", carsdImages.get(1));
-        hashMap.put("idcard_hand", carsdImages.get(2));
-        hashMap.put("idcard_name", etName.getEditableText().toString());
-        hashMap.put("idcard", etId.getEditableText().toString());
-        Call<TaskInfoIgnoreBody> call = ApiConfig.getInstants().create(TaskService.class).addIdCards(TUtils.getParams(hashMap));
+        hashMap.put("business_image", businessImage);
+        hashMap.put("business_open_permit", businessOpenPermit);
+        hashMap.put("business_name", etName.getEditableText().toString());
+        hashMap.put("business_address", etAddress.getEditableText().toString());
+        hashMap.put("business_bank_account", etBandNum.getEditableText().toString());
+        hashMap.put("business_open_bank", etOpenBrand.getEditableText().toString());
+        hashMap.put("business_contact", etLinkPerson.getEditableText().toString());
+        hashMap.put("business_contact_mobile", etLinkPhone.getEditableText().toString());
 
-        API.getObjectIgnoreBody(call, new ApiCallBack() {
+
+        Call<TaskInfoIgnoreBody> call = ApiConfig.getInstants().create(TaskService.class).userAddBuisness(TUtils.getParams(hashMap));
+
+        API.getObjectIgnoreBody(call,  new ApiCallBack() {
 
             @Override
             public void onSuccess(int msgCode, String msg, Object data) {
@@ -220,41 +239,66 @@ public class AddIdCardActivity extends BaseActivity {
             @Override
             public void onFaild(int msgCode, String msg) {
                 dismissLoadingBar();
-                ToastUtils.showShort("" + msg);
+                ToastUtils.showShort(""+msg);
             }
         });
 
 
     }
 
+    //修改认证
     private void updateCardInfo() {
         if (TextUtils.isEmpty(etName.getEditableText().toString())) {
-            SysUtils.showToast("请输入姓名");
+            SysUtils.showToast("请企业名称");
             return;
         }
 
-        if (TextUtils.isEmpty(etId.getEditableText().toString())) {
-            SysUtils.showToast("请输入身份证号");
+        if (TextUtils.isEmpty(etAddress.getEditableText().toString())) {
+            SysUtils.showToast("请输入联系地址");
             return;
         }
 
-        if (carsdImages.size() != 3) {
-            SysUtils.showToast("请上传完成身份证图片");
+        if (TextUtils.isEmpty(etBandNum.getEditableText().toString())) {
+            SysUtils.showToast("请输入银行卡号");
             return;
         }
+
+        if (TextUtils.isEmpty(etOpenBrand.getEditableText().toString())) {
+            SysUtils.showToast("请输入开户行");
+            return;
+        }
+        if (TextUtils.isEmpty(etLinkPerson.getEditableText().toString())) {
+            SysUtils.showToast("请输入联系人");
+            return;
+        }
+        if (TextUtils.isEmpty(etLinkPhone.getEditableText().toString())) {
+            SysUtils.showToast("请输入联系人号码");
+            return;
+        }
+
 
         showLoadingBar("上传中...");
 
         HashMap<String, String> hashMap = new HashMap();
         hashMap.put("uid", TUtils.getUserId());
-        hashMap.put("idcard_front", carsdImages.get(0));
-        hashMap.put("idcard_back", carsdImages.get(1));
-        hashMap.put("idcard_hand", carsdImages.get(2));
-        hashMap.put("idcard_name", etName.getEditableText().toString());
-        hashMap.put("idcard", etId.getEditableText().toString());
-        Call<TaskInfoIgnoreBody> call = ApiConfig.getInstants().create(TaskService.class).setIdCards(TUtils.getParams(hashMap));
+        if (!TextUtils.isEmpty(businessImage)) {
+            hashMap.put("business_image", businessImage);
+        }
 
-        API.getObjectIgnoreBody(call, new ApiCallBack() {
+        if (!TextUtils.isEmpty(businessOpenPermit)) {
+            hashMap.put("business_open_permit", businessOpenPermit);
+        }
+        hashMap.put("business_name", etName.getEditableText().toString());
+        hashMap.put("business_address", etAddress.getEditableText().toString());
+        hashMap.put("business_bank_account", etBandNum.getEditableText().toString());
+        hashMap.put("business_open_bank", etOpenBrand.getEditableText().toString());
+        hashMap.put("business_contact", etLinkPerson.getEditableText().toString());
+        hashMap.put("business_contact_mobile", etLinkPhone.getEditableText().toString());
+
+
+        Call<TaskInfoIgnoreBody> call = ApiConfig.getInstants().create(TaskService.class).userSetBusiness(TUtils.getParams(hashMap));
+
+        API.getObjectIgnoreBody(call,  new ApiCallBack() {
 
             @Override
             public void onSuccess(int msgCode, String msg, Object data) {
@@ -267,7 +311,7 @@ public class AddIdCardActivity extends BaseActivity {
             @Override
             public void onFaild(int msgCode, String msg) {
                 dismissLoadingBar();
-                ToastUtils.showShort("" + msg);
+                SysUtils.showToast(""+msg);
             }
         });
 
@@ -335,32 +379,35 @@ public class AddIdCardActivity extends BaseActivity {
     }
 
 
-    private void initCards(String lubanFile) {
+    private void initCards(SimpleBeanInfo simpleBeanInfo) {
         if (selectedPicsPosition == 0) {
-            //身份证上
+            businessImage = simpleBeanInfo.path;
             Glide.with(ApiConfig.context)
-                    .load(lubanFile)     //设置图片路径(fix #8,文件名包含%符号 无法识别和显示)
+                    .load(simpleBeanInfo.url)     //设置图片路径(fix #8,文件名包含%符号 无法识别和显示)
                     .transition(withCrossFade())
                     .apply(new RequestOptions())
                     .into(ivAdUpReal);
 
         } else if (selectedPicsPosition == 1) {
-            //身份下
+
+            businessOpenPermit = simpleBeanInfo.path;
             Glide.with(ApiConfig.context)
-                    .load(lubanFile)     //设置图片路径(fix #8,文件名包含%符号 无法识别和显示)
+                    .load(simpleBeanInfo.url)     //设置图片路径(fix #8,文件名包含%符号 无法识别和显示)
                     .transition(withCrossFade())
                     .apply(new RequestOptions())
                     .into(ivAdDownReal);
 
-        } else {
-            //手持身份证
-            Glide.with(ApiConfig.context)
-                    .load(lubanFile)     //设置图片路径(fix #8,文件名包含%符号 无法识别和显示)
-                    .transition(withCrossFade())
-                    .apply(new RequestOptions())
-                    .into(ivIdHoldReal);
-
         }
+
+//        else {
+//            //手持身份证
+//            Glide.with(ApiConfig.context)
+//                    .load(lubanFile)     //设置图片路径(fix #8,文件名包含%符号 无法识别和显示)
+//                    .transition(withCrossFade())
+//                    .apply(new RequestOptions())
+//                    .into(ivIdHoldReal);
+//
+//        }
     }
 
     private void doUploadImage(String base64Encode) {
@@ -378,17 +425,18 @@ public class AddIdCardActivity extends BaseActivity {
                 dismissLoadingBar();
                 if (!TextUtils.isEmpty(data.path) && !TextUtils.isEmpty(data.url)) {
                     ToastUtils.showShort("" + msg);
-                    carsdImages.put(selectedPicsPosition, data.path);
-                    initCards(data.url);
+//                    carsdImages.put(selectedPicsPosition, data.path);
+
+                    initCards(data);
                 } else {
-                    ToastUtils.showShort("请重新上传");
+                    SysUtils.showToast("请重新上传");
                 }
             }
 
             @Override
             public void onFaild(int msgCode, String msg) {
                 dismissLoadingBar();
-                ToastUtils.showShort("" + msg);
+                SysUtils.showToast("" + msg);
             }
         });
 

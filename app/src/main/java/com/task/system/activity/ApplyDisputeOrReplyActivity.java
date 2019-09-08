@@ -208,7 +208,8 @@ public class ApplyDisputeOrReplyActivity extends BaseActivity implements ImagePi
                 if (selImageList!=null && selImageList.size()>0) {
                     uploadPictures(selImageList, uploadHash);
                 }else{
-                    SysUtils.showToast("请上传图片");
+                    showLoadingBar("提交中...");
+                    doSubmitDispute();
                 }
                 break;
         }
@@ -315,7 +316,9 @@ public class ApplyDisputeOrReplyActivity extends BaseActivity implements ImagePi
         hashMap.put("uid", TUtils.getUserId());
         hashMap.put("order_id", orderInfo.order_id);
         hashMap.put("dispute_id", "0");
-        hashMap.put("images", new Gson().toJson(uploadHash));
+        if (uploadHash.size()>0) {
+            hashMap.put("images", new Gson().toJson(uploadHash));
+        }
         hashMap.put("content", editDispute.getEditableText().toString());
         Call<TaskInfo> call = ApiConfig.getInstants().create(TaskService.class).disputeOrder(TUtils.getParams(hashMap));
 
@@ -324,6 +327,7 @@ public class ApplyDisputeOrReplyActivity extends BaseActivity implements ImagePi
             @Override
             public void onSuccess(int msgCode, String msg, SimpleBeanInfo data) {
                 ToastUtils.showShort("提交成功");
+                dismissLoadingBar();
                 EventBus.getDefault().post(new RefreshUnreadCountEvent());
                 setResult(RESULT_OK);
                 finish();

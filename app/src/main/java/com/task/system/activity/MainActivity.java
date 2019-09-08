@@ -8,6 +8,7 @@ import android.view.MenuItem;
 
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
+import com.google.gson.Gson;
 import com.task.system.Constans;
 import com.task.system.R;
 import com.task.system.adapters.FragmentPagerItemAdapter;
@@ -155,7 +156,7 @@ public class MainActivity extends BaseSimpleActivity {
             public void onSuccess(int msgCode, String msg, List<AdInfo> data) {
 
                 if (data!=null && data.size()>0){
-                    SPUtils.getInstance().put(Constans.SAVE_SPLASH_AD,data.get(0).cover);
+                    SPUtils.getInstance().put(Constans.SAVE_SPLASH_AD,new Gson().toJson(data.get(0)));
                 }
 
 

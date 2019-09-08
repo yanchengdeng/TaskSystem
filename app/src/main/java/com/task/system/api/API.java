@@ -50,9 +50,8 @@ public class API {
      *
      * @param call
      * @param apiCallBack
-     * @param <T>
      */
-    public static <T> void getObjectIgnoreBody(Call<TaskInfoIgnoreBody> call,  final ApiCallBack<T> apiCallBack) {
+    public static  void getObjectIgnoreBody(Call<TaskInfoIgnoreBody> call,  final ApiCallBack apiCallBack) {
         if (call == null) {
             throw new IllegalArgumentException("call不能为空");
         }

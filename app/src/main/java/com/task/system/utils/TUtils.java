@@ -198,7 +198,12 @@ public class TUtils {
 
 
     public static void clearUserInfo() {
-        SPUtils.getInstance().put(Constans.USER_INFO, "");
+        if (ApiConfig.getCommonParams()!=null) {
+            ApiConfig.getCommonParams().clear();
+        }
+        SPUtils.getInstance().remove(Constans.USER_INFO);
+        SPUtils.getInstance().remove(Constans.TOKEN);
+        ApiConfig.addCommonParams(TUtils.getParams());
     }
 
 

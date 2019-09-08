@@ -24,6 +24,7 @@ public class TaskInfoItem implements Serializable {
     public int is_collect;//为收藏
     public String order_id;
     public String button_title;
+    public String edit_url;
     /**
      * 0——待申请
      * 1——待工作

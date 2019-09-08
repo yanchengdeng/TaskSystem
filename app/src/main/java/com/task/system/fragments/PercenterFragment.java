@@ -1,5 +1,6 @@
 package com.task.system.fragments;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -28,6 +29,7 @@ import com.task.system.activity.AddNewLeaderActivity;
 import com.task.system.activity.MainActivity;
 import com.task.system.activity.MyAccountActivity;
 import com.task.system.activity.MyActivityActivity;
+import com.task.system.activity.MyApplyActivity;
 import com.task.system.activity.MyAreaManageActivity;
 import com.task.system.activity.MyAwardActivity;
 import com.task.system.activity.MyCollectedActivity;
@@ -39,6 +41,7 @@ import com.task.system.activity.PersonSettingActivity;
 import com.task.system.api.API;
 import com.task.system.api.TaskInfo;
 import com.task.system.api.TaskService;
+import com.task.system.bean.UserExt;
 import com.task.system.bean.UserInfo;
 import com.task.system.enums.UserType;
 import com.task.system.event.UpdateUserInfoEvent;
@@ -99,6 +102,12 @@ public class PercenterFragment extends Fragment {
     TextView tvMyActivity;
     @BindView(R.id.tv_my_awards)
     TextView tvMyAwards;
+    @BindView(R.id.tv_my_applay)
+    TextView tvMyApplay;
+
+    public static int REQUEST_ADD_APPLY = 240;
+
+    private UserExt userExt;
 
     @Nullable
     @Override
@@ -112,8 +121,10 @@ public class PercenterFragment extends Fragment {
             @Override
             public void onRefresh(RefreshLayout refreshLayout) {
                 getUserDetail();
+                getDetailExt();
             }
         });
+
 
         UserInfo userInfo = TUtils.getUserInfo();
         if (userInfo != null && !TextUtils.isEmpty(userInfo.user_type)) {
@@ -125,6 +136,7 @@ public class PercenterFragment extends Fragment {
                 tvMyAreaManage.setVisibility(View.GONE);
                 tvMyActivity.setVisibility(View.VISIBLE);
                 tvMyAwards.setVisibility(View.VISIBLE);
+                tvMyApplay.setVisibility(View.VISIBLE);
             } else if (userInfo.user_type.equals(UserType.USER_TYPE_AREA.getType())) {
                 //区域管理
                 tvMyAreaManage.setVisibility(View.VISIBLE);
@@ -132,6 +144,7 @@ public class PercenterFragment extends Fragment {
                 tvInviteCode.setVisibility(View.VISIBLE);
                 tvMyActivity.setVisibility(View.VISIBLE);
                 tvMyAwards.setVisibility(View.VISIBLE);
+                tvMyApplay.setVisibility(View.GONE);
             } else if (userInfo.user_type.equals(UserType.USER_TYPE_AGENT.getType())) {
                 tvInviteCode.setVisibility(View.VISIBLE);
                 tvMyTeam.setVisibility(View.GONE);
@@ -152,6 +165,29 @@ public class PercenterFragment extends Fragment {
             smartRefresh.autoRefresh();
         }
     }
+
+
+    //身份 绑定信息
+    private void getDetailExt() {
+        HashMap<String, String> hashMap = new HashMap();
+        hashMap.put("uid", TUtils.getUserId());
+        Call<TaskInfo> call = ApiConfig.getInstants().create(TaskService.class).getUserDetailExt(TUtils.getParams(hashMap));
+
+        API.getObject(call, UserExt.class, new ApiCallBack<UserExt>() {
+            @Override
+            public void onSuccess(int msgCode, String msg, UserExt data) {
+                if (data != null) {
+                    userExt = data;
+
+                }
+            }
+
+            @Override
+            public void onFaild(int msgCode, String msg) {
+            }
+        });
+    }
+
 
     private void getUserDetail() {
         HashMap<String, String> hashMap = new HashMap();
@@ -205,10 +241,11 @@ public class PercenterFragment extends Fragment {
         unbinder.unbind();
     }
 
-    @OnClick({R.id.ll_user_info_ui, R.id.rl_my_money, R.id.ll_allwork_title, R.id.tv_add_lead, R.id.tv_collect, R.id.tv_my_team, R.id.tv_my_accoutn, R.id.tv_invite_code,R.id.tv_my_activity,R.id.tv_my_awards, R.id.tv_help_center, R.id.tv_about_us, R.id.tv_my_area_manage})
+    @OnClick({R.id.ll_user_info_ui, R.id.rl_my_money, R.id.ll_allwork_title, R.id.tv_add_lead, R.id.tv_collect, R.id.tv_my_team, R.id.tv_my_accoutn, R.id.tv_invite_code,R.id.tv_my_activity,R.id.tv_my_awards, R.id.tv_help_center, R.id.tv_about_us, R.id.tv_my_area_manage,R.id.tv_my_applay})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ll_user_info_ui:
+
                 PercenterFragment.this.startActivityForResult(new Intent(ApiConfig.context, PersonSettingActivity.class), 20);
 //                ActivityUtils.startActivity(PersonSettingActivity.class);
                 break;
@@ -255,8 +292,22 @@ public class PercenterFragment extends Fragment {
                 //我的奖品
                 ActivityUtils.startActivity(MyAwardActivity.class);
                 break;
+                //区域管理
             case R.id.tv_my_area_manage:
                 ActivityUtils.startActivity(MyAreaManageActivity.class);
+                break;
+                //我的申请
+            case R.id.tv_my_applay:
+                Bundle bundle = null;
+                if (userExt!=null && userExt.business_info!=null) {
+                    bundle = new Bundle();
+                    bundle.putSerializable(Constans.PASS_OBJECT, userExt.business_info);
+                }
+                Intent intent = new Intent(ApiConfig.context,MyApplyActivity.class);
+                if (bundle!=null) {
+                    intent.putExtras(bundle);
+                }
+                startActivityForResult(intent,REQUEST_ADD_APPLY);
                 break;
         }
     }
@@ -266,6 +317,10 @@ public class PercenterFragment extends Fragment {
         if (requestCode == 20) {
             if (resultCode == -1) {
                 getUserDetail();
+            }
+        }else if (requestCode==REQUEST_ADD_APPLY){
+            if (resultCode== Activity.RESULT_OK){
+                smartRefresh.autoRefresh();
             }
         }
         super.onActivityResult(requestCode, resultCode, data);

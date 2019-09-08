@@ -10,6 +10,7 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
@@ -72,7 +73,7 @@ public class TaskDetailActivity extends BaseSimpleActivity {
     ImageView ivCollected;
     @BindView(R.id.iv_share)
     ImageView ivShare;
-//    @BindView(R.id.tablayout)
+    //    @BindView(R.id.tablayout)
 //    TabLayout tablayout;
 //    @BindView(R.id.viewpage)
 //    ViewPager viewpage;
@@ -82,6 +83,8 @@ public class TaskDetailActivity extends BaseSimpleActivity {
     TextView tvGiveUpWork;
     @BindView(R.id.tv_do_work)
     TextView tvDoWork;
+    @BindView(R.id.ll_bottom)
+    LinearLayout llBottom;
     private TaskInfoItem taskInfoItem;
     private boolean isCollected = false;
 
@@ -126,8 +129,8 @@ public class TaskDetailActivity extends BaseSimpleActivity {
 
     }
 
-    private boolean checkHasScheme(){
-        return (!TextUtils.isEmpty(getIntent().getDataString()) && getIntent().getDataString().contains("id=")) ;
+    private boolean checkHasScheme() {
+        return (!TextUtils.isEmpty(getIntent().getDataString()) && getIntent().getDataString().contains("id="));
     }
 
     private void regToWx() {
@@ -227,6 +230,7 @@ public class TaskDetailActivity extends BaseSimpleActivity {
         if (!TextUtils.isEmpty(data.button_title)) {
             tvDoWork.setText(data.button_title);
         }
+
         if (data.order_status == 1) {
             tvDoWork.setBackgroundColor(getResources().getColor(R.color.red));
             tvGiveUpWork.setVisibility(View.VISIBLE);
@@ -243,6 +247,11 @@ public class TaskDetailActivity extends BaseSimpleActivity {
             }
         }
 
+        if (taskInfoItem.is_apply == 0) {
+            //已下架
+            tvDoWork.setBackgroundColor(getResources().getColor(R.color.give_up));
+        }
+
         order_id = data.order_id;
 
         Bundle bundle = new Bundle();
@@ -251,7 +260,7 @@ public class TaskDetailActivity extends BaseSimpleActivity {
         FragmentTaskDetail fragmentTaskDetail = new FragmentTaskDetail();
         fragmentTaskDetail.setArguments(bundle);
 
-        FragmentUtils.add(getSupportFragmentManager(),fragmentTaskDetail,R.id.container);
+        FragmentUtils.add(getSupportFragmentManager(), fragmentTaskDetail, R.id.container);
 //        FragmentPagerItemAdapter fragmentPagerItemAdapter = new FragmentPagerItemAdapter(getSupportFragmentManager(), getFragmentsItem(bundle));
 //        viewpage.setAdapter(fragmentPagerItemAdapter);
 //        tablayout.setupWithViewPager(viewpage);
@@ -265,13 +274,13 @@ public class TaskDetailActivity extends BaseSimpleActivity {
                 finish();
                 break;
             case R.id.iv_collected:
-               if (Util.checkLogin(mContext)) {
-                   if (isCollected) {
-                       doCancleCollected();
-                   } else {
-                       doCollected();
-                   }
-               }
+                if (Util.checkLogin(mContext)) {
+                    if (isCollected) {
+                        doCancleCollected();
+                    } else {
+                        doCollected();
+                    }
+                }
                 break;
             case R.id.iv_share:
                 if (!TextUtils.isEmpty(url)) {
@@ -295,15 +304,37 @@ public class TaskDetailActivity extends BaseSimpleActivity {
                         getTaskDetail();
                         return;
                     }
+
+                    //is_apply:  ：0-不显示按钮，1-立即申请，2-订单审核中，3-待工作，还有一个按钮，为放弃，4-编辑任务，供运营商编辑任务
+                    if (taskInfoItem.is_apply == 4) {
+                        if (TextUtils.isEmpty(taskInfoItem.edit_url)) {
+                            SysUtils.showToast("缺少编辑地址");
+                            return;
+                        }
+                        Bundle bundle = new Bundle();
+                        bundle.putString(Constans.PASS_NAME, "编辑任务");
+                        bundle.putString(Constans.PASS_STRING, taskInfoItem.edit_url);
+                        ActivityUtils.startActivity(bundle, OpenWebViewActivity.class);
+                        return;
+                    }
+
+                    if (taskInfoItem.is_apply == 0) {
+                        //已下架
+                        SysUtils.showToast(tvDoWork.getText().toString());
+                        return;
+                    }
+
+
+
+
                     if (taskInfoItem.order_status == 0) {
 
-                        if (taskInfoItem.deposit_score>0){
+                        if (taskInfoItem.deposit_score > 0) {
                             showDepositDialog();
-                        }else
-                            if(taskInfoItem.is_show_tips==1){
+                        } else if (taskInfoItem.is_show_tips == 1) {
                             //社会公约
                             getSocietyOrder();
-                        }else {
+                        } else {
                             applyTask();
                         }
                     } else if (taskInfoItem.order_status == 1) {
@@ -339,7 +370,6 @@ public class TaskDetailActivity extends BaseSimpleActivity {
             public void onFaild(int msgCode, String msg) {
 
 
-
             }
         });
     }
@@ -363,24 +393,24 @@ public class TaskDetailActivity extends BaseSimpleActivity {
             public void onFaild(int msgCode, String msg) {
 
 
-
             }
         });
     }
+
     //弹出保证金提示
     private void showDepositDialog() {
 
         MaterialDialog.Builder builder = new MaterialDialog.Builder(ApiConfig.context)
                 .title("温馨提示")
-                .content(""+taskInfoItem.deposit_score_tips)
+                .content("" + taskInfoItem.deposit_score_tips)
                 .positiveText("确定").positiveColor(getResources().getColor(R.color.color_blue)).onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                         dialog.dismiss();
-                        if(taskInfoItem.is_show_tips==1){
+                        if (taskInfoItem.is_show_tips == 1) {
                             //社会公约
                             getSocietyOrder1();
-                        }else {
+                        } else {
                             applyTask();
                         }
 
@@ -401,7 +431,7 @@ public class TaskDetailActivity extends BaseSimpleActivity {
 
         MaterialDialog.Builder builder = new MaterialDialog.Builder(ApiConfig.context)
                 .title("社会公约")
-                .content(""+content)
+                .content("" + content)
                 .positiveText("确定").positiveColor(getResources().getColor(R.color.color_blue)).onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
@@ -535,7 +565,7 @@ public class TaskDetailActivity extends BaseSimpleActivity {
                 protected void onNoDoubleClick(View v) {
                     shareDialog.dismiss();
 
-                    if (!checkWeiXin()){
+                    if (!checkWeiXin()) {
                         SysUtils.showToast("请安装微信");
                         return;
                     }
@@ -548,7 +578,7 @@ public class TaskDetailActivity extends BaseSimpleActivity {
                 protected void onNoDoubleClick(View v) {
                     shareDialog.dismiss();
 
-                    if (!checkWeiXin()){
+                    if (!checkWeiXin()) {
                         SysUtils.showToast("请安装微信");
                         return;
                     }
@@ -568,7 +598,7 @@ public class TaskDetailActivity extends BaseSimpleActivity {
                         }
                     }
 
-                    if (!checkQQ()){
+                    if (!checkQQ()) {
                         SysUtils.showToast("请安装QQ");
                         return;
                     }
@@ -593,7 +623,7 @@ public class TaskDetailActivity extends BaseSimpleActivity {
     }
 
     private void shareWx(int flag) {
-        if (!checkWeiXin()){
+        if (!checkWeiXin()) {
             SysUtils.showToast("请安装微信");
             return;
         }
@@ -705,7 +735,7 @@ public class TaskDetailActivity extends BaseSimpleActivity {
                     ActivityUtils.startActivity(LoginActivity.class);
                 }
             }
-        }else{
+        } else {
             super.onBackPressed();
         }
     }
