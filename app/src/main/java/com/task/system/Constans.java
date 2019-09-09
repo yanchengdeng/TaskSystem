@@ -26,6 +26,7 @@ public class Constans {
     public static final int LUBAN_SIZE = 100;
     //本地广告
     public static final String SAVE_SPLASH_AD = "splash_ad";
+    public static final String JPUSH_REGIEST_ID = "jpush_id";
     public static boolean HAS_VESRSION_TIPS ;//是否提示过版本更新
 
 //    public static String BASE_URL_TEST = "syn.xhdcmgood.com/api.php/V2";

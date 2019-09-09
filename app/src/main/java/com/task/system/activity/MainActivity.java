@@ -1,8 +1,10 @@
 package com.task.system.activity;
 
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.view.MenuItem;
 
@@ -21,6 +23,7 @@ import com.task.system.fragments.HomeFragment;
 import com.task.system.fragments.PercenterFragment;
 import com.task.system.fragments.SortFragment;
 import com.task.system.fragments.TaskFragment;
+import com.task.system.recieves.MyReceiver;
 import com.task.system.utils.AppManager;
 import com.task.system.utils.TUtils;
 import com.task.system.views.FragmentPagerItem;
@@ -31,10 +34,12 @@ import com.yanzhenjie.permission.runtime.Permission;
 import com.yc.lib.api.ApiCallBack;
 import com.yc.lib.api.ApiCallBackList;
 import com.yc.lib.api.ApiConfig;
+import com.yc.lib.api.utils.SysUtils;
 
 import java.util.HashMap;
 import java.util.List;
 
+import cn.jpush.android.api.JPushInterface;
 import retrofit2.Call;
 
 public class MainActivity extends BaseSimpleActivity {
@@ -143,7 +148,25 @@ public class MainActivity extends BaseSimpleActivity {
         getCustom();
 
         getAds();
+
+
+        SysUtils.log("jpush---register_id: "+JPushInterface.getRegistrationID(this));
+
+
+        //注册激光推送
+//        registerMessageReceiver();
     }
+
+    private MyReceiver messageReceiver;
+    private void registerMessageReceiver() {
+        messageReceiver = new MyReceiver();
+        IntentFilter filter = new IntentFilter();
+        filter.setPriority(IntentFilter.SYSTEM_HIGH_PRIORITY);
+//        filter.addAction(MESSAGE_RECEIVED_ACTION);
+        LocalBroadcastManager.getInstance(this).registerReceiver(messageReceiver, filter);
+    }
+
+
 
 
     private void getAds() {
@@ -203,8 +226,8 @@ public class MainActivity extends BaseSimpleActivity {
 
     @Override
     protected void onDestroy() {
+//        LocalBroadcastManager.getInstance(this).unregisterReceiver(messageReceiver);
         super.onDestroy();
-
     }
 
 

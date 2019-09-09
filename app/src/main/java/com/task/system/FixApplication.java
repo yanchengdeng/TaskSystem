@@ -44,6 +44,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import cn.bingoogolapple.swipebacklayout.BGASwipeBackHelper;
+import cn.jpush.android.api.JPushInterface;
 import retrofit2.Call;
 
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
@@ -131,6 +132,11 @@ public class FixApplication extends MultiDexApplication {
                 return null;
             }
         });
+
+
+        //机关推送
+        JPushInterface.setDebugMode(Constans.IS_DEBUG ); 	// 设置开启日志,发布时请关闭日志
+        JPushInterface.init(this);
 
     }
 

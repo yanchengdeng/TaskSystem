@@ -44,6 +44,8 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import cn.jpush.android.api.JPushInterface;
+
 public class TUtils {
 
     private static List<AreaBean> cityInfos = new ArrayList<>();
@@ -203,6 +205,7 @@ public class TUtils {
         }
         SPUtils.getInstance().remove(Constans.USER_INFO);
         SPUtils.getInstance().remove(Constans.TOKEN);
+        JPushInterface.stopPush(ApiConfig.context);
         ApiConfig.addCommonParams(TUtils.getParams());
     }
 

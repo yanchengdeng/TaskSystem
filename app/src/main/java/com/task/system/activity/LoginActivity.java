@@ -43,6 +43,7 @@ import java.util.HashMap;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.jpush.android.api.JPushInterface;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -180,6 +181,7 @@ public class LoginActivity extends BaseSimpleActivity {
             public void onSuccess(int msgCode, String msg, UserInfo data) {
                 dismissLoadingBar();
                 ToastUtils.showShort(msg);
+                JPushInterface.onResume(LoginActivity.this);
                 SPUtils.getInstance().put(Constans.USER_INFO, new Gson().toJson(data));
                 SPUtils.getInstance().put(Constans.TOKEN, new Gson().toJson(data.tokens));
                 SPUtils.getInstance().put(Constans.USER_ACOUNT, etAccont.getEditableText().toString());

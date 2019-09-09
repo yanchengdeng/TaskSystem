@@ -27,6 +27,12 @@ android {
             // 设置支持的SO库架构
             abiFilters 'armeabi', 'armeabi-v7a'//, 'x86_64', 'arm64-v8a'
         }
+
+        manifestPlaceholders = [
+                JPUSH_PKGNAME : applicationId,
+                JPUSH_APPKEY : "d5d22e191f46bbc6b76fecef", //JPush 上注册的包名对应的 Appkey.
+                JPUSH_CHANNEL : "developer-default", //暂时填写默认值即可.
+        ]
     }
     buildTypes {
         release {
@@ -124,6 +130,15 @@ dependencies {
 
     implementation 'com.github.bumptech.glide:glide:4.8.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.8.0'
+
+    //激光推送
+    implementation 'cn.jiguang.sdk:jpush:3.3.4'  // 此处以JPush 3.3.4 版本为例。
+    implementation 'cn.jiguang.sdk:jcore:2.1.2'  // 此处以JCore 2.1.2 版本为例。
+
+    /** 激光推送 ***/
+//    implementation 'cn.jiguang.sdk:jpush:3.1.5'
+    // 此处以JPush 3.1.5 版本为例。
+//    implementation 'cn.jiguang.sdk:jcore:1.2.3'
 
 
 }
