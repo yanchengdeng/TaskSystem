@@ -17,7 +17,7 @@ public class SimpleBeanInfo implements Serializable {
     public String link_url;
     public String link_type;//链接类型|1=url地址，2=任务ID，3=专题ID，4=抽奖ID
 
-    //人气
+    //人气  图片id
     public String id;// 126,
 //    public String  title;// 淘宝零元购,
     public String   market_score;// 16.00,

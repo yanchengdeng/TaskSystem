@@ -42,9 +42,13 @@ public class AreaManageOrdersAdapter extends BaseQuickAdapter<AreaManageOrder, B
         }
 
         if (!TextUtils.isEmpty(item.getUid())) {
-            ((TextView)helper.getView(R.id.tv_order_id)).setText("用户ID:"+item.getUid());
+            ((TextView)helper.getView(R.id.tv_user_id)).setText("用户ID:"+item.getUid());
+            helper.getView(R.id.tv_user_id).setVisibility(View.VISIBLE);
         }
 
+        if (!TextUtils.isEmpty(item.getOrder_id())) {
+            ((TextView)helper.getView(R.id.tv_order_id)).setText("订单ID:"+item.getOrder_id());
+        }
 
 
 
@@ -76,7 +80,7 @@ public class AreaManageOrdersAdapter extends BaseQuickAdapter<AreaManageOrder, B
          "status": 0,"title": "已中止" --显示编辑按钮
          "status": "1","title": "展示中"--中止任务 订单数据
          "status": "2","title": "草稿箱"--显示编辑按钮
-         "status": "3","title": "待审核"--显示编辑按钮 取消任务
+         "status": "3","title": "待审核"--显示 取消任务
          "status": "4","title": "关联订单
          "status": "5","title": "弹出理由  关联订单
          "status": "6",已完结  关联订单

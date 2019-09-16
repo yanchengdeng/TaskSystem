@@ -30,7 +30,7 @@ import com.yc.lib.api.ApiConfig
 class LinkOrdersActivity : BaseActivity() {
 
 
-    private var taskItem: AreaManageOrder? = null
+    private var taskItem: String? = null
 
     private var page = 1
     private val sort: String? = null
@@ -45,7 +45,7 @@ class LinkOrdersActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_link_orders)
 
-        taskItem = intent.getSerializableExtra(Constans.PASS_OBJECT) as AreaManageOrder
+        taskItem = intent.getStringExtra(Constans.PASS_STRING)
 
         recycleview = findViewById<RecyclerView>(R.id.recycle)
         smartRefresh = findViewById(R.id.smartRefresh)
@@ -76,8 +76,8 @@ class LinkOrdersActivity : BaseActivity() {
         taskOrderAdapter?.setOnItemClickListener(BaseQuickAdapter.OnItemClickListener { adapter, view, position ->
             val bundle = Bundle()
             bundle.putString(Constans.PASS_NAME, "任务详情")
-            bundle.putString(Constans.PASS_STRING, taskOrderAdapter?.getData()!![position].task_id)
-            ActivityUtils.startActivity(bundle, TaskDetailActivity::class.java)
+            bundle.putString(Constans.PASS_STRING, taskOrderAdapter?.getData()!![position].order_id)
+            ActivityUtils.startActivity(bundle, OrderDetailActivity::class.java)
         })
 
 
@@ -115,9 +115,9 @@ class LinkOrdersActivity : BaseActivity() {
                 }
                 R.id.tv_order_data -> {
                     val orderdatas = Bundle()
-                    orderdatas.putSerializable(
-                        Constans.PASS_OBJECT,
-                        taskOrderAdapter?.getData()!![position]
+                    orderdatas.putString(
+                        Constans.PASS_STRING,
+                        taskOrderAdapter?.getData()!![position].task_id
                     )
                     ActivityUtils.startActivity(orderdatas, LinkOrdersActivity::class.java)
                 }
@@ -205,9 +205,7 @@ class LinkOrdersActivity : BaseActivity() {
 
     private fun getLinkOrders() {
         var params = HashMap<String, String>()
-        taskItem?.task_id?.let {
-            params["task_id"] = it
-        }
+        taskItem?.let { it1 -> params.put("task_id", it1) }
         var call = ApiConfig.getInstants().create(TaskService::class.java)
             .getOperatOrderList(TUtils.getParams(params))
 

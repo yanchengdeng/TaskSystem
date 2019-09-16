@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
+import android.text.TextUtils;
 import android.view.MenuItem;
 
 import com.blankj.utilcode.util.SPUtils;
@@ -16,6 +17,7 @@ import com.task.system.R;
 import com.task.system.adapters.FragmentPagerItemAdapter;
 import com.task.system.api.API;
 import com.task.system.api.TaskInfo;
+import com.task.system.api.TaskInfoIgnoreBody;
 import com.task.system.api.TaskService;
 import com.task.system.bean.AdInfo;
 import com.task.system.bean.SimpleBeanInfo;
@@ -152,9 +154,41 @@ public class MainActivity extends BaseSimpleActivity {
 
         SysUtils.log("jpush---register_id: "+JPushInterface.getRegistrationID(this));
 
+        if (!TextUtils.isEmpty(SPUtils.getInstance().getString(Constans.JPUSH_REGIEST_ID))) {
+            SysUtils.log("jpush---register_id 真正的 ：: "+JPushInterface.getRegistrationID(this));
+        }
+
+        if (!TextUtils.isEmpty(JPushInterface.getRegistrationID(this))) {
+            registerJPushRegisterId();
+        }
+
 
         //注册激光推送
 //        registerMessageReceiver();
+    }
+
+    private void registerJPushRegisterId() {
+
+        HashMap<String, String> hashMap = new HashMap();
+        hashMap.put("uid", TUtils.getUserId());
+        hashMap.put("registration_id", JPushInterface.getRegistrationID(this));
+
+
+        Call<TaskInfoIgnoreBody> call = ApiConfig.getInstants().create(TaskService.class).userBindPushId(TUtils.getParams(hashMap));
+
+        API.getObjectIgnoreBody(call,  new ApiCallBack() {
+
+            @Override
+            public void onSuccess(int msgCode, String msg, Object data) {
+
+            }
+
+            @Override
+            public void onFaild(int msgCode, String msg) {
+            }
+        });
+
+
     }
 
     private MyReceiver messageReceiver;

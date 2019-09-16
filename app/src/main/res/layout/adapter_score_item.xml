@@ -13,8 +13,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:singleLine="true"
-        android:text="标题"
-        android:textColor="@color/color_info"
+        android:text="标题标题标题标题标题标题标题标题标题标题标题标题标题"
+        android:layout_marginRight="80dp"
+        android:ellipsize="end"
+        android:textColor="@color/color_tittle"
         android:textSize="@dimen/text_size_normal" />
 
 

@@ -16,5 +16,5 @@ public class ScoreAcount implements Serializable {
      * 这边的标签遇到level=1显示下级
      * 遇到level=2 显示二级
      */
-    public int level;
+    public String member_level ;
 }

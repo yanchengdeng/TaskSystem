@@ -107,7 +107,7 @@ public class TaskDetailActivity extends BaseSimpleActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task_detail);
         ButterKnife.bind(this);
-        tvTitle.setText("任务详情");
+
 
 
         Intent intent = getIntent();
@@ -122,11 +122,16 @@ public class TaskDetailActivity extends BaseSimpleActivity {
 //        initData(taskInfoItem);
 //        tablayout.addTab(tablayout.newTab().setText("任务描述"), 0);
 //        tablayout.addTab(tablayout.newTab().setText("详细流程"), 1);
-        getTaskDetail();
         regToWx();
         getShareInfo();
+        getTaskDetail();
 
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 
     private boolean checkHasScheme() {
@@ -164,6 +169,7 @@ public class TaskDetailActivity extends BaseSimpleActivity {
             public void onSuccess(int msgCode, String msg, TaskInfoItem data) {
                 dismissLoadingBar();
                 taskInfoItem = data;
+                tvTitle.setText(""+ data.title);
                 title = data.title;
                 subInfo = data.sub_title + "";
 
@@ -260,7 +266,7 @@ public class TaskDetailActivity extends BaseSimpleActivity {
         FragmentTaskDetail fragmentTaskDetail = new FragmentTaskDetail();
         fragmentTaskDetail.setArguments(bundle);
 
-        FragmentUtils.add(getSupportFragmentManager(), fragmentTaskDetail, R.id.container);
+        FragmentUtils.replace(getSupportFragmentManager(), fragmentTaskDetail, R.id.container);
 //        FragmentPagerItemAdapter fragmentPagerItemAdapter = new FragmentPagerItemAdapter(getSupportFragmentManager(), getFragmentsItem(bundle));
 //        viewpage.setAdapter(fragmentPagerItemAdapter);
 //        tablayout.setupWithViewPager(viewpage);
@@ -713,10 +719,7 @@ public class TaskDetailActivity extends BaseSimpleActivity {
         if (requestCode == 100) {
             if (resultCode == RESULT_OK) {
                 if (taskInfoItem != null) {
-                    taskInfoItem.order_status = 3;
-                    tvDoWork.setText("待审核");
-                    tvDoWork.setBackgroundColor(getResources().getColor(R.color.give_up));
-                    tvGiveUpWork.setVisibility(View.GONE);
+                    getTaskDetail();
                 }
             }
         }

@@ -1,12 +1,16 @@
-package com.task.system.activity;
+package com.task.system.fragments;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -24,6 +28,7 @@ import com.lzy.imagepicker.ui.ImageGridActivity;
 import com.lzy.imagepicker.view.CropImageView;
 import com.task.system.Constans;
 import com.task.system.R;
+import com.task.system.activity.BaseActivity;
 import com.task.system.api.API;
 import com.task.system.api.TaskInfo;
 import com.task.system.api.TaskInfoIgnoreBody;
@@ -47,6 +52,7 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.Unbinder;
 import retrofit2.Call;
 import top.zibin.luban.CompressionPredicate;
 import top.zibin.luban.Luban;
@@ -55,14 +61,12 @@ import top.zibin.luban.OnCompressListener;
 import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
 
 /**
- * Email: dengyc@dadaodata.com
- * FileName: AddIdCardActivity.java
- * Author: dengyancheng
- * Date: 2019-08-14 00:32
- * Description: 上传身份信息
+ * Author: dengyc
+ * Date: 2019-09-12 20:33
+ * Description: 个人申请
  * History:
  */
-public class AddIdCardActivity extends BaseActivity {
+public class ApplyPersonFragment extends Fragment {
 
 
     @BindView(R.id.tv_name_tips)
@@ -73,26 +77,29 @@ public class AddIdCardActivity extends BaseActivity {
     TextView tvIdTips;
     @BindView(R.id.et_id)
     EditText etId;
+    @BindView(R.id.iv_ad_up_real)
+    ImageView ivAdUpReal;
     @BindView(R.id.iv_id_up)
     TextView ivIdUp;
+    @BindView(R.id.iv_ad_down_real)
+    ImageView ivAdDownReal;
     @BindView(R.id.iv_id_down)
     TextView ivIdDown;
     @BindView(R.id.rl_car_up)
     LinearLayout rlCarUp;
     @BindView(R.id.tv_id_up)
     TextView tvIdUp;
+    @BindView(R.id.iv_id_hold_real)
+    ImageView ivIdHoldReal;
     @BindView(R.id.iv_id_hold)
     TextView ivIdHold;
     @BindView(R.id.rl_card_hold)
     LinearLayout rlCardHold;
     @BindView(R.id.btn_login)
     Button btnLogin;
-    @BindView(R.id.iv_ad_up_real)
-    ImageView ivAdUpReal;
-    @BindView(R.id.iv_ad_down_real)
-    ImageView ivAdDownReal;
-    @BindView(R.id.iv_id_hold_real)
-    ImageView ivIdHoldReal;
+
+    Unbinder unbinder;
+
     private int selectedPicsPosition = 0;//被选中的图片
 
     private Map<Integer, String> carsdImages = new HashMap<>();
@@ -103,14 +110,21 @@ public class AddIdCardActivity extends BaseActivity {
 
     private UserExt.IdCardInfo userExt;
 
+
+
+
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_id_card);
-        ButterKnife.bind(this);
-        setTitle("上传身份信息");
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
+        View view = inflater.inflate(R.layout.activity_add_id_card, container, false);
+        unbinder =   ButterKnife.bind(view);
+
+
+
         initImagePicker();
 
+        userExt = (UserExt.IdCardInfo) getArguments().getSerializable(Constans.PASS_OBJECT);
 
 
         //初始数据
@@ -119,10 +133,7 @@ public class AddIdCardActivity extends BaseActivity {
         }
 
 
-        if (getIntent() != null && getIntent().getSerializableExtra(Constans.PASS_OBJECT) != null) {
-            userExt = (UserExt.IdCardInfo) getIntent().getSerializableExtra(Constans.PASS_OBJECT);
             if (userExt != null) {
-                setTitle("查看身份信息");
 //                ivAdDownReal.setClickable(false);
 //                ivAdUpReal.setClickable(false);
 //                ivIdHoldReal.setClickable(false);
@@ -149,7 +160,7 @@ public class AddIdCardActivity extends BaseActivity {
                         .apply(new RequestOptions())
                         .into(ivIdHoldReal);
             }
-        }
+        return view;
     }
 
     //图片选择
@@ -205,7 +216,10 @@ public class AddIdCardActivity extends BaseActivity {
             return;
         }
 
-        showLoadingBar("上传中...");
+        if (getActivity()!=null){
+            ((BaseActivity)getActivity()).  showLoadingBar("上传中...");
+        }
+
 
         HashMap<String, String> hashMap = new HashMap();
         hashMap.put("uid", TUtils.getUserId());
@@ -221,14 +235,14 @@ public class AddIdCardActivity extends BaseActivity {
             @Override
             public void onSuccess(int msgCode, String msg, Object data) {
                 ToastUtils.showShort("" + msg);
-                dismissLoadingBar();
-                setResult(RESULT_OK);
-                finish();
+//                dismissLoadingBar();
+//                setResult(RESULT_OK);
+//                finish();
             }
 
             @Override
             public void onFaild(int msgCode, String msg) {
-                dismissLoadingBar();
+//                dismissLoadingBar();
                 ToastUtils.showShort("" + msg);
             }
         });
@@ -252,7 +266,10 @@ public class AddIdCardActivity extends BaseActivity {
             return;
         }
 
-        showLoadingBar("上传中...");
+        if (getActivity()!=null) {
+            ((BaseActivity) getActivity())
+                    .showLoadingBar("上传中...");
+        }
 
         HashMap<String, String> hashMap = new HashMap();
         hashMap.put("uid", TUtils.getUserId());
@@ -274,14 +291,14 @@ public class AddIdCardActivity extends BaseActivity {
             @Override
             public void onSuccess(int msgCode, String msg, Object data) {
                 ToastUtils.showShort("" + msg);
-                dismissLoadingBar();
-                setResult(RESULT_OK);
-                finish();
+//                dismissLoadingBar();
+//                setResult(RESULT_OK);
+//                finish();
             }
 
             @Override
             public void onFaild(int msgCode, String msg) {
-                dismissLoadingBar();
+//                dismissLoadingBar();
                 ToastUtils.showShort("" + msg);
             }
         });
@@ -296,7 +313,7 @@ public class AddIdCardActivity extends BaseActivity {
                 .permission(Permission.Group.CAMERA)
                 .onGranted(permissions -> {
                     ImagePicker.getInstance().setSelectLimit(1);
-                    Intent intent = new Intent(mContext, ImageGridActivity.class);
+                    Intent intent = new Intent(getActivity(), ImageGridActivity.class);
                     startActivityForResult(intent, REQUEST_CODE_SELECT);
                 })
                 .onDenied(permissions -> {
@@ -310,8 +327,8 @@ public class AddIdCardActivity extends BaseActivity {
     private void updateImageByBase64(File file) {
 
         LogUtils.w("dyc---原始文件大小", file.length());
-        showLoadingBar("上传中...");
-        Luban.with(this)
+//        showLoadingBar("上传中...");
+        Luban.with(getActivity())
                 .load(file)
                 .ignoreBy(Constans.LUBAN_SIZE)
 //                .setTargetDir(getPath())
@@ -390,7 +407,7 @@ public class AddIdCardActivity extends BaseActivity {
         API.getObject(call, SimpleBeanInfo.class, new ApiCallBack<SimpleBeanInfo>() {
             @Override
             public void onSuccess(int msgCode, String msg, SimpleBeanInfo data) {
-                dismissLoadingBar();
+//                dismissLoadingBar();
                 if (!TextUtils.isEmpty(data.path) && !TextUtils.isEmpty(data.url)) {
                     ToastUtils.showShort("" + msg);
                     carsdImages.put(selectedPicsPosition, data.path);
@@ -402,7 +419,7 @@ public class AddIdCardActivity extends BaseActivity {
 
             @Override
             public void onFaild(int msgCode, String msg) {
-                dismissLoadingBar();
+//                dismissLoadingBar();
                 ToastUtils.showShort("" + msg);
             }
         });
@@ -410,7 +427,7 @@ public class AddIdCardActivity extends BaseActivity {
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == ImagePicker.RESULT_CODE_ITEMS) {
             //添加图片返回
@@ -430,6 +447,14 @@ public class AddIdCardActivity extends BaseActivity {
                     updateImageByBase64(file);
                 }
             }
+        }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (unbinder!=null) {
+            unbinder.unbind();
         }
     }
 }

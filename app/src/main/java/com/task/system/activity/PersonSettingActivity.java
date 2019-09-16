@@ -1,5 +1,6 @@
 package com.task.system.activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -29,6 +30,7 @@ import com.task.system.Constans;
 import com.task.system.R;
 import com.task.system.api.API;
 import com.task.system.api.TaskInfo;
+import com.task.system.api.TaskInfoIgnoreBody;
 import com.task.system.api.TaskInfoList;
 import com.task.system.api.TaskService;
 import com.task.system.bean.SimpleBeanInfo;
@@ -112,6 +114,10 @@ public class PersonSettingActivity extends BaseActivity {
     RelativeLayout rlWx;
     @BindView(R.id.tv_mange_address_ui)
     TextView tvMangeAddressUi;
+    @BindView(R.id.tv_apply_enterpise_vertify_status)
+    TextView tvApplyEnterpiseVertifyStatus;
+    @BindView(R.id.rl_id_apply)
+    RelativeLayout rlIdApply;
     private boolean isUplaodImage;
 
     private static final int ADD_CARD_REQUEST = 105;
@@ -119,6 +125,10 @@ public class PersonSettingActivity extends BaseActivity {
     private UserExt userExt;
 
     private IWXAPI api;
+
+
+    public static int REQUEST_ADD_APPLY = 240;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -151,6 +161,12 @@ public class PersonSettingActivity extends BaseActivity {
                         tvIdcardVertifyStatus.setText("已验证");
                     } else {
                         tvIdcardVertifyStatus.setText("未验证");
+                    }
+
+                    if (data.business_info != null && !TextUtils.isEmpty(data.business_info.business_name)) {
+                        tvApplyEnterpiseVertifyStatus.setText("已申请");
+                    } else {
+                        tvApplyEnterpiseVertifyStatus.setText("未申请");
                     }
 
                     if (!TextUtils.isEmpty(data.wx_bind) && data.wx_bind.equals("1")) {
@@ -202,7 +218,7 @@ public class PersonSettingActivity extends BaseActivity {
     }
 
 
-    @OnClick({R.id.rl_header_ui, R.id.rl_name_ui, R.id.rl_phone_ui, R.id.rl_sysyte_id_ui, R.id.tv_modify_password_ui, R.id.rl_id_card, R.id.rl_wx, R.id.tv_mange_address_ui, R.id.tv_login_out})
+    @OnClick({R.id.rl_header_ui, R.id.rl_name_ui, R.id.rl_phone_ui, R.id.rl_sysyte_id_ui, R.id.tv_modify_password_ui, R.id.rl_id_card, R.id.rl_id_apply, R.id.rl_wx, R.id.tv_mange_address_ui, R.id.tv_login_out})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.rl_header_ui:
@@ -245,15 +261,27 @@ public class PersonSettingActivity extends BaseActivity {
                 break;
             case R.id.rl_id_card:
                 Bundle bundle = null;
-                if (userExt!=null && userExt.idcard_info!=null) {
+                if (userExt != null && userExt.idcard_info != null) {
                     bundle = new Bundle();
                     bundle.putSerializable(Constans.PASS_OBJECT, userExt.idcard_info);
                 }
-                Intent intent = new Intent(ApiConfig.context,AddIdCardActivity.class);
-                if (bundle!=null){
+                Intent intent = new Intent(ApiConfig.context, AddIdCardActivity.class);
+                if (bundle != null) {
                     intent.putExtras(bundle);
                 }
                 startActivityForResult(intent, ADD_CARD_REQUEST);
+                break;
+            case R.id.rl_id_apply:
+                Bundle bundleEnterprise = null;
+                if (userExt != null && userExt.business_info != null) {
+                    bundleEnterprise = new Bundle();
+                    bundleEnterprise.putSerializable(Constans.PASS_OBJECT, userExt.business_info);
+                }
+                Intent intentEnterprise = new Intent(ApiConfig.context, MyApplyActivity.class);
+                if (bundleEnterprise != null) {
+                    intentEnterprise.putExtras(bundleEnterprise);
+                }
+                startActivityForResult(intentEnterprise, REQUEST_ADD_APPLY);
                 break;
             case R.id.tv_login_out:
                 showExitDialog();
@@ -411,6 +439,10 @@ public class PersonSettingActivity extends BaseActivity {
         } else if (requestCode == ADD_CARD_REQUEST && resultCode == RESULT_OK) {
 //            getUserDetail();
             getDetailExt();
+        } else if (requestCode == REQUEST_ADD_APPLY) {
+            if (resultCode == Activity.RESULT_OK) {
+                getDetailExt();
+            }
         }
     }
 
@@ -471,6 +503,7 @@ public class PersonSettingActivity extends BaseActivity {
                 }).launch();
     }
 
+    //
     private void doUploadImage(String base64Encode) {
 
 
@@ -486,6 +519,32 @@ public class PersonSettingActivity extends BaseActivity {
             public void onSuccess(int msgCode, String msg, SimpleBeanInfo data) {
                 ToastUtils.showShort("" + msg);
                 dismissLoadingBar();
+                setAwarta(data);
+//                EventBus.getDefault().post(new UpdateUserInfoEvent());
+            }
+
+            @Override
+            public void onFaild(int msgCode, String msg) {
+                dismissLoadingBar();
+            }
+        });
+
+    }
+
+
+    //设置头像
+    private void setAwarta(SimpleBeanInfo data) {
+        HashMap<String, String> hashMap = new HashMap();
+        hashMap.put("uid", TUtils.getUserId());
+        hashMap.put("avatar", data.id);
+        Call<TaskInfoIgnoreBody> call = ApiConfig.getInstants().create(TaskService.class).setUserAvatar(TUtils.getParams(hashMap));
+
+        API.getObjectIgnoreBody(call, new ApiCallBack<SimpleBeanInfo>() {
+
+            @Override
+            public void onSuccess(int msgCode, String msg, SimpleBeanInfo data) {
+                ToastUtils.showShort("" + msg);
+                dismissLoadingBar();
                 isUplaodImage = true;
 //                EventBus.getDefault().post(new UpdateUserInfoEvent());
             }
@@ -496,7 +555,6 @@ public class PersonSettingActivity extends BaseActivity {
                 dismissLoadingBar();
             }
         });
-
     }
 
     public byte[] getBytesByBitmap(Bitmap bitmap) {

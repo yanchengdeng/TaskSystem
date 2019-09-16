@@ -119,9 +119,9 @@ public interface TaskService {
      * avatar
      * app_token
      */
-//    @FormUrlEncoded
-//    @POST("user/setAvatar")
-//    Call<TaskInfoList> setUserAvatar(@FieldMap HashMap<String, String> maps);
+    @FormUrlEncoded
+    @POST("user/setAvatar")
+    Call<TaskInfoIgnoreBody> setUserAvatar(@FieldMap HashMap<String, String> maps);
 
 
     /**
@@ -495,18 +495,18 @@ public interface TaskService {
     //修改地址
     @FormUrlEncoded
     @POST("user/setAddress")
-    Call<TaskInfo> setAddress(@FieldMap HashMap<String, String> maps);
+    Call<TaskInfoIgnoreBody> setAddress(@FieldMap HashMap<String, String> maps);
 
     //新增地址
     @FormUrlEncoded
     @POST("user/addAddress")
-    Call<TaskInfo> addAddress(@FieldMap HashMap<String, String> maps);
+    Call<TaskInfoIgnoreBody> addAddress(@FieldMap HashMap<String, String> maps);
 
 
     //删除地址
     @FormUrlEncoded
     @POST("user/delAddress")
-    Call<TaskInfo> delAddress(@FieldMap HashMap<String, String> maps);
+    Call<TaskInfoIgnoreBody> delAddress(@FieldMap HashMap<String, String> maps);
 
 
     //用户身份 微信绑定数据
@@ -680,4 +680,16 @@ public interface TaskService {
     @FormUrlEncoded
     @POST("user/setBusiness")
     Call<TaskInfoIgnoreBody>  userSetBusiness(@FieldMap HashMap<String,String> maps);
+
+
+    //绑定机关推送register_id
+    @FormUrlEncoded
+    @POST("user/bindPushId")
+    Call<TaskInfoIgnoreBody>  userBindPushId(@FieldMap HashMap<String,String> maps);
+
+    //发布者订单详情
+    @FormUrlEncoded
+    @POST("order/detail")
+    Call<TaskInfo>   getOrderDetail(@FieldMap HashMap<String,String > mpas);
+
  }

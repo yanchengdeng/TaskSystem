@@ -176,21 +176,31 @@ public class TaskOrderAdapter extends BaseQuickAdapter<OrderInfo, BaseViewHolder
                 }else{
                     tvElseFunction.setVisibility(View.GONE);
                 }
-                tvApplyDispute.setVisibility(View.VISIBLE);
-                if (item.dispute_status==0){
-                    tvApplyDispute.setText("提出争议");
-                    tvApplyDispute.setTextColor(mContext.getResources().getColor(R.color.color_info));
-                    tvApplyDispute.setBackground(mContext.getResources().getDrawable(R.drawable.normal_submit_btn_gray_deep_trans));
-                }else if (item.dispute_status==1 || item.dispute_status==2 || item.dispute_status==3){
-                    tvApplyDispute.setText("查看争议");
-                    tvApplyDispute.setTextColor(mContext.getResources().getColor(R.color.color_info));
-                    tvApplyDispute.setBackground(mContext.getResources().getDrawable(R.drawable.normal_submit_btn_gray_deep_trans));
-                }else{
-                    if (!TextUtils.isEmpty(item.dispute_status_title)) {
-                        tvApplyDispute.setText(item.dispute_status_title);
-                        tvApplyDispute.setBackground(null);
-                        tvApplyDispute.setTextColor(mContext.getResources().getColor(R.color.red));
+
+
+                if (item.can_send_dispute==1) {
+                    tvApplyDispute.setVisibility(View.VISIBLE);
+                    if (item.dispute_status == 0) {
+                        tvApplyDispute.setText("提出争议");
+//                        tvApplyDispute.setTextColor(mContext.getResources().getColor(R.color.color_info));
+//                        tvApplyDispute.setBackground(mContext.getResources().getDrawable(R.drawable.normal_submit_btn_gray_deep_trans));
+                    } else if (item.dispute_status == 1 || item.dispute_status == 2 || item.dispute_status == 3) {
+                        tvApplyDispute.setText("查看争议");
+//                        tvApplyDispute.setTextColor(mContext.getResources().getColor(R.color.color_info));
+//                        tvApplyDispute.setBackground(mContext.getResources().getDrawable(R.drawable.normal_submit_btn_gray_deep_trans));
                     }
+                }else{
+                    tvApplyDispute.setVisibility(View.GONE);
+                }
+
+                if (!TextUtils.isEmpty(item.dispute_status_title)) {
+//                        tvApplyDispute.setText(item.dispute_status_title);
+//                        tvApplyDispute.setBackground(null);
+                    tvReason.setTextColor(mContext.getResources().getColor(R.color.red));
+                    tvReason.setVisibility(View.VISIBLE);
+                    tvReason.setText(item.dispute_status_title);
+                } else {
+                    tvReason.setVisibility(View.GONE);
                 }
 
                 break;

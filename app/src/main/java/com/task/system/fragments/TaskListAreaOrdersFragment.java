@@ -21,8 +21,8 @@ import com.task.system.activity.BaseActivity;
 import com.task.system.activity.DoTaskStepActivity;
 import com.task.system.activity.LinkOrdersActivity;
 import com.task.system.activity.OpenWebViewActivity;
+import com.task.system.activity.OrderDetailActivity;
 import com.task.system.activity.OrderManageActivity;
-import com.task.system.activity.TaskDetailActivity;
 import com.task.system.adapters.AreaManageOrdersAdapter;
 import com.task.system.api.API;
 import com.task.system.api.TaskInfo;
@@ -105,8 +105,8 @@ public class TaskListAreaOrdersFragment extends BaseFragment {
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 Bundle bundle = new Bundle();
                 bundle.putString(Constans.PASS_NAME, "任务详情");
-                bundle.putString(Constans.PASS_STRING, taskOrderAdapter.getData().get(position).getTask_id());
-                ActivityUtils.startActivity(bundle, TaskDetailActivity.class);
+                bundle.putString(Constans.PASS_STRING, taskOrderAdapter.getData().get(position).getOrder_id());
+                ActivityUtils.startActivity(bundle, OrderDetailActivity.class);
             }
         });
 
@@ -143,7 +143,7 @@ public class TaskListAreaOrdersFragment extends BaseFragment {
                         break;
                     case R.id.tv_order_data:
                         Bundle orderdatas = new Bundle();
-                        orderdatas.putSerializable(Constans.PASS_OBJECT, taskOrderAdapter.getData().get(position));
+                        orderdatas.putString(Constans.PASS_STRING, taskOrderAdapter.getData().get(position).getTask_id());
                         ActivityUtils.startActivity(orderdatas, LinkOrdersActivity.class);
 
                         break;

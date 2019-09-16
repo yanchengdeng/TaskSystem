@@ -12,11 +12,11 @@ import java.io.Serializable;
  */
 public class UserStatics implements Serializable {
 
-    public String publish_task_num;// 0,
-    public String complete_task_num;// 0,
-    public String member_num;// 8,
-    public String member_new_num;// 0,
-    public String order_accept;// 0,
+    public String publish_task_num = "0";// 0,
+    public String complete_task_num = "0";// 0,
+    public String member_num = "0";// 8,
+    public String member_new_num= "0";// 0,
+    public String order_accept= "0";// 0,
     public String order_submit;// 0,
     public String order_adopt;// 0,
     public String order_refuse;// 0,
@@ -25,4 +25,8 @@ public class UserStatics implements Serializable {
     public String order_complete_ratio;// 0,
     public String order_adopt_ratio;// 0,
     public String order_dispute_ratio;// 0
+    public String task_score= "0";// "60.00"
+    public String second_member_num= "0";
+    public String second_member_new_num= "0";
+    public String task_num= "0";
 }

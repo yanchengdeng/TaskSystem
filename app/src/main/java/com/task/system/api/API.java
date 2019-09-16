@@ -73,7 +73,7 @@ public class API {
                             apiCallBack.onSuccess(resultInfo.getStatus_code(), ""+resultInfo.getMessage(), null);
                         } catch (Exception e) {
                             LogUtils.w("dyc", "json 数据格式异常");
-                            apiCallBack.onFaild(resultInfo.getStatus_code(), resultInfo.getMessage() + ":json 数据格式异常");
+                            apiCallBack.onFaild(resultInfo.getStatus_code(), resultInfo.getMessage());
                         }
                     } else {
                         if (response != null) {
@@ -136,10 +136,10 @@ public class API {
                                     apiCallBack.onSuccess(resultInfo.getStatus_code(), ""+resultInfo.getMessage(), (T) new Gson().fromJson(json, clz));
                                 } catch (Exception e) {
                                     LogUtils.w("dyc", "json 数据格式异常"+e.getMessage());
-                                    apiCallBack.onSuccess(resultInfo.getStatus_code(), resultInfo.getMessage() + ":json 数据格式异常",null);
+                                    apiCallBack.onSuccess(resultInfo.getStatus_code(), resultInfo.getMessage(),null);
                                 }
                             } else {
-                                apiCallBack.onSuccess(resultInfo.getStatus_code(), resultInfo.getMessage() + ":data 无数据",null);
+                                apiCallBack.onSuccess(resultInfo.getStatus_code(), resultInfo.getMessage(),null);
                             }
                         } else {
                             if (resultInfo.getStatus_code() == -108

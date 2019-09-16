@@ -31,6 +31,9 @@
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:text="@string/app_name"
+            android:singleLine="true"
+            android:maxLength="10"
+            android:ellipsize="end"
             android:drawablePadding="@dimen/image_padding"
             android:textColor="@color/white"
             android:textSize="@dimen/text_size_larger" />

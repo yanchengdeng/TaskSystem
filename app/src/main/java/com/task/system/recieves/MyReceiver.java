@@ -9,7 +9,6 @@ import android.text.TextUtils;
 import com.blankj.utilcode.util.SPUtils;
 import com.task.system.Constans;
 import com.task.system.activity.MessageListActivity;
-import com.yc.lib.api.utils.SysUtils;
 
 import cn.jpush.android.api.JPushInterface;
 import cn.jpush.android.helper.Logger;
@@ -32,7 +31,6 @@ public class MyReceiver extends BroadcastReceiver {
 
             if (JPushInterface.ACTION_REGISTRATION_ID.equals(intent.getAction())) {
                 String regId = bundle.getString(JPushInterface.EXTRA_REGISTRATION_ID);
-                SysUtils.showToast("register_id=="+regId);
                 Logger.d(TAG, "[MyReceiver] 接收Registration Id : " + regId);
                 if (!TextUtils.isEmpty(regId)) {
                     SPUtils.getInstance().put(Constans.JPUSH_REGIEST_ID, regId);
@@ -63,6 +61,9 @@ public class MyReceiver extends BroadcastReceiver {
 
                 Logger.d(TAG, "[MyReceiver] 用户点击打开了通知" + message);
 
+                /**
+                 * 1-任务; 2-游戏; 3-消息
+                 */
 
                 if (!TextUtils.isEmpty(message)) {
                     Intent i = new Intent(context, MessageListActivity.class);

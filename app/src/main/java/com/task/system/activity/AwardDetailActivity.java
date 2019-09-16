@@ -96,7 +96,7 @@ public class AwardDetailActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 if (awardItem != null) {
-                    if (awardItem.can_set_address==1 ) {
+                    if (awardItem.can_set_address==1 &&  TextUtils.isEmpty(addressId) ) {
                         SysUtils.showToast("请选择收货地址");
                     } else {
                         doExchage();
@@ -181,16 +181,20 @@ public class AwardDetailActivity extends BaseActivity {
         if (!TextUtils.isEmpty(data.status_title)) {
             tvAwardStatus.setText(data.status_title);
         }
-        if (data.status == 1) {
-            tvAwardExchange.setVisibility(View.VISIBLE);
+        if (data.address!=null && !TextUtils.isEmpty(data.address.address)) {
+            tvAddress.setText(""+data.address.address);
+            tvAddressPhone.setText(""+data.address.mobile);
+            tvAddressName.setText(""+data.address.name);
+        }
+
+
+        if (data.status == 1 && data.prize_type==2) {
             if (data.can_set_address == 1) {
+                tvAwardExchange.setVisibility(View.VISIBLE);
                 tvAddAddress.setVisibility(View.VISIBLE);
             } else {
-                if (data.address!=null && !TextUtils.isEmpty(data.address.address)) {
-                        tvAddress.setText(""+data.address.address);
-                        tvAddressPhone.setText(""+data.address.mobile);
-                        tvAddressName.setText(""+data.address.name);
-                }
+                tvAwardExchange.setVisibility(View.GONE);
+                tvAddAddress.setVisibility(View.GONE);
             }
         }
 

@@ -16,7 +16,7 @@ public class AwardItem implements Serializable {
     public String prize_name;// 四等奖,
     public String prize_image;// 22,
     public String prize_score;// 5,
-    public String prize_type;// 2,
+    public int prize_type;// 2,
     public int status;// 1,
     public String prize_type_title;// 实物,
     public String status_title;// 已兑奖

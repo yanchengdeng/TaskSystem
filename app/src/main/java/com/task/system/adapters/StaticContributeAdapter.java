@@ -1,5 +1,6 @@
 package com.task.system.adapters;
 
+import android.text.TextUtils;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -26,11 +27,21 @@ public class StaticContributeAdapter extends BaseQuickAdapter<ScoreAccountUserIn
      */
     @Override
     protected void convert(BaseViewHolder helper, final ScoreAccountUserInfo item) {
-        ((TextView) helper.getView(R.id.tv_one)).setText(""+item.uid);
+        if (!TextUtils.isEmpty(item.uid)){
+            ((TextView) helper.getView(R.id.tv_one)).setText(""+item.uid);
+        }else if (!TextUtils.isEmpty(item.id)){
+            ((TextView) helper.getView(R.id.tv_one)).setText(""+item.id);
+        }
+
         ((TextView) helper.getView(R.id.tv_two)).setText(""+item.task_num);
         ((TextView) helper.getView(R.id.tv_three)).setText(""+item.task_score);
         ((TextView) helper.getView(R.id.tv_four)).setText(""+item.score);
-        ((TextView) helper.getView(R.id.tv_five)).setText(""+item.task_repulse_sum);
+
+        if (!TextUtils.isEmpty(item.task_repulse_sum)) {
+            ((TextView) helper.getView(R.id.tv_five)).setText(""+item.task_repulse_sum);
+        }else if (!TextUtils.isEmpty(item.child_sum)){
+            ((TextView) helper.getView(R.id.tv_five)).setText(""+item.child_sum);
+        }
 
 
     }

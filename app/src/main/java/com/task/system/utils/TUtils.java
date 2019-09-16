@@ -246,7 +246,7 @@ public class TUtils {
             }
             if (adapter.getData().size() > 0) {
                 adapter.loadMoreComplete();
-                adapter.loadMoreEnd();
+                adapter.loadMoreEnd(adapter.getData().size()<10);
             } else {
                 adapter.setNewData(new ArrayList<TaskInfoList>());
                 adapter.loadMoreComplete();
@@ -270,7 +270,7 @@ public class TUtils {
         }
         if (adapter.getData().size() > 0) {
             adapter.loadMoreComplete();
-            adapter.loadMoreEnd();
+            adapter.loadMoreEnd(adapter.getData().size()<10);
         } else {
             adapter.setNewData(new ArrayList<TaskInfoList>());
             adapter.loadMoreComplete();
@@ -299,7 +299,8 @@ public class TUtils {
                     adapter.loadMoreComplete();
                 } else {
                     adapter.loadMoreComplete();
-                    adapter.loadMoreEnd();
+
+                    adapter.loadMoreEnd(list.size()<10);
                 }
             } else {
                 TUtils.dealNoReqestData(adapter, recycle);
@@ -323,7 +324,7 @@ public class TUtils {
                     adapter.loadMoreComplete();
                 } else {
                     adapter.loadMoreComplete();
-                    adapter.loadMoreEnd();
+                    adapter.loadMoreEnd(list.size()<10);
                 }
             } else {
                 TUtils.dealNoReqestData(adapter, recycle);

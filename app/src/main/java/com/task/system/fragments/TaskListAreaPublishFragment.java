@@ -135,7 +135,7 @@ public class TaskListAreaPublishFragment extends BaseFragment {
                         break;
                     case R.id.tv_order_data:
                         Bundle orderdatas = new Bundle();
-                        orderdatas.putSerializable(Constans.PASS_OBJECT, taskOrderAdapter.getData().get(position));
+                        orderdatas.putString(Constans.PASS_STRING, taskOrderAdapter.getData().get(position).getId());
                         ActivityUtils.startActivity(orderdatas, LinkOrdersActivity.class);
 
                         break;

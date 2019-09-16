@@ -105,6 +105,21 @@
             </RelativeLayout>
 
 
+            <TextView
+                android:id="@+id/tv_my_area_manage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:background="@color/white"
+                android:drawableRight="@mipmap/arrow_right_black"
+                android:padding="@dimen/activity_horizontal_margin"
+                android:text="我的运营商"
+                android:textColor="@color/color_info"
+                android:textSize="@dimen/sp_14"
+                android:visibility="gone"
+                />
+
+
             <LinearLayout
                 android:id="@+id/ll_allwork_title"
                 android:layout_width="match_parent"
@@ -138,19 +153,20 @@
 
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/tv_collect"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="1dp"
-                android:background="@color/white"
-                android:drawableRight="@mipmap/arrow_right_black"
-                android:padding="@dimen/activity_horizontal_margin"
-                android:text="我的收藏"
-                android:textColor="@color/color_info"
-                android:textSize="@dimen/sp_14"
-                />
 
+
+
+<!--            <TextView-->
+<!--                android:id="@+id/tv_my_team"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginTop="1dp"-->
+<!--                android:background="@color/white"-->
+<!--                android:drawableRight="@mipmap/arrow_right_black"-->
+<!--                android:padding="@dimen/activity_horizontal_margin"-->
+<!--                android:text="我的团队"-->
+<!--                android:textColor="@color/color_info"-->
+<!--                android:textSize="@dimen/sp_14" />-->
 
             <TextView
                 android:id="@+id/tv_my_team"
@@ -164,17 +180,19 @@
                 android:textColor="@color/color_info"
                 android:textSize="@dimen/sp_14" />
 
+
             <TextView
-                android:id="@+id/tv_my_accoutn"
+                android:id="@+id/tv_collect"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="1dp"
                 android:background="@color/white"
                 android:drawableRight="@mipmap/arrow_right_black"
                 android:padding="@dimen/activity_horizontal_margin"
-                android:text="我的账目"
+                android:text="我的收藏"
                 android:textColor="@color/color_info"
-                android:textSize="@dimen/sp_14" />
+                android:textSize="@dimen/sp_14"
+                />
 
             <TextView
                 android:id="@+id/tv_add_lead"
@@ -259,33 +277,8 @@
                 android:textSize="@dimen/sp_14"
                 />
 
-            <TextView
-                android:id="@+id/tv_my_area_manage"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="1dp"
-                android:background="@color/white"
-                android:drawableRight="@mipmap/arrow_right_black"
-                android:padding="@dimen/activity_horizontal_margin"
-                android:text="我的运营商"
-                android:textColor="@color/color_info"
-                android:textSize="@dimen/sp_14"
-                android:visibility="gone"
-                />
 
-            <TextView
-                android:id="@+id/tv_my_applay"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="1dp"
-                android:background="@color/white"
-                android:drawableRight="@mipmap/arrow_right_black"
-                android:padding="@dimen/activity_horizontal_margin"
-                android:text="我的申请"
-                android:textColor="@color/color_info"
-                android:textSize="@dimen/sp_14"
-                android:visibility="gone"
-                />
+
 
 
 

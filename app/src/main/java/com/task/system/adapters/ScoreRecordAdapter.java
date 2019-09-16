@@ -34,7 +34,7 @@ public class ScoreRecordAdapter extends BaseQuickAdapter<OrderItem, BaseViewHold
             ((TextView) helper.getView(R.id.tv_score)).setText(TUtils.getHideAccount(item.score));
         }
 
-        if (TextUtils.isEmpty(item.color)) {
+        if (!TextUtils.isEmpty(item.color)) {
             if (item.color.equals("red")) {
                 ((TextView) helper.getView(R.id.tv_score)).setTextColor(mContext.getResources().getColor(R.color.red));
             } else {

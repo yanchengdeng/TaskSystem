@@ -77,7 +77,7 @@ public class AreaManagePublishAdapter extends BaseQuickAdapter<AreaManagePublish
          "status": 0,"title": "已中止" --显示编辑按钮
          "status": "1","title": "展示中"--中止任务 订单数据
          "status": "2","title": "草稿箱"--显示编辑按钮
-         "status": "3","title": "待审核"--显示编辑按钮 取消任务
+         "status": "3","title": "待审核"-- 取消任务
          "status": "4","title": "未通过"--显示编辑按钮 显示审核理由按钮
          "status": "5","title": "已完结"--显示编辑按钮 显示订单数据按钮
          "status": "6","title": "已过期"--显示编辑按钮
@@ -104,7 +104,7 @@ public class AreaManagePublishAdapter extends BaseQuickAdapter<AreaManagePublish
                 funLookReason.setVisibility(View.GONE);
                 break;
             case "3":
-                funEditAgain.setVisibility(View.VISIBLE);
+                funEditAgain.setVisibility(View.GONE);
                 funOrderData.setVisibility(View.GONE);
                 funCancleTask.setVisibility(View.VISIBLE);
                 funLookReason.setVisibility(View.GONE);

@@ -93,6 +93,10 @@ public class MyAccountActivity extends BaseActivity {
     TextView tvNewNum;
     @BindView(R.id.tv_key_search)
     TextView tvKeySearch;
+    @BindView(R.id.tv_below_seconde_nums)
+    TextView tvBelowSecondeNums;
+    @BindView(R.id.tv_second_new_num)
+    TextView tvSecondNewNum;
     private String child_uid;//要查看的用户的uid
     public String search_key;//要搜索的用户uid
     private int page = 1;
@@ -108,7 +112,7 @@ public class MyAccountActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_acount);
         ButterKnife.bind(this);
-        setTitle("我的账目");
+        setTitle("我的团队");
         initPickView();
         if (!TextUtils.isEmpty(getIntent().getStringExtra(Constans.PASS_CHILD_UID))) {
             child_uid = getIntent().getStringExtra(Constans.PASS_CHILD_UID);
@@ -139,10 +143,10 @@ public class MyAccountActivity extends BaseActivity {
             @Override
             protected void onNoDoubleClick(View v) {
 //                if (scoreAccountUserInfo != null && scoreAccountUserInfo.user_type.equals(UserType.USER_TYPE_AGENT.getType())) {
-                if (scoreAccountUserInfo != null){
+                if (scoreAccountUserInfo != null) {
                     Bundle bundle = new Bundle();
                     bundle.putString(Constans.PASS_CHILD_UID, child_uid);
-                    ActivityUtils.startActivityForResult(bundle,mContext, SettingFinalRateActivity.class,200);
+                    ActivityUtils.startActivityForResult(bundle, mContext, SettingFinalRateActivity.class, 200);
                 }
             }
         });
@@ -159,7 +163,12 @@ public class MyAccountActivity extends BaseActivity {
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 Bundle bundle = new Bundle();
                 bundle.putString(Constans.PASS_CHILD_UID, adapterStatic.getData().get(position).uid);
-                child_uid = adapterStatic.getData().get(position).uid;
+                if (!TextUtils.isEmpty(adapterStatic.getData().get(position).uid)){
+                    child_uid = adapterStatic.getData().get(position).uid;
+                }else{
+                    child_uid = adapterStatic.getData().get(position).id;
+                }
+                bundle.putString(Constans.PASS_CHILD_UID,child_uid);
                 if (!TextUtils.isEmpty(start_date)) {
                     bundle.putString(Constans.PASS_START_TIME, start_date);
                 }
@@ -225,7 +234,7 @@ public class MyAccountActivity extends BaseActivity {
                 if (data.user_info.user_type.equals(UserType.USER_TYPE_MEMBER.getType())) {
                     //会员
                     tvAcitonSetting.setVisibility(View.GONE);
-                    llBelowMemberInfo.setVisibility(View.GONE);
+                    llBelowMemberInfo.setVisibility(View.VISIBLE);
                 }
                 if (data.user_info.user_type.equals(UserType.USER_TYPE_AGENT.getType())) {
 
@@ -248,13 +257,18 @@ public class MyAccountActivity extends BaseActivity {
             tvPhone.setText("手机：" + data.user_info.mobile);
             tvAccoutIntergray.setText("账户积分：" + data.user_info.score);
             tvHistoryMoney.setText("历史积分：" + data.user_info.history_score);
-            tvCreateValue.setText("创造价值：" + data.user_info.task_score);
-            tvFinishTask.setText("完成任务：" + data.user_statistics.complete_task_num);
+            tvCreateValue.setText("创造价值：" + data.user_statistics.task_score);
+            tvFinishTask.setText("完成任务：" + data.user_statistics.task_num);
             tvRemark.setText("" + data.user_info.remark);
             tvBelowNums.setText("" + data.user_statistics.member_num);
             tvNewNum.setText(String.format(getString(R.string.new_num), data.user_statistics.member_new_num));
-            tvAgentCreateValue.setText(String.format(getString(R.string.agent_create_value), data.user_info.task_score));
-            tvAgentFinishTask.setText(String.format(getString(R.string.agent_finish_tast), data.user_statistics.complete_task_num));
+
+            tvBelowSecondeNums.setText("" + data.user_statistics.second_member_num);
+            tvSecondNewNum.setText(String.format(getString(R.string.new_num), data.user_statistics.second_member_new_num));
+            tvAgentCreateValue.setText(String.format(getString(R.string.agent_create_value), data.user_statistics.task_score));
+            tvAgentFinishTask.setText(String.format(getString(R.string.agent_finish_tast), data.user_statistics.task_num));
+
+
         } else {
             llStaticInfo.setVisibility(View.GONE);
         }
@@ -262,13 +276,7 @@ public class MyAccountActivity extends BaseActivity {
         if (data.list != null && data.list.size() > 0) {
             adapterStatic.setNewData(data.list);
             recycle.setVisibility(View.VISIBLE);
-            String leve = "会员";
-            if (data.level==1){
-                leve = "下级";
-            }else if (data.level==2){
-                leve = "二级";
-            }
-            tvUidHeader.setText(leve);
+            tvUidHeader.setText(data.member_level+"");
         } else {
             recycle.setVisibility(View.GONE);
         }
@@ -347,9 +355,9 @@ public class MyAccountActivity extends BaseActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if (requestCode==200 && resultCode==RESULT_OK){
+        if (requestCode == 200 && resultCode == RESULT_OK) {
             String marks = data.getStringExtra(Constans.PASS_STRING);
-            if (!TextUtils.isEmpty(marks)){
+            if (!TextUtils.isEmpty(marks)) {
                 tvRemark.setText(marks);
             }
         }

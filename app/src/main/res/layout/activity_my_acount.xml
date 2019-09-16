@@ -21,9 +21,7 @@
             android:orientation="vertical"
             tools:context=".activities.BuyLotteryRecordActivity">
 
-
             <include layout="@layout/layout_date_pick" />
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -31,14 +29,6 @@
                 android:focusable="true"
                 android:focusableInTouchMode="true"
                 android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:text="搜索会员请输入\n用户UID或手机号码:"
-                    android:textColor="@color/color_tittle"
-                    android:textSize="@dimen/text_size_normal_down" />
 
                 <EditText
                     android:id="@+id/et_input"
@@ -53,6 +43,14 @@
                     android:padding="@dimen/image_padding"
                     android:textColor="@color/color_info"
                     android:textSize="@dimen/text_size_normal" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="搜索会员请输入\n用户UID或手机号码:"
+                    android:textColor="@color/color_tittle"
+                    android:textSize="@dimen/text_size_normal_down" />
 
                 <TextView
                     android:id="@+id/tv_key_search"
@@ -71,25 +69,37 @@
             </LinearLayout>
 
 
+
+
         </LinearLayout>
+
+
+
 
         <include layout="@layout/layout_static_info" />
 
 
-        <TextView
-            android:id="@+id/tv_aciton_setting"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:layout_marginRight="@dimen/activity_horizontal_margin"
-            android:background="@drawable/normal_submit_btn_gray_trans"
-            android:drawableLeft="@mipmap/small_setting"
-            android:gravity="center"
-            android:padding="@dimen/image_padding"
-            android:visibility="gone"
-            android:text="设置"
-            android:textColor="@color/color_tittle"
-            android:textSize="@dimen/text_size_normal" />
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="您的"
+                android:textColor="@color/red"
+                android:textSize="@dimen/text_size_normal" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="下级会员统计"
+                android:textColor="@color/color_tittle"
+                android:textSize="@dimen/text_size_normal" />
+        </LinearLayout>
+
 
 
         <LinearLayout
@@ -132,82 +142,153 @@
 
                 <TextView
                     android:layout_width="1dp"
-                    android:background="@color/list_divider_color"
                     android:layout_height="@dimen/activity_horizontal_margin"
                     android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                    android:layout_marginRight="@dimen/activity_horizontal_margin"/>
+                    android:layout_marginRight="@dimen/activity_horizontal_margin"
+                    android:background="@color/list_divider_color" />
 
 
                 <TextView
                     android:id="@+id/tv_new_num"
-                    android:textColor="@color/color_info"
-                    android:textSize="@dimen/text_size_normal_down"
-                    android:text="@string/new_num"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:text="@string/new_num"
+                    android:textColor="@color/color_info"
+                    android:textSize="@dimen/text_size_normal_down" />
 
             </LinearLayout>
 
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:orientation="horizontal"
-                android:background="@drawable/normal_submit_btn_gray_trans"
-                android:padding="@dimen/image_padding_big"
-                android:gravity="center_vertical"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="visible">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="二级会员总数为："
+                        android:textColor="@color/color_tittle"
+                        android:textSize="@dimen/text_size_normal" />
+
+                    <TextView
+                        android:id="@+id/tv_below_seconde_nums"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0"
+                        android:textColor="@color/red"
+                        android:textSize="@dimen/text_size_normal"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="人"
+                        android:textColor="@color/color_tittle"
+                        android:textSize="@dimen/text_size_normal" />
+
+
+                    <TextView
+                        android:layout_width="1dp"
+                        android:layout_height="@dimen/activity_horizontal_margin"
+                        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                        android:layout_marginRight="@dimen/activity_horizontal_margin"
+                        android:background="@color/list_divider_color" />
+
+
+                    <TextView
+                        android:id="@+id/tv_second_new_num"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/new_num"
+                        android:textColor="@color/color_info"
+                        android:textSize="@dimen/text_size_normal_down" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/activity_horizontal_margin"
-                android:layout_height="wrap_content">
+                android:background="@drawable/normal_submit_btn_gray_trans"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="@dimen/image_padding_big">
 
 
                 <TextView
-                    android:layout_width="0dp"
                     android:id="@+id/tv_agent_finish_task"
-                    android:gravity="center"
-                    android:textSize="@dimen/text_size_normal"
-                    android:textColor="@color/color_info"
-                    android:drawablePadding="@dimen/image_padding_big"
-                    android:text="@string/agent_finish_tast"
-                    android:drawableLeft="@mipmap/icon_task_count"
-                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_height="wrap_content"/>
+                    android:layout_weight="1"
+                    android:drawableLeft="@mipmap/icon_task_count"
+                    android:drawablePadding="@dimen/image_padding_big"
+                    android:gravity="center"
+                    android:text="@string/agent_finish_tast"
+                    android:textColor="@color/color_info"
+                    android:textSize="@dimen/text_size_normal" />
 
+
+                <TextView
+                    android:id="@+id/tv_agent_create_value"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:drawableLeft="@mipmap/icon_task_money"
+                    android:drawablePadding="@dimen/image_padding_big"
+                    android:gravity="center"
+                    android:text="@string/agent_create_value"
+                    android:textColor="@color/color_info"
+                    android:textSize="@dimen/text_size_normal" />
 
 
                 <View
                     android:layout_width="1dp"
-                    android:background="@color/list_divider_color"
+                    android:layout_height="@dimen/activity_horizontal_margin"
                     android:layout_marginLeft="@dimen/activity_horizontal_margin"
                     android:layout_marginRight="@dimen/activity_horizontal_margin"
-                    android:layout_height="@dimen/activity_horizontal_margin"/>
-
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:id="@+id/tv_agent_create_value"
-                    android:textSize="@dimen/text_size_normal"
-                    android:textColor="@color/color_info"
-                    android:drawablePadding="@dimen/image_padding_big"
-                    android:text="@string/agent_create_value"
-                    android:drawableLeft="@mipmap/icon_task_money"
-                    android:layout_weight="1"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:layout_height="wrap_content"/>
+                    android:background="@color/list_divider_color" />
 
             </LinearLayout>
 
 
-
-
         </LinearLayout>
 
+
+        <TextView
+            android:id="@+id/tv_aciton_setting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:background="@drawable/normal_submit_btn_gray_trans"
+            android:drawableLeft="@mipmap/small_setting"
+            android:gravity="center"
+            android:padding="@dimen/image_padding"
+            android:text="设置"
+            android:textColor="@color/color_tittle"
+            android:textSize="@dimen/text_size_normal"
+            android:visibility="gone" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/image_padding_big" />
+
+
+
 
 
     </LinearLayout>

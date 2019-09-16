@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 
 import com.blankj.utilcode.util.ActivityUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -17,6 +18,7 @@ import com.task.system.api.API;
 import com.task.system.api.TaskInfo;
 import com.task.system.api.TaskService;
 import com.task.system.bean.LotteryList;
+import com.task.system.utils.PerfectClickListener;
 import com.task.system.utils.TUtils;
 import com.yc.lib.api.ApiCallBack;
 import com.yc.lib.api.ApiConfig;
@@ -53,6 +55,15 @@ public class MyActivityActivity extends BaseActivity {
         recycle.setLayoutManager(new LinearLayoutManager(ApiConfig.context));
         recycle.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL) );
         recycle.setAdapter(homeAdapter);
+
+        tvRightFunction.setVisibility(View.VISIBLE);
+        tvRightFunction.setText("我的奖品");
+        tvRightFunction.setOnClickListener(new PerfectClickListener() {
+            @Override
+            protected void onNoDoubleClick(View v) {
+                ActivityUtils.startActivity(MyAwardActivity.class);
+            }
+        });
 
 
         homeAdapter.setOnItemClickListener((adapter, view, position) -> {
@@ -96,13 +107,13 @@ public class MyActivityActivity extends BaseActivity {
         API.getObject(call, LotteryList.class, new ApiCallBack<LotteryList>() {
             @Override
             public void onSuccess(int msgCode, String msg,LotteryList  data) {
-                TUtils.dealReqestData(homeAdapter, recycle, data.list, page);
+                TUtils.dealReqestData(homeAdapter, recycle, data.list, page,smartRefresh);
                 dismissLoadingBar();
             }
 
             @Override
             public void onFaild(int msgCode, String msg) {
-                TUtils.dealNoReqestData(homeAdapter, recycle);
+                TUtils.dealNoReqestData(homeAdapter, recycle,smartRefresh);
                 dismissLoadingBar();
             }
         });

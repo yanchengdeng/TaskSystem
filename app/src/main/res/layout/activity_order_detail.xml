@@ -1,0 +1,328 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activity.TaskDetailActivity">
+
+
+
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/white">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/gray_bg"
+            android:orientation="vertical">
+
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/activity_horizontal_margin"
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="2dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/activity_horizontal_margin"
+                    android:orientation="vertical">
+
+
+
+
+
+
+                    <TextView
+                        android:id="@+id/tv_task_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/image_padding"
+                        android:gravity="center_vertical"
+                        android:text="任务名称"
+                        android:textColor="@color/color_tittle"
+                        android:textSize="@dimen/text_size_normal_up"
+                        android:textStyle="bold" />
+
+
+
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+
+                        <TextView
+                            android:id="@+id/tv_task_id"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:gravity="center_vertical"
+                            android:text="任务：id"
+                            android:textColor="@color/color_info"
+                            android:textSize="@dimen/text_size_normal" />
+
+
+                        <TextView
+                            android:id="@+id/tv_task_detail"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:gravity="center_vertical"
+                            android:padding="@dimen/image_padding"
+                            android:text="任务详情>>"
+                            android:textColor="@color/gold_text"
+                            android:textSize="@dimen/text_size_normal" />
+
+                    </RelativeLayout>
+
+                    <include layout="@layout/dash_line" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:orientation="horizontal"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentBottom="true"
+                            android:layout_marginBottom="0dp"
+                            android:text="任务金额："
+                            android:drawableLeft="@mipmap/icon_task_money"
+                            android:textColor="@color/color_tittle"
+                            android:textSize="@dimen/text_size_normal"
+                            />
+
+
+                        <TextView
+                            android:id="@+id/tv_money"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/money_unit"
+                            android:textColor="@color/red"
+                            android:textSize="@dimen/text_size_normal_up"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tv_order_num"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/image_padding_big"
+                        android:layout_marginBottom="@dimen/image_padding_big"
+                        android:drawableLeft="@mipmap/iv_wait_time"
+                        android:drawablePadding="@dimen/image_padding"
+                        android:gravity="center_vertical"
+                        android:text="订单编号："
+                        android:textColor="@color/color_info"
+                        android:textSize="@dimen/text_size_normal" />
+
+                    <TextView
+                        android:id="@+id/tv_user_id"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/image_padding_big"
+                        android:drawableLeft="@mipmap/iv_left_num"
+                        android:drawablePadding="@dimen/image_padding"
+                        android:gravity="center_vertical"
+                        android:text="用户id"
+                        android:textColor="@color/color_info"
+                        android:textSize="@dimen/text_size_normal" />
+
+                    <TextView
+                        android:id="@+id/tv_order_status"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableLeft="@mipmap/iv_easy_or"
+                        android:drawablePadding="@dimen/image_padding"
+                        android:gravity="center_vertical"
+                        android:text="订单状态："
+                        android:textColor="@color/color_info"
+                        android:textSize="@dimen/text_size_normal" />
+
+
+
+
+
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/activity_horizontal_margin"
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="2dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/activity_horizontal_margin"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/image_padding_big"
+                        android:layout_marginBottom="@dimen/image_padding_big"
+                        android:drawableLeft="@mipmap/iv_wait_time"
+                        android:drawablePadding="@dimen/image_padding"
+                        android:gravity="center_vertical"
+                        android:text="提交内容："
+                        android:textColor="@color/color_tittle"
+                        android:textSize="@dimen/text_size_normal_up" />
+
+
+                    <com.task.system.common.RichTextView
+                        android:id="@+id/rich_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/white"
+                        android:lineSpacingMultiplier="1.3"
+                        android:padding="@dimen/activity_horizontal_margin"
+                        android:textColor="@color/color_info"
+                        android:textSize="@dimen/text_size_normal" />
+
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/activity_horizontal_margin"
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="2dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/activity_horizontal_margin"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tv_time_start"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/image_padding_big"
+                        android:layout_marginBottom="@dimen/image_padding_big"
+                        android:drawableLeft="@mipmap/iv_end_time"
+                        android:drawablePadding="@dimen/image_padding"
+                        android:gravity="center_vertical"
+                        android:text="开始时间："
+                        android:textColor="@color/color_tittle"
+                        android:textSize="@dimen/text_size_normal_up" />
+
+
+                    <TextView
+                        android:id="@+id/tv_time_end"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/image_padding_big"
+                        android:layout_marginBottom="@dimen/image_padding_big"
+                        android:drawableLeft="@mipmap/iv_end_time"
+                        android:drawablePadding="@dimen/image_padding"
+                        android:gravity="center_vertical"
+                        android:text="结束时间："
+                        android:textColor="@color/color_tittle"
+                        android:textSize="@dimen/text_size_normal_up" />
+
+
+                    <TextView
+                        android:id="@+id/tv_time_create"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/image_padding_big"
+                        android:layout_marginBottom="@dimen/image_padding_big"
+                        android:drawableLeft="@mipmap/iv_end_time"
+                        android:drawablePadding="@dimen/image_padding"
+                        android:gravity="center_vertical"
+                        android:text="创建时间："
+                        android:textColor="@color/color_tittle"
+                        android:textSize="@dimen/text_size_normal_up" />
+
+
+
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+
+
+        </LinearLayout>
+
+    </android.support.v4.widget.NestedScrollView>
+
+
+
+    <LinearLayout
+        android:id="@+id/ll_bottom"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:background="@color/white"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/image_padding_big"
+        android:paddingTop="@dimen/image_padding_big"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:orientation="horizontal">
+
+
+
+
+        <TextView
+            android:id="@+id/tv_status"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/nav_bar_height"
+            android:layout_weight="1"
+            android:background="@drawable/normal_submit_btn_red"
+            android:gravity="center"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:text="审核通过"
+            android:visibility="gone"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_normal_up"
+            />
+
+        <TextView
+            android:id="@+id/tv_adjust_recharge"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/nav_bar_height"
+            android:layout_weight="1"
+            android:background="@drawable/normal_submit_btn_green"
+            android:gravity="center"
+            android:visibility="gone"
+            android:text="调整佣金"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_normal_up" />
+
+
+        <TextView
+            android:id="@+id/tv_look_argue"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/nav_bar_height"
+            android:layout_weight="1"
+            android:visibility="gone"
+            android:background="@color/give_up"
+            android:gravity="center"
+            android:text="查看争议"
+            android:textColor="@color/color_tittle"
+            android:textSize="@dimen/text_size_normal_up" />
+
+
+    </LinearLayout>
+
+</LinearLayout>

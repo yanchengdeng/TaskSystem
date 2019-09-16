@@ -91,13 +91,13 @@ class AddressDetailActivity : BaseActivity() {
         val call = ApiConfig.getInstants().create(TaskService::class.java).setAddress(
             TUtils.getParams(maps)
         )
-        API.getObject(call, SimpleBeanInfo::class.java, object : ApiCallBack<SimpleBeanInfo> {
-            override fun onSuccess(msgCode: Int, msg: String, data: SimpleBeanInfo) {
+        API.getObjectIgnoreBody(call, object : ApiCallBack<SimpleBeanInfo> {
+            override fun onSuccess(msgCode: Int, msg: String?, data: SimpleBeanInfo?) {
                 dismissLoadingBar()
                 SysUtils.showToast(msg + "")
             }
 
-            override fun onFaild(msgCode: Int, msg: String) {
+            override fun onFaild(msgCode: Int, msg: String?) {
                 dismissLoadingBar()
                 SysUtils.showToast(msg + "")
 
@@ -117,14 +117,14 @@ class AddressDetailActivity : BaseActivity() {
         val call = ApiConfig.getInstants().create(TaskService::class.java).addAddress(
             TUtils.getParams(maps)
         )
-        API.getObject(call, SimpleBeanInfo::class.java, object : ApiCallBack<SimpleBeanInfo> {
-            override fun onSuccess(msgCode: Int, msg: String, data: SimpleBeanInfo) {
+        API.getObjectIgnoreBody(call,  object : ApiCallBack<SimpleBeanInfo> {
+            override fun onSuccess(msgCode: Int, msg: String?, data: SimpleBeanInfo?) {
                 dismissLoadingBar()
                 SysUtils.showToast(msg + "")
                 finish()
             }
 
-            override fun onFaild(msgCode: Int, msg: String) {
+            override fun onFaild(msgCode: Int, msg: String?) {
                 dismissLoadingBar()
                 SysUtils.showToast(msg + "")
 
@@ -143,14 +143,14 @@ class AddressDetailActivity : BaseActivity() {
         val call = ApiConfig.getInstants().create(TaskService::class.java).delAddress(
             TUtils.getParams(maps)
         )
-        API.getObject(call, SimpleBeanInfo::class.java, object : ApiCallBack<SimpleBeanInfo> {
-            override fun onSuccess(msgCode: Int, msg: String, data: SimpleBeanInfo) {
+        API.getObjectIgnoreBody(call, object : ApiCallBack<SimpleBeanInfo> {
+            override fun onSuccess(msgCode: Int, msg: String?, data: SimpleBeanInfo?) {
                 dismissLoadingBar()
                 SysUtils.showToast(msg + "")
                 finish()
             }
 
-            override fun onFaild(msgCode: Int, msg: String) {
+            override fun onFaild(msgCode: Int, msg: String?) {
                 dismissLoadingBar()
                 SysUtils.showToast(msg + "")
 

@@ -12,7 +12,9 @@ import android.widget.TextView;
 import com.task.system.Constans;
 import com.task.system.R;
 import com.task.system.adapters.FragmentPagerItemAdapter;
-import com.task.system.fragments.AwardListFragment;
+import com.task.system.bean.UserExt;
+import com.task.system.fragments.ApplyEnterpriseFragment;
+import com.task.system.fragments.ApplyPersonFragment;
 import com.task.system.utils.TUtils;
 import com.task.system.views.FragmentPagerItem;
 import com.task.system.views.FragmentPagerItems;
@@ -22,7 +24,13 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-public class MyAwardActivity extends BaseActivity {
+/**
+ * Author: dengyancheng
+ * Date: 2019-09-12 20:32
+ * Description: 我的申请  支持个人  企业
+ * History:
+ */
+public class MyApplyNewActivity extends BaseActivity {
 
     @BindView(R.id.tv_title_top)
     TextView tvTitleTop;
@@ -45,12 +53,25 @@ public class MyAwardActivity extends BaseActivity {
 
     private Unbinder unbinder;
 
+    private UserExt.BussinessInfo bussinessInfo;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.task_fragment);
-        setTitle("我的奖品");
         unbinder =   ButterKnife.bind(this);
+
+        if (getIntent() != null && getIntent().getSerializableExtra(Constans.PASS_OBJECT) != null) {
+            bussinessInfo = (UserExt.BussinessInfo) getIntent().getSerializableExtra(Constans.PASS_OBJECT);
+            if (bussinessInfo != null) {
+
+            }
+        }else{
+            finish();
+            return;
+        }
+        setTitle("我的申请");
         tvTitleTop.setVisibility(View.GONE);
         FragmentPagerItems pages = getPagerItems(new FragmentPagerItems(ApiConfig.context));
         FragmentPagerItemAdapter adapter = new FragmentPagerItemAdapter(
@@ -66,12 +87,12 @@ public class MyAwardActivity extends BaseActivity {
 
     private FragmentPagerItems getPagerItems(FragmentPagerItems fragmentPagerItems) {
         Bundle bundle = new Bundle();
-        bundle.putInt(Constans.PASS_STRING, 1);
-        fragmentPagerItems.add(FragmentPagerItem.of("未兑换", AwardListFragment.class, bundle));
+        bundle.putSerializable(Constans.PASS_OBJECT, bussinessInfo);
+        fragmentPagerItems.add(FragmentPagerItem.of("个人申请", ApplyPersonFragment.class, bundle));
 
         Bundle bundle1 = new Bundle();
-        bundle1.putInt(Constans.PASS_STRING, 2);
-        fragmentPagerItems.add(FragmentPagerItem.of("已兑换", AwardListFragment.class, bundle1));
+        bundle1.putSerializable(Constans.PASS_OBJECT, bussinessInfo);
+        fragmentPagerItems.add(FragmentPagerItem.of("企业申请", ApplyEnterpriseFragment.class, bundle1));
         return fragmentPagerItems;
     }
 

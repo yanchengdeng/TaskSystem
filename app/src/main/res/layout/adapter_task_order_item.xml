@@ -82,7 +82,6 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/dash_line" />
 
-
         <TextView
             android:id="@+id/tv_time"
             android:layout_width="wrap_content"
@@ -97,6 +96,9 @@
             android:visibility="gone" />
 
 
+
+
+
         <include
             android:id="@+id/dash_line_two"
             layout="@layout/dash_line"
@@ -109,9 +111,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:layout_marginRight="@dimen/activity_horizontal_margin">
+        android:layout_height="wrap_content">
 
 
         <TextView
@@ -125,15 +125,21 @@
             android:paddingRight="@dimen/image_padding_big"
             android:paddingBottom="2dp"
             android:text="作废"
+            android:layout_centerVertical="true"
             android:textColor="#E8541E"
             android:textSize="@dimen/text_size_normal_down"
             android:visibility="gone" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:orientation="horizontal"
+            android:layout_alignParentRight="true"
+            android:layout_height="wrap_content">
 
         <TextView
             android:id="@+id/tv_look_for_reason"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
             android:background="@drawable/normal_submit_btn_red_trans"
             android:paddingLeft="@dimen/image_padding"
             android:paddingTop="2dp"
@@ -149,25 +155,24 @@
             android:id="@+id/tv_apply_dispute"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:layout_marginLeft="@dimen/image_padding_big"
             android:layout_toLeftOf="@+id/tv_going_work_task"
             android:background="@drawable/normal_submit_btn_gray_deep_trans"
             android:paddingLeft="@dimen/activity_horizontal_margin"
             android:paddingTop="@dimen/image_padding"
             android:paddingRight="@dimen/activity_horizontal_margin"
             android:paddingBottom="@dimen/image_padding"
+            android:visibility="gone"
             android:text="提出争议"
             android:textColor="@color/color_tittle"
-            android:textSize="@dimen/text_size_normal"
-            />
-
+            android:textSize="@dimen/text_size_normal" />
 
 
         <TextView
             android:id="@+id/tv_cancle_task"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:layout_marginLeft="@dimen/image_padding_big"
             android:layout_toLeftOf="@+id/tv_going_work_task"
             android:background="@drawable/normal_submit_btn_gray_deep_trans"
             android:paddingLeft="@dimen/activity_horizontal_margin"
@@ -185,7 +190,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginLeft="@dimen/image_padding_big"
             android:background="@drawable/normal_submit_btn_red"
             android:paddingLeft="@dimen/activity_horizontal_margin"
             android:paddingTop="@dimen/image_padding"
@@ -202,7 +207,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginLeft="@dimen/image_padding_big"
             android:background="@drawable/normal_submit_btn_gray_light"
             android:paddingLeft="@dimen/activity_horizontal_margin"
             android:paddingTop="@dimen/image_padding"
@@ -212,6 +217,7 @@
             android:textColor="@color/color_tittle"
             android:textSize="@dimen/text_size_normal"
             android:visibility="gone" />
+        </LinearLayout>
 
     </RelativeLayout>
 

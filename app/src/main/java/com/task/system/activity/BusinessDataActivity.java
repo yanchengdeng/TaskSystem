@@ -293,6 +293,40 @@ public class BusinessDataActivity extends BaseActivity {
                     //会员
                     tvAcitonSetting.setVisibility(View.GONE);
                     llBelowMemberInfo.setVisibility(View.GONE);
+
+                    tvNickname.setText("昵称：" + data.user_info.username);
+                    tvPhone.setText("手机：" + data.user_info.mobile);
+
+                    tvMemberAccountIntergray.setText("账户积分："+data.user_info.score);
+
+                    tvPublishBalance.setText("发布账户余额：" + data.user_info.score);
+                    tvHistoryPublishBalance.setText("历史发布总金额：" + data.user_info.history_score);
+                    tvPublishCount.setText("发布任务：" + data.user_statistics.publish_task_num);
+                    tvFinishTask.setText("完成任务：" + data.user_statistics.complete_task_num);
+                    tvMemberCount.setText("会员总数：" + data.user_statistics.member_num);
+                    tvAcceptNums.setText("接受订单：" + data.user_statistics.order_accept);
+                    tvSubmitOrders.setText("提交订单：" + data.user_statistics.order_submit);
+                    tvFinishOrders.setText("完成订单：" + data.user_statistics.task_num);
+                    tvRollbackOrders.setText("打回订单：" + data.user_statistics.order_refuse);
+                    tvZhengyiOrders.setText("争议订单：" + data.user_statistics.order_dispute);
+                    tvFinishMoney.setText("完成金额：" + data.user_statistics.task_score);
+                    tvFinishOrdersScale.setText("成单比例：" + data.user_statistics.order_complete_ratio);
+                    tvPassScale.setText("通过比例：" + data.user_statistics.order_adopt_ratio);
+                    tvZhengyiScale.setText("争议比例：" + data.user_statistics.order_dispute_ratio);
+                    if (!TextUtils.isEmpty(data.user_info.remark)) {
+                        tvRemark.setText(data.user_info.remark);
+                    }
+
+                    if (!TextUtils.isEmpty(data.user_info.region_name)) {
+                        tvMemberAddress.setText("所在地："+data.user_info.region_name);
+                    }
+
+
+                    tvBelowNums.setText("" + data.user_statistics.member_num);
+                    tvNewNum.setText(String.format(getString(R.string.new_num), data.user_statistics.member_new_num));
+
+
+
                 }
                 if (data.user_info.user_type.equals(UserType.USER_TYPE_AGENT.getType())) {
 
@@ -308,39 +342,40 @@ public class BusinessDataActivity extends BaseActivity {
                     //区域
                     tvAcitonSetting.setVisibility(View.GONE);
                     llBelowMemberInfo.setVisibility(View.VISIBLE);
+                    tvNickname.setText("昵称：" + data.user_info.username);
+                    tvPhone.setText("手机：" + data.user_info.mobile);
+
+                    tvMemberAccountIntergray.setText("账户积分："+data.user_info.score);
+
+                    tvPublishBalance.setText("发布账户余额：" + data.user_info.score);
+                    tvHistoryPublishBalance.setText("历史发布总金额：" + data.user_info.history_score);
+                    tvPublishCount.setText("发布任务：" + data.user_statistics.publish_task_num);
+                    tvFinishTask.setText("完成任务：" + data.user_statistics.complete_task_num);
+                    tvMemberCount.setText("会员总数：" + data.user_statistics.member_num);
+                    tvAcceptNums.setText("接受订单：" + data.user_statistics.order_accept);
+                    tvSubmitOrders.setText("提交订单：" + data.user_statistics.order_submit);
+                    tvFinishOrders.setText("完成订单：" + data.user_statistics.order_adopt);
+                    tvRollbackOrders.setText("打回订单：" + data.user_statistics.order_refuse);
+                    tvZhengyiOrders.setText("争议订单：" + data.user_statistics.order_dispute);
+                    tvFinishMoney.setText("完成金额：" + data.user_statistics.actual_score);
+                    tvFinishOrdersScale.setText("成单比例：" + data.user_statistics.order_complete_ratio);
+                    tvPassScale.setText("通过比例：" + data.user_statistics.order_adopt_ratio);
+                    tvZhengyiScale.setText("争议比例：" + data.user_statistics.order_dispute_ratio);
+                    if (!TextUtils.isEmpty(data.user_info.remark)) {
+                        tvRemark.setText(data.user_info.remark);
+                    }
+
+                    if (!TextUtils.isEmpty(data.user_info.region_name)) {
+                        tvMemberAddress.setText("所在地："+data.user_info.region_name);
+                    }
+
+
+                    tvBelowNums.setText("" + data.user_statistics.member_num);
+                    tvNewNum.setText(String.format(getString(R.string.new_num), data.user_statistics.member_new_num));
                 }
             }
 
-            tvNickname.setText("昵称：" + data.user_info.username);
-            tvPhone.setText("手机：" + data.user_info.mobile);
 
-            tvMemberAccountIntergray.setText("账户积分："+data.user_info.score);
-
-            tvPublishBalance.setText("发布账户余额：" + data.user_info.score);
-            tvHistoryPublishBalance.setText("历史发布总金额：" + data.user_info.history_score);
-            tvPublishCount.setText("发布任务：" + data.user_statistics.publish_task_num);
-            tvFinishTask.setText("完成任务：" + data.user_statistics.complete_task_num);
-            tvMemberCount.setText("会员总数：" + data.user_statistics.member_num);
-            tvAcceptNums.setText("接受订单：" + data.user_statistics.order_accept);
-            tvSubmitOrders.setText("提交订单：" + data.user_statistics.order_submit);
-            tvFinishOrders.setText("完成订单：" + data.user_statistics.order_adopt);
-            tvRollbackOrders.setText("打回订单：" + data.user_statistics.order_refuse);
-            tvZhengyiOrders.setText("争议订单：" + data.user_statistics.order_dispute);
-            tvFinishMoney.setText("完成金额：" + data.user_statistics.actual_score);
-            tvFinishOrdersScale.setText("成单比例：" + data.user_statistics.order_complete_ratio);
-            tvPassScale.setText("通过比例：" + data.user_statistics.order_adopt_ratio);
-            tvZhengyiScale.setText("争议比例：" + data.user_statistics.order_dispute_ratio);
-            if (!TextUtils.isEmpty(data.user_info.remark)) {
-                tvRemark.setText(data.user_info.remark);
-            }
-
-            if (!TextUtils.isEmpty(data.user_info.region_name)) {
-                tvMemberAddress.setText("所在地："+data.user_info.region_name);
-            }
-
-
-            tvBelowNums.setText("" + data.user_statistics.member_num);
-            tvNewNum.setText(String.format(getString(R.string.new_num), data.user_statistics.member_new_num));
         } else {
             llStaticInfo.setVisibility(View.GONE);
         }
@@ -348,13 +383,8 @@ public class BusinessDataActivity extends BaseActivity {
         if (data.list != null && data.list.size() > 0) {
             adapterStatic.setNewData(data.list);
             recycle.setVisibility(View.VISIBLE);
-            String leve = "会员";
-            if (data.level == 1) {
-                leve = "下级";
-            } else if (data.level == 2) {
-                leve = "二级";
-            }
-            tvUidHeader.setText(leve);
+
+            tvUidHeader.setText(data.member_level+"");
         } else {
             recycle.setVisibility(View.GONE);
         }

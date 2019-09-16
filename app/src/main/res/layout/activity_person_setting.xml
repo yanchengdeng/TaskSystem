@@ -1,4 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -16,15 +26,6 @@
         android:background="@color/white"
         android:padding="@dimen/activity_horizontal_margin">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:text="头像"
-            android:textColor="@color/color_info"
-            android:textSize="@dimen/sp_14" />
-
-
         <ImageView
             android:id="@+id/iv_header"
             android:layout_width="@dimen/icon_head_size_smallest"
@@ -33,6 +34,7 @@
             android:layout_toLeftOf="@+id/iv_header_arrow"
             android:src="@mipmap/defalut_header" />
 
+
         <ImageView
             android:id="@+id/iv_header_arrow"
             android:layout_width="wrap_content"
@@ -40,6 +42,14 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:src="@mipmap/arrow_right_black" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="头像"
+            android:textColor="@color/color_info"
+            android:textSize="@dimen/sp_14" />
     </RelativeLayout>
 
 
@@ -51,13 +61,13 @@
         android:background="@color/white"
         android:padding="@dimen/activity_horizontal_margin">
 
-        <TextView
+        <ImageView
+            android:id="@+id/iv_user_name_arrow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:text="用户名"
-            android:textColor="@color/color_info"
-            android:textSize="@dimen/sp_14" />
+            android:src="@mipmap/arrow_right_black" />
 
 
         <TextView
@@ -70,13 +80,13 @@
             android:textColor="@color/color_date"
             android:textSize="@dimen/sp_14" />
 
-        <ImageView
-            android:id="@+id/iv_user_name_arrow"
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:src="@mipmap/arrow_right_black" />
+            android:text="用户名"
+            android:textColor="@color/color_info"
+            android:textSize="@dimen/sp_14" />
     </RelativeLayout>
 
 
@@ -88,13 +98,13 @@
         android:background="@color/white"
         android:padding="@dimen/activity_horizontal_margin">
 
-        <TextView
+        <ImageView
+            android:id="@+id/iv_phone_arrow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:text="手机号"
-            android:textColor="@color/color_info"
-            android:textSize="@dimen/sp_14" />
+            android:src="@mipmap/arrow_right_black" />
 
 
         <TextView
@@ -107,13 +117,13 @@
             android:textColor="@color/color_date"
             android:textSize="@dimen/sp_14" />
 
-        <ImageView
-            android:id="@+id/iv_phone_arrow"
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:src="@mipmap/arrow_right_black" />
+            android:text="手机号"
+            android:textColor="@color/color_info"
+            android:textSize="@dimen/sp_14" />
     </RelativeLayout>
 
 
@@ -125,13 +135,14 @@
         android:background="@color/white"
         android:padding="@dimen/activity_horizontal_margin">
 
-        <TextView
+        <ImageView
+            android:id="@+id/iv_system_id_arrow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:text="系统识别ID"
-            android:textColor="@color/color_info"
-            android:textSize="@dimen/sp_14" />
+            android:src="@mipmap/arrow_right_black"
+            android:visibility="invisible" />
 
 
         <TextView
@@ -144,24 +155,23 @@
             android:textColor="@color/color_date"
             android:textSize="@dimen/sp_14" />
 
-        <ImageView
-            android:id="@+id/iv_system_id_arrow"
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:visibility="invisible"
             android:layout_centerVertical="true"
-            android:src="@mipmap/arrow_right_black" />
+            android:text="系统识别ID"
+            android:textColor="@color/color_info"
+            android:textSize="@dimen/sp_14" />
     </RelativeLayout>
-
 
 
     <RelativeLayout
         android:id="@+id/rl_id_card"
-        android:layout_marginTop="@dimen/activity_horizontal_margin"
         android:layout_width="match_parent"
-        android:background="@color/white"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/activity_horizontal_margin"
+        android:background="@color/white">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -176,8 +186,40 @@
             android:id="@+id/tv_idcard_vertify_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:drawableRight="@mipmap/arrow_right_black"
+            android:drawablePadding="@dimen/image_padding_big"
+            android:padding="@dimen/activity_horizontal_margin"
+            android:text="已验证"
+            android:textColor="@color/color_date"
+            android:textSize="@dimen/sp_14" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_id_apply"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        android:background="@color/white">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:padding="@dimen/activity_horizontal_margin"
+            android:text="企业申请"
+            android:textColor="@color/color_info"
+            android:textSize="@dimen/sp_14" />
+
+
+        <TextView
+            android:id="@+id/tv_apply_enterpise_vertify_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
             android:drawableRight="@mipmap/arrow_right_black"
             android:drawablePadding="@dimen/image_padding_big"
             android:padding="@dimen/activity_horizontal_margin"
@@ -189,10 +231,11 @@
 
     <RelativeLayout
         android:id="@+id/rl_wx"
-        android:layout_marginTop="1dp"
         android:layout_width="match_parent"
-        android:background="@color/white"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        android:background="@color/white">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -207,8 +250,8 @@
             android:id="@+id/tv_wx_bind_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
             android:drawableRight="@mipmap/arrow_right_black"
             android:drawablePadding="@dimen/image_padding_big"
             android:padding="@dimen/activity_horizontal_margin"
@@ -217,7 +260,6 @@
             android:textSize="@dimen/sp_14" />
 
     </RelativeLayout>
-
 
 
     <TextView
@@ -260,8 +302,10 @@
         android:padding="@dimen/activity_horizontal_margin"
         android:text="退出登录"
         android:textColor="@color/color_info"
-        android:textStyle="bold"
-        android:textSize="@dimen/sp_14" />
+        android:textSize="@dimen/sp_14"
+        android:textStyle="bold" />
 
 
 </LinearLayout>
+
+</android.support.v4.widget.NestedScrollView>
