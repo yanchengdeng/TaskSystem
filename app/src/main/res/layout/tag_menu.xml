@@ -1,0 +1,16 @@
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/tv_tab_name"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:singleLine="true"
+    android:background="@color/white"
+    android:text="待工作"
+    android:layout_marginStart="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/image_padding"
+    android:paddingBottom="@dimen/image_padding"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:textColor="@color/color_info"
+    android:textSize="@dimen/text_size_normal" />
+
+

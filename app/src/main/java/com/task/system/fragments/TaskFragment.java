@@ -159,10 +159,12 @@ public class TaskFragment extends Fragment {
         if (event instanceof RefreshUnreadCountEvent) {
             getUnread();
             if (viewpage!=null && viewpage.getAdapter()!=null &&  viewpage.getAdapter() instanceof FragmentPagerItemAdapter) {
-                TaskListFragment fragment = (TaskListFragment) ((FragmentPagerItemAdapter)viewpage.getAdapter()).getItem(0);
-                TaskListFragment fragment1 = (TaskListFragment) ((FragmentPagerItemAdapter)viewpage.getAdapter()).getItem(1);
-                fragment.setSortRefresh();
-                fragment1.setSortRefresh();
+//                TaskListFragment fragment = (TaskListFragment) ((FragmentPagerItemAdapter)viewpage.getAdapter()).getItem(0);
+//                TaskListFragment fragment1 = (TaskListFragment) ((FragmentPagerItemAdapter)viewpage.getAdapter()).getItem(1);
+                for (int i=0;i<viewpage.getAdapter().getCount();i++){
+                    TaskListFragment fragment = (TaskListFragment) ((FragmentPagerItemAdapter)viewpage.getAdapter()).getItem(i);
+                    fragment.setSortRefresh();
+                }
             }
         }
     }

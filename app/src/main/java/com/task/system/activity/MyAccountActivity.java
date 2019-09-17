@@ -198,7 +198,7 @@ public class MyAccountActivity extends BaseActivity {
         if (!TextUtils.isEmpty(etInput.getEditableText().toString())) {
             maps.put("search_key", etInput.getEditableText().toString());
         }
-        maps.put("page_size", String.valueOf(Integer.MAX_VALUE));
+        maps.put("page_size", "50");
         Call<TaskInfo> call = ApiConfig.getInstants().create(TaskService.class).getStatistics(TUtils.getParams(maps));
         API.getObject(call, ScoreAcount.class, new ApiCallBack<ScoreAcount>() {
             @Override

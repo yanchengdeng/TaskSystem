@@ -261,6 +261,7 @@ public class ApplyDisputeOrReplyActivity extends BaseActivity implements ImagePi
 
                     @Override
                     public void onError(Throwable e) {
+
 //                        Glide.with(ApiConfig.context)
 //                                .load(file)     //设置图片路径(fix #8,文件名包含%符号 无法识别和显示)
 //                                .transition(withCrossFade())
@@ -272,6 +273,7 @@ public class ApplyDisputeOrReplyActivity extends BaseActivity implements ImagePi
                         options.inPreferredConfig = Bitmap.Config.RGB_565;
                         options.inDither = true;
                         Bitmap bitmap = BitmapFactory.decodeFile(file.getPath(), options);
+                        LogUtils.w("dyc---压缩后大小失败");
                         doUploadImage(new String(EncodeUtils.base64Encode(getBytesByBitmap(bitmap))), photoPaths);
                     }
                 }).launch();
@@ -302,6 +304,7 @@ public class ApplyDisputeOrReplyActivity extends BaseActivity implements ImagePi
 
             @Override
             public void onFaild(int msgCode, String msg) {
+                SysUtils.log("上传--error--"+msg);
                 dismissLoadingBar();
             }
         });

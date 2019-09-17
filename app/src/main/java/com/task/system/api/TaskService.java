@@ -661,7 +661,7 @@ public interface TaskService {
     @POST("order/dispute")
     Call<TaskInfo>  disputeOrder(@FieldMap HashMap<String,String> maps);
 
-    //提交争议
+    //查看争议列表
     @FormUrlEncoded
     @POST("order/disputeList")
     Call<TaskInfoList>  disputeList(@FieldMap HashMap<String,String> maps);

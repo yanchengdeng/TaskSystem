@@ -60,6 +60,8 @@ public class TaskListFragment extends BaseFragment {
 
     private TaskOrderAdapter taskOrderAdapter;
 
+    private boolean isStarted;
+
 
     @Override
     protected int getAbsLayoutId() {
@@ -68,9 +70,9 @@ public class TaskListFragment extends BaseFragment {
 
     @Override
     protected void initView(View view, Bundle savedInstanceState) {
-
         status = getArguments().getInt(Constans.PASS_STRING, -1);
 
+        isStarted = true;
         taskOrderAdapter = new TaskOrderAdapter(R.layout.adapter_task_order_item, status);
         recycle.setLayoutManager(new LinearLayoutManager(ApiConfig.context));
         recycle.setAdapter(taskOrderAdapter);
@@ -285,6 +287,12 @@ public class TaskListFragment extends BaseFragment {
         super.initData(view);
 
         getOrderList();
+    }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
     }
 
     private void getOrderList() {
