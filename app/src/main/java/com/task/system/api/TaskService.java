@@ -692,4 +692,10 @@ public interface TaskService {
     @POST("order/detail")
     Call<TaskInfo>   getOrderDetail(@FieldMap HashMap<String,String > mpas);
 
+    //修改订单状态及价格
+//    4-通过，5-不通过，8-修改价格
+    @FormUrlEncoded
+    @POST("operator/setOrderStatus")
+    Call<TaskInfoIgnoreBody>  setOrderStatus(@FieldMap HashMap<String,String> maps);
+
  }

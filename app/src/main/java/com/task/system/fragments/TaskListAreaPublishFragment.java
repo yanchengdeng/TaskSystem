@@ -27,9 +27,12 @@ import com.task.system.api.API;
 import com.task.system.api.TaskInfoList;
 import com.task.system.api.TaskService;
 import com.task.system.bean.AreaManagePublish;
+import com.task.system.event.RefreshUnreadCountEvent;
 import com.task.system.utils.TUtils;
 import com.yc.lib.api.ApiCallBackList;
 import com.yc.lib.api.ApiConfig;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.HashMap;
 import java.util.List;
@@ -189,7 +192,7 @@ public class TaskListAreaPublishFragment extends BaseFragment {
                 ToastUtils.showShort("" + msg);
                 taskOrderAdapter.remove(position);
 
-//                EventBus.getDefault().post(new RefreshUnreadCountEvent());
+                EventBus.getDefault().post(new RefreshUnreadCountEvent());
                 if (taskOrderAdapter.getData().size() == 0) {
                     TUtils.dealNoReqestData(taskOrderAdapter, recycle, smartRefresh);
                 }

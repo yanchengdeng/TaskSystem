@@ -86,7 +86,7 @@ data class OrderDetalInfo(
     val publish_uid: String,
     val remark: Any,
     val start_time: String,
-    val status: String,
+    val status: Int,
     val status_title: String,
     val step: String,
     val stop_time: String,

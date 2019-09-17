@@ -30,18 +30,17 @@ import com.task.system.R;
 import com.task.system.adapters.ImagePickerAdapter;
 import com.task.system.api.API;
 import com.task.system.api.TaskInfo;
+import com.task.system.api.TaskInfoIgnoreBody;
 import com.task.system.api.TaskService;
 import com.task.system.bean.OrderInfo;
 import com.task.system.bean.SimpleBeanInfo;
 import com.task.system.common.GlideLoadFileLoader;
-import com.task.system.event.RefreshUnreadCountEvent;
+import com.task.system.utils.PerfectClickListener;
 import com.task.system.utils.TUtils;
 import com.task.system.utils.Util;
 import com.yc.lib.api.ApiCallBack;
 import com.yc.lib.api.ApiConfig;
 import com.yc.lib.api.utils.SysUtils;
-
-import org.greenrobot.eventbus.EventBus;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -51,7 +50,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import retrofit2.Call;
 import top.zibin.luban.CompressionPredicate;
 import top.zibin.luban.Luban;
@@ -59,20 +57,23 @@ import top.zibin.luban.OnCompressListener;
 
 /**
  * Author: dengyancheng
- * Date: 2019-09-02 01:03
- * Description: 提交订单 或回复订单
+ * Date: 2019-09-18 00:11
+ * Description: 设置订单状态
  * History:
  */
-public class ApplyDisputeOrReplyActivity extends BaseActivity implements ImagePickerAdapter.OnRecyclerViewItemClickListener {
+public class SetOrderStatusActivity extends BaseActivity implements ImagePickerAdapter.OnRecyclerViewItemClickListener{
 
+    @BindView(R.id.tv_sore_tips)
+    TextView tvSoreTips;
+    @BindView(R.id.edit_score)
+    EditText editScore;
     @BindView(R.id.edit_dispute)
     EditText editDispute;
     @BindView(R.id.recycle)
     RecyclerView recycle;
-    @BindView(R.id.tv_custome)
-    TextView tvCustome;
     @BindView(R.id.tv_next_step)
     TextView tvNextStep;
+
     private OrderInfo orderInfo;
 
 
@@ -88,16 +89,21 @@ public class ApplyDisputeOrReplyActivity extends BaseActivity implements ImagePi
     public String content;
 
     public List<String> uploadHash = new ArrayList<>();
+    //4-通过，5-不通过，8-修改价格
+    private int updateStautus ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_apply_dispute_or_reply);
+        setContentView(R.layout.activity_set_order_status);
         ButterKnife.bind(this);
-
         orderInfo = (OrderInfo) getIntent().getSerializableExtra(Constans.PASS_OBJECT);
+        updateStautus = getIntent().getIntExtra(Constans.PASS_STRING,0);
 
-
+        if (updateStautus==8){
+            tvSoreTips.setVisibility(View.VISIBLE);
+            editScore.setVisibility(View.VISIBLE);
+        }
 
         setTitle("" + orderInfo.title);
 
@@ -127,6 +133,30 @@ public class ApplyDisputeOrReplyActivity extends BaseActivity implements ImagePi
             }
         });
 
+        tvNextStep.setOnClickListener(new PerfectClickListener() {
+            @Override
+            protected void onNoDoubleClick(View v) {
+                if (updateStautus==8){
+                    if (TextUtils.isEmpty(editScore.getEditableText().toString())){
+                        SysUtils.showToast("请填写调整价格");
+                        return;
+                    }
+                }
+
+
+                if (TextUtils.isEmpty(editDispute.getEditableText().toString())){
+                    SysUtils.showToast("请填写争原因");
+                    return;
+                }
+
+                if (selImageList!=null && selImageList.size()>0) {
+                    uploadPictures(selImageList, uploadHash);
+                }else{
+                    showLoadingBar("提交中...");
+                    doSubmitDispute();
+                }
+            }
+        });
 
     }
 
@@ -195,29 +225,6 @@ public class ApplyDisputeOrReplyActivity extends BaseActivity implements ImagePi
         }
     }
 
-    @OnClick({R.id.tv_custome, R.id.tv_next_step})
-    public void onViewClicked(View view) {
-        switch (view.getId()) {
-            case R.id.tv_custome:
-                TUtils.openKf();
-                break;
-            case R.id.tv_next_step:
-                if (TextUtils.isEmpty(editDispute.getEditableText().toString())){
-                    SysUtils.showToast("请填写争议你内容");
-                    return;
-                }
-
-                if (selImageList!=null && selImageList.size()>0) {
-                    uploadPictures(selImageList, uploadHash);
-                }else{
-                    showLoadingBar("提交中...");
-                    doSubmitDispute();
-                }
-                break;
-        }
-    }
-
-
     /**
      * 上传图片
      *
@@ -225,7 +232,7 @@ public class ApplyDisputeOrReplyActivity extends BaseActivity implements ImagePi
      * @param photoPaths
      */
     private void uploadPictures(ArrayList<ImageItem> selImageList, List<String> photoPaths) {
-            showLoadingBar("提交中...");
+        showLoadingBar("提交中...");
         for (ImageItem item : selImageList) {
             updateImageByBase64(new File(item.path), photoPaths);
         }
@@ -320,21 +327,22 @@ public class ApplyDisputeOrReplyActivity extends BaseActivity implements ImagePi
         HashMap<String, String> hashMap = new HashMap();
         hashMap.put("uid", TUtils.getUserId());
         hashMap.put("order_id", orderInfo.order_id);
-        hashMap.put("dispute_id", "0");
         if (uploadHash.size()>0) {
             hashMap.put("images", new Gson().toJson(uploadHash));
         }
+        if (updateStautus==8){
+            hashMap.put("score",editScore.getEditableText().toString());
+        }
+        hashMap.put("status",String.valueOf(updateStautus));
         hashMap.put("content", editDispute.getEditableText().toString());
-        Call<TaskInfo> call = ApiConfig.getInstants().create(TaskService.class).disputeOrder(TUtils.getParams(hashMap));
+        Call<TaskInfoIgnoreBody> call = ApiConfig.getInstants().create(TaskService.class).setOrderStatus(TUtils.getParams(hashMap));
 
-        API.getObject(call, SimpleBeanInfo.class, new ApiCallBack<SimpleBeanInfo>() {
+        API.getObjectIgnoreBody(call, new ApiCallBack<SimpleBeanInfo>() {
 
             @Override
             public void onSuccess(int msgCode, String msg, SimpleBeanInfo data) {
                 ToastUtils.showShort("提交成功");
                 dismissLoadingBar();
-                EventBus.getDefault().post(new RefreshUnreadCountEvent());
-                setResult(RESULT_OK);
                 finish();
 
             }

@@ -74,7 +74,7 @@
                     android:layout_height="wrap_content"
                     android:drawableLeft="@mipmap/search_white"
                     android:drawablePadding="@dimen/image_padding"
-                    android:hint="搜索所有差事"
+                    android:hint="@string/search_all_things"
                     android:padding="@dimen/image_padding"
                     android:textColorHint="@color/white"
                     android:textSize="@dimen/text_size_normal" />

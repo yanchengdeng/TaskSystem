@@ -19,6 +19,7 @@ import com.task.system.api.TaskService
 import com.task.system.bean.AreaManageIitem
 import com.task.system.bean.HomeMenu
 import com.task.system.bean.SimpleBeanInfo
+import com.task.system.event.RefreshUnreadCountEvent
 import com.task.system.fragments.TaskListAreaPublishFragment
 import com.task.system.utils.PerfectClickListener
 import com.task.system.utils.RecycleViewUtils
@@ -30,6 +31,9 @@ import com.yc.lib.api.ApiCallBack
 import com.yc.lib.api.ApiCallBackList
 import com.yc.lib.api.ApiConfig
 import kotlinx.android.synthetic.main.task_fragment.*
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import razerdp.basepopup.BasePopupWindow
 
 /**
@@ -57,6 +61,7 @@ class PublishManageActivity : BaseActivity() {
         setContentView(R.layout.task_fragment)
         tv_title_top.visibility = View.GONE
         setTitle("发布/管理")
+        EventBus.getDefault().register(this);
 
         selectPostion = intent.getIntExtra(Constans.PASS_STRING,0)
         tabs = intent.getSerializableExtra(Constans.PASS_OBJECT) as List<AreaManageIitem>
@@ -132,6 +137,16 @@ class PublishManageActivity : BaseActivity() {
         super.onResume()
         getWaitCheckNum()
     }
+
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onMessageEvent(event: Any) {
+        if (event is RefreshUnreadCountEvent) {
+            getWaitCheckNum()
+        }
+    }
+
+
 
 
     //待审核数量向

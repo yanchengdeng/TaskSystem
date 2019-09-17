@@ -27,7 +27,7 @@
             android:layout_gravity="center_vertical"
             android:drawableLeft="@mipmap/search_white"
             android:drawablePadding="@dimen/image_padding"
-            android:hint="搜索所有差事"
+            android:hint="@string/search_all_things"
             android:singleLine="true"
             android:imeOptions="actionSearch"
             android:padding="@dimen/image_padding"

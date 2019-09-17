@@ -22,6 +22,7 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.task.system.Constans;
 import com.task.system.R;
+import com.task.system.adapters.CategoryAdapter;
 import com.task.system.adapters.HomeAdapter;
 import com.task.system.adapters.MenuAdapter;
 import com.task.system.api.API;
@@ -33,6 +34,7 @@ import com.task.system.bean.SortTags;
 import com.task.system.bean.TaskInfoList;
 import com.task.system.utils.RecycleViewUtils;
 import com.task.system.utils.TUtils;
+import com.task.system.views.BubblePopupDouble;
 import com.task.system.views.BubblePopupSingle;
 import com.yc.lib.api.ApiCallBack;
 import com.yc.lib.api.ApiCallBackList;
@@ -78,6 +80,11 @@ public class TaskListActivity extends BaseActivity {
     @BindView(R.id.recycle_tag)
     RecyclerView recycleTag;
 
+    //左边分类
+    private BubblePopupDouble quickPopupAll;
+    private MenuAdapter menuAdapter;
+    private CategoryAdapter meneLeft, menuRight;
+
     private HomeAdapter homeAdapter;
     private int page = 1;
     private String region_id;
@@ -88,12 +95,15 @@ public class TaskListActivity extends BaseActivity {
 
     //  分类   标签
     private BubblePopupSingle quickPopupSort;
-    private BubblePopupSingle quickPopupTag;
-    private MenuAdapter menuSortAdapter, menuTagAdapter;
+    //    private BubblePopupSingle quickPopupTag;
+    private MenuAdapter menuSortAdapter;
+//        , menuTagAdapter;
+
+//    private int menuSecomdIndex;
 
     private CatergoryInfo catergoryInfo;
 
-    private  BaseQuickAdapter tagsAdapter;
+    private BaseQuickAdapter tagsAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,20 +117,22 @@ public class TaskListActivity extends BaseActivity {
         recycle.setAdapter(homeAdapter);
 
         menuSortAdapter = new MenuAdapter(R.layout.adapter_drop_menu_item);
-        menuTagAdapter = new MenuAdapter(R.layout.adapter_drop_menu_item);
-
+//        menuTagAdapter = new MenuAdapter(R.layout.adapter_drop_menu_item);
+        meneLeft = new CategoryAdapter(R.layout.adapter_drop_menu_item);
+        menuRight = new CategoryAdapter(R.layout.adapter_drop_menu_item);
         getSmartSort();
+        getAllSort();
 
-        tagsAdapter =new BaseQuickAdapter<HomeMenu,BaseViewHolder>(R.layout.tag_menu,new ArrayList()) {
+        tagsAdapter = new BaseQuickAdapter<HomeMenu, BaseViewHolder>(R.layout.tag_menu, new ArrayList()) {
 
 
             @Override
             protected void convert(BaseViewHolder helper, HomeMenu item) {
-                ((TextView)helper.getView(R.id.tv_tab_name)).setText(item.title);
-                if (item.isSelected){
+                ((TextView) helper.getView(R.id.tv_tab_name)).setText(item.title);
+                if (item.isSelected) {
                     helper.getView(R.id.tv_tab_name).setBackgroundColor(getResources().getColor(R.color.cp_gray));
                     ((TextView) helper.getView(R.id.tv_tab_name)).setTextColor(getResources().getColor(R.color.white));
-                }else{
+                } else {
                     helper.getView(R.id.tv_tab_name).setBackgroundColor(getResources().getColor(R.color.white));
                     ((TextView) helper.getView(R.id.tv_tab_name)).setTextColor(getResources().getColor(R.color.color_info));
                 }
@@ -130,21 +142,21 @@ public class TaskListActivity extends BaseActivity {
         tagsAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                for (int i =0;i<tagsAdapter.getData().size();i++){
-                    ((HomeMenu)tagsAdapter.getItem(i)).isSelected = false;
+                for (int i = 0; i < tagsAdapter.getData().size(); i++) {
+                    ((HomeMenu) tagsAdapter.getItem(i)).isSelected = false;
                 }
 
-                ((HomeMenu)tagsAdapter.getItem(position)).isSelected = true;
+                ((HomeMenu) tagsAdapter.getItem(position)).isSelected = true;
                 tagsAdapter.notifyDataSetChanged();
-                tags_id = ((HomeMenu)tagsAdapter.getItem(position)).id;
-                page=1;
+                tags_id = String.valueOf(((HomeMenu) tagsAdapter.getItem(position)).id);
+                page = 1;
                 getTaskList();
             }
         });
 
 
-        recycleTag.setLayoutManager(new LinearLayoutManager(this,RecyclerView.HORIZONTAL,false));
-       recycleTag.setAdapter(tagsAdapter);
+        recycleTag.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
+        recycleTag.setAdapter(tagsAdapter);
 
         catergoryInfo = (CatergoryInfo) getIntent().getSerializableExtra(Constans.PASS_OBJECT);
         if (catergoryInfo != null) {
@@ -153,6 +165,7 @@ public class TaskListActivity extends BaseActivity {
             findViewById(R.id.ll_seach_ui).setVisibility(View.GONE);
             category_id = catergoryInfo.id;
             recycleTag.setVisibility(View.VISIBLE);
+            tvSmartTag.setText("" + catergoryInfo.title);
         } else {
             tvTittle.setText("搜索任务");
             llSortUi.setVisibility(View.GONE);
@@ -163,7 +176,6 @@ public class TaskListActivity extends BaseActivity {
 
         getTaskList();
 
-        getAllSort();
 
         homeAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
             @Override
@@ -213,10 +225,89 @@ public class TaskListActivity extends BaseActivity {
         llSmartTag.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showShowTags();
+//                showShowTags();
+                showShowDouble();
             }
         });
 
+    }
+
+
+    private void showShowDouble() {
+
+        if (quickPopupAll == null) {
+            quickPopupAll = new BubblePopupDouble(ApiConfig.context);
+            View view = quickPopupAll.getContentView();
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, (int) (ScreenUtils.getScreenHeight() * 0.5));
+            view.setLayoutParams(layoutParams);
+            RecyclerView recyclerViewLeft = view.findViewById(R.id.rcv_content);
+            RecyclerView recyclerViewRight = view.findViewById(R.id.rcv_content_right);
+            recyclerViewLeft.setLayoutManager(new LinearLayoutManager(ApiConfig.context));
+            recyclerViewLeft.setAdapter(meneLeft);
+
+            recyclerViewRight.setLayoutManager(new LinearLayoutManager(ApiConfig.context));
+            recyclerViewRight.setAdapter(menuRight);
+
+            quickPopupAll.setOnDismissListener(new BasePopupWindow.OnDismissListener() {
+                @Override
+                public void onDismiss() {
+                    ivSmartTag.setImageResource(R.mipmap.icon_arrow_down);
+                }
+            });
+
+
+            meneLeft.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                    for (CatergoryInfo item : meneLeft.getData()) {
+                        item.isSelected = false;
+                    }
+                    meneLeft.getData().get(position).isSelected = true;
+                    meneLeft.notifyDataSetChanged();
+                    if (meneLeft.getData().get(position)._child == null) {
+                        category_id = meneLeft.getItem(position).id;
+                        page = 1;
+                        getTaskList();
+                        menuRight.setNewData(new ArrayList<>());
+                        quickPopupAll.dismiss();
+                        tvSmartTag.setText("" + meneLeft.getData().get(position).title);
+                        tvSmartTag.setTextColor(getResources().getColor(R.color.red));
+                        ivSmartTag.setImageResource(R.mipmap.icon_arrow_down);
+                    } else {
+//                        menuSecomdIndex = position;
+                        menuRight.setNewData(meneLeft.getData().get(position)._child);
+                    }
+
+                }
+            });
+
+            menuRight.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+//                    for (CatergoryInfo item : meneLeft.getData().get(menuSecomdIndex)._child) {
+//                        item.isSelected = false;
+//                    }
+//                    meneLeft.getData().get(menuSecomdIndex)._child.get(position).isSelected = true;
+//                    menuRight.setNewData(meneLeft.getData().get(menuSecomdIndex)._child);
+                    category_id = menuRight.getItem(position).id;
+                    page = 1;
+                    getTaskList();
+                    quickPopupAll.dismiss();
+                    tvSmartTag.setText("" + menuRight.getData().get(position).title);
+                    tvSmartTag.setTextColor(getResources().getColor(R.color.red));
+                    ivSmartTag.setImageResource(R.mipmap.icon_arrow_down);
+                }
+            });
+        }
+
+//
+        if (quickPopupAll.isShowing()) {
+            quickPopupAll.dismiss();
+            ivSmartTag.setImageResource(R.mipmap.icon_arrow_down);
+        } else {
+            quickPopupAll.showPopupWindow(llSortUi);
+            ivSmartTag.setImageResource(R.mipmap.arrwo_up_red);
+        }
     }
 
 
@@ -226,47 +317,38 @@ public class TaskListActivity extends BaseActivity {
         API.getList(call, CatergoryInfo.class, new ApiCallBackList<CatergoryInfo>() {
             @Override
             public void onSuccess(int msgCode, String msg, List<CatergoryInfo> data) {
-                if (data != null && data.size() > 0) {
 
-                    menuTagAdapter.setNewData( parseToMenu(data));
-
-                    CatergoryInfo item = null;
-                    for (CatergoryInfo catergoryInfo:data){
-                        if (catergoryInfo.id.equals(category_id)){
-                            item = catergoryInfo;
-                        }
-                    }
-
-                    if (item!=null){
-                        if (!TextUtils.isEmpty(item.title)){
-                            tvSmartTag.setText("" +item.title);
-                        }
-                    }
+                if (data != null) {
+                    meneLeft.getData().clear();
+                    CatergoryInfo all = new CatergoryInfo();
+                    all.id = "";
+                    all.isSelected = true;
+                    all.title = "全部分类";
+                    data.add(0, all);
                 }
-//                smartRefresh.finishRefresh();
+
+                meneLeft.setNewData(addExtras(data));
+
             }
 
             @Override
             public void onFaild(int msgCode, String msg) {
-//                smartRefresh.finishRefresh();
+                ToastUtils.showShort(msg);
             }
         });
     }
 
-    private  List<HomeMenu> parseToMenu(List<CatergoryInfo> data) {
-        List<HomeMenu> menus = new ArrayList<>();
-        for (CatergoryInfo item:data){
-            if (item!=null && item._child!=null && item._child.size()>0){
-                for (CatergoryInfo child:item._child){
-                    HomeMenu menu = new HomeMenu();
-                    menu.id = child.id;
-                    menu.title = child.title;
-                    menus.add(menu);
-                }
+    private List<CatergoryInfo> addExtras(List<CatergoryInfo> data) {
+        for (CatergoryInfo item : data) {
+            if (item._child != null && item._child.size() > 0) {
+                CatergoryInfo all = new CatergoryInfo();
+                all.id = item.id;
+                all.title = "全部";
+                item._child.add(0, all);
             }
-
         }
-        return menus;
+
+        return data;
     }
 
     //智能分类
@@ -323,7 +405,7 @@ public class TaskListActivity extends BaseActivity {
             maps.put("sort_id", sort_id);
         }
         if (!TextUtils.isEmpty(tags_id)) {
-            maps.put("tags_id",tags_id);
+            maps.put("tags_id", tags_id);
         }
         if (!TextUtils.isEmpty(keywords)) {
             maps.put("keywords", keywords);
@@ -382,7 +464,7 @@ public class TaskListActivity extends BaseActivity {
                     }
                     menuSortAdapter.getData().get(position).isSelected = true;
                     menuSortAdapter.notifyDataSetChanged();
-                    sort_id = menuSortAdapter.getItem(position).id;
+                    sort_id =String.valueOf( menuSortAdapter.getItem(position).id);
                     page = 1;
                     getTaskList();
                     quickPopupSort.dismiss();
@@ -405,7 +487,7 @@ public class TaskListActivity extends BaseActivity {
 
 
     //下拉  左侧
-    private void showShowTags() {
+ /*   private void showShowTags() {
 
         if (quickPopupTag == null) {
             quickPopupTag = new BubblePopupSingle(ApiConfig.context);
@@ -452,4 +534,5 @@ public class TaskListActivity extends BaseActivity {
             ivSmartTag.setImageResource(R.mipmap.arrwo_up_red);
         }
     }
+    */
 }

@@ -247,7 +247,7 @@ public class TaskFragment extends Fragment {
                     }
                     menuAdapter.getData().get(position).isSelected = true;
                     menuAdapter.notifyDataSetChanged();
-                    sort_id = menuAdapter.getItem(position).id;
+                    sort_id = String.valueOf(menuAdapter.getItem(position).id);
                     quickPopupSmart.dismiss();
                     tvSmartSort.setText("" + menuAdapter.getData().get(position).title);
                     tvSmartSort.setTextColor(getResources().getColor(R.color.red));

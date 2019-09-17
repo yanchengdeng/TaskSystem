@@ -5,6 +5,7 @@ import android.text.TextUtils
 import android.view.View
 import android.widget.EditText
 import android.widget.TextView
+import com.blankj.utilcode.util.RegexUtils
 import com.task.system.Constans
 import com.task.system.R
 import com.task.system.api.API
@@ -54,6 +55,11 @@ class AddressDetailActivity : BaseActivity() {
 
             if (TextUtils.isEmpty(etPhone?.editableText.toString())) {
                 SysUtils.showToast("请输入收件人电话")
+                return@setOnClickListener
+            }
+
+            if (!RegexUtils.isMobileSimple(etPhone?.editableText.toString())) {
+                SysUtils.showToast("请输入正确号码")
                 return@setOnClickListener
             }
 

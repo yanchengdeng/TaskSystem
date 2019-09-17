@@ -13,6 +13,7 @@ import com.task.system.api.API;
 import com.task.system.api.TaskInfo;
 import com.task.system.api.TaskService;
 import com.task.system.bean.OrderDetalInfo;
+import com.task.system.bean.OrderInfo;
 import com.task.system.common.RichTextView;
 import com.task.system.utils.PerfectClickListener;
 import com.task.system.utils.TUtils;
@@ -56,10 +57,12 @@ public class OrderDetailActivity extends BaseActivity {
     TextView tvTimeEnd;
     @BindView(R.id.tv_time_create)
     TextView tvTimeCreate;
-    @BindView(R.id.tv_status)
-    TextView tvStatus;
+    @BindView(R.id.tv_status_pass)
+    TextView tvStatusPass;
     @BindView(R.id.tv_adjust_recharge)
     TextView tvAdjustRecharge;
+    @BindView(R.id.tv_status_pass_not)
+    TextView tvStatusPassNot;
     @BindView(R.id.tv_look_argue)
     TextView tvLookArgue;
     @BindView(R.id.ll_bottom)
@@ -84,7 +87,7 @@ public class OrderDetailActivity extends BaseActivity {
         tvRightFunction.setOnClickListener(new PerfectClickListener() {
             @Override
             protected void onNoDoubleClick(View v) {
-                if (orderDetalInfo!=null) {
+                if (orderDetalInfo != null) {
                     Bundle orderdatas = new Bundle();
                     orderdatas.putString(Constans.PASS_STRING, orderDetalInfo.getTask_id());
                     ActivityUtils.startActivity(orderdatas, LinkOrdersActivity.class);
@@ -92,9 +95,12 @@ public class OrderDetailActivity extends BaseActivity {
             }
         });
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         getOrderDetail();
-
-
     }
 
     private void getOrderDetail() {
@@ -124,12 +130,13 @@ public class OrderDetailActivity extends BaseActivity {
     }
 
     private void initData(OrderDetalInfo data) {
+        llBottom.setVisibility(View.VISIBLE);
         if (!TextUtils.isEmpty(data.getActual_score())) {
             tvMoney.setText(data.getActual_score());
         }
 
         if (!TextUtils.isEmpty(data.getTask_id())) {
-            tvTaskId.setText("任务ID:"+data.getTask_id());
+            tvTaskId.setText("任务ID:" + data.getTask_id());
         }
 
         if (!TextUtils.isEmpty(data.getTask_title())) {
@@ -137,52 +144,79 @@ public class OrderDetailActivity extends BaseActivity {
         }
 
 
-            tvOrderNum.setText("订单编号："+data.getOrder_id());
+        tvOrderNum.setText("订单编号：" + data.getOrder_id());
 
-        tvUserId.setText("用户id："+data.getUid());
+        tvUserId.setText("用户id：" + data.getUid());
 
-        tvOrderStatus.setText("订单状态："+ data.getStatus_title());
+        tvOrderStatus.setText("订单状态：" + data.getStatus_title());
 
         richText.setHtml(data.getStep());
 
 
-        tvTimeStart.setText("开始时间："+data.getStart_time());
-        tvTimeEnd.setText("结束时间："+data.getEnd_time());
-        tvTimeCreate.setText("创建时间："+data.getCreate_time());
+        tvTimeStart.setText("开始时间：" + data.getStart_time());
+        tvTimeEnd.setText("结束时间：" + data.getEnd_time());
+        tvTimeCreate.setText("创建时间：" + data.getCreate_time());
 
-        if (data.getDispute_status()!=0){
+        if (data.getDispute_status() != 0) {
             tvLookArgue.setVisibility(View.VISIBLE);
+        } else {
+            tvLookArgue.setVisibility(View.GONE);
         }
 
-
-
+        if (data.getStatus() == 2 || data.getStatus() == 3) {
+            tvStatusPass.setVisibility(View.VISIBLE);
+            tvStatusPassNot.setVisibility(View.VISIBLE);
+            tvAdjustRecharge.setVisibility(View.VISIBLE);
+        } else {
+            tvStatusPass.setVisibility(View.GONE);
+            tvStatusPassNot.setVisibility(View.GONE);
+            tvAdjustRecharge.setVisibility(View.GONE);
+        }
     }
-/**
-       "status": 0,"title": "已中止" --显示编辑按钮
-         "status": "1","title": "展示中"--中止任务 订单数据
-         "status": "2","title": "草稿箱"--显示编辑按钮
-         "status": "3","title": "待审核"--显示 取消任务
-         "status": "4","title": "关联订单
-                 "status": "5","title": "弹出理由  关联订单
-                 "status": "6",已完结  关联订单
-         "status": "7","已超时  关联订单
-                 */
 
-    @OnClick({R.id.tv_task_detail,R.id.tv_status, R.id.tv_adjust_recharge, R.id.tv_look_argue})
+    /**
+     * "status": 0,"title": "已中止" --显示编辑按钮
+     * "status": "1","title": "展示中"--中止任务 订单数据
+     * "status": "2","title": "草稿箱"--显示编辑按钮
+     * "status": "3","title": "待审核"--显示 取消任务
+     * "status": "4","title": "关联订单
+     * "status": "5","title": "弹出理由  关联订单
+     * "status": "6",已完结  关联订单
+     * "status": "7","已超时  关联订单
+     */
+
+
+    //4-通过，5-不通过，8-修改价格
+    @OnClick({R.id.tv_task_detail, R.id.tv_status_pass, R.id.tv_adjust_recharge, R.id.tv_status_pass_not, R.id.tv_look_argue})
     public void onViewClicked(View view) {
+        OrderInfo item = new OrderInfo();
+        item.title = orderDetalInfo.getTask_title();
+        item.order_id = orderDetalInfo.getOrder_id();
+        item.score = orderDetalInfo.getActual_score();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(Constans.PASS_OBJECT, item);
         switch (view.getId()) {
             case R.id.tv_task_detail:
-                if (orderDetalInfo!=null){
-                    Bundle bundle = new Bundle();
-                    bundle.putString(Constans.PASS_STRING, orderDetalInfo.getTask_id());
-                    ActivityUtils.startActivity(bundle, TaskDetailActivity.class);
+                if (orderDetalInfo != null) {
+                    Bundle bundleDetail = new Bundle();
+                    bundleDetail.putString(Constans.PASS_STRING, orderDetalInfo.getTask_id());
+                    ActivityUtils.startActivity(bundleDetail, TaskDetailActivity.class);
                 }
                 break;
-            case R.id.tv_status:
+            case R.id.tv_status_pass:
+                bundle.putInt(Constans.PASS_STRING, 4);
+                ActivityUtils.startActivity(bundle, SetOrderStatusActivity.class);
                 break;
             case R.id.tv_adjust_recharge:
+                bundle.putInt(Constans.PASS_STRING, 8);
+                ActivityUtils.startActivity(bundle, SetOrderStatusActivity.class);
+                break;
+            case R.id.tv_status_pass_not:
+                bundle.putInt(Constans.PASS_STRING, 5);
+                ActivityUtils.startActivity(bundle, SetOrderStatusActivity.class);
                 break;
             case R.id.tv_look_argue:
+                ActivityUtils.startActivity(bundle, DisputeListActivity.class);
                 break;
         }
     }
