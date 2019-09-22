@@ -10,6 +10,7 @@
         android:id="@+id/tv_indictor"
         android:layout_width="3dp"
         android:layout_height="@dimen/titlebar_height"
+        android:visibility="invisible"
         android:background="@color/red" />
 
     <TextView

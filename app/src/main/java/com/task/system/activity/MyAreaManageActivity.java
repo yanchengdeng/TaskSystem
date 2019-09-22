@@ -15,6 +15,9 @@ import com.blankj.utilcode.util.ActivityUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gyf.barlibrary.ImmersionBar;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.task.system.Constans;
 import com.task.system.R;
 import com.task.system.adapters.AreaManageAdapter;
@@ -77,10 +80,12 @@ public class MyAreaManageActivity extends BaseSimpleActivity {
     RecyclerView recycleOrders;
     @BindView(R.id.tv_balance)
     TextView tvBalance;
+    @BindView(R.id.smartRefresh)
+    SmartRefreshLayout smartRefresh;
     private int REQUEST_CODE_SELECT = 402;
 
 
-    private AreaManageAdapter disputeAdapter,publishAdapter;
+    private AreaManageAdapter disputeAdapter, publishAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,24 +93,24 @@ public class MyAreaManageActivity extends BaseSimpleActivity {
         setContentView(R.layout.activity_my_area_manage);
         ButterKnife.bind(this);
 
-        ImmersionBar.with(mContext).statusBarDarkFont(false,0.2f).statusBarColor(R.color.blue_ball).init();
+        ImmersionBar.with(mContext).statusBarDarkFont(false, 0.2f).statusBarColor(R.color.blue_ball).init();
 
 
-        disputeAdapter =  new AreaManageAdapter(R.layout.adapter_area_manage,new ArrayList());
-        publishAdapter= new AreaManageAdapter(R.layout.adapter_area_manage, new ArrayList());
+        disputeAdapter = new AreaManageAdapter(R.layout.adapter_area_manage, new ArrayList());
+        publishAdapter = new AreaManageAdapter(R.layout.adapter_area_manage, new ArrayList());
 
         //订单争议
-        recycleOrders.setLayoutManager(new GridLayoutManager(this,3));
+        recycleOrders.setLayoutManager(new GridLayoutManager(this, 3));
 //        recycleOrders.setLayoutManager(new LinearLayoutManager(this));
         recycleOrders.setNestedScrollingEnabled(false);
-        recycleOrders.setAdapter( disputeAdapter);
+        recycleOrders.setAdapter(disputeAdapter);
 
         disputeAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 Bundle bundle = new Bundle();
                 bundle.putSerializable(Constans.PASS_OBJECT, (Serializable) disputeAdapter.getData());
-                bundle.putInt(Constans.PASS_STRING,position);
+                bundle.putInt(Constans.PASS_STRING, position);
                 ActivityUtils.startActivity(bundle, OrderManageActivity.class);
             }
         });
@@ -127,8 +132,8 @@ public class MyAreaManageActivity extends BaseSimpleActivity {
         });
 
         //发布
-        recyclePublish.setLayoutManager(new GridLayoutManager(this,3));
-        recyclePublish.setAdapter( publishAdapter);
+        recyclePublish.setLayoutManager(new GridLayoutManager(this, 3));
+        recyclePublish.setAdapter(publishAdapter);
         recyclePublish.setNestedScrollingEnabled(false);
 
         publishAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
@@ -136,24 +141,29 @@ public class MyAreaManageActivity extends BaseSimpleActivity {
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 Bundle bundle = new Bundle();
                 bundle.putSerializable(Constans.PASS_OBJECT, (Serializable) publishAdapter.getData());
-                bundle.putInt(Constans.PASS_STRING,position);
+                bundle.putInt(Constans.PASS_STRING, position);
                 ActivityUtils.startActivity(bundle, PublishManageActivity.class);
             }
         });
 
-
-
+        smartRefresh.setEnableLoadMore(false);
+        smartRefresh.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(RefreshLayout refreshLayout) {
+                getRecycleList();
+            }
+        });
 
 
         UserInfo userInfo = TUtils.getUserInfo();
-        if (userInfo!=null){
+        if (userInfo != null) {
             if (!TextUtils.isEmpty(userInfo.username)) {
                 tvName.setText(userInfo.username);
             }
 
-            ImageLoaderUtil.loadCircle(userInfo.avatar,ivHeader,R.mipmap.defalut_header);
+            ImageLoaderUtil.loadCircle(userInfo.avatar, ivHeader, R.mipmap.defalut_header);
 
-            tvBalance.setText("￥"+userInfo.score+" >");
+            tvBalance.setText("￥" + userInfo.score + " >");
 
         }
 
@@ -167,12 +177,12 @@ public class MyAreaManageActivity extends BaseSimpleActivity {
         getRecycleList();
     }
 
-    private void getRecycleList(){
+    private void getRecycleList() {
 
 
         //争议
-        HashMap<String,String> maps = new HashMap<>();
-        maps.put("show_image","show");
+        HashMap<String, String> maps = new HashMap<>();
+        maps.put("show_image", "show");
         Call<TaskInfoList> callDispute = ApiConfig.getInstants().create(TaskService.class).getOperatorOrderTabs(TUtils.getParams(maps));
         API.getList(callDispute, AreaManageIitem.class, new ApiCallBackList<AreaManageIitem>() {
             @Override
@@ -204,6 +214,7 @@ public class MyAreaManageActivity extends BaseSimpleActivity {
         });
 
 
+        smartRefresh.finishRefresh(2000);
     }
 
     @OnClick({R.id.iv_back, R.id.tv_right_function, R.id.btn_invite_code, R.id.btnPublish})

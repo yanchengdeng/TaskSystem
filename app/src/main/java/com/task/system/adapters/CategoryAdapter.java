@@ -12,8 +12,15 @@ import com.task.system.bean.CatergoryInfo;
 
 public class CategoryAdapter extends BaseQuickAdapter<CatergoryInfo, BaseViewHolder> {
 
+
+    private boolean isWorkBg = true;
     public CategoryAdapter(int layoutResId) {
         super(layoutResId);
+    }
+
+    public CategoryAdapter(int layoutResId,boolean isWorkBg) {
+        super(layoutResId);
+        this.isWorkBg = isWorkBg;
     }
 
     @Override
@@ -31,10 +38,17 @@ public class CategoryAdapter extends BaseQuickAdapter<CatergoryInfo, BaseViewHol
 //            helper.getView(R.id.tv_indictor).setVisibility(View.VISIBLE);
             if (item.isSelected) {
                 helper.getView(R.id.ll_bg).setBackgroundColor(mContext.getResources().getColor(R.color.white));
-                helper.getView(R.id.tv_indictor).setVisibility(View.VISIBLE);
+                helper.getView(R.id.tv_indictor).setVisibility(isWorkBg?View.VISIBLE:View.INVISIBLE);
+                ((TextView) ((TextView) helper.getView(R.id.tv_title))).setTextColor(mContext.getResources().getColor(R.color.red));
             } else {
-                helper.getView(R.id.ll_bg).setBackgroundColor(mContext.getResources().getColor(R.color.list_divider_color));
-                helper.getView(R.id.tv_indictor).setVisibility(View.INVISIBLE);
+                if (isWorkBg) {
+                    helper.getView(R.id.ll_bg).setBackgroundColor(mContext.getResources().getColor(R.color.list_divider_color));
+                    helper.getView(R.id.tv_indictor).setVisibility(View.INVISIBLE);
+                }else{
+                    helper.getView(R.id.ll_bg).setBackgroundColor(mContext.getResources().getColor(R.color.white));
+                    helper.getView(R.id.tv_indictor).setVisibility(View.INVISIBLE);
+                }
+                ((TextView) ((TextView) helper.getView(R.id.tv_title))).setTextColor(mContext.getResources().getColor(R.color.color_tittle));
             }
         }
 

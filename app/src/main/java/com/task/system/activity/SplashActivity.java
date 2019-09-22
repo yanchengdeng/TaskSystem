@@ -60,8 +60,7 @@ public class SplashActivity extends AppCompatActivity {
             @Override
             protected void onNoDoubleClick(View v) {
                 handler.removeCallbacks(runnable);
-                ActivityUtils.startActivity(MainActivity.class);
-                finish();
+                jumpAction();
             }
         });
 
@@ -70,21 +69,26 @@ public class SplashActivity extends AppCompatActivity {
 
 
 
-        UserInfo userInfo = TUtils.getUserInfo();
+
         handler.postDelayed(runnable = () -> {
-            if (userInfo!=null && !TextUtils.isEmpty(userInfo.user_type)){
+            jumpAction();
+        },3000);
+
+    }
+
+    private void jumpAction(){
+        UserInfo userInfo = TUtils.getUserInfo();
+        if (userInfo!=null && !TextUtils.isEmpty(userInfo.user_type)){
 //                    if (userInfo.user_type.equals(UserType.USER_TYPE_MEMBER.getType())){
-                    ActivityUtils.startActivity(MainActivity.class);
-                    finish();
+            ActivityUtils.startActivity(MainActivity.class);
+            finish();
 //                    }else{
 //                        ActivityUtils.startActivity(PercentCenterActivity.class);
 //                        finish();
 //                    }
-            }else{
-                ActivityUtils.startActivity(LoginActivity.class);
-                finish();
-            }
-        },3000);
-
+        }else{
+            ActivityUtils.startActivity(LoginActivity.class);
+            finish();
+        }
     }
 }

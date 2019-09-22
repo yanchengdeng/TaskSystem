@@ -53,6 +53,7 @@
                     android:background="@drawable/normal_submit_btn_gray_trans_larger"
                     android:orientation="horizontal"
                     android:paddingLeft="@dimen/activity_horizontal_margin"
+                    android:visibility="gone"
                     android:paddingTop="@dimen/image_padding_big"
                     android:paddingRight="@dimen/activity_horizontal_margin"
                     android:paddingBottom="@dimen/image_padding_big">

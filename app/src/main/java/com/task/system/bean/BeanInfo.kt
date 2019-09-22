@@ -96,3 +96,16 @@ data class OrderDetalInfo(
     val uid: String,
     val update_time: String
 ):Serializable
+
+
+data class JpushExtraInfo(
+    val extras: Extras,
+    val msg_content: String,
+    val title: String
+)
+
+data class Extras(
+    val id: Int,
+    val type: String
+)
+

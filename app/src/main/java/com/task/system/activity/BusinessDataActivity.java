@@ -46,7 +46,8 @@ import retrofit2.Call;
 /**
  * Author: dengyancheng
  * Date: 2019-08-24 16:21
- * Description: 运营数据
+ * Description:
+ * 运营数据
  * History:
  */
 public class BusinessDataActivity extends BaseActivity {
@@ -238,10 +239,20 @@ public class BusinessDataActivity extends BaseActivity {
         });
 
         getMyAcount();
+
+        adapterStatic.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
+            @Override
+            public void onLoadMoreRequested() {
+                page++;
+                getMyAcount();
+            }
+        },recycle);
     }
 
     private void getMyAcount() {
-        showLoadingBar();
+        if (page==1) {
+            showLoadingBar();
+        }
         HashMap<String, String> maps = new HashMap<>();
         maps.put("page", String.valueOf(page));
         if (!TextUtils.isEmpty(start_date)) {
@@ -256,7 +267,7 @@ public class BusinessDataActivity extends BaseActivity {
         if (!TextUtils.isEmpty(etInput.getEditableText().toString())) {
             maps.put("search_key", etInput.getEditableText().toString());
         }
-        maps.put("page_size", "50");
+        maps.put("page_size", "15");
         Call<TaskInfo> call = ApiConfig.getInstants().create(TaskService.class).getStatistics(TUtils.getParams(maps));
         API.getObject(call, ScoreAcount.class, new ApiCallBack<ScoreAcount>() {
             @Override
@@ -269,6 +280,14 @@ public class BusinessDataActivity extends BaseActivity {
             @Override
             public void onFaild(int msgCode, String msg) {
                 dismissLoadingBar();
+                if (adapterStatic.getData()!=null && adapterStatic.getData().size()>0){
+                    recycle.setVisibility(View.VISIBLE);
+                }else{
+                    recycle.setVisibility(View.GONE);
+                }
+                adapterStatic.loadMoreEnd();
+
+
 
             }
         });
@@ -381,12 +400,19 @@ public class BusinessDataActivity extends BaseActivity {
         }
 
         if (data.list != null && data.list.size() > 0) {
-            adapterStatic.setNewData(data.list);
+            adapterStatic.addData(data.list);
             recycle.setVisibility(View.VISIBLE);
+            adapterStatic.loadMoreComplete();
 
             tvUidHeader.setText(data.member_level+"");
         } else {
-            recycle.setVisibility(View.GONE);
+
+            if (adapterStatic.getData()!=null && adapterStatic.getData().size()>0){
+                recycle.setVisibility(View.VISIBLE);
+            }else{
+                recycle.setVisibility(View.GONE);
+            }
+            adapterStatic.loadMoreEnd();
         }
     }
 

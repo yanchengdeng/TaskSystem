@@ -99,7 +99,7 @@ public class TaskListActivity extends BaseActivity {
     private MenuAdapter menuSortAdapter;
 //        , menuTagAdapter;
 
-//    private int menuSecomdIndex;
+    private int menuSecomdIndex;
 
     private CatergoryInfo catergoryInfo;
 
@@ -119,7 +119,7 @@ public class TaskListActivity extends BaseActivity {
         menuSortAdapter = new MenuAdapter(R.layout.adapter_drop_menu_item);
 //        menuTagAdapter = new MenuAdapter(R.layout.adapter_drop_menu_item);
         meneLeft = new CategoryAdapter(R.layout.adapter_drop_menu_item);
-        menuRight = new CategoryAdapter(R.layout.adapter_drop_menu_item);
+        menuRight = new CategoryAdapter(R.layout.adapter_drop_menu_item,false);
         getSmartSort();
         getAllSort();
 
@@ -244,7 +244,9 @@ public class TaskListActivity extends BaseActivity {
             RecyclerView recyclerViewRight = view.findViewById(R.id.rcv_content_right);
             recyclerViewLeft.setLayoutManager(new LinearLayoutManager(ApiConfig.context));
             recyclerViewLeft.setAdapter(meneLeft);
+            recyclerViewLeft.setBackgroundColor(getResources().getColor(R.color.list_divider_color));
 
+            recyclerViewRight.setBackgroundColor(getResources().getColor(R.color.white));
             recyclerViewRight.setLayoutManager(new LinearLayoutManager(ApiConfig.context));
             recyclerViewRight.setAdapter(menuRight);
 
@@ -274,7 +276,7 @@ public class TaskListActivity extends BaseActivity {
                         tvSmartTag.setTextColor(getResources().getColor(R.color.red));
                         ivSmartTag.setImageResource(R.mipmap.icon_arrow_down);
                     } else {
-//                        menuSecomdIndex = position;
+                        menuSecomdIndex = position;
                         menuRight.setNewData(meneLeft.getData().get(position)._child);
                     }
 
@@ -284,11 +286,11 @@ public class TaskListActivity extends BaseActivity {
             menuRight.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-//                    for (CatergoryInfo item : meneLeft.getData().get(menuSecomdIndex)._child) {
-//                        item.isSelected = false;
-//                    }
-//                    meneLeft.getData().get(menuSecomdIndex)._child.get(position).isSelected = true;
-//                    menuRight.setNewData(meneLeft.getData().get(menuSecomdIndex)._child);
+                    for (CatergoryInfo item : meneLeft.getData().get(menuSecomdIndex)._child) {
+                        item.isSelected = false;
+                    }
+                    meneLeft.getData().get(menuSecomdIndex)._child.get(position).isSelected = true;
+                    menuRight.setNewData(meneLeft.getData().get(menuSecomdIndex)._child);
                     category_id = menuRight.getItem(position).id;
                     page = 1;
                     getTaskList();

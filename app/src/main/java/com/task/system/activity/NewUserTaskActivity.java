@@ -132,6 +132,7 @@ public class NewUserTaskActivity extends BaseActivity {
         HashMap<String, String> maps = new HashMap<>();
         maps.put("page", String.valueOf(page));
         maps.put("page_size", Constans.PAGE_SIZE);
+        maps.put("newuser","1");
 //        if (!TextUtils.isEmpty(category_id)) {
 //            maps.put("category_id", category_id);
 //        }

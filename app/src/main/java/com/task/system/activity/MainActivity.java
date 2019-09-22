@@ -174,17 +174,21 @@ public class MainActivity extends BaseSimpleActivity {
         hashMap.put("registration_id", JPushInterface.getRegistrationID(this));
 
 
+
+
         Call<TaskInfoIgnoreBody> call = ApiConfig.getInstants().create(TaskService.class).userBindPushId(TUtils.getParams(hashMap));
 
         API.getObjectIgnoreBody(call,  new ApiCallBack() {
 
             @Override
             public void onSuccess(int msgCode, String msg, Object data) {
+                SysUtils.log("绑定register_id 成功");
 
             }
 
             @Override
             public void onFaild(int msgCode, String msg) {
+                SysUtils.log("绑定register_id 失败"+msg);
             }
         });
 

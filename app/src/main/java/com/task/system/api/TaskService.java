@@ -57,7 +57,7 @@ public interface TaskService {
      */
     @FormUrlEncoded
     @POST("public/register")
-    Call<TaskInfoList> doRegister(@FieldMap HashMap<String, String> maps);
+    Call<TaskInfo> doRegister(@FieldMap HashMap<String, String> maps);
 
     //忘记密码
 

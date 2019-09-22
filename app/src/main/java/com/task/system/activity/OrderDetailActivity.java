@@ -7,18 +7,22 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.ActivityUtils;
+import com.blankj.utilcode.util.ToastUtils;
 import com.task.system.Constans;
 import com.task.system.R;
 import com.task.system.api.API;
 import com.task.system.api.TaskInfo;
+import com.task.system.api.TaskInfoIgnoreBody;
 import com.task.system.api.TaskService;
 import com.task.system.bean.OrderDetalInfo;
 import com.task.system.bean.OrderInfo;
+import com.task.system.bean.SimpleBeanInfo;
 import com.task.system.common.RichTextView;
 import com.task.system.utils.PerfectClickListener;
 import com.task.system.utils.TUtils;
 import com.yc.lib.api.ApiCallBack;
 import com.yc.lib.api.ApiConfig;
+import com.yc.lib.api.utils.SysUtils;
 
 import java.util.HashMap;
 
@@ -131,8 +135,8 @@ public class OrderDetailActivity extends BaseActivity {
 
     private void initData(OrderDetalInfo data) {
         llBottom.setVisibility(View.VISIBLE);
-        if (!TextUtils.isEmpty(data.getActual_score())) {
-            tvMoney.setText(data.getActual_score());
+        if (!TextUtils.isEmpty(data.getOrder_score())) {
+            tvMoney.setText(data.getOrder_score());
         }
 
         if (!TextUtils.isEmpty(data.getTask_id())) {
@@ -204,8 +208,9 @@ public class OrderDetailActivity extends BaseActivity {
                 }
                 break;
             case R.id.tv_status_pass:
-                bundle.putInt(Constans.PASS_STRING, 4);
-                ActivityUtils.startActivity(bundle, SetOrderStatusActivity.class);
+                doSubmitDispute();
+//                bundle.putInt(Constans.PASS_STRING, 4);
+//                ActivityUtils.startActivity(bundle, SetOrderStatusActivity.class);
                 break;
             case R.id.tv_adjust_recharge:
                 bundle.putInt(Constans.PASS_STRING, 8);
@@ -219,5 +224,36 @@ public class OrderDetailActivity extends BaseActivity {
                 ActivityUtils.startActivity(bundle, DisputeListActivity.class);
                 break;
         }
+    }
+
+    /**
+     * 审核通过直接调接口
+     */
+    private void doSubmitDispute() {
+        showLoadingBar();
+        HashMap<String, String> hashMap = new HashMap();
+        hashMap.put("uid", TUtils.getUserId());
+        hashMap.put("order_id", orderId);
+        hashMap.put("status","4");
+        Call<TaskInfoIgnoreBody> call = ApiConfig.getInstants().create(TaskService.class).setOrderStatus(TUtils.getParams(hashMap));
+
+        API.getObjectIgnoreBody(call, new ApiCallBack<SimpleBeanInfo>() {
+
+            @Override
+            public void onSuccess(int msgCode, String msg, SimpleBeanInfo data) {
+                ToastUtils.showShort("提交成功");
+                dismissLoadingBar();
+                tvStatusPass.setVisibility(View.GONE);
+                tvStatusPassNot.setVisibility(View.GONE);
+                tvAdjustRecharge.setVisibility(View.GONE);
+
+            }
+
+            @Override
+            public void onFaild(int msgCode, String msg) {
+                dismissLoadingBar();
+                SysUtils.showToast(msg+"");
+            }
+        });
     }
 }
