@@ -131,8 +131,8 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:4.8.0'
 
     //激光推送
-    implementation 'cn.jiguang.sdk:jpush:3.3.4'  // 此处以JPush 3.3.4 版本为例。
-    implementation 'cn.jiguang.sdk:jcore:2.1.2'  // 此处以JCore 2.1.2 版本为例。
+    implementation 'cn.jiguang.sdk:jpush:3.3.6'  // 此处以JPush 3.3.4 版本为例。
+    implementation 'cn.jiguang.sdk:jcore:2.1.4'  // 此处以JCore 2.1.2 版本为例。
 
     /** 激光推送 ***/
 //    implementation 'cn.jiguang.sdk:jpush:3.1.5'

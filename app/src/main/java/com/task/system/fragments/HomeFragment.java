@@ -37,7 +37,6 @@ import com.task.system.R;
 import com.task.system.activity.MainActivity;
 import com.task.system.activity.MessageListActivity;
 import com.task.system.activity.NewUserTaskActivity;
-import com.task.system.activity.OpenWebViewActivity;
 import com.task.system.activity.SignActivity;
 import com.task.system.activity.TaskDetailActivity;
 import com.task.system.activity.TaskListActivity;
@@ -65,7 +64,6 @@ import com.yc.lib.api.ApiConfig;
 import com.yc.lib.api.utils.ImageLoaderUtil;
 import com.yc.lib.api.utils.SysUtils;
 import com.youth.banner.Banner;
-import com.youth.banner.listener.OnBannerListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -325,6 +323,26 @@ public class HomeFragment extends Fragment {
         }
     }
 
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        try {
+            banner.start();
+        }catch (Exception e){
+
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        try {
+            banner.stopAutoPlay();
+        }catch (Exception e){
+
+        }
+    }
 
     //用户全部分类
     private void getUserCatogry() {

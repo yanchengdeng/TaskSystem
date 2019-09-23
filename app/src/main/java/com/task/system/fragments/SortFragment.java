@@ -169,6 +169,26 @@ public class SortFragment extends Fragment {
 
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        try {
+            banner.start();
+        }catch (Exception e){
+
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        try {
+            banner.stopAutoPlay();
+        }catch (Exception e){
+
+        }
+    }
+
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {

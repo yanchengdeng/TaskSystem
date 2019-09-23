@@ -105,7 +105,7 @@ data class JpushExtraInfo(
 )
 
 data class Extras(
-    val id: Int,
+    val id: String,
     val type: String
 )
 

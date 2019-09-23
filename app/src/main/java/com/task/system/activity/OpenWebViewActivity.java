@@ -195,7 +195,7 @@ public class OpenWebViewActivity extends BaseActivity {
 
             @Override
             public void onFaild(int msgCode, String msg) {
-
+                dismissLoadingBar();
             }
         });
     }
