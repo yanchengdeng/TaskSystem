@@ -16,6 +16,7 @@ import com.yc.lib.api.ApiCallBack;
 import com.yc.lib.api.ApiCallBackList;
 import com.yc.lib.api.ApiConfig;
 import com.yc.lib.api.ResultListInfo;
+import com.yc.lib.api.utils.SysUtils;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -213,7 +214,7 @@ public class API {
                                            ""+ resultInfo.getMessage(),
                                             (List<T>) API.jsonStringConvertToList(json, clz));
                                 } catch (Exception e) {
-                                    LogUtils.w("dyc", "json 数据格式异常");
+                                    SysUtils.log("json 数据格式异常");
                                 }
                             } else {
                                 apiCallBack.onFaild(resultInfo.getStatus_code(), resultInfo.getMessage() + ":data 无数据");
@@ -291,7 +292,7 @@ public class API {
                     Buffer requestBuffer = new Buffer();
                     try {
                         body.writeTo(requestBuffer);
-                        Log.w(ApiConfig.getLogFilter(), postParseParams(body, requestBuffer));
+                        SysUtils.log( postParseParams(body, requestBuffer));
 
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -304,14 +305,25 @@ public class API {
                     Log.d(ApiConfig.LogFilter, String.format("接口返回信息：code-->%s message:-->%s", ((ResultListInfo) response.body()).getStatus_code(), ((ResultListInfo) response.body()).getMessage()));
                 } else if (response.body() instanceof TaskInfo) {
                     Log.d(ApiConfig.LogFilter, String.format("接口返回信息：code-->%s message:-->%s", ((TaskInfo) response.body()).getStatus_code(), ((TaskInfo) response.body()).getMessage()));
+                    int statusCode = 0;
                     String result = "暂无数据";
                     if (((TaskInfo) response.body()).getData() != null) {
                         result = ((TaskInfo) response.body()).getData().toString();
+                        statusCode= ((TaskInfo) response.body()).getStatus_code();
                     }
-                    Log.w(ApiConfig.LogFilter, String.format("接口返回结果：%s", result));
+                    SysUtils.log(  String.format("返回码 ： %d   返回结果 : %s", new Object[]{statusCode,result}));
+                }else if (response.body() instanceof TaskInfoList){
+                    Log.d(ApiConfig.LogFilter, String.format("接口返回信息：code-->%s message:-->%s", ((TaskInfoList) response.body()).getStatus_code(), ((TaskInfoList) response.body()).getMessage()));
+                    String result = "暂无数据";
+                    int statusCode = 0;
+                    if (((TaskInfoList) response.body()).getData() != null) {
+                        result = ((TaskInfoList) response.body()).getData().toString();
+                        statusCode= ((TaskInfoList) response.body()).getStatus_code();
+                    }
+                    SysUtils.log(  String.format("返回码 ： %d   返回结果 : %s", new Object[]{statusCode,result}));
                 }
             } else {
-                Log.e(ApiConfig.LogFilter, String.format("接口返回信息：code-->%s message:-->%s", response.code(), response.message()));
+                SysUtils.log(  String.format("接口返回信息：code-->%s message:-->%s", response.code(), response.message()));
             }
         }
     }
@@ -370,7 +382,7 @@ public class API {
         }
 
         if (ApiConfig.getDebug()) {
-            Log.w(ApiConfig.LogFilter, String.format("接口返回结果：%s", jsonString));
+//            Log.w(ApiConfig.LogFilter, String.format("接口返回结果：%s", jsonString));
         }
         return list;
     }

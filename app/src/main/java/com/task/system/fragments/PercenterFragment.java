@@ -32,7 +32,6 @@ import com.task.system.activity.MyAreaManageActivity;
 import com.task.system.activity.MyAwardActivity;
 import com.task.system.activity.MyCollectedActivity;
 import com.task.system.activity.MyIncomeActivity;
-import com.task.system.activity.MyInviteCodeActivity;
 import com.task.system.activity.OpenWebViewActivity;
 import com.task.system.activity.PersonSettingActivity;
 import com.task.system.api.API;
@@ -256,7 +255,15 @@ public class PercenterFragment extends Fragment {
                 ActivityUtils.startActivity(AddNewLeaderActivity.class);
                 break;
             case R.id.tv_invite_code:
-                ActivityUtils.startActivity(MyInviteCodeActivity.class);
+//                ActivityUtils.startActivity(MyInviteCodeActivity.class);
+
+
+                Bundle myInvite = new Bundle();
+                myInvite.putString(Constans.PASS_NAME,"我的邀请码");
+                myInvite.putString(Constans.ARTICAL_TYPE,Constans.MY_INVITER_CODE);
+                ActivityUtils.startActivity(myInvite, OpenWebViewActivity.class);
+
+
                 break;
             case R.id.tv_about_us:
                 Bundle about = new Bundle();

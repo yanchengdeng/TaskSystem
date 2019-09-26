@@ -42,6 +42,8 @@ public class Constans {
 
     //积分抽奖
     public static final String  INTERGRAY_CODE = "100";
+    //我的邀请码
+    public static final String MY_INVITER_CODE = "120";
     //订单审核理由
     public static final String ORDER_ROOLBACK_REASON ="200";
     //任务审核理由

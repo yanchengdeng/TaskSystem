@@ -192,6 +192,18 @@ public interface TaskService {
     @POST("wheel/share")
     Call<TaskInfo>  getWheelShare(@FieldMap HashMap<String,String> maps);
 
+
+    //分享页
+    @FormUrlEncoded
+    @POST("user/getShareUrl")
+    Call<TaskInfo> getUserShareUrl(@FieldMap HashMap<String,String> maps);
+
+
+    //分享页
+    @FormUrlEncoded
+    @POST("user/share")
+    Call<TaskInfo> getUserShare(@FieldMap HashMap<String,String> maps);
+
     /**
      * 任务详情
      * task_id

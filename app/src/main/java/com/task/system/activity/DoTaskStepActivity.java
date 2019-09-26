@@ -34,12 +34,15 @@ import com.task.system.bean.SimpleBeanInfo;
 import com.task.system.bean.TaskIndicator;
 import com.task.system.bean.TaskInfoItem;
 import com.task.system.bean.UploadTaskImageItem;
+import com.task.system.event.RefreshUnreadCountEvent;
 import com.task.system.fragments.TaskStepFragment;
 import com.task.system.utils.TUtils;
 import com.task.system.utils.Util;
 import com.yc.lib.api.ApiCallBack;
 import com.yc.lib.api.ApiCallBackList;
 import com.yc.lib.api.ApiConfig;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -362,6 +365,7 @@ public class DoTaskStepActivity extends BaseActivity {
             @Override
             public void onSuccess(int msgCode, String msg, List<String> data) {
                 ToastUtils.showShort("" + msg);
+                EventBus.getDefault().post(new RefreshUnreadCountEvent());
                 uploadHash.clear();
                 dismissLoadingBar();
                 setResult(RESULT_OK);

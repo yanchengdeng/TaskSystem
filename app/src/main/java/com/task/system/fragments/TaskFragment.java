@@ -158,14 +158,20 @@ public class TaskFragment extends Fragment {
     public void onMessageEvent(Object event) {
         if (event instanceof RefreshUnreadCountEvent) {
             getUnread();
-            if (viewpage!=null && viewpage.getAdapter()!=null &&  viewpage.getAdapter() instanceof FragmentPagerItemAdapter) {
+//            if (viewpage!=null && viewpage.getAdapter()!=null &&  viewpage.getAdapter() instanceof FragmentPagerItemAdapter) {
 //                TaskListFragment fragment = (TaskListFragment) ((FragmentPagerItemAdapter)viewpage.getAdapter()).getItem(0);
 //                TaskListFragment fragment1 = (TaskListFragment) ((FragmentPagerItemAdapter)viewpage.getAdapter()).getItem(1);
-                for (int i=0;i<viewpage.getAdapter().getCount();i++){
-                    TaskListFragment fragment = (TaskListFragment) ((FragmentPagerItemAdapter)viewpage.getAdapter()).getItem(i);
-                    fragment.setSortRefresh();
-                }
-            }
+//                if (fragment1!=null){
+//                    fragment1.setSortRefresh(1);
+//                }
+////                for (int i=0;i<viewpage.getAdapter().getCount();i++){
+////                    TaskListFragment fragment = (TaskListFragment) ((FragmentPagerItemAdapter)viewpage.getAdapter()).getItem(i);
+////                    if (fragment!=null) {
+////                        SysUtils.log("-----刷新任务---"+fragment+"---------status : "+fragment.status);
+////                        fragment.setSortRefresh();
+////                    }
+////                }
+//            }
         }
     }
 

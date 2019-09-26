@@ -37,6 +37,8 @@ import com.yc.lib.api.ApiCallBackList;
 import com.yc.lib.api.ApiConfig;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.HashMap;
 import java.util.List;
@@ -54,7 +56,7 @@ public class TaskListFragment extends BaseFragment {
     Unbinder unbinder;
 
 
-    private int status;
+    public int status;
     private int page = 1;
     private String sort;
 
@@ -71,6 +73,7 @@ public class TaskListFragment extends BaseFragment {
     @Override
     protected void initView(View view, Bundle savedInstanceState) {
         status = getArguments().getInt(Constans.PASS_STRING, -1);
+        EventBus.getDefault().register(this);
 
         isStarted = true;
         taskOrderAdapter = new TaskOrderAdapter(R.layout.adapter_task_order_item, status);
@@ -160,6 +163,14 @@ public class TaskListFragment extends BaseFragment {
             }
         });
 
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(Object event) {
+        if (event instanceof RefreshUnreadCountEvent) {
+                page=1;
+                getOrderList();
+        }
     }
 
     //刷新数据

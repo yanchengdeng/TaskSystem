@@ -154,6 +154,11 @@ public class OpenWebViewActivity extends BaseActivity {
                 ivRightFunction.setImageResource(R.mipmap.iv_share);
                 getIntergrayGame();
                 getShareInfo();
+            }else if(webType.equals(Constans.MY_INVITER_CODE)){
+                ivRightFunction.setVisibility(View.VISIBLE);
+                ivRightFunction.setImageResource(R.mipmap.iv_share);
+                getUserShare();
+                getUserShareInfo();
             }else if (webType.equals(Constans.ORDER_ROOLBACK_REASON)){
                 getOrderReaseon();
             }else if(webType.equals(Constans.TASK_ROOLBACK_REASON)){
@@ -201,6 +206,33 @@ public class OpenWebViewActivity extends BaseActivity {
     }
 
 
+    private void getUserShareInfo() {
+        showLoadingBar();
+        HashMap<String, String> maps = new HashMap<>();
+        maps.put("uid", TUtils.getUserId());
+        Call<TaskInfo> call = ApiConfig.getInstants().create(TaskService.class).getUserShare(TUtils.getParams(maps));
+
+        API.getObject(call, SimpleBeanInfo.class, new ApiCallBack<SimpleBeanInfo>() {
+            @Override
+            public void onSuccess(int msgCode, String msg, SimpleBeanInfo data) {
+                dismissLoadingBar();
+                if (!TextUtils.isEmpty(data.url)) {
+                    shareurl = data.url;
+                    title = data.title;
+                    subInfo = data.sub_title;
+                    shareIcon = data.thumbnail;
+                }
+            }
+
+            @Override
+            public void onFaild(int msgCode, String msg) {
+                dismissLoadingBar();
+            }
+        });
+    }
+
+
+
     private void regToWx() {
         // 通过WXAPIFactory工厂，获取IWXAPI的实例
         api = WXAPIFactory.createWXAPI(this, Constans.WX_SHARE_APP_ID, true);
@@ -222,6 +254,25 @@ public class OpenWebViewActivity extends BaseActivity {
         HashMap<String, String> hashMap = new HashMap();
         hashMap.put("wheel_id", url);
         Call<TaskInfo> call = ApiConfig.getInstants().create(TaskService.class).getPlayUl(TUtils.getParams(hashMap));
+
+        API.getObject(call, SimpleBeanInfo.class, new ApiCallBack<SimpleBeanInfo>() {
+            @Override
+            public void onSuccess(int msgCode, String msg, SimpleBeanInfo data) {
+                webView.loadUrl(data.url);
+            }
+
+            @Override
+            public void onFaild(int msgCode, String msg) {
+
+
+            }
+        });
+    }
+
+    //获取分享地址
+    private void getUserShare() {
+        HashMap<String, String> hashMap = new HashMap();
+        Call<TaskInfo> call = ApiConfig.getInstants().create(TaskService.class).getUserShareUrl(TUtils.getParams(hashMap));
 
         API.getObject(call, SimpleBeanInfo.class, new ApiCallBack<SimpleBeanInfo>() {
             @Override
