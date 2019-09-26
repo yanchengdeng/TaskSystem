@@ -106,7 +106,7 @@ public class FixApplication extends MultiDexApplication {
 
         //侧滑初始化
         BGASwipeBackHelper.init(this, null);
-        ApiConfig.init(this, Constans.IS_DEBUG ? Constans.BASE_URL_TEST : Constans.BASE_URL_ONLINE);
+        ApiConfig.init(this,TUtils.getApiHost(),!Constans.IS_DEBUG);
         ApiConfig.setSuccessCode(1);
         ApiConfig.addCommonParams(TUtils.getParams());
         ApiConfig.setLogFilter("dyc");

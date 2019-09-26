@@ -7,8 +7,11 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v7.app.AlertDialog;
+import android.text.Html;
 import android.text.TextUtils;
+import android.util.Base64;
 import android.view.View;
 import android.webkit.JsResult;
 import android.webkit.ValueCallback;
@@ -20,6 +23,8 @@ import android.widget.TextView;
 
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.ToastUtils;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.FutureTarget;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.ViewHolder;
 import com.task.system.Constans;
@@ -45,9 +50,16 @@ import com.yc.lib.api.ApiCallBack;
 import com.yc.lib.api.ApiConfig;
 import com.yc.lib.api.utils.SysUtils;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 
 import retrofit2.Call;
+
+import static android.os.Environment.DIRECTORY_DCIM;
 
 
 //打开网页
@@ -176,6 +188,79 @@ public class OpenWebViewActivity extends BaseActivity {
             }
         });
 
+
+        webView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                final WebView.HitTestResult hitTestResult = webView.getHitTestResult();
+                if (hitTestResult.getType() == WebView.HitTestResult.IMAGE_TYPE ||
+                        hitTestResult.getType() == WebView.HitTestResult.SRC_IMAGE_ANCHOR_TYPE) {
+                    // 弹出保存图片的对话框
+
+                    new AlertDialog.Builder(OpenWebViewActivity.this).setItems(new String[]{"保存图片"}, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            String pic = hitTestResult.getExtra();//获取图片
+                            //保存图片到相册
+                            new Thread(() -> saveImage(pic)).start();
+
+                        }
+                    }).show();
+                    return true;
+
+                }
+                return false;
+            }
+        });
+
+    }
+
+    public void saveImage(String data) {
+
+
+
+        FutureTarget<Bitmap> bitmap = Glide.with(this)
+                .asBitmap()
+                .load(data)
+                .submit();
+        try{
+            if (bitmap != null) {
+                save2Album(bitmap.get(), new SimpleDateFormat("SXS_yyyyMMddHHmmss", Locale.getDefault()).format(new Date()) + ".jpg");
+            } else {
+                SysUtils.showToast("保存失败");
+            }
+        }catch (Exception e){
+            SysUtils.showToast("保存失败");
+            e.printStackTrace();
+        }
+    }
+
+    public Bitmap webData2bitmap(String data) {
+        byte[] imageBytes = Base64.decode(data.split(",")[1], Base64.DEFAULT);
+        return BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
+    }
+
+    private void save2Album(Bitmap bitmap, String fileName) {
+        File file = new File(Environment.getExternalStoragePublicDirectory(DIRECTORY_DCIM), fileName);
+        FileOutputStream fos = null;
+        try {
+            fos = new FileOutputStream(file);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+            fos.flush();
+            fos.close();
+            runOnUiThread(() -> {
+                sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(file)));
+                SysUtils.showToast("保存成功");
+            });
+        } catch (Exception e) {
+            SysUtils.showToast("保存失败");
+            e.printStackTrace();
+        } finally {
+            try {
+                fos.close();
+            } catch (Exception ignored) {
+            }
+        }
     }
 
 
@@ -298,7 +383,7 @@ public class OpenWebViewActivity extends BaseActivity {
             public void onSuccess(int msgCode, String msg, SimpleBeanInfo data) {
                 setTitle(data.title);
                 if (!TextUtils.isEmpty(data.content)) {
-                    ((TextView)  findViewById(R.id.tv_content)).setText(data.content);
+                    ((TextView)  findViewById(R.id.tv_content)).setText(Html.fromHtml(data.content));
 //                    webView.loadDataWithBaseURL("about:blank",data.content, "text/html",  "utf-8", null);
                 }
             }

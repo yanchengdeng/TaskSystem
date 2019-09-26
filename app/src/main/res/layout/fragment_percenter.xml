@@ -272,7 +272,7 @@
                 android:background="@color/white"
                 android:drawableRight="@mipmap/arrow_right_black"
                 android:padding="@dimen/activity_horizontal_margin"
-                android:text="关于我们"
+                android:text="关于"
                 android:textColor="@color/color_info"
                 android:textSize="@dimen/sp_14"
                 />

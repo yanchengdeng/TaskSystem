@@ -24,6 +24,7 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.task.system.Constans;
 import com.task.system.R;
+import com.task.system.activity.AboutUsActivity;
 import com.task.system.activity.AddNewLeaderActivity;
 import com.task.system.activity.MainActivity;
 import com.task.system.activity.MyAccountActivity;
@@ -266,10 +267,7 @@ public class PercenterFragment extends Fragment {
 
                 break;
             case R.id.tv_about_us:
-                Bundle about = new Bundle();
-                about.putString(Constans.PASS_NAME, "关于我们");
-                about.putString(Constans.ARTICAL_TYPE, Constans.ABOUT_US);
-                ActivityUtils.startActivity(about, OpenWebViewActivity.class);
+                ActivityUtils.startActivity(AboutUsActivity.class);
                 break;
             case R.id.tv_help_center:
                 Bundle help = new Bundle();

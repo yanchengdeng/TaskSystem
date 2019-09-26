@@ -29,9 +29,12 @@ public class Constans {
     public static final String JPUSH_REGIEST_ID = "jpush_id";
     public static boolean HAS_VESRSION_TIPS ;//是否提示过版本更新
 
-//    public static String BASE_URL_TEST = "syn.xhdcmgood.com/api.php/V2";
-    public static String BASE_URL_TEST = "dev.xhdcmgood.com/api.php/V2";
-    public static String BASE_URL_ONLINE = "www.xhdcmgood.com//api.php/V2";
+//    public static String BASE_URL_TEST = "syn.xhdcmgood.com";
+
+
+
+    public static String BASE_URL_TEST = "dev.xhdcmgood.com";
+    public static String BASE_URL_ONLINE = "www.xhdcmgood.com";
 
     public  static boolean  IS_DEBUG = true;
     public static String PASS_NAME = "pass_name";

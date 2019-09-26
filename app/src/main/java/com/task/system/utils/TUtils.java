@@ -364,6 +364,22 @@ public class TUtils {
         ActivityUtils.startActivity(bundle, OpenWebViewActivity.class);
     }
 
+    //http://dev.xhdcmgood.com/index.php/cms/article/detail/id/8/hide/1
+
+
+
+    public static void openAbout(String name,String type) {
+
+        StringBuilder url = new StringBuilder();
+
+        url.append(getHttp()).append("://").append(getHost()).append("/index.php/cms/article/detail/id/").append(type).append("/hide/1");
+
+        Bundle bundle = new Bundle();
+        bundle.putString(Constans.PASS_NAME, name);
+        bundle.putString(Constans.PASS_STRING, url.toString());
+        ActivityUtils.startActivity(bundle, OpenWebViewActivity.class);
+    }
+
 
     public static String getHideAccount(String account) {
         if (TextUtils.isEmpty(account)) {
@@ -555,6 +571,23 @@ public class TUtils {
         }
 
 
+
+    }
+    //域名
+    public static String getHost(){
+      return   Constans.IS_DEBUG ? Constans.BASE_URL_TEST : Constans.BASE_URL_ONLINE;
+
+    }
+
+    //域名  http / https
+    public static String getHttp(){
+        return   Constans.IS_DEBUG ? "http" : "https";
+
+    }
+
+    //网络请求
+    public static String getApiHost(){
+        return  getHost()+"/api.php/V2";
 
     }
 }
