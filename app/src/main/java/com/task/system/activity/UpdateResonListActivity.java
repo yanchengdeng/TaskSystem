@@ -35,13 +35,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import retrofit2.Call;
 
-/**
- * Author: dengyancheng
- * Date: 2019-09-02 01:06
- * Description: 争议列表
- * History:
- */
-public class DisputeListActivity extends BaseActivity {
+public class UpdateResonListActivity extends BaseActivity {
 
     @BindView(R.id.recycle)
     RecyclerView recycle;
@@ -74,7 +68,7 @@ public class DisputeListActivity extends BaseActivity {
             @Override
             public void onLoadMoreRequested() {
                 page++;
-                getDisputeList();
+                getOperateResons();
             }
         }, recycle);
 
@@ -82,29 +76,35 @@ public class DisputeListActivity extends BaseActivity {
             @Override
             public void onRefresh(RefreshLayout refreshLayout) {
                 page = 1;
-                getDisputeList();
+                getOperateResons();
             }
         });
 
 
         setTitle(""+orderInfo.title);
 
-        getDisputeList();
+
+        tvNextStep.setText("提出调整理由");
+
+        getOperateResons();
 
 
     }
 
 
-    private void getDisputeList() {
+    private void getOperateResons() {
         HashMap<String,String> maps = new HashMap<>();
         maps.put("uid",TUtils.getUserId());
         maps.put("order_id", orderInfo.order_id);
-        Call<TaskInfoList> call = ApiConfig.getInstants().create(TaskService.class).disputeList(TUtils.getParams(maps));
+        Call<TaskInfoList> call = ApiConfig.getInstants().create(TaskService.class).getOperateResons(TUtils.getParams(maps));
         API.getList(call, DisputeItemInfo.class, new ApiCallBackList<DisputeItemInfo>() {
             @Override
             public void onSuccess(int msgCode, String msg, List<DisputeItemInfo> datas) {
 
-                TUtils.dealReqestData(replyDisputeAdapter, recycle, datas,page,smartRefresh);
+
+
+
+                TUtils.dealReqestData(replyDisputeAdapter, recycle, paserData(datas),page,smartRefresh);
 
             }
 
@@ -116,6 +116,19 @@ public class DisputeListActivity extends BaseActivity {
         });
     }
 
+    private List paserData(List<DisputeItemInfo> datas) {
+        if (datas!=null && datas.size()>0){
+            for (DisputeItemInfo item: datas){
+                item.uid = item.operate_uid;
+                StringBuilder stringBuilder = new StringBuilder();
+                item.images = item.set_images;
+                stringBuilder.append(item.set_score).append("\n").append(item.set_remark).append("\n").append(item.remark);
+                item.content = stringBuilder.toString();
+            }
+        }
+        return datas;
+    }
+
 
     @OnClick({R.id.tv_custome, R.id.tv_next_step})
     public void onViewClicked(View view) {
@@ -125,8 +138,9 @@ public class DisputeListActivity extends BaseActivity {
                 break;
             case R.id.tv_next_step:
                 Bundle bundle = new Bundle();
+                bundle.putInt(Constans.PASS_STRING, 8);
                 bundle.putSerializable(Constans.PASS_OBJECT, orderInfo);
-                ActivityUtils.startActivityForResult(bundle,DisputeListActivity.this, ApplyDisputeOrReplyActivity.class,100);
+                ActivityUtils.startActivityForResult(bundle,UpdateResonListActivity.this, SetOrderStatusActivity.class,100);
                 break;
         }
     }
@@ -136,7 +150,7 @@ public class DisputeListActivity extends BaseActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode==100 && resultCode==RESULT_OK){
             page = 1;
-            getDisputeList();
+            getOperateResons();
         }
     }
 }

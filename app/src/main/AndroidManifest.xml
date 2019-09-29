@@ -14,6 +14,7 @@ package="com.task.system">
     android:theme="@style/AppTheme">
     <activity android:name="com.task.system.activity.AboutUsActivity"></activity>
     <activity android:name=".activity.SetOrderStatusActivity"></activity>
+    <activity android:name="com.task.system.activity.UpdateResonListActivity"></activity>
     <activity android:name=".activity.OrderDetailActivity" />
     <activity android:name=".activity.MyApplyNewActivity" />
     <activity android:name=".activity.MyApplyActivity" />

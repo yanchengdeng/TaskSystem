@@ -678,6 +678,12 @@ public interface TaskService {
     @POST("order/disputeList")
     Call<TaskInfoList>  disputeList(@FieldMap HashMap<String,String> maps);
 
+
+    //调整理由列表
+    @FormUrlEncoded
+    @POST("operator/getOrderReasons")
+    Call<TaskInfoList>  getOperateResons(@FieldMap HashMap<String,String> maps);
+
     //待审核数量
     @FormUrlEncoded
     @POST("operator/getTaskCount")

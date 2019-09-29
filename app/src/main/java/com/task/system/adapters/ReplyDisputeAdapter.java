@@ -59,9 +59,9 @@ public class ReplyDisputeAdapter extends BaseQuickAdapter<DisputeItemInfo, BaseV
 
 
         if (TUtils.getUserInfo().uid.equals(item.uid)){
-            helper.getView(R.id.tv_reply).setVisibility(View.GONE);
-        }else{
             helper.getView(R.id.tv_reply).setVisibility(View.VISIBLE);
+        }else{
+            helper.getView(R.id.tv_reply).setVisibility(View.GONE);
         }
 
         ((TextView) helper.getView(R.id.tv_reply)).setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);

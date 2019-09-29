@@ -74,7 +74,7 @@
                 android:layout_below="@+id/tv_uuid"
                 android:layout_marginTop="@dimen/image_padding_big"
                 android:ellipsize="end"
-                android:maxLines="2"
+                android:lineSpacingMultiplier="1.2"
                 android:text="争议内容"
                 android:textColor="@color/color_info"
                 android:textSize="@dimen/text_size_normal" />

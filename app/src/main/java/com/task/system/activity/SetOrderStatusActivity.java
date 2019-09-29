@@ -145,7 +145,7 @@ public class SetOrderStatusActivity extends BaseActivity implements ImagePickerA
 
 
                 if (TextUtils.isEmpty(editDispute.getEditableText().toString())){
-                    SysUtils.showToast("请填写争原因");
+                    SysUtils.showToast("请填写原因");
                     return;
                 }
 
@@ -343,6 +343,7 @@ public class SetOrderStatusActivity extends BaseActivity implements ImagePickerA
             public void onSuccess(int msgCode, String msg, SimpleBeanInfo data) {
                 ToastUtils.showShort("提交成功");
                 dismissLoadingBar();
+                setResult(RESULT_OK);
                 finish();
 
             }

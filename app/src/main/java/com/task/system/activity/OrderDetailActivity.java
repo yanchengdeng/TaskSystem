@@ -171,7 +171,13 @@ public class OrderDetailActivity extends BaseActivity {
             tvStatusPass.setVisibility(View.VISIBLE);
             tvStatusPassNot.setVisibility(View.VISIBLE);
             tvAdjustRecharge.setVisibility(View.VISIBLE);
-        } else {
+        }else if (data.getStatus()==8){
+            //显示调整理由
+            tvStatusPassNot.setVisibility(View.VISIBLE);
+            tvStatusPassNot.setText("调整理由");
+            tvStatusPass.setVisibility(View.GONE);
+            tvAdjustRecharge.setVisibility(View.GONE);
+        }else {
             tvStatusPass.setVisibility(View.GONE);
             tvStatusPassNot.setVisibility(View.GONE);
             tvAdjustRecharge.setVisibility(View.GONE);
@@ -208,7 +214,7 @@ public class OrderDetailActivity extends BaseActivity {
                 }
                 break;
             case R.id.tv_status_pass:
-                doSubmitDispute();
+                    doSubmitDispute();
 //                bundle.putInt(Constans.PASS_STRING, 4);
 //                ActivityUtils.startActivity(bundle, SetOrderStatusActivity.class);
                 break;
@@ -217,8 +223,12 @@ public class OrderDetailActivity extends BaseActivity {
                 ActivityUtils.startActivity(bundle, SetOrderStatusActivity.class);
                 break;
             case R.id.tv_status_pass_not:
-                bundle.putInt(Constans.PASS_STRING, 5);
-                ActivityUtils.startActivity(bundle, SetOrderStatusActivity.class);
+                if (orderDetalInfo.getStatus()==8){
+                    ActivityUtils.startActivity(bundle,UpdateResonListActivity.class);
+                }else {
+                    bundle.putInt(Constans.PASS_STRING, 5);
+                    ActivityUtils.startActivity(bundle, SetOrderStatusActivity.class);
+                }
                 break;
             case R.id.tv_look_argue:
                 ActivityUtils.startActivity(bundle, DisputeListActivity.class);

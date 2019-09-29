@@ -22,4 +22,13 @@ public class DisputeItemInfo implements Serializable {
     public String avatar;//
 
 
+
+    //调整理由新字段
+    public String  operate_uid;
+    public String set_score;
+    public String set_remark;
+    public String remark;
+    public List<String> set_images ;
+
+
 }
