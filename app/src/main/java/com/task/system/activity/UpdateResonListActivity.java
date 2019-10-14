@@ -22,6 +22,7 @@ import com.task.system.api.TaskInfoList;
 import com.task.system.api.TaskService;
 import com.task.system.bean.DisputeItemInfo;
 import com.task.system.bean.OrderInfo;
+import com.task.system.enums.UserType;
 import com.task.system.utils.TUtils;
 import com.yc.lib.api.ApiCallBackList;
 import com.yc.lib.api.ApiConfig;
@@ -85,6 +86,11 @@ public class UpdateResonListActivity extends BaseActivity {
 
 
         tvNextStep.setText("提出调整理由");
+
+
+        if (TUtils.getUserInfo().user_type.equals(UserType.USER_TYPE_MEMBER.getType())) {
+            findViewById(R.id.ll_bottom_function).setVisibility(View.GONE);
+        }
 
         getOperateResons();
 

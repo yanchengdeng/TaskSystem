@@ -114,21 +114,45 @@
         android:layout_height="wrap_content">
 
 
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:orientation="horizontal"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_height="wrap_content">
+
+
+
+
         <TextView
             android:id="@+id/tv_destory_reason"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
             android:background="#fceee9"
-            android:paddingLeft="@dimen/image_padding_big"
+            android:paddingLeft="@dimen/image_padding"
             android:paddingTop="2dp"
-            android:paddingRight="@dimen/image_padding_big"
+            android:paddingRight="@dimen/image_padding"
             android:paddingBottom="2dp"
+            android:layout_marginRight="@dimen/image_padding_big"
             android:text="作废"
-            android:layout_centerVertical="true"
             android:textColor="#E8541E"
             android:textSize="@dimen/text_size_normal_down"
             android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/tv_look_for_reason"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/normal_submit_btn_red_trans"
+                android:paddingLeft="@dimen/image_padding"
+                android:paddingTop="2dp"
+                android:paddingRight="@dimen/image_padding"
+                android:paddingBottom="2dp"
+                android:text="查看原因"
+                android:textColor="@color/red"
+                android:textSize="@dimen/text_size_normal_down"
+                android:visibility="gone" />
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -136,19 +160,7 @@
             android:layout_alignParentRight="true"
             android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/tv_look_for_reason"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/normal_submit_btn_red_trans"
-            android:paddingLeft="@dimen/image_padding"
-            android:paddingTop="2dp"
-            android:paddingRight="@dimen/image_padding"
-            android:paddingBottom="2dp"
-            android:text="查看原因"
-            android:textColor="@color/red"
-            android:textSize="@dimen/text_size_normal_down"
-            android:visibility="gone" />
+
 
 
         <TextView
@@ -158,9 +170,9 @@
             android:layout_marginLeft="@dimen/image_padding_big"
             android:layout_toLeftOf="@+id/tv_going_work_task"
             android:background="@drawable/normal_submit_btn_gray_deep_trans"
-            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingLeft="@dimen/image_padding_big"
             android:paddingTop="@dimen/image_padding"
-            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/image_padding_big"
             android:paddingBottom="@dimen/image_padding"
             android:visibility="gone"
             android:text="提出争议"
@@ -175,9 +187,9 @@
             android:layout_marginLeft="@dimen/image_padding_big"
             android:layout_toLeftOf="@+id/tv_going_work_task"
             android:background="@drawable/normal_submit_btn_gray_deep_trans"
-            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingLeft="@dimen/image_padding_big"
             android:paddingTop="@dimen/image_padding"
-            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/image_padding_big"
             android:paddingBottom="@dimen/image_padding"
             android:text="取消任务"
             android:textColor="@color/color_tittle"
@@ -192,9 +204,9 @@
             android:layout_alignParentRight="true"
             android:layout_marginLeft="@dimen/image_padding_big"
             android:background="@drawable/normal_submit_btn_red"
-            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingLeft="@dimen/image_padding_big"
             android:paddingTop="@dimen/image_padding"
-            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/image_padding_big"
             android:paddingBottom="@dimen/image_padding"
             android:text="继续工作"
             android:textColor="@color/white"
@@ -209,9 +221,9 @@
             android:layout_alignParentRight="true"
             android:layout_marginLeft="@dimen/image_padding_big"
             android:background="@drawable/normal_submit_btn_gray_light"
-            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingLeft="@dimen/image_padding_big"
             android:paddingTop="@dimen/image_padding"
-            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/image_padding_big"
             android:paddingBottom="@dimen/image_padding"
             android:text="待审核"
             android:textColor="@color/color_tittle"

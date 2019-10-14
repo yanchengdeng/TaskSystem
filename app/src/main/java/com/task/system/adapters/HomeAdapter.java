@@ -5,11 +5,11 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.task.system.R;
 import com.task.system.bean.TaskInfoItem;
-import com.yc.lib.api.utils.ImageLoaderUtil;
 
 public class HomeAdapter extends BaseQuickAdapter<TaskInfoItem, BaseViewHolder> {
 
@@ -20,7 +20,9 @@ public class HomeAdapter extends BaseQuickAdapter<TaskInfoItem, BaseViewHolder> 
     @Override
     protected void convert(BaseViewHolder helper, TaskInfoItem item) {
 
-        ImageLoaderUtil.loadNormal(item.thumbnail, (ImageView) helper.getView(R.id.iv_image), R.mipmap.load_err);
+//        ImageLoaderUtil.loadNormal(item.thumbnail, (ImageView) helper.getView(R.id.iv_image), R.mipmap.load_err);
+
+        Glide.with(mContext).load(item.thumbnail).into((ImageView) helper.getView(R.id.iv_image));
 
         if (!TextUtils.isEmpty(item.title)) {
             ((TextView) helper.getView(R.id.tv_title)).setText(item.title);

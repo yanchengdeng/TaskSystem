@@ -449,6 +449,7 @@ public class TUtils {
      * 4: "已通过",
      * 5: "未通过"
      * 6 已作废
+     * 8  改价格
      */
     public static List<TaskType> getTaskType() {
         List<TaskType> taskTypeList = new ArrayList<>();
@@ -459,6 +460,7 @@ public class TUtils {
         taskTypeList.add(new TaskType(4, "已通过"));
         taskTypeList.add(new TaskType(5, "未通过"));//6 、7 未通过、已作废、已超时合并
         taskTypeList.add(new TaskType(6, "已作废"));
+        taskTypeList.add(new TaskType(8,"改价格"));
 
 
         return taskTypeList;

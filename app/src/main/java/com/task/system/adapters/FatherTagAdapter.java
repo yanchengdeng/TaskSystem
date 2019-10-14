@@ -10,7 +10,6 @@ import android.widget.TextView;
 import com.blankj.utilcode.util.ActivityUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
-import com.lzy.imagepicker.view.GridSpacingItemDecoration;
 import com.task.system.Constans;
 import com.task.system.R;
 import com.task.system.activity.TaskListActivity;
@@ -43,7 +42,7 @@ public class FatherTagAdapter extends BaseQuickAdapter<CatergoryInfo, BaseViewHo
 
         if (item._child!=null && item._child.size()>0){
             ((RecyclerView)helper.getView(R.id.recycle)).setLayoutManager(new GridLayoutManager(ApiConfig.context, 4));
-            ((RecyclerView)helper.getView(R.id.recycle)).addItemDecoration(new GridSpacingItemDecoration(4, 10, true));
+//            ((RecyclerView)helper.getView(R.id.recycle)).addItemDecoration(new GridSpacingItemDecoration(4, 10, true));
             ((RecyclerView)helper.getView(R.id.recycle)).setAdapter(new TagAdapter(R.layout.adapter_tag,item._child));
 
         }

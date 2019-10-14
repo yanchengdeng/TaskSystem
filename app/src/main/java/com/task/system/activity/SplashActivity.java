@@ -15,6 +15,7 @@ import com.task.system.Constans;
 import com.task.system.R;
 import com.task.system.bean.AdInfo;
 import com.task.system.bean.UserInfo;
+import com.task.system.utils.AppManager;
 import com.task.system.utils.PerfectClickListener;
 import com.task.system.utils.TUtils;
 import com.yc.lib.api.utils.ImageLoaderUtil;
@@ -36,6 +37,7 @@ public class SplashActivity extends AppCompatActivity {
         ivAd = findViewById(R.id.iv_ad);
         tvJump = findViewById(R.id.tv_jump);
         handler = new Handler();
+        AppManager.getAppManager().addActivity(this);
 
         if (!TextUtils.isEmpty(SPUtils.getInstance().getString(Constans.SAVE_SPLASH_AD))) {
             try {

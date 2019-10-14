@@ -48,6 +48,7 @@
     <string name="end_time_tips">剩余时间：%s</string>
     <string name="pass_time_tips">通过时间：%s</string>
     <string name="not_pass_time_tips">未通过时间：%s</string>
+    <string name="modify_price_time_tips">改价时间：%s</string>
     <string name="destory_time_tips">已作废时间：%s</string>
     <string name="title_activity_task_work_step_one">TaskWorkStepOneActivity</string>
     <string name="do_task_title">支付宝天天领红包</string>

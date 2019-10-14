@@ -22,6 +22,7 @@ import com.task.system.activity.DisputeListActivity;
 import com.task.system.activity.DoTaskStepActivity;
 import com.task.system.activity.MainActivity;
 import com.task.system.activity.TaskDetailActivity;
+import com.task.system.activity.UpdateResonListActivity;
 import com.task.system.adapters.TaskOrderAdapter;
 import com.task.system.api.API;
 import com.task.system.api.TaskInfo;
@@ -113,7 +114,8 @@ public class TaskListFragment extends BaseFragment {
          * 4——已通过
          * 5——未通过
          * 6——已作废
-         * 7——已超时*/
+         * 7——已超时
+         * 8  修改价格  查看理由*/
         taskOrderAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
@@ -134,7 +136,17 @@ public class TaskListFragment extends BaseFragment {
                         if (TextUtils.isEmpty(taskOrderAdapter.getData().get(position).remark)) {
                             taskOrderAdapter.getData().get(position).remark = "请联系客服";
                         }
-                        showDialogTips(taskOrderAdapter.getData().get(position).remark);
+                        if (status==8){
+//                            OrderInfo item = new OrderInfo();
+//                            item.title = orderDetalInfo.getTask_title();
+//                            item.order_id = orderDetalInfo.getOrder_id();
+//                            item.score = orderDetalInfo.getActual_score();
+                            Bundle bundle = new Bundle();
+                            bundle.putSerializable(Constans.PASS_OBJECT, item);
+                            ActivityUtils.startActivity(bundle, UpdateResonListActivity.class);
+                        }else {
+                            showDialogTips(taskOrderAdapter.getData().get(position).remark);
+                        }
                     } else if (view.getId() == R.id.tv_else_function) {
                         //立即申请
                         applyTask(position, taskOrderAdapter.getItem(position).task_id);

@@ -29,23 +29,21 @@ public class TaskOrderAdapter extends BaseQuickAdapter<OrderInfo, BaseViewHolder
     protected void convert(BaseViewHolder helper, OrderInfo item) {
 
 
-
         if (!TextUtils.isEmpty(item.title)) {
-            ((TextView)helper.getView(R.id.tv_title)).setText(item.title);
+            ((TextView) helper.getView(R.id.tv_title)).setText(item.title);
         }
 
         if (!TextUtils.isEmpty(item.sub_title)) {
-            ((TextView)helper.getView(R.id.tv_info)).setText(Html.fromHtml(item.sub_title));
+            ((TextView) helper.getView(R.id.tv_info)).setText(Html.fromHtml(item.sub_title));
         }
 
         if (!TextUtils.isEmpty(item.order_score)) {
-            ((TextView)helper.getView(R.id.tv_price)).setText(mContext.getString(R.string.money_unit)+item.order_score);
+            ((TextView) helper.getView(R.id.tv_price)).setText(mContext.getString(R.string.money_unit) + item.order_score);
         }
 
         if (!TextUtils.isEmpty(item.order_id)) {
-            ((TextView)helper.getView(R.id.tv_order_id)).setText("ID:"+item.order_id);
+            ((TextView) helper.getView(R.id.tv_order_id)).setText("ID:" + item.order_id);
         }
-
 
 
         helper.addOnClickListener(R.id.tv_cancle_task);
@@ -53,7 +51,6 @@ public class TaskOrderAdapter extends BaseQuickAdapter<OrderInfo, BaseViewHolder
         helper.addOnClickListener(R.id.tv_going_work_task);
         helper.addOnClickListener(R.id.tv_else_function);
         helper.addOnClickListener(R.id.tv_apply_dispute);//提起争议
-
 
 
         //时间
@@ -73,13 +70,16 @@ public class TaskOrderAdapter extends BaseQuickAdapter<OrderInfo, BaseViewHolder
 
         //提起争议
         TextView tvApplyDispute = helper.getView(R.id.tv_apply_dispute);
-       /** * 1——待工作
-                * 2——待提交 // 待审核--客服审核
-                * 3——待审核 // 待审核--客户审核
-                * 4——已通过
-                * 5——未通过  只有5 才有提出争议状态
-                * 6——已作废
-                * 7——已超时*/
+        /** * 1——待工作
+         * 2——待提交 // 待审核--客服审核
+         * 3——待审核 // 待审核--客户审核
+         * 4——已通过
+         * 5——未通过  只有5 才有提出争议状态
+         * 6——已作废
+         * 7——已超时
+         *  8 --- 改价格 查看理由
+         * */
+
 
 //       //TODO测试完成后 需要隐藏代码
 //       if (status==1){
@@ -107,7 +107,7 @@ public class TaskOrderAdapter extends BaseQuickAdapter<OrderInfo, BaseViewHolder
          * end_time是拿来做倒计时的
          */
 
-        switch (item.status){
+        switch (item.status) {
             case 1:
             case 2:
                 if (!TextUtils.isEmpty(item.end_time)) {
@@ -150,9 +150,9 @@ public class TaskOrderAdapter extends BaseQuickAdapter<OrderInfo, BaseViewHolder
                 tvElseFunction.setBackground(mContext.getResources().getDrawable(R.drawable.normal_submit_btn_red));
                 tvElseFunction.setText("重新申请");
                 tvElseFunction.setTextColor(mContext.getResources().getColor(R.color.white));
-                if (item.is_apply==1){
+                if (item.is_apply == 1) {
                     tvElseFunction.setVisibility(View.VISIBLE);
-                }else{
+                } else {
                     tvElseFunction.setVisibility(View.GONE);
                 }
                 tvApplyDispute.setVisibility(View.GONE);
@@ -165,20 +165,20 @@ public class TaskOrderAdapter extends BaseQuickAdapter<OrderInfo, BaseViewHolder
                 tvTime.setVisibility(View.VISIBLE);
                 dashLineTwo.setVisibility(View.VISIBLE);
                 tvReason.setVisibility(View.GONE);
-//                tvLookReason.setVisibility(View.GONE);
+                tvLookReason.setVisibility(View.VISIBLE);
                 tvCancleTask.setVisibility(View.GONE);
                 tvGoingWord.setVisibility(View.GONE);
                 tvElseFunction.setBackground(mContext.getResources().getDrawable(R.drawable.normal_submit_btn_red));
                 tvElseFunction.setText("重新申请");
                 tvElseFunction.setTextColor(mContext.getResources().getColor(R.color.white));
-                if (item.is_apply==1){
+                if (item.is_apply == 1) {
                     tvElseFunction.setVisibility(View.VISIBLE);
-                }else{
+                } else {
                     tvElseFunction.setVisibility(View.GONE);
                 }
 
 
-                if (item.can_send_dispute==1) {
+                if (item.can_send_dispute == 1) {
                     tvApplyDispute.setVisibility(View.VISIBLE);
                     if (item.dispute_status == 0) {
                         tvApplyDispute.setText("提出争议");
@@ -189,7 +189,7 @@ public class TaskOrderAdapter extends BaseQuickAdapter<OrderInfo, BaseViewHolder
 //                        tvApplyDispute.setTextColor(mContext.getResources().getColor(R.color.color_info));
 //                        tvApplyDispute.setBackground(mContext.getResources().getDrawable(R.drawable.normal_submit_btn_gray_deep_trans));
                     }
-                }else{
+                } else {
                     tvApplyDispute.setVisibility(View.GONE);
                 }
 
@@ -221,9 +221,9 @@ public class TaskOrderAdapter extends BaseQuickAdapter<OrderInfo, BaseViewHolder
                 tvElseFunction.setBackground(mContext.getResources().getDrawable(R.drawable.normal_submit_btn_red));
                 tvElseFunction.setText("重新申请");
                 tvElseFunction.setTextColor(mContext.getResources().getColor(R.color.white));
-                if (item.is_apply==1){
+                if (item.is_apply == 1) {
                     tvElseFunction.setVisibility(View.VISIBLE);
-                }else{
+                } else {
                     tvElseFunction.setVisibility(View.GONE);
                 }
                 tvApplyDispute.setVisibility(View.GONE);
@@ -244,12 +244,35 @@ public class TaskOrderAdapter extends BaseQuickAdapter<OrderInfo, BaseViewHolder
                 tvElseFunction.setBackground(mContext.getResources().getDrawable(R.drawable.normal_submit_btn_red));
                 tvElseFunction.setText("重新申请");
                 tvElseFunction.setTextColor(mContext.getResources().getColor(R.color.white));
-                if (item.is_apply==1){
+                if (item.is_apply == 1) {
                     tvElseFunction.setVisibility(View.VISIBLE);
-                }else{
+                } else {
                     tvElseFunction.setVisibility(View.GONE);
                 }
                 tvApplyDispute.setVisibility(View.GONE);
+                break;
+            case 8:
+                if (!TextUtils.isEmpty(item.end_time)) {
+                    tvTime.setText(String.format(mContext.getString(R.string.modify_price_time_tips), item.end_time));
+                }
+                tvTime.setVisibility(View.VISIBLE);
+                dashLineTwo.setVisibility(View.VISIBLE);
+                tvReason.setVisibility(View.GONE);
+                tvLookReason.setVisibility(View.VISIBLE);
+                tvCancleTask.setVisibility(View.GONE);
+                tvGoingWord.setVisibility(View.GONE);
+                tvElseFunction.setVisibility(View.GONE);
+                tvApplyDispute.setVisibility(View.GONE);
+
+                if (!TextUtils.isEmpty(item.dispute_status_title)) {
+//                        tvApplyDispute.setText(item.dispute_status_title);
+//                        tvApplyDispute.setBackground(null);
+                    tvReason.setTextColor(mContext.getResources().getColor(R.color.red));
+                    tvReason.setVisibility(View.VISIBLE);
+                    tvReason.setText(item.dispute_status_title);
+                } else {
+                    tvReason.setVisibility(View.GONE);
+                }
                 break;
 
         }

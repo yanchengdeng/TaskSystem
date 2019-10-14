@@ -14,7 +14,9 @@
         android:id="@+id/iv_image"
         android:layout_width="@dimen/list_image_size"
         android:layout_height="@dimen/list_image_size"
-        android:src="@mipmap/load_err" />
+        android:src="@mipmap/load_err"
+        android:scaleType="centerCrop"
+        />
 
     <LinearLayout
         android:layout_width="wrap_content"

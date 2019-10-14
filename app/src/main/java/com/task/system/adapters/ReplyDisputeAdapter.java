@@ -17,6 +17,7 @@ import com.task.system.R;
 import com.task.system.activity.ApplyDisputeOrReplyActivity;
 import com.task.system.bean.DisputeItemInfo;
 import com.task.system.bean.OrderInfo;
+import com.task.system.enums.UserType;
 import com.task.system.utils.TUtils;
 import com.task.system.views.NineGridTestLayout;
 import com.yc.lib.api.ApiConfig;
@@ -58,10 +59,16 @@ public class ReplyDisputeAdapter extends BaseQuickAdapter<DisputeItemInfo, BaseV
         ((TextView)  helper.getView(R.id.tv_conten)).setText(""+item.content);
 
 
-        if (TUtils.getUserInfo().uid.equals(item.uid)){
-            helper.getView(R.id.tv_reply).setVisibility(View.VISIBLE);
-        }else{
+
+
+        if (TUtils.getUserInfo().user_type.equals(UserType.USER_TYPE_MEMBER.getType())) {
             helper.getView(R.id.tv_reply).setVisibility(View.GONE);
+        }else{
+            if (TUtils.getUserInfo().uid.equals(item.uid)){
+                helper.getView(R.id.tv_reply).setVisibility(View.VISIBLE);
+            }else{
+                helper.getView(R.id.tv_reply).setVisibility(View.GONE);
+            }
         }
 
         ((TextView) helper.getView(R.id.tv_reply)).setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);

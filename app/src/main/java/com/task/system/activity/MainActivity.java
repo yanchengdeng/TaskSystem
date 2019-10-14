@@ -289,7 +289,7 @@ public class MainActivity extends BaseSimpleActivity {
 //            home.addCategory(Intent.CATEGORY_HOME);
 //            startActivity(home);
             AppManager.getAppManager().finishAllActivity();
-            AppManager.getAppManager().AppExit(this);
+//            AppManager.getAppManager().AppExit(this);
             finish();
         }
         return false;
