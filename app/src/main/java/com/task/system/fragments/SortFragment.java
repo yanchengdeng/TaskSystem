@@ -203,7 +203,7 @@ public class SortFragment extends Fragment {
     private void getAds() {
         HashMap<String, String> maps = new HashMap<>();
         maps.put("uid", TUtils.getUserId());
-        maps.put("position", "1");
+        maps.put("position", "4");
         Call<com.task.system.api.TaskInfoList> call = ApiConfig.getInstants().create(TaskService.class).getAdList(TUtils.getParams(maps));
         API.getList(call, AdInfo.class, new ApiCallBackList<AdInfo>() {
             @Override
@@ -224,7 +224,7 @@ public class SortFragment extends Fragment {
 
             @Override
             public void onFaild(int msgCode, String msg) {
-                ToastUtils.showShort(msg);
+//                ToastUtils.showShort(msg);
             }
         });
     }

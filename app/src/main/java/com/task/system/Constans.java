@@ -36,7 +36,7 @@ public class Constans {
     public static String BASE_URL_TEST = "dev.xhdcmgood.com";
     public static String BASE_URL_ONLINE = "www.xhdcmgood.com";
 
-    public  static boolean  IS_DEBUG = true;
+    public  static boolean  IS_DEBUG = false;
     public static String PASS_NAME = "pass_name";
     //网页类型
     public static String ARTICAL_TYPE = "artical_type";

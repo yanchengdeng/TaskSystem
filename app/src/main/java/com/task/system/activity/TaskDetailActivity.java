@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.Html;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
@@ -437,7 +438,7 @@ public class TaskDetailActivity extends BaseSimpleActivity {
 
         MaterialDialog.Builder builder = new MaterialDialog.Builder(ApiConfig.context)
                 .title("社会公约")
-                .content("" + content)
+                .content("" + Html.fromHtml(content))
                 .positiveText("确定").positiveColor(getResources().getColor(R.color.color_blue)).onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {

@@ -5,7 +5,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import com.blankj.utilcode.util.ActivityUtils;
-import com.blankj.utilcode.util.ToastUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.task.system.Constans;
 import com.task.system.R;
@@ -112,7 +111,7 @@ public class NewUserTaskActivity extends BaseActivity {
 
             @Override
             public void onFaild(int msgCode, String msg) {
-                ToastUtils.showShort(msg);
+//                ToastUtils.showShort(msg);
             }
         });
     }

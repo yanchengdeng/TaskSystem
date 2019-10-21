@@ -166,7 +166,7 @@ class PublishManageActivity : BaseActivity() {
             }
 
             override fun onFaild(msgCode: Int, msg: String) {
-                ToastUtils.showShort(msg)
+//                ToastUtils.showShort(msg)
             }
         })
     }

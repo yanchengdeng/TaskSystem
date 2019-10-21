@@ -538,7 +538,7 @@ public class TUtils {
     }
 
     public static void openBanner(AdInfo adInfo) {
-        if (adInfo!=null){
+        if (adInfo!=null && !TextUtils.isEmpty(adInfo.link_type)){
             if (adInfo.link_type.equals("1")){
                 Bundle bundle = new Bundle();
                 bundle.putString(Constans.PASS_NAME, adInfo.title);

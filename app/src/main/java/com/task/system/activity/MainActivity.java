@@ -225,7 +225,7 @@ public class MainActivity extends BaseSimpleActivity {
 
             @Override
             public void onFaild(int msgCode, String msg) {
-                ToastUtils.showShort(msg);
+//                ToastUtils.showShort(msg);
             }
         });
     }

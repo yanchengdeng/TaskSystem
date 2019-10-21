@@ -172,8 +172,7 @@
         <com.task.system.common.RichTextView
             android:id="@+id/rich_text"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_height="match_parent"
             android:background="@color/white"
             android:lineSpacingMultiplier="1.3"
             android:padding="@dimen/activity_horizontal_margin"

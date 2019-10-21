@@ -137,7 +137,7 @@ public interface TaskService {
 
 
     /**
-     * 1=首页 2=启动页 3 新手
+     * 1=首页 2=启动页 3 新手  4 分类大厅
      *
      * @param map
      * @return 广告页面
@@ -345,7 +345,7 @@ public interface TaskService {
 
     //短消息数量
     @FormUrlEncoded
-    @POST("message/newMesssageSum")
+    @POST("message/newMessageSum")
     Call<TaskInfo> getMessageCount(@FieldMap HashMap<String, String> maps);
 
 

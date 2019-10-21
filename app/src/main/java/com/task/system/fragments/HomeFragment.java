@@ -384,6 +384,8 @@ public class HomeFragment extends Fragment {
             maps.put("region_id", region_id);
         }
 
+        maps.put("is_tuijian","1");
+
         if (TUtils.getUserInfo().user_type.equals(UserType.USER_TYPE_AREA.getType())) {
             maps.put("role", "publish");
         }

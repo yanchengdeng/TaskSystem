@@ -77,7 +77,6 @@ public class FragmentTaskDetail extends Fragment {
         }
         tvLeftNum.setText(String.format(getString(R.string.left_num), taskInfoItem.storages));
 
-
         if (!TextUtils.isEmpty(taskInfoItem.description)) {
             richText.setHtml(taskInfoItem.description);
         }

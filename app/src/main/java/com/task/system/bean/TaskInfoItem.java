@@ -41,7 +41,7 @@ public class TaskInfoItem implements Serializable {
     public String order_status_title;
     public int is_apply;//1  可以申请 0 不可以
 
-    public Double deposit_score;//保证金 >0   申请给提示
+    public Double deposit_score = 0.0d;//保证金 >0   申请给提示
     public String deposit_score_tips;//保证金tips
 
     public int is_show_tips;//弹出 社会公约

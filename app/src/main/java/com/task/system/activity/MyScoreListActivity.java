@@ -87,6 +87,19 @@ public class MyScoreListActivity extends BaseActivity {
             }
         });
 
+        scoreRecordAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
+            @Override
+            public void onLoadMoreRequested() {
+                page++;
+                getScoreRecord();
+            }
+        },recycle);
+
+        smartRefresh.setOnRefreshListener(refreshLayout -> {
+        page=1;
+        getScoreRecord();
+        });
+
         initPickView();
 
 
@@ -170,7 +183,8 @@ public class MyScoreListActivity extends BaseActivity {
         if (!TextUtils.isEmpty(end_date)) {
             maps.put("end_date", end_date);
         }
-        maps.put("page_size",String.valueOf(Integer.MAX_VALUE));
+
+        maps.put("page_size",Constans.PAGE_SIZE);
         maps.put("page", String.valueOf(page));
         Call<TaskInfo> call = ApiConfig.getInstants().create(TaskService.class).getStaticsList(TUtils.getParams(maps));
 
