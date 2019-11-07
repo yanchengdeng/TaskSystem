@@ -232,7 +232,7 @@ public class TUtils {
     }
 
 
-    //处理列表无数据
+//    //处理列表无数据
     public static void dealNoReqestData(BaseQuickAdapter adapter, RecyclerView recycle, SmartRefreshLayout refreshLayout) {
         dealNoReqestData(adapter, recycle, refreshLayout, 1);
     }
@@ -303,7 +303,7 @@ public class TUtils {
                     adapter.loadMoreEnd(list.size()<10);
                 }
             } else {
-                TUtils.dealNoReqestData(adapter, recycle);
+                TUtils.dealNoReqestData(adapter, recycle,page);
             }
             if (refreshLayout != null) {
                 refreshLayout.finishRefresh();
@@ -327,7 +327,7 @@ public class TUtils {
                     adapter.loadMoreEnd(list.size()<10);
                 }
             } else {
-                TUtils.dealNoReqestData(adapter, recycle);
+                TUtils.dealNoReqestData(adapter, recycle,page);
             }
         }
 

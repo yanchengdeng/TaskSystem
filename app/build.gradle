@@ -17,8 +17,8 @@ android {
         applicationId "com.task.system"
         minSdkVersion 19
         targetSdkVersion 28
-        versionCode 3
-        versionName "V2.0.0"
+        versionCode 210
+        versionName "V2.1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
 

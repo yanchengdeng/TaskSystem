@@ -135,7 +135,7 @@ public class FixApplication extends MultiDexApplication {
 
 
         //机关推送
-        JPushInterface.setDebugMode(Constans.IS_DEBUG ); 	// 设置开启日志,发布时请关闭日志
+        JPushInterface.setDebugMode(true ); 	// 设置开启日志,发布时请关闭日志
         JPushInterface.init(this);
 
     }

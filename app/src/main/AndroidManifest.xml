@@ -386,8 +386,8 @@ package="com.task.system">
         </intent-filter>
     </receiver>
     <!-- Required  . Enable it you can get statistics data with channel -->
-    <!--        <meta-data android:name="JPUSH_CHANNEL" android:value="developer-default"/>-->
-    <!--        <meta-data android:name="JPUSH_APPKEY" android:value="d5d22e191f46bbc6b76fecef" /> &lt;!&ndash;  </>值来自开发者平台取得的AppKey&ndash;&gt;-->
+            <meta-data android:name="JPUSH_CHANNEL" android:value="android"/>
+            <meta-data android:name="JPUSH_APPKEY" android:value="d5d22e191f46bbc6b76fecef" /> <!--  </>值来自开发者平台取得的AppKey-->
     <uses-library
         android:name="org.apache.http.legacy"
         android:required="false" />

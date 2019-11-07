@@ -115,6 +115,7 @@ public class TaskDetailActivity extends BaseSimpleActivity {
 
         task_id = getIntent().getStringExtra(Constans.PASS_STRING);
         //xieshoujianzhi://detail?id=268
+
         if (checkHasScheme()) {
             task_id = intent.getDataString().split("id=")[1];
         }
