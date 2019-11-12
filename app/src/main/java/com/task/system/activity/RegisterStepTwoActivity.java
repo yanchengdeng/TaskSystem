@@ -28,7 +28,6 @@ import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import cn.jpush.android.api.JPushInterface;
 import retrofit2.Call;
 
 /**
@@ -109,7 +108,7 @@ public class RegisterStepTwoActivity extends BaseSimpleActivity {
             public void onSuccess(int msgCode, String msg, UserInfo data) {
                 dismissLoadingBar();
                 ToastUtils.showShort(msg);
-                JPushInterface.onResume(RegisterStepTwoActivity.this);
+//                JPushInterface.onResume(RegisterStepTwoActivity.this);
                 SPUtils.getInstance().put(Constans.USER_INFO, new Gson().toJson(data));
                 SPUtils.getInstance().put(Constans.TOKEN, new Gson().toJson(data.tokens));
                 SPUtils.getInstance().put(Constans.USER_ACOUNT, etAccont.getEditableText().toString());

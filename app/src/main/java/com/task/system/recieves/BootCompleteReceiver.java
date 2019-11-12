@@ -1,13 +1,6 @@
 package com.task.system.recieves;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-
-import com.task.system.activity.MainActivity;
-
-
-public class BootCompleteReceiver extends BroadcastReceiver {
+/*public class BootCompleteReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         if(Intent.ACTION_BOOT_COMPLETED.equals(intent.getAction())){
@@ -19,4 +12,4 @@ public class BootCompleteReceiver extends BroadcastReceiver {
         }
 
     }
-}
+}*/

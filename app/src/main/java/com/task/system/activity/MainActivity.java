@@ -164,7 +164,7 @@ public class MainActivity extends BaseSimpleActivity {
 
 
         //注册激光推送
-//        registerMessageReceiver();
+        registerMessageReceiver();
     }
 
     private void registerJPushRegisterId() {
@@ -264,7 +264,7 @@ public class MainActivity extends BaseSimpleActivity {
 
     @Override
     protected void onDestroy() {
-//        LocalBroadcastManager.getInstance(this).unregisterReceiver(messageReceiver);
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(messageReceiver);
         super.onDestroy();
     }
 
